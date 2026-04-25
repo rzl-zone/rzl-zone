@@ -46,7 +46,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Install Dependencies
-        run: pnpm run install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Release Stable (main)
         if: github.ref == 'refs/heads/main'
@@ -54,7 +54,7 @@ jobs:
         uses: changesets/action@v1
         with:
           commitMode: github-api
-          version: pnpm run changeset version
+          version: pnpm run version
           publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -67,7 +67,7 @@ jobs:
         uses: changesets/action@v1
         with:
           commitMode: github-api
-          version: pnpm run changeset version
+          version: pnpm run version
           publish: pnpm run release:beta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
