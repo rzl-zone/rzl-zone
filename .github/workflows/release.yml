@@ -45,18 +45,8 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Verify npm auth
-        run: |
-          npm whoami
-          npm config get registry
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build Packages
-        run: pnpm build:packages
+        run: pnpm run install --frozen-lockfile
 
       - name: Release Stable (main)
         if: github.ref == 'refs/heads/main'
@@ -64,8 +54,8 @@ jobs:
         uses: changesets/action@v1
         with:
           commitMode: github-api
-          version: pnpm changeset version
-          publish: pnpm release
+          version: pnpm run changeset version
+          publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -77,8 +67,8 @@ jobs:
         uses: changesets/action@v1
         with:
           commitMode: github-api
-          version: pnpm changeset version
-          publish: pnpm release:beta
+          version: pnpm run changeset version
+          publish: pnpm run release:beta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

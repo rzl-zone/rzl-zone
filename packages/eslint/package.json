@@ -1,6 +1,6 @@
 {
   "name": "@rzl-zone/eslint",
-  "version": "0.0.0",
+  "version": "0.0.4",
   "description": "Official ESLint plugin and flat-config presets maintained by the Rzl Zone ecosystem",
   "license": "MIT",
   "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
