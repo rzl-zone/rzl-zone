@@ -1,0 +1,76 @@
+{
+  "name": "@rzl-zone/build-tools-cli",
+  "version": "0.0.0",
+  "description": "Build tools cli for packages in the Rzl Zone ecosystem",
+  "license": "MIT",
+  "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
+  "contributors": [
+    "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>"
+  ],
+  "homepage": "https://github.com/rzl-zone/rzl-zone/tree/main/packages/build-tools-cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rzl-zone/rzl-zone.git",
+    "directory": "packages/build-tools-cli"
+  },
+  "keywords": [
+    "build cli",
+    "build tools cli",
+    "build-tools cli",
+    "typescript",
+    "javascript",
+    "ts",
+    "js",
+    "tools cli",
+    "build tools cli rzl",
+    "rzl build tools cli",
+    "rzl build cli",
+    "@rzl-zone",
+    "@rzl-zone/build-kit-cli",
+    "rzl",
+    "rzl-zone",
+    "rzl zone"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "!**/*.test.*"
+  ],
+  "bin": {
+    "clean-js-build-artifacts": "./dist/clean-js-build-artifacts.cjs",
+    "clean-types-build-artifacts": "./dist/clean-types-build-artifacts.cjs",
+    "copy-file-to-dest": "./dist/copy-file-to-dest.cjs",
+    "ensure-css-import": "./dist/ensure-css-import.cjs",
+    "ensure-final-newline": "./dist/ensure-final-newline.cjs",
+    "generate-reference-index": "./dist/generate-reference-index.cjs",
+    "normalize-js-build-newlines": "./dist/normalize-js-build-newlines.cjs",
+    "strip-js-comment": "./dist/strip-js-comment.cjs"
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "build": "tsdown --config-loader unrun",
+    "dev:package-build-tools-cli": "tsdown --watch \"./src/**/*\" --config-loader unrun"
+  },
+  "dependencies": {
+    "@rzl-zone/build-tools": "workspace:*",
+    "@rzl-zone/node-only": "workspace:*",
+    "commander": "^14.0.3"
+  },
+  "devDependencies": {
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "eslint": "^9.39.2",
+    "tsdown": "0.21.8",
+    "typescript": "^6.0.2"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "!index",
+    "!shared",
+    "!(packages)",
+    "---Main Docs---",
+    "index",
+    "---Packages---",
+    "..."
+  ]
+}

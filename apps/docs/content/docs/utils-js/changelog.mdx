@@ -1,0 +1,93 @@
+---
+pageName: Changelog
+lastUpdateData: 2025/11/29
+packageMeta:
+  name: "UtilsJS"
+  version: null
+  tag: [utils-js]
+pageData:
+  title: Changelog
+  description: Track every update, fix, feature, and improvement in UtilsJS.
+metaSeoData:
+  title: Changelog
+  description: Complete changelog and release history for UtilsJS by Rzl Zone.
+---
+
+## About Changelog [#changelog]
+
+All notable changes to [**`@rzl-zone/utils-js`**](https://github.com/rzl-zone/utils-js) are documented in this file.  
+This project follows [**Semantic Versioning**](https://semver.org/) to maintain consistent and predictable releases.
+
+<Callout type="warning"> 
+  This changelog starts from **version 3.10.0**.  
+</Callout>
+
+<SeparatorSection />
+
+## Version 3.x
+
+---
+
+### Version 3.11.0 [#3.11.0]
+
+Release date: (2025-11-10).
+
+#### Features
+
+<Accordions type="single">
+  <Accordion title="assertIs*" titleAsCode scrollToId id="3.11.0-feat-assertIs*">
+    **Add new **`useAcronyms`** option, change default **`formatCase`** to ***`toKebabCase`*** and improve TSDoc. ([3de179b](https://github.com/rzl-zone/utils-js/commit/3de179b2ed404a75a23e2bae89086d7cc178ce86))**
+
+    <hr className="not-prose my-2"/>
+
+    - Added new **`useAcronyms`** option to preserve uppercase acronyms in formatted output.
+    - Updated default **`formatCase`** option from *`"toLowerCase"`* ➔ *`"toKebabCase"`*.
+    - Improved and clarified TSDoc for all assertion functions:
+      - `assertIsBoolean`
+      - `assertIsBigInt`
+      - `assertIsNumber`
+      - `assertIsArray`
+      - `assertIsPlainObject`
+      - `assertIsString`
+    - Adjusted related test cases to align with the new **`formatCase`** default and **`useAcronyms`** option.
+    - Minor internal refinements to **`getPreciseType`** for consistency and performance.
+  </Accordion>
+  
+  <Accordion title="getPreciseType" titleAsCode scrollToId id="3.11.0-feat-getPreciseType">
+    **Add **`useAcronyms`** option, update defaults, internal refactor, and performance improvements. ([5eab467](https://github.com/rzl-zone/utils-js/commit/5eab46708a3eac620f048fc614c251ecd4901906))**
+
+    <hr className="not-prose my-2"/>
+
+    - Add **`useAcronyms`** option to preserve uppercase acronyms in formatted output
+    - Change default **`formatCase`** from *`"toLowerCase"`* to *`"toKebabCase"`* for more consistent type naming
+    - Update internal `FIXES_RAW` and `ACRONYMS` data with new entries and bug fixes
+    - Refactor internals to use class-based implementation for better encapsulation
+    - Improve performance by introducing internal caching mechanism for type detection results
+    - Adjust and extend test cases to cover new option and updated defaults
+
+    <Callout type="warning">
+      Note: Default formatting changed, verify if this affects your usage.
+    </Callout>
+  </Accordion>
+</Accordions>
+
+#### Bug Fixes
+
+<Accordions type="single">
+  <Accordion title="assertIsArray" titleAsCode scrollToId id="3.11.0-fix-assertIsArray">
+    **Ensure correct assertion signature for improved type narrowing. ([9093cd6](https://github.com/rzl-zone/utils-js/commit/9093cd69ef07be27a6025dad49aab2467ae5b910))**
+  </Accordion>
+</Accordions>
+
+--- 
+**Compare changes:** [View diff ➔](https://github.com/rzl-zone/utils-js/compare/v3.10.0...v3.11.0)
+
+<SeparatorSection />
+
+### Version 3.10.0 ***(Deprecated)*** [#3.10.0]
+
+Release date: (2025-10-26).
+<Callout type="info">
+Initial stable release of **UtilsJS**.
+</Callout>
+ 

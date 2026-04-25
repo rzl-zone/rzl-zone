@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build output
+dist/
+build/
+dev/
+package/
+.svelte-kit/
+
+# Tests
+tests/fixtures/
+tests/output/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Misc
+.DS_Store
+.git-blame-ignore-revs
+.github/
+.changeset/
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Deprecated
+**/deprecated/
+**/_deprecated/
+
+# ---
+
+# Docs content (handled manually)
+apps/docs/**/*.md
+apps/docs/**/*.mdx
+apps/docs-new/**/*.md
+apps/docs-new/**/*.mdx

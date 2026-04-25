@@ -1,0 +1,194 @@
+---
+pageName: Installation
+lastUpdateData: 2025/11/28
+packageMeta:
+  name: "UtilsJS"
+  version: "latest"
+  tag: [utils-js]
+pageData:
+  title: Installation
+  description: How to install UtilsJS version 3.
+metaSeoData:
+  title: Installation
+  description: Installation instructions for UtilsJS version 3 by Rzl Zone.
+---
+  
+import { BiLogoTypescript } from "react-icons/bi";
+import { GrDocumentConfig } from "react-icons/gr";
+import { TbBrandTypescript } from "react-icons/tb";
+
+## Getting Started [#getting-started]
+Welcome to the UtilsJS (v3) installation guide, follow the steps below to quickly set up the package and enable autocomplete support in your editor.
+
+Before installing, please ensure your environment meets the requirements, if you haven’t checked them yet, you can find the prerequisites here:
+
+- 🔍 **[View Requirements](./requirements)**
+
+<SeparatorSection />
+
+## **Installation Guide** 
+
+You can install **UtilsJS** using your preferred package manager, below are example commands for different package managers.
+
+```package-install
+npm install @rzl-zone/utils-js@latest
+```
+
+<SeparatorSection />
+
+## **Verify Installation** [#verify-install]
+
+After installing, test the package with a quick import:
+
+```ts
+import { isEmpty } from "@rzl-zone/utils-js/predicates";
+
+console.log(isEmpty({})); // true
+```
+
+<SeparatorSection />
+
+## **Autocomplete Hint**
+
+Improve TypeScript editor import suggestions for **`@rzl-zone/utils-js`**, so all functions, types, and modules appear instantly when triggering autocomplete —
+press **`Ctrl+Space`** (**Windows/Linux**), **`⌘+Space`** (**macOS**), or your editor’s autocomplete shortcut.  
+
+This works across modern TypeScript-supported editors (e.g., **`VSCode`**, **`WebStorm`**, **`Vim extensions`**, **`NeoVim LSP`**, **`Cursor`**) without requiring triple-slash references —
+the package is fully indexed automatically through your editor’s TypeScript language service.
+
+<Steps>
+  <Step>
+  #### **Install @rzl-zone/utils-js.**  
+        - *Make sure the package is installed, see [**Installation Guide**](#installation-guide).*
+  </Step>
+
+  <Step>
+  #### **Create a types folder.**
+        - *Inside your project root, make a folder called `types`:*  
+
+          <Files>
+            <Folder name="project-root" className="*:font-semibold" defaultOpen>
+              <Folder name="src" defaultOpen disabled/>
+              <Folder name="types" defaultOpen className="[&>button]:text-fd-info [&>button]:hover:text-fd-info! [&>button]:after:content-['(+)'] [&>button]:after:text-fd-diff-add-symbol [&>button]:after:text-[.60rem] [&>button]:after:-ml-1">
+                <File
+                  name="index.d.ts"
+                  disabled
+                  icon={<BiLogoTypescript
+                    data-bg="override"
+                    className="text-fd-info bg-white rounded-xs outline-1 outline-fd-info size-3!"
+                  />}
+                  className="text-fd-info hover:text-fd-info after:content-['(+)'] after:text-fd-diff-add-symbol after:text-[.60rem] after:-ml-1"
+                />
+              </Folder>
+              <File
+                name={
+                  (<>
+                    <span>jsconfig.json</span> 
+                    <span className="italic font-light text-fd-muted-foreground">(for JavaScript projects)</span>
+                  </>)
+                } 
+                disabled 
+                icon={<GrDocumentConfig className="size-3 text-fd-warning/85"/>} 
+              />
+              <File name="tsconfig.json" disabled icon={<GrDocumentConfig className="size-3 text-fd-info/85"/>} />
+            </Folder>
+          </Files>
+  </Step>
+
+  <Step>
+  #### **Add the global reference file.**
+        - *Add to `types/index.d.ts` with this content:*
+
+          ```ts title="types/index.d.ts" lineNumbers dtsIcon
+          /// <reference types="@rzl-zone/utils-js" />
+          ```
+
+        - *This tells TypeScript to include the types from `@rzl-zone/utils-js` globally.*
+        - *You can add more references here if needed, for example:*
+
+          ```ts title="types/index.d.ts" lineNumbers dtsIcon
+          /// <reference types="@rzl-zone/utils-js" />
+          
+          // Example more references (if needed):
+          /// <reference types="node" />
+          /// <reference types="react" />
+          ```
+  </Step>
+
+  <Step>
+  #### **Update tsconfig.json.**
+        - Make sure add `types` folder to `"include"`, so **TypeScript** automatically picks up your types folder:
+
+          ```jsonc title="tsconfig.json" fileCodeIcon
+          {
+            "compilerOptions": {
+              "strict": true, // [!code ++]
+              // other your config...
+            },
+            "include": [
+              "src",
+              "types" // [!code ++]
+            ]
+            // other your config...
+          }
+          ```
+ 
+        - The `types` folder comes first, so your references override or add to the default `@types` packages
+  </Step>
+
+  <Step>
+  #### **Update jsconfig.json (for JavaScript projects).**
+        - If you also work with JS, do the same:  
+        
+          ```jsonc title="jsconfig.json" fileCodeIcon
+          {
+            "compilerOptions": {
+              // Optional, enables type checking
+              "checkJs": true, // [!code ++]
+              // other your config...
+            },
+            "include": [
+              "src",
+              "types" // [!code ++]
+            ]
+            // other your config...
+          }
+          ```
+          
+          <Callout type="info" title="Tip"> 
+            For JS projects, consider adding `"checkJs": true`, for better IntelliSense.
+          </Callout>
+  </Step>
+
+  <Step>
+    #### **Restart your editor/IDE.**
+    - This forces your TypeScript language service to re-index the package.
+    - After restart, **all functions, types, and modules from `@rzl-zone/utils-js` will appear instantly in autocomplete**.
+  </Step>
+</Steps> 
+
+<SeparatorSection />
+
+## **Troubleshooting** [#troubleshooting]
+
+If you encounter issues such as missing types, IntelliSense errors, or unexpected behavior:
+
+#### **General Fixes** [!toc]
+- Clear your package manager cache
+- Reinstall node_modules
+- Ensure your environment supports ESM or CJS
+
+#### **TypeScript Users (VSCode / IDE)** [!toc]
+  - After installing or updating the package:
+    1. Open the Command Palette
+    2. Select `“TypeScript: Restart TS Server”`
+    3. If using tsconfig.json, ensure moduleResolution is set properly
+
+#### **JavaScript Users** [!toc]
+  - Reload your editor/IDE to refresh auto-completions
+  - Ensure your bundler (Vite, Next.js, Webpack, etc.) has restarted
+
+<Callout type="info"> 
+  **UtilsJS** includes both ESM and CJS builds for maximum compatibility across modern tooling. 
+</Callout>
+ 

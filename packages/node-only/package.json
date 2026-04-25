@@ -1,0 +1,57 @@
+{
+  "name": "@rzl-zone/node-only",
+  "version": "0.0.3",
+  "description": "Marker package to restrict imports to Node.js or server-only environments, by Rzl Zone",
+  "license": "MIT",
+  "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
+  "contributors": [
+    "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>"
+  ],
+  "homepage": "https://github.com/rzl-zone/rzl-zone/tree/main/packages/node-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rzl-zone/rzl-zone.git",
+    "directory": "packages/node-only"
+  },
+  "keywords": [
+    "rsc",
+    "react",
+    "react server",
+    "react server component",
+    "typescript",
+    "javascript",
+    "ts",
+    "js",
+    "node only",
+    "rzl node only",
+    "rzl node",
+    "@rzl-zone",
+    "@rzl-zone/node-only",
+    "rzl",
+    "rzl-zone",
+    "rzl zone"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "index.js",
+    "error.js",
+    "README.md",
+    "LICENSE.md",
+    "!**/*.test.*"
+  ],
+  "exports": {
+    ".": {
+      "node": "./index.js",
+      "react-server": "./index.js",
+      "default": "./error.js"
+    }
+  }
+}

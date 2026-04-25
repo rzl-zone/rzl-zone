@@ -1,0 +1,28 @@
+{
+  "extends": "@workspace/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "declarationMap": false,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "types",
+    "*.config.ts",
+    "./src/**/*"
+  ],
+  "exclude": [
+    "_deprecated",
+    "node_modules"
+  ]
+}

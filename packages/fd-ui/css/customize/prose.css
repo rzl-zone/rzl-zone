@@ -1,0 +1,149 @@
+#nd-page {
+  @apply py-0 pt-6;
+}
+
+@layer utilities {
+  .fd-steps {
+    padding-left: unset;
+    margin-left: unset;
+    border-left-width: unset;
+    @apply pl-6 ml-3.5 border-l-2 border-l-fd-primary/10;
+    border-left-style: var(--tw-border-style);
+    counter-reset: step;
+    position: relative;
+  }
+  .dark .fd-steps {
+    @apply border-l-fd-secondary/50;
+  }
+
+  .fd-step::before {
+    background-color: unset;
+    width: unset;
+    height: unset;
+    @apply flex justify-center items-center absolute flex-row size-7 rounded-full text-fd-secondary-foreground;
+    content: counter(step);
+    counter-increment: step;
+  }
+  .fd-step::before {
+    @apply ml-px bg-fd-secondary;
+  }
+  .dark .fd-step::before {
+    @apply bg-fd-secondary;
+  }
+
+  .prose {
+    line-height: unset;
+  }
+
+  .prose :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply mt-4.5 mb-4.5 leading-[1.45rem];
+  }
+
+  .prose
+    :where(blockquote):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    padding-inline-start: 0.65em;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--tw-prose-quotes);
+    border-inline-start-width: 0.25rem;
+    border-inline-start-color: var(--tw-prose-quote-borders);
+    quotes: "\201C" "\201D" "\2018" "\2019";
+  }
+
+  .prose
+    :where(strong):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply font-semibold;
+  }
+
+  .prose
+    :where(ol > li):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    )::marker {
+    @apply font-semibold;
+  }
+
+  .prose
+    :where(p, hr, ul, ol):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    @apply mt-1 mb-1 leading-[1.2rem];
+  }
+  .prose
+    :where(p, hr, ul, ol):has(code):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    @apply my-px leading-5.25;
+  }
+
+  .prose
+    :where(p, hr, ul, ol):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    @apply mt-1 mb-1 leading-6;
+  }
+  .prose
+    :where(p, hr, ul, ol):has(code):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    @apply my-px leading-5.25;
+  }
+
+  .prose :where(li):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply mt-1 mb-1 leading-[1.2rem];
+  }
+  .prose
+    :where(ol > li):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply my-[0.031rem] leading-[1.2rem];
+  }
+  .prose
+    :where(li):has(code, em):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    @apply my-px leading-5.75;
+  }
+
+  .prose :where(hr):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply mt-4.5 mb-4.5 leading-[1.475rem];
+  }
+
+  .prose :where(ol):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply my-0;
+  }
+  .prose
+    :where(ol):has(code):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    @apply my-0.5;
+  }
+
+  /* .prose
+    :where(h1, h2, h3, h4, h5, h6):not(
+      :where(
+        [class~="not-prose"]:has([data-anchorable]),
+        [class~="not-prose"]:has([data-anchorable]) *
+      )
+    ) {
+    @apply scroll-m-36 xl:scroll-m-24 mt-0 mb-0 leading-[1.475rem];
+  }
+
+  .prose
+    :where(h1, h2, h3, h4, h5, h6):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    @apply scroll-m-36 xl:scroll-m-24 mt-4.5 mb-4.5 leading-[1.475rem];
+  } */
+
+  .prose
+    :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    border-top-color: currentcolor;
+    border-right-color: currentcolor;
+    border-bottom-color: currentcolor;
+    border-left-color: currentcolor;
+    /* color: var(--tw-prose-code); */
+    @apply border rounded-[0.281rem] text-sm font-normal border-fd-border bg-fd-muted px-0.75 py-[0.078rem];
+  }
+}

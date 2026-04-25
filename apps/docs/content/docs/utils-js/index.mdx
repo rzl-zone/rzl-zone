@@ -1,0 +1,186 @@
+---
+pageName: "Introduction"
+pageNameAlias: "UtilsJS: Introduction"
+lastUpdateData: 2026/03/24
+packageMeta:
+  name: "UtilsJS"
+  tag: [utils-js]
+metaSeoData:
+  title: Documentation
+  description: "Lightweight utility library for TypeScript and JavaScript with reusable, type-safe helpers for Node.js and browsers — built by Rzl Zone."
+---
+
+import Image from "next/image";
+import { BiLogoTypescript } from "react-icons/bi";
+import { RiJavascriptLine } from "react-icons/ri";
+import { TbBrandTypescript } from "react-icons/tb"; 
+
+import { FumaNextLink } from "@/components/link";
+ 
+import ImgLogo from "@/images/rzl-logo.png";
+
+import { getHrefPackage } from "@/utils/packages/docs";
+
+<div className="flex mb-0 flex-col items-stretch text-center">
+  <Image
+    className="mx-auto rounded-full"
+    width={125}
+    height={125}
+    src={ImgLogo}
+    alt="Rzl Zone logo"
+    priority
+  />
+
+  <h1 className="font-extrabold underline font-poppins not-prose text-3xl text-fd-foreground">
+    UtilsJS
+  </h1>
+</div>
+
+<div className="flex flex-row flex-wrap justify-center gap-1.5 py-0 mt-2 mb-3.5">
+  <FumaNextLink
+    className="not-prose"
+    href="https://npmjs.com/package/@rzl-zone/utils-js"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="NPM Total Downloads"
+  >
+    <img
+      className="h-5 w-auto"
+      src="https://img.shields.io/npm/dt/@rzl-zone/utils-js?logo=npm&label=Total%20Downloads&color=007EC6&logoColor=CB3837&style=flat-rounded" 
+      alt="NPM Total Downloads"
+    />
+  </FumaNextLink>
+  
+  <FumaNextLink
+    className="not-prose"
+    href="https://npmjs.com/package/@rzl-zone/utils-js"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="NPM Weekly Downloads"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/npm/dw/@rzl-zone/utils-js?logo=npm&label=Weekly%20Downloads&color=CB3837&logoColor=CB3837&style=flat-rounded" 
+      alt="NPM Weekly Downloads"
+    />
+  </FumaNextLink>
+  
+  <FumaNextLink
+    className="not-prose"
+    href="https://nodejs.org/en"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="NodeJS Version"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/Node.js-18.18.0%2B-green.svg?logo=node.js&color=339933&style=flat-rounded" 
+      alt="NodeJS Version"
+    />
+  </FumaNextLink>
+  
+  <FumaNextLink
+    className="not-prose"
+    href={getHrefPackage("utils-js","contributing")} 
+    aria-label="Contribute"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?color=28A745" 
+      alt="Contribute"
+    />
+  </FumaNextLink>
+  
+  <FumaNextLink
+    className="not-prose"
+    href={getHrefPackage("utils-js","license")} 
+    aria-label="License"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/License-MIT-blue.svg?color=3DA639" 
+      alt="License"
+    />
+  </FumaNextLink>
+  
+  <FumaNextLink
+    className="not-prose"
+    href="https://github.com/rzl-zone/utils-js"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="GitHub Repository"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/Repo-on%20GitHub-181717?logo=github&style=flat-rounded"
+      alt="Rzl Zone GitHub Repository"
+    />
+  </FumaNextLink>
+
+  <FumaNextLink
+    className="not-prose"
+    href="https://github.com/orgs/rzl-zone/repositories"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="GitHub Organization"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/Org-rzl--zone-24292e?logo=github"
+      alt="Rzl Zone GitHub Organization"
+    />
+  </FumaNextLink>
+</div>
+
+{/* as HR */}
+<div className="h-0.5 bg-fd-accent-foreground/20 rounded-2xl w-full" />
+
+<div className="flex flex-col items-center justify-center text-center mt-0">
+
+## **What is UtilsJS?**
+
+**UtilsJS** is a lightweight, modern TypeScript utility library for Node.js and modern browsers (via bundlers like [`Webpack`](https://webpack.js.org/), [`Turbopack`](https://vercel.com/blog/turbopack), [`Rollup`](https://rollupjs.org/), [`esbuild`](https://esbuild.github.io/), and higher-level tools like [`Vite`](https://vite.dev/), [`tsup`](https://tsup.egoist.dev/), and [`tsdown`](https://tsdown.dev/)).  
+It provides reusable helpers to simplify everyday JavaScript and TypeScript tasks projects.
+
+</div>
+
+<SeparatorSection />
+
+## Why Use UtilsJS?
+
+In almost every project, developers rewrite the same small utility functions — checking strings, validating types, formatting data, and manipulating arrays or objects and etc.  
+**UtilsJS** eliminates that repetition by providing a consistent, type-safe, and well-tested set of utilities you can rely on.
+
+- **Lightweight** – no unnecessary dependencies.
+- **TypeScript-first** – includes full, accurate type definitions.
+- **Universal** – works in Node.js, browsers, and modern bundlers.
+- **Practical** – designed for real-world usage with predictable APIs.
+
+<SeparatorSection />
+
+## Core Principles
+
+UtilsJS is built around a few simple but powerful principles:
+
+1. **Simplicity** – Every function should be easy to understand and use.
+2. **Consistency** – APIs follow a predictable pattern, reducing learning time.
+3. **Maintainability** – Encourages clean, reusable, and long-lasting code.
+4. **Reliability** – Each utility is tested to ensure production readiness.
+
+<SeparatorSection />
+
+## Philosophy
+
+The philosophy behind **UtilsJS** is to empower developers with a modern toolbox that makes daily coding tasks easier. Instead of reinventing the wheel or adding unnecessary dependencies, you can integrate **UtilsJS** as a small but powerful foundation for your application logic.
+
+We focus on ***developer experience*** and ***clarity*** — every utility has clear naming, full TypeScript definitions, and predictable output. This helps teams work faster while avoiding subtle bugs that often occur with ad-hoc helper functions.
+
+<SeparatorSection />
+
+## Community & Contributions
+
+UtilsJS is an open-source project under the MIT license.  
+Contributions, whether big or small, are always welcome, from fixing typos to adding new utilities, every contribution helps strengthen the ecosystem.
+
+If you'd like to contribute, check out our <FumaNextLink href={getHrefPackage("utils-js","contributing")}>Contributing Guide</FumaNextLink> and read the <FumaNextLink href={getHrefPackage("utils-js","code-of-conduct")}>Code of Conduct</FumaNextLink> to understand how we work together as a community.
+ 

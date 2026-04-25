@@ -1,0 +1,114 @@
+{
+  "name": "@rzl-zone/click-feedback",
+  "version": "0.0.0",
+  "description": "A lightweight React component that provides visual feedback on user clicks, enhancing interaction clarity on buttons and interactive UI elements.",
+  "license": "MIT",
+  "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
+  "contributors": [
+    "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>"
+  ],
+  "homepage": "https://github.com/rzl-zone/rzl-zone/tree/main/packages/click-feedback",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rzl-zone/rzl-zone.git",
+    "directory": "packages/click-feedback"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "react-ui",
+    "react-effect",
+    "click-feedback",
+    "click-effect",
+    "interaction-feedback",
+    "ui-feedback",
+    "visual-feedback",
+    "animated-feedback",
+    "button-feedback",
+    "interactive-ui",
+    "user-interaction",
+    "ui-interaction",
+    "frontend",
+    "typescript",
+    "javascript",
+    "ts",
+    "js",
+    "@rzl-zone",
+    "@rzl-zone/click-feedback",
+    "rzl",
+    "rzl-zone",
+    "rzl zone"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "!**/*.test.*"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./styles": "./dist/main.css"
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "build": "rollup -c",
+    "dev:package": "rollup -c -w",
+    "clean-dist": "del-cli --force dist/* || true"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^29.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^1.0.0",
+    "@rzl-zone/build-tools": "workspace:*",
+    "@rzl-zone/eslint": "workspace:*",
+    "@types/react": "^18.3.27",
+    "@types/react-dom": "^18.3.7",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "del-cli": "^7.0.0",
+    "eslint": "^9.39.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rollup": "^4.60.1",
+    "rollup-plugin-delete": "^3.0.2",
+    "rollup-plugin-dts": "^6.4.1",
+    "rollup-plugin-esbuild": "^6.2.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-preserve-directives": "^0.4.0",
+    "rollup-plugin-typescript2": "^0.37.0",
+    "tslib": "^2.8.1",
+    "typescript": "6.*.*",
+    "typescript-plugin-css-modules": "^5.2.0"
+  },
+  "peerDependencies": {
+    "react": "18 || 19",
+    "react-dom": "18 || 19"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    }
+  }
+}

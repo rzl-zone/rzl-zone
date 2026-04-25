@@ -1,0 +1,135 @@
+---
+pageName: "Home"
+lastUpdateData: 2026/03/30
+packageMeta:
+  name: null
+  tag: null
+metaSeoData:
+  title: Rzl Zone Docs
+  description: Official documentation for Rzl Zone, providing detailed guides, utilities, and API references.
+---
+
+import Image from "next/image";
+import ImgLogo from "@/images/rzl-logo.png";
+
+import { FumaNextLink } from "@/components/link";
+
+<div className="flex mb-0 flex-col items-stretch text-center">
+  <Image
+    className="mx-auto rounded-full"
+    width={125}
+    height={125}
+    src={ImgLogo}
+    alt="Rzl Zone logo"
+    priority
+  />
+
+  <h1 className="font-extrabold underline font-poppins not-prose text-3xl text-fd-foreground -mt-5">
+    Rzl Zone
+  </h1>
+</div>
+
+<div className="flex flex-row flex-wrap justify-center gap-1 py-0 mt-2 mb-3.5">
+  <FumaNextLink
+    className="not-prose"
+    href="https://github.com/rzl-app"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="GitHub Repository"
+  >
+    <img
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/Repo-%20Rzl%20APP%20on%20GitHub-36373d?logo=github&style=flat-rounded"
+      alt="Rzl App GitHub Repository"
+    />
+  </FumaNextLink>
+
+  <FumaNextLink
+    className="not-prose"
+    href="https://github.com/rzl-zone/rzl-zone"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="GitHub Repository"
+  >
+    <img
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/Repo-on%20GitHub-181717?logo=github&style=flat-rounded"
+      alt="Rzl Zone GitHub Repository"
+    />
+  </FumaNextLink>
+
+  <FumaNextLink
+    className="not-prose"
+    href="https://github.com/rzl-zone"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="GitHub Organization"
+  >
+    <img
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/Org-rzl--zone-24292e?logo=github"
+      alt="Rzl Zone GitHub Organization"
+    />
+  </FumaNextLink>
+</div>
+
+{/* as HR */}
+
+<div className="h-0.5 bg-fd-accent-foreground/20 rounded-2xl w-full" />
+
+<div className="flex flex-col items-center justify-center text-center mt-0">
+
+## What is Rzl Zone?
+
+**Rzl Zone** is a curated collection of open-source projects, utilities, and developer tools built to make modern web development faster, more reliable, and easier to maintain.
+
+This documentation hub serves as the central entry point for all Rzl Zone libraries, integrations, and developer guides.
+
+</div>
+
+<SeparatorSection />
+
+## What’s Inside
+
+The Rzl Zone ecosystem is composed of modular, type-safe libraries and productivity tools—each designed with a strong focus on developer experience.
+
+#### _Examples include:_ [!toc] [#example-include]
+
+1. **Utility Functions** – Lightweight JavaScript, TypeScript, and PHP helpers for common development tasks.
+2. **Framework Integrations** – Prebuilt tools and bindings for frameworks like [`Next.js`](https://nextjs.org), [`Laravel`](https://laravel.com), and more.
+3. **Developer Experience** – Opinionated scripts, build tools, and reusable patterns to speed up everyday workflows.
+
+_Additional packages and documentation will be introduced in upcoming sections._
+
+<SeparatorSection />
+
+## Philosophy
+
+We believe that modern development should balance **simplicity, flexibility, and performance**.
+The philosophy behind Rzl Zone projects includes:
+
+- **Type Safety First** – Everything is designed with TypeScript at its core.
+- **Minimal Dependencies** – Keeping packages lightweight and easy to maintain.
+- **Cross-Environment Support** – Compatible with both Node.js and browser-based applications.
+- **Developer-Centric Design** – Tools that solve real-world problems without unnecessary complexity.
+
+<SeparatorSection />
+
+## How to Contribute
+
+Rzl Zone thrives with the help of contributors. If you’d like to get involved:
+
+- Open an issue or feature request on [**`GitHub`**](https://github.com/rzl-zone/rzl-zone).
+- Submit pull requests with bug fixes or improvements.
+- Share feedback to improve the documentation and usability.
+
+<SeparatorSection />
+
+## Stay Connected
+
+- 📦 Explore packages on [`GitHub Org Repositories`](https://github.com/orgs/rzl-zone/repositories).
+- 🐦 Follow updates and news ***<u>(coming soon)</u>***.
+- 📚 Read through the guides in this documentation hub.
+
+Together, we’re building an ecosystem that’s **reliable, transparent, and useful** for developers everywhere.
+ 

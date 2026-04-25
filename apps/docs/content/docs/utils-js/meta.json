@@ -1,0 +1,15 @@
+{
+  "title": "UtilsJS",
+  "root": true,
+  "pages": [
+    "---Package Info---",
+    "index",
+    "changelog",
+    "...(versions)/(latest)",
+    "---Community & Support---",
+    "contributing",
+    "code-of-conduct",
+    "security",
+    "license"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "extends": "@workspace/typescript-config/base.json",
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "emitDeclarationOnly": true,
+    "declarationMap": false,
+    "forceConsistentCasingInFileNames": true,
+    "rootDir": "./src",
+    "outDir": "dist",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "types",
+  ],
+  "exclude": [
+    "_deprecated",
+    "node_modules"
+  ]
+}

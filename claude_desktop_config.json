@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "monorepo-ai": {
+      "command": "node",
+      "args": [
+        "./mcp-server/index.js"
+      ]
+    }
+  }
+}

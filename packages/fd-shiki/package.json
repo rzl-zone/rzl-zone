@@ -1,0 +1,55 @@
+{
+  "name": "@workspace/fd-shiki",
+  "version": "0.0.0",
+  "description": "A customized Fumadocs setup of Shiki for Rzl Zone documentation web.",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./.references": "./dist/.references/index.d.ts",
+    "./plugins": {
+      "import": "./dist/plugins/index.js",
+      "types": "./dist/plugins/index.d.ts",
+      "default": "./dist/plugins/index.js"
+    },
+    "./rehype": {
+      "import": "./dist/rehype/index.js",
+      "types": "./dist/rehype/index.d.ts",
+      "default": "./dist/rehype/index.js"
+    },
+    "./shiki": {
+      "import": "./dist/shiki/index.js",
+      "types": "./dist/shiki/index.d.ts",
+      "default": "./dist/shiki/index.js"
+    }
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "build": " tsdown",
+    "dev:package": "tsdown --watch \"./src/**/*\""
+  },
+  "dependencies": {
+    "@rzl-zone/core": "workspace:*",
+    "@rzl-zone/core-react": "workspace:*",
+    "@rzl-zone/node-only": "workspace:*",
+    "@rzl-zone/utils-js": "latest",
+    "@rzl-zone/ts-types-plus": "workspace:*",
+    "@shikijs/rehype": "^4.0.2",
+    "@shikijs/transformers": "^4.0.2",
+    "@types/hast": "^3.0.4",
+    "@types/mdast": "^4.0.4",
+    "mdast-util-mdx-jsx": "^3.2.0",
+    "shiki": "^4.0.2",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.1.0"
+  },
+  "devDependencies": {
+    "@rzl-zone/build-tools": "workspace:*",
+    "@types/node": "^20.19.27",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "eslint": "^9.39.2",
+    "tsdown": "0.21.8",
+    "typescript": "^6.0.2"
+  }
+}

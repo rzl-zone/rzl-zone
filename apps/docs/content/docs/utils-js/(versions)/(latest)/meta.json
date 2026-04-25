@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "---Getting Started---",
+    "requirements",
+    "installation",
+    "cdn-usage",
+    "---API Reference---",
+    "...(api)"
+  ]
+}

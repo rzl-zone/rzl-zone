@@ -1,0 +1,41 @@
+---
+pageName: Requirements
+lastUpdateData: 2026/04/10
+packageMeta:
+  name: "Build Tools"
+  version: "latest"
+  tag: [build-tools]
+pageData:
+  title: Requirements
+  description: Requirements for stable release of Build Tools.
+metaSeoData:
+  title: Requirements
+  description: Requirements for Build Tools by Rzl Zone.
+---
+
+## **System Requirements** [#requirements]
+
+Requirements for using the Build Tools package.
+
+### Supported Environments
+
+- **Node.js `≥18.18.0`**:   
+  This package leverages modern JavaScript & TypeScript features that require [`Node.js`](https://nodejs.org/en) version `18.18.0`.
+
+- **Works with:** 
+  - ✅ Modern browsers (via **ESM-compatible** bundlers such as [`Webpack`](https://webpack.js.org/), [`Turbopack`](https://vercel.com/blog/turbopack), [`Rollup`](https://rollupjs.org/), [`esbuild`](https://esbuild.github.io/), and higher-level tools like [`Vite`](https://vite.dev/), [`tsup`](https://tsup.egoist.dev/), and [`tsdown`](https://tsdown.dev/)).
+
+
+### TypeScript Build Configuration
+  The library is compiled using the following TypeScript settings:
+
+  - **TypeScript Build Info:**
+    - Target: `ES2022`.
+    - Module: `ES2022`.
+    - Module Resolution: `bundler`. 
+
+  <Callout type="info" title={<strong>Note</strong>}>
+    These TypeScript settings are used to build the package.  
+    Consumers do **not** need to match these settings ***unless*** they plan to build or modify the source code.
+  </Callout>
+ 

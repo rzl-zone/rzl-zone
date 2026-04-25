@@ -1,0 +1,11 @@
+.on_processing {
+  cursor: wait !important;
+  touch-action: none !important;
+  user-select: none !important;
+}
+
+.on_processing * {
+  pointer-events: none !important;
+  touch-action: none !important;
+  user-select: none !important;
+}

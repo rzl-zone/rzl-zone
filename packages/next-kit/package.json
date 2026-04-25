@@ -1,0 +1,246 @@
+{
+  "name": "@rzl-zone/next-kit",
+  "version": "0.9.4",
+  "description": "A flexible and extensible Next.js toolkit for modern fullstack app development, featuring utilities, helpers, and conventions tailored for clean code architecture.",
+  "license": "MIT",
+  "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
+  "contributors": [
+    "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>"
+  ],
+  "homepage": "https://github.com/rzl-zone/rzl-zone/tree/main/packages/next-kit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rzl-zone/rzl-zone.git",
+    "directory": "packages/next-kit"
+  },
+  "keywords": [
+    "next",
+    "nextjs",
+    "next-kit",
+    "next kit",
+    "nextjs-kit",
+    "nextjs kit",
+    "next-utils",
+    "next utils",
+    "react",
+    "typescript",
+    "javascript",
+    "ts",
+    "js",
+    "utils",
+    "utility",
+    "kit",
+    "kits",
+    "next kit rzl",
+    "rzl next kit",
+    "rzl next",
+    "@rzl-zone",
+    "@rzl-zone/next-kit",
+    "rzl",
+    "rzl-zone",
+    "rzl zone"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "!**/*.test.*"
+  ],
+  "exports": {
+    "./.references": {
+      "import": {
+        "types": "./dist/.references/index.d.ts"
+      },
+      "require": {
+        "types": "./dist/.references/index.d.cts"
+      }
+    },
+    "./progress-bar/default.css": "./dist/progress-bar/default.css",
+    "./extra": {
+      "import": {
+        "types": "./dist/extra/index.d.ts",
+        "default": "./dist/extra/index.js"
+      },
+      "require": {
+        "types": "./dist/extra/index.d.cts",
+        "default": "./dist/extra/index.cjs"
+      }
+    },
+    "./extra/action": {
+      "import": {
+        "types": "./dist/extra/action.d.ts",
+        "default": "./dist/extra/action.js"
+      },
+      "require": {
+        "types": "./dist/extra/action.d.cts",
+        "default": "./dist/extra/action.cjs"
+      }
+    },
+    "./extra/context": {
+      "import": {
+        "types": "./dist/extra/context.d.ts",
+        "default": "./dist/extra/context.js"
+      },
+      "require": {
+        "types": "./dist/extra/context.d.cts",
+        "default": "./dist/extra/context.cjs"
+      }
+    },
+    "./extra/pathname": {
+      "import": {
+        "types": "./dist/extra/pathname.d.ts",
+        "default": "./dist/extra/pathname.js"
+      },
+      "require": {
+        "types": "./dist/extra/pathname.d.cts",
+        "default": "./dist/extra/pathname.cjs"
+      }
+    },
+    "./hoc": {
+      "import": {
+        "types": "./dist/hoc/index.d.ts",
+        "default": "./dist/hoc/index.js"
+      },
+      "require": {
+        "types": "./dist/hoc/index.d.cts",
+        "default": "./dist/hoc/index.cjs"
+      }
+    },
+    "./themes": {
+      "import": {
+        "types": "./dist/themes/index.d.ts",
+        "default": "./dist/themes/index.js"
+      },
+      "require": {
+        "types": "./dist/themes/index.d.cts",
+        "default": "./dist/themes/index.cjs"
+      }
+    },
+    "./themes/app": {
+      "import": {
+        "types": "./dist/themes/app.d.ts",
+        "default": "./dist/themes/app.js"
+      },
+      "require": {
+        "types": "./dist/themes/app.d.cts",
+        "default": "./dist/themes/app.cjs"
+      }
+    },
+    "./themes/pages": {
+      "import": {
+        "types": "./dist/themes/pages.d.ts",
+        "default": "./dist/themes/pages.js"
+      },
+      "require": {
+        "types": "./dist/themes/pages.d.cts",
+        "default": "./dist/themes/pages.cjs"
+      }
+    },
+    "./progress-bar": {
+      "import": {
+        "types": "./dist/progress-bar/index.d.ts",
+        "default": "./dist/progress-bar/index.js"
+      },
+      "require": {
+        "types": "./dist/progress-bar/index.d.cts",
+        "default": "./dist/progress-bar/index.cjs"
+      }
+    },
+    "./progress-bar/app": {
+      "import": {
+        "types": "./dist/progress-bar/app.d.ts",
+        "default": "./dist/progress-bar/app.js"
+      },
+      "require": {
+        "types": "./dist/progress-bar/app.d.cts",
+        "default": "./dist/progress-bar/app.cjs"
+      }
+    },
+    "./progress-bar/pages": {
+      "import": {
+        "types": "./dist/progress-bar/pages.d.ts",
+        "default": "./dist/progress-bar/pages.js"
+      },
+      "require": {
+        "types": "./dist/progress-bar/pages.d.cts",
+        "default": "./dist/progress-bar/pages.cjs"
+      }
+    },
+    "./utils": {
+      "import": {
+        "types": "./dist/utils/index.d.ts",
+        "default": "./dist/utils/index.js"
+      },
+      "require": {
+        "types": "./dist/utils/index.d.cts",
+        "default": "./dist/utils/index.cjs"
+      }
+    },
+    "./types": {
+      "import": {
+        "types": "./dist/types/index.d.ts"
+      },
+      "require": {
+        "types": "./dist/types/index.d.cts"
+      }
+    }
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "dev:package": "tsdown --watch \"./src/**/*\"",
+    "build": "tsdown",
+    "lint": "eslint",
+    "check-publish": "pnpm build && pnpm pack --dry-run",
+    "release-patch": "pnpm version patch && git push && git push --tags && pnpm publish"
+  },
+  "dependencies": {
+    "@edge-runtime/cookies": "^6.0.0",
+    "@rzl-zone/core": "workspace:*",
+    "@rzl-zone/core-react": "workspace:*",
+    "@rzl-zone/ts-types-plus": "workspace:*",
+    "@rzl-zone/utils-js": "latest",
+    "deepmerge": "^4.3.1",
+    "p-safe": "^1.1.0",
+    "validate-color": "^2.2.4"
+  },
+  "devDependencies": {
+    "@rzl-zone/build-tools": "workspace:*",
+    "@rzl-zone/eslint": "workspace:*",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "@types/node": "^20.19.27",
+    "@types/react": "^18.3.27",
+    "@types/react-dom": "^18.3.7",
+    "eslint": "^9.39.2",
+    "next": "^15.5.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsdown": "0.21.8",
+    "typescript": "^6.0.2"
+  },
+  "peerDependencies": {
+    "next": "15 || 16",
+    "react": "18 || 19",
+    "react-dom": "18 || 19"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": false
+    },
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    }
+  }
+}

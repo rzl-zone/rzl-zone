@@ -1,0 +1,36 @@
+{
+  "name": "@workspace/nextjs",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./link": "./src/link/index.tsx"
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "lint": "eslint",
+    "generate:component": "turbo gen react-component"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.27",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "eslint": "^9.39.2",
+    "next": "^16.2.3",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "@rzl-zone/core": "workspace:*",
+    "@rzl-zone/core-react": "workspace:*",
+    "@rzl-zone/utils-js": "latest",
+    "github-slugger": "^2.0.0"
+  },
+  "peerDependencies": {
+    "next": "16.x.x",
+    "react": "^19.x.x",
+    "react-dom": "^19.x.x"
+  }
+}

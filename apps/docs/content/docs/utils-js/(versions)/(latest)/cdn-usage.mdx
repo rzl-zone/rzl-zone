@@ -1,0 +1,114 @@
+---
+pageName: CDN Usage
+lastUpdateData: 2025/12/02
+packageMeta:
+  name: "UtilsJS"
+  version: "latest"
+  tag: [utils-js]
+pageData:
+  title: CDN Usage
+  description: How to load UtilsJS via CDN (jsDelivr & unpkg) with browser support notes.
+metaSeoData:
+  title: CDN Usage
+  description: How to use UtilsJS via CDN safely in the browser by Rzl Zone.
+---
+
+## **Using via CDN** [#cdn-usage]
+
+You can use **UtilsJS** on any browser environment through CDN delivery.  
+This is ideal for:
+
+- Rapid prototyping.
+- Small client-only projects.
+- Loading utilities without installing NPM packages.
+- Embedding UtilsJS in static HTML sites.
+
+CDN bundles include the full library (minified & browser-ready), and expose a global namespace.
+
+---
+
+## **Available CDN Providers**
+
+UtilsJS is available on major CDNs with automatic cache-busting and version pinning support.
+
+### With *jsDelivr*
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@rzl-zone/utils-js@latest"></script>
+```
+
+### With *unpkg*
+
+```html
+<script src="https://unpkg.com/@rzl-zone/utils-js@latest"></script>
+```
+
+---
+
+## **Global Browser Access**
+
+Once loaded, the library becomes available via:
+
+```js
+window.RzlUtilsJs;
+```
+
+or directly:
+
+```js
+RzlUtilsJs.toKebabCase("Hello World");
+```
+
+This allows usage without ES modules, imports, or bundlers.
+
+---
+
+## **Version Pinning (Recommended)**
+
+Pin a specific version to avoid unexpected updates:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@rzl-zone/utils-js@3.11.0"></script>
+```
+
+Or use a semver major range:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@rzl-zone/utils-js@3"></script>
+```
+
+---
+
+<Callout type="warning" title={<strong>Important Notes</strong>}>
+
+When using **UtilsJS via CDN**, keep the following in mind:
+
+- **Load the CDN script before your own scripts**, so the global namespace is ready.
+- Some utilities are **Node.js-only** and will not work in the browser:
+  - Tailwind utilities.  
+  - Next.js helpers.  
+  - Any function requiring filesystem, process, or server context.
+- The CDN bundle is **~350 KB (minified)** because it contains the entire library.
+- For production usage, **NPM installation is strongly recommended**:
+  - Allows tree-shaking to remove unused utilities.  
+  - Reduces bundle size dramatically.
+  - Enables full TypeScript type inference.
+  - Supports modern module resolution (ESM).
+</Callout>
+
+---
+
+## **When Should You NOT Use the CDN Version?**
+
+Avoid CDN usage for:
+
+- Large SPA projects.
+- Server-side rendering (Next.js, React Router Remix, Nuxt, etc).
+- Codebases requiring strict type-safety.
+- Environments with limited bandwidth.
+
+For these cases, prefer installing via NPM instead of CDN.
+
+<Callout type="info" className="mt-1.5">
+See the full installation guide here: [UtilsJS Installation](./installation)
+</Callout>  

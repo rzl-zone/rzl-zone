@@ -1,0 +1,25 @@
+{
+  "extends": "@workspace/typescript-config/react-library.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "declarationMap": false,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "types",
+    "*.config.ts",
+    "./src/**/*"
+  ],
+  "exclude": [
+    "_deprecated",
+    "node_modules"
+  ]
+}

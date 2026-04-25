@@ -1,0 +1,132 @@
+{
+  "name": "@rzl-zone/core-react",
+  "version": "0.0.3",
+  "description": "Core React utilities and primitives by the Rzl Zone ecosystem",
+  "license": "MIT",
+  "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
+  "contributors": [
+    "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>"
+  ],
+  "homepage": "https://github.com/rzl-zone/rzl-zone/tree/main/packages/core-react",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rzl-zone/rzl-zone.git",
+    "directory": "packages/core-react"
+  },
+  "keywords": [
+    "core react",
+    "react",
+    "typescript",
+    "javascript",
+    "ts",
+    "js",
+    "core react rzl",
+    "rzl core react",
+    "@rzl-zone",
+    "@rzl-zone/core-react",
+    "rzl",
+    "rzl-zone",
+    "rzl zone"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "!**/*.test.*"
+  ],
+  "exports": {
+    "./.references": {
+      "import": {
+        "types": "./dist/.references/index.d.ts"
+      },
+      "require": {
+        "types": "./dist/.references/index.d.cts"
+      }
+    },
+    "./context": {
+      "import": {
+        "types": "./dist/context/index.d.ts",
+        "default": "./dist/context/index.js"
+      },
+      "require": {
+        "types": "./dist/context/index.d.cts",
+        "default": "./dist/context/index.cjs"
+      }
+    },
+    "./hooks": {
+      "import": {
+        "types": "./dist/hooks/index.d.ts",
+        "default": "./dist/hooks/index.js"
+      },
+      "require": {
+        "types": "./dist/hooks/index.d.cts",
+        "default": "./dist/hooks/index.cjs"
+      }
+    },
+    "./utils": {
+      "import": {
+        "types": "./dist/utils/index.d.ts",
+        "default": "./dist/utils/index.js"
+      },
+      "require": {
+        "types": "./dist/utils/index.d.cts",
+        "default": "./dist/utils/index.cjs"
+      }
+    },
+    "./utils/*": {
+      "import": {
+        "types": "./dist/utils/*.d.ts",
+        "default": "./dist/utils/*.js"
+      },
+      "require": {
+        "types": "./dist/utils/*.d.cts",
+        "default": "./dist/utils/*.cjs"
+      }
+    }
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "build": "tsdown",
+    "dev:package": "tsdown --watch \"./src/**/*\""
+  },
+  "dependencies": {
+    "@rzl-zone/core": "workspace:*",
+    "@rzl-zone/node-only": "workspace:*",
+    "@rzl-zone/utils-js": "latest"
+  },
+  "devDependencies": {
+    "@rzl-zone/build-tools": "workspace:*",
+    "@rzl-zone/eslint": "workspace:*",
+    "@types/node": "^20.19.27",
+    "@types/react": "^18.3.27",
+    "@types/react-dom": "^18.3.7",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "eslint": "^9.39.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsdown": "0.21.8",
+    "typescript": "^6.0.2"
+  },
+  "peerDependencies": {
+    "react": "18 || 19",
+    "react-dom": "18 || 19"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    }
+  }
+}

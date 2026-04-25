@@ -1,0 +1,68 @@
+# Dependencies
+node_modules/
+jspm_packages/
+bower_components/
+
+# Yarn / PnP
+.pnp/
+.pnp.*
+.yarn/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+.yarn-integrity
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+coverage/
+.nyc_output/
+
+# Turbo / Vercel
+.turbo/
+.vercel/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.pid.lock
+*.seed
+
+# OS / Editor
+.DS_Store
+.vscode-test/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Misc
+*.pem
+certificates/
+
+# Internal deprecated
+**/deprecated/
+**/_deprecated/
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# npm pack output
+*.tgz
+
+bash.exe.*

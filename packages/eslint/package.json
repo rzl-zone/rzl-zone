@@ -1,0 +1,75 @@
+{
+  "name": "@rzl-zone/eslint",
+  "version": "0.0.0",
+  "description": "Official ESLint plugin and flat-config presets maintained by the Rzl Zone ecosystem",
+  "license": "MIT",
+  "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
+  "contributors": [
+    "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>"
+  ],
+  "homepage": "https://github.com/rzl-zone/rzl-zone/tree/main/packages/eslint",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rzl-zone/rzl-zone.git",
+    "directory": "packages/eslint"
+  },
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "eslint-v9",
+    "react",
+    "react18",
+    "react19",
+    "typescript",
+    "rzl",
+    "rzl-zone",
+    "@rzl-zone"
+  ],
+  "type": "module",
+  "engineStrict": true,
+  "engines": {
+    "node": ">=14"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "!**/*.test.*"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "lint": "eslint",
+    "build": "tsdown --minify",
+    "dev:package": "tsdown --watch \"./src/**/*\""
+  },
+  "dependencies": {
+    "eslint": "^10.2.0",
+    "@typescript-eslint/types": "^8.58.1",
+    "@typescript-eslint/utils": "^8.58.1"
+  },
+  "devDependencies": {
+    "@rzl-zone/build-tools": "workspace:*",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "tsdown": "0.21.8",
+    "typescript": "^6.0.2"
+  },
+  "peerDependencies": {
+    "eslint": "^9 || ^10"
+  }
+}

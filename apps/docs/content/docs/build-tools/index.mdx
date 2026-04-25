@@ -1,0 +1,146 @@
+---
+pageName: "Introduction"
+pageNameAlias: "Build Tools: Introduction"
+lastUpdateData: 2026/04/17
+packageMeta:
+  name: "Build Tools"
+  tag: [build-tools]
+metaSeoData:
+  title: Documentation
+  description: "Modern build tools for the Rzl Zone ecosystem, providing TypeScript-first workflows and bundling utilities for scalable JavaScript projects."
+---
+
+import { BiLogoTypescript } from "react-icons/bi";
+import { RiJavascriptLine } from "react-icons/ri";
+import { TbBrandTypescript } from "react-icons/tb"; 
+
+import ImgLogo from "@/images/rzl-logo.png";
+
+import { getHrefPackage } from "@/utils/packages/docs";
+
+<div className="flex mb-0 flex-col items-stretch text-center">
+  <Image
+    className="mx-auto rounded-full"
+    width={125}
+    height={125}
+    src={ImgLogo}
+    alt="Rzl Zone logo"
+    priority
+  />
+
+  <h1 className="font-extrabold underline font-poppins not-prose text-3xl text-fd-foreground">
+    Build Tools
+  </h1>
+</div>
+
+<div className="flex flex-row flex-wrap justify-center gap-1.5 py-0 mt-2 mb-3.5">
+  <FumaNextLink
+    className="not-prose"
+    href="https://npmjs.com/package/@rzl-zone/build-tools"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="NPM Total Downloads"
+  >
+    <img
+      className="h-5 w-auto"
+      src="https://img.shields.io/npm/dt/@rzl-zone/build-tools?logo=npm&label=Total%20Downloads&color=007EC6&logoColor=CB3837&style=flat-rounded" 
+      alt="NPM Total Downloads"
+      width={10}
+      height={10}
+    />
+  </FumaNextLink>
+  
+  <FumaNextLink
+    className="not-prose"
+    href="https://npmjs.com/package/@rzl-zone/build-tools"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="NPM Weekly Downloads"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/npm/dw/@rzl-zone/build-tools?logo=npm&label=Weekly%20Downloads&color=CB3837&logoColor=CB3837&style=flat-rounded" 
+      alt="NPM Weekly Downloads"
+      width={10}
+      height={10}
+    />
+  </FumaNextLink>
+  
+  <FumaNextLink
+    className="not-prose"
+    href="https://nodejs.org/en"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="NodeJS Version"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/Node.js-18.18.0%2B-green.svg?logo=node.js&color=339933&style=flat-rounded" 
+      alt="NodeJS Version"
+      width={10}
+      height={10}
+    />
+  </FumaNextLink>
+  
+  <FumaNextLink
+    className="not-prose"
+    href={getHrefPackage("build-tools","contributing")} 
+    aria-label="Contribute"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?color=28A745" 
+      alt="Contribute"
+      width={10}
+      height={10}
+    />
+  </FumaNextLink>
+  
+  <FumaNextLink
+    className="not-prose"
+    href={getHrefPackage("build-tools","license")} 
+    aria-label="License"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/License-MIT-blue.svg?color=3DA639" 
+      alt="License"
+      width={10}
+      height={10}
+    />
+  </FumaNextLink>
+  
+  <FumaNextLink
+    className="not-prose"
+    href="https://github.com/rzl-zone/rzl-zone/tree/main/packages/build-tools"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="View @rzl-zone/build-tools source on GitHub"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/build--tools-source-181717?logo=github&style=flat-rounded"
+      alt="View @rzl-zone/build-tools on GitHub"
+      width={10}
+      height={10}
+    />
+  </FumaNextLink>
+
+  <FumaNextLink
+    className="not-prose"
+    href="https://github.com/rzl-zone"
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="GitHub Organization"
+  >
+    <img 
+      className="h-5 w-auto"
+      src="https://img.shields.io/badge/Org-rzl--zone-24292e?logo=github"
+      alt="Rzl Zone GitHub Organization"
+      width={10}
+      height={10}
+    />
+  </FumaNextLink>
+</div>
+
+<include>./(_components)/main-index.mdx</include>

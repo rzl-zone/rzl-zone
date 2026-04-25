@@ -1,0 +1,51 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm run build:packages && changeset publish",
+    "release:beta": "pnpm run build:packages && changeset publish --tag beta",
+    "build": "turbo run build",
+    "build:build-tools": "pnpm run --filter @rzl-zone/build-tools build",
+    "build:packages": "pnpm run clean:dist && pnpm build:build-tools && turbo run build --filter={./packages/*}... --filter=!@rzl-zone/build-tools",
+    "build:start": "turbo run build && turbo run start",
+    "start": "turbo run start",
+    "dev": "turbo run dev",
+    "dev:docs": "turbo run dev:docs",
+    "dev:packages": "pnpm run build:build-tools && turbo run dev:package",
+    "format": "prettier --write .",
+    "lint": "turbo run lint",
+    "check-types:packages": "turbo run check-types:package",
+    "clean:all": "pnpm run clean:turbo && pnpm run clean:next && pnpm run clean:lock && pnpm run clean:dist && pnpm run clean:node",
+    "clean:dist": "del-cli --force dist packages/*/dist apps/*/dist || true",
+    "clean:lock": "del-cli --force package-lock.json yarn.lock pnpm-lock.yaml || true",
+    "clean:next": "del-cli --force .next packages/*/.next apps/*/.next || true",
+    "clean:node": "del-cli --force node_modules packages/*/node_modules apps/*/node_modules || true",
+    "clean:node-pkg": "del-cli --force packages/*/node_modules|| true",
+    "clean:turbo": "del-cli --force .turbo packages/*/.turbo apps/*/.turbo || true",
+    "clean:dnt": "pnpm run clean:dist && pnpm run clean:next && pnpm run clean:turbo",
+    "reinstall": "pnpm run clean:all && pnpm install"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.31.0",
+    "@turbo/gen": "^2.9.6",
+    "@types/semver": "^7.7.1",
+    "concurrently": "^9.2.1",
+    "del-cli": "^7.0.0",
+    "prettier": "^3.8.3",
+    "semver": "^7.7.4",
+    "turbo": "^2.9.6",
+    "typescript": "^6.0.2"
+  },
+  "engines": {
+    "node": ">=20.x"
+  },
+  "packageManager": "pnpm@10.25.0",
+  "pnpm": {
+    "overrides": {
+      "@types/react": "^19.2.14",
+      "@types/react-dom": "19.2.3"
+    }
+  }
+}

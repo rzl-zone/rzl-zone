@@ -1,0 +1,145 @@
+{
+  "name": "@rzl-zone/core",
+  "version": "0.0.3",
+  "description": "Core packages for the Rzl Zone ecosystem",
+  "license": "MIT",
+  "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
+  "contributors": [
+    "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>"
+  ],
+  "homepage": "https://github.com/rzl-zone/rzl-zone/tree/main/packages/core",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rzl-zone/rzl-zone.git",
+    "directory": "packages/core"
+  },
+  "keywords": [
+    "core",
+    "typescript",
+    "javascript",
+    "ts",
+    "js",
+    "core rzl",
+    "rzl core",
+    "@rzl-zone",
+    "@rzl-zone/core",
+    "rzl",
+    "rzl-zone",
+    "rzl zone"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "!**/*.test.*"
+  ],
+  "exports": {
+    "./.references": {
+      "import": {
+        "types": "./dist/.references/index.d.ts"
+      },
+      "require": {
+        "types": "./dist/.references/index.d.cts"
+      }
+    },
+    "./comparison/*": {
+      "import": {
+        "types": "./dist/comparison/*.d.ts",
+        "default": "./dist/comparison/*.js"
+      },
+      "require": {
+        "types": "./dist/comparison/*.d.cts",
+        "default": "./dist/comparison/*.cjs"
+      }
+    },
+    "./env/*": {
+      "import": {
+        "types": "./dist/env/*.d.ts",
+        "default": "./dist/env/*.js"
+      },
+      "require": {
+        "types": "./dist/env/*.d.cts",
+        "default": "./dist/env/*.cjs"
+      }
+    },
+    "./errors/*": {
+      "import": {
+        "types": "./dist/errors/*.d.ts",
+        "default": "./dist/errors/*.js"
+      },
+      "require": {
+        "types": "./dist/errors/*.d.cts",
+        "default": "./dist/errors/*.cjs"
+      }
+    },
+    "./logging/*": {
+      "import": {
+        "types": "./dist/logging/*.d.ts",
+        "default": "./dist/logging/*.js"
+      },
+      "require": {
+        "types": "./dist/logging/*.d.cts",
+        "default": "./dist/logging/*.cjs"
+      }
+    },
+    "./minifier/*": {
+      "import": {
+        "types": "./dist/minifier/*.d.ts",
+        "default": "./dist/minifier/*.js"
+      },
+      "require": {
+        "types": "./dist/minifier/*.d.cts",
+        "default": "./dist/minifier/*.cjs"
+      }
+    },
+    "./node/fs": {
+      "import": {
+        "types": "./dist/node/fs/index.d.ts",
+        "default": "./dist/node/fs/index.js"
+      },
+      "require": {
+        "types": "./dist/node/fs/index.d.cts",
+        "default": "./dist/node/fs/index.cjs"
+      }
+    },
+    "./url": {
+      "import": {
+        "types": "./dist/url/index.d.ts",
+        "default": "./dist/url/index.js"
+      },
+      "require": {
+        "types": "./dist/url/index.d.cts",
+        "default": "./dist/url/index.cjs"
+      }
+    }
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "build": "tsdown",
+    "dev:package": "tsdown --watch ./src/**/*"
+  },
+  "dependencies": {
+    "@rzl-zone/node-only": "workspace:*",
+    "@rzl-zone/utils-js": "latest",
+    "sucrase": "^3.35.1",
+    "terser": "^5.46.1"
+  },
+  "devDependencies": {
+    "@rzl-zone/build-tools": "workspace:*",
+    "@types/node": "^20.19.27",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "eslint": "^9.39.2",
+    "tsdown": "0.21.8",
+    "typescript": "^6.0.2"
+  }
+}

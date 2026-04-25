@@ -1,0 +1,130 @@
+{
+  "name": "@workspace/fd-core",
+  "version": "0.0.0",
+  "description": "A customized Fumadocs Core setup for Rzl Zone documentation web.",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./.references": "./dist/.references/index.d.ts",
+    "./components/*": {
+      "import": "./dist/components/*.js",
+      "types": "./dist/components/*.d.ts",
+      "default": "./dist/components/*.js"
+    },
+    "./configs/source-schema": {
+      "import": "./dist/configs/source/schema.js",
+      "types": "./dist/configs/source/schema.d.ts",
+      "default": "./dist/configs/source/schema.js"
+    },
+    "./hooks/*": {
+      "import": "./dist/hooks/*.js",
+      "types": "./dist/hooks/*.d.ts",
+      "default": "./dist/hooks/*.js"
+    },
+    "./i18n": {
+      "import": "./dist/i18n/index.js",
+      "types": "./dist/i18n/index.d.ts",
+      "default": "./dist/i18n/index.js"
+    },
+    "./i18n/*": {
+      "import": "./dist/i18n/*.js",
+      "types": "./dist/i18n/*.d.ts",
+      "default": "./dist/i18n/*.js"
+    },
+    "./negotiation": {
+      "import": "./dist/negotiation/index.js",
+      "types": "./dist/negotiation/index.d.ts",
+      "default": "./dist/negotiation/index.js"
+    },
+    "./search/*": {
+      "import": "./dist/search/*.js",
+      "types": "./dist/search/*.d.ts",
+      "default": "./dist/search/*.js"
+    },
+    "./shiki-core/*": {
+      "import": "./dist/shiki-core/*.js",
+      "types": "./dist/shiki-core/*.d.ts",
+      "default": "./dist/shiki-core/*.js"
+    },
+    "./source": {
+      "import": "./dist/source/index.js",
+      "types": "./dist/source/index.d.ts",
+      "default": "./dist/source/index.js"
+    },
+    "./source/*": {
+      "import": "./dist/source/*.js",
+      "types": "./dist/source/*.d.ts",
+      "default": "./dist/source/*.js"
+    },
+    "./utils": {
+      "import": "./dist/utils/index.js",
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
+    }
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "build": "tsdown",
+    "dev:package": "tsdown --watch \"./src/**/*\""
+  },
+  "dependencies": {
+    "@formatjs/intl-localematcher": "^0.8.2",
+    "@fumadocs/base-ui": "^16.7.14",
+    "@mixedbread/sdk": "^0.61.0",
+    "@orama/core": "^1.2.19",
+    "@orama/orama": "^3.1.18",
+    "@oramacloud/client": "^2.1.4",
+    "@rzl-zone/core": "workspace:*",
+    "@rzl-zone/core-react": "workspace:*",
+    "@rzl-zone/docs-ui": "workspace:*",
+    "@rzl-zone/next-kit": "workspace:*",
+    "@rzl-zone/node-only": "workspace:*",
+    "@rzl-zone/ts-types-plus": "workspace:*",
+    "@rzl-zone/utils-js": "latest",
+    "@types/hast": "^3.0.4",
+    "algoliasearch": "^5.50.1",
+    "flexsearch": "^0.8.212",
+    "fumadocs-core": "^16.7.14",
+    "fumadocs-mdx": "14.2.13",
+    "github-slugger": "^2.0.0",
+    "hast-util-to-jsx-runtime": "^2.3.6",
+    "negotiator": "^1.0.0",
+    "path-to-regexp": "^8.4.2",
+    "shiki": "^4.0.2",
+    "unified": "^11.0.5",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@rzl-zone/build-tools": "workspace:*",
+    "@types/negotiator": "^0.6.4",
+    "@types/node": "^20.19.27",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/fd-shiki": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "eslint": "^9.39.2",
+    "next": "^16.2.3",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "tsdown": "0.21.8",
+    "typescript": "^6.0.2"
+  },
+  "peerDependencies": {
+    "next": "16",
+    "react": "19",
+    "react-dom": "19"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": false
+    },
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    }
+  }
+}

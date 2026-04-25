@@ -1,0 +1,186 @@
+.line.highlighted.error:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply pl-3 bg-fd-error/15;
+}
+.line.highlighted.warning:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply pl-3 bg-fd-warning/15;
+}
+.line.highlighted.success:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply pl-3 bg-fd-success/15;
+}
+.line.highlighted.info:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply pl-3 bg-fd-info/15;
+}
+.line.highlighted.debug:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply pl-3 bg-fd-debug/15;
+}
+
+[data-line-numbers]
+  .line.highlighted.error:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply pl-15;
+}
+[data-line-numbers]
+  .line.highlighted.warning:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply pl-15;
+}
+[data-line-numbers]
+  .line.highlighted.success:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply pl-15;
+}
+[data-line-numbers]
+  .line.highlighted.info:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply pl-15;
+}
+[data-line-numbers]
+  .line.highlighted.debug:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply pl-15;
+}
+
+[data-line-numbers]
+  .line:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply pl-15;
+}
+
+.line.special-word.italic:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply italic;
+}
+.line.special-word.underline:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply underline;
+}
+.line.special-word.bold:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply font-bold;
+}
+.line.special-word.semi-bold:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply font-semibold;
+}
+.line.special-word.extra-bold:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply font-extrabold;
+}
+.line.special-word.light:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply font-light;
+}
+.line.special-word.semi-light:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply font-normal;
+}
+.line.special-word.extra-light:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply font-extralight;
+}
+.line.special-word.italic::after,
+.line.special-word.underline::after,
+.line.special-word.bold::after,
+.line.special-word.semi-bold::after,
+.line.special-word.extra-bold::after,
+.line.special-word.light::after,
+.line.special-word.semi-light::after,
+.line.special-word.extra-light::after {
+  all: unset;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.diff.add:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply border-l-2 border-fd-primary/75 pl-3 before:content-["+"] before:left-1;
+}
+.diff.remove:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply border-l-2 border-fd-primary/75 pl-3 before:content-["-"] before:left-1 bg-fd-error/25 opacity-70 border-l-fd-primary;
+}
+.diff.exclamation:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply bg-fd-warning/15 border-l-2 border-fd-primary/75 pl-3 before:content-[""] before:left-1 before:text-fd-warning;
+}
+.diff.question:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply bg-fd-info/15 border-l-2 border-fd-primary/75 pl-3 before:content-["?"] before:left-1 before:text-fd-info;
+}
+[data-line-numbers]
+  .diff.add:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply pl-6.5;
+}
+[data-line-numbers]
+  .diff.remove:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply pl-6.5 bg-fd-error/25 opacity-70 border-l-fd-primary;
+}
+[data-line-numbers]
+  .diff.exclamation:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply pl-6.5;
+}
+[data-line-numbers]
+  .diff.question:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply pl-6.5;
+}
+[data-line-numbers]
+  .diff.add:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *)::after {
+  @apply left-3.5;
+}
+[data-line-numbers]
+  .diff.remove:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *)::after {
+  @apply left-3.5;
+}
+[data-line-numbers]
+  .diff.exclamation:is(pre *):is(.shiki *):not(
+    .not-fumadocs-codeblock *
+  )::after {
+  @apply left-3.5;
+}
+[data-line-numbers]
+  .diff.question:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *)::after {
+  @apply left-3.5;
+}
+
+[data-line-numbers]
+  .line:is(pre *):is(.shiki *):not(.highlighted):not(
+    .not-fumadocs-codeblock *
+  )::after {
+  @apply pl-0.5;
+}
+[data-line-numbers]
+  .line:is(pre *):is(.shiki *):is(.highlighted):not(.not-fumadocs-codeblock *)
+  > span:first-child {
+  @apply -ml-0.5;
+}
+
+.prose-code {
+  @apply text-fd-border border text-[0.815rem] px-1.5 py-0 border-fd-border rounded-md font-normal bg-fd-muted;
+  color: var(--tw-prose-code);
+}
+
+.highlighted-word:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  @apply border rounded-[0.281rem] text-sm font-normal px-0.75 py-[0.078rem] my-0;
+}
+
+.highlighted:is(pre *):is(.shiki *):not(.not-fumadocs-codeblock *) {
+  border-color: color-mix(in oklab, var(--color-fd-primary) 75%, transparent);
+}
+
+.line:is(.shiki *):is(code *):has(.highlighted-word)
+  + .line:is(.shiki *):is(code *):has(.highlighted-word):not(
+    .not-fumadocs-codeblock *
+  ) {
+  @apply mt-0.5;
+}
+
+/* .line:is(.shiki *):is(code *):has(.highlighted-word):not(.not-fumadocs-codeblock *) {
+  @apply mb-1;
+} */

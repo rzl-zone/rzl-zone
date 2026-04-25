@@ -1,0 +1,427 @@
+---
+pageName: assertIsArray
+pageNameAlias: "Assertions: assertIsArray"
+lastUpdateData: 2025/12/01
+packageMeta:
+  name: "UtilsJS"
+  version: "latest"
+  tag: [utils-js]
+pageData:
+  title: "Assertion: assertIsArray"
+  description: Assert a value is strictly array — UtilsJS version 3.
+metaSeoData:
+  title: "Assertion: assertIsArray"
+  description: Learn how the assertIsArray utility in UtilsJS version 3 by Rzl Zone provides strict array type assertions for JavaScript and TypeScript.
+---
+
+import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
+
+import { UseAcronymsDetails } from "./UseAcronymsDetails";
+
+## Overview
+
+The `assertIsArray` utility in UtilsJS is a runtime assertion function that verifies whether a given value is a **array** (e.g., `[123, "abc", true, undefined]`, `new Array([true, 123, "abc"])`).  
+If the value is not array, it **throws a** `TypeError` (by default), helping enforce strict type safety both at runtime and during development.  
+This utility is ideal for validation logic, defensive programming, and any scenario where input integrity and reliability are critical.  
+
+<Callout type="info">
+  Fully supports **TypeScript generics**, **readonly arrays**, and **tuple types** — ensuring accurate type narrowing for both mutable and immutable structures.  
+  After a successful assertion, the inferred type of <code>value</code> is automatically refined, providing complete compile-time safety and seamless integration with complex generic scenarios.
+</Callout>
+
+<SeparatorSection />
+
+## Importing
+
+<Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
+  <Tab id="ESM" value="ESM">
+    ```ts
+    import { assertIsArray } from "@rzl-zone/utils-js/assertions";
+    ```
+  </Tab>
+  <Tab id="CJS" value="CJS">
+    ```ts
+    const { assertIsArray } = require("@rzl-zone/utils-js/assertions");
+    ```
+  </Tab>
+</Tabs> 
+
+<SeparatorSection />
+
+## Syntax
+
+<Tabs groupId="tabsSelect::language" defaultValue="TS" className="mt-1.5" persist>
+  <TabsList>
+    <TabsTrigger value="TS">
+      <BiLogoTypescript />
+      TypeScript
+    </TabsTrigger>
+    <TabsTrigger value="JS">
+      <BiLogoJavascript />
+      JavaScript
+    </TabsTrigger>
+  </TabsList>
+  <TabsContent value="TS">
+    ```ts 
+    // [!code word:value:2] [!code word:options:3]
+    assertIsArray(
+      value: unknown, 
+      options?: OptionsAssertIs
+    ): asserts value is unknown[]
+    ```
+  </TabsContent>
+  <TabsContent value="JS">
+    ```js 
+    // [!code word:value:1] [!code word:options:1]
+    assertIsArray(value, options?): void
+    ```
+  </TabsContent>
+</Tabs>
+
+<SeparatorSection />
+
+## Parameters
+
+<AutoTypeTable path="./content/docs/utils-js/(versions)/(latest)/(api)/assertions/props.ts" name="AssertIsArray" />
+
+<SeparatorSection />
+
+### Options
+
+Optional configuration object that defines how the utility function should behave 
+in various scenarios, allowing customization and greater control at runtime.
+
+---
+
+<section data-options="docs">
+  #### `message`
+  <div className="ml-4">
+    - **Description:**  
+      *Custom message or message generator function for assertion failure.*
+    - **Required:** <em><IconIsNonOptional /></em>
+    - **Type:**  
+      *`string` | `({ currentType, validType }) => string` | `undefined`*
+    - **Default:**  
+      *"Parameter input (\`value\`) must be of type \`array\`, but received: \`xxx\`."*  
+    - **Example:**  
+      1. *Static message example:*  
+          ```ts title="TypeScript/JavaScript" fileCodeIcon
+          assertIsArray("123", { 
+            // [!code ++]
+            message: "Must be a (array)!" 
+          });
+          // [!code word:"Must be a (array)!"]
+          // ➔ TypeError: "Must be a (array)!"
+          ```
+
+      2. *Dynamic message example:*  
+          ```ts title="TypeScript/JavaScript" fileCodeIcon
+          assertIsArray("invalid", {
+            // [!code ++:3]
+            message: ({ currentType, validType }) => {
+              return `Expected \`${validType}\` but got \`${currentType}\`.`;
+            }
+          });
+          // [!code word:"Expected `array` but got `string`."]
+          // ➔ TypeError: "Expected `array` but got `string`."
+          ```
+
+          - *The **`function`** receives an ***`object`***:*  
+              ```ts-tags title="TypeScript/JavaScript" fileCodeIcon
+              {
+                // Detected runtime type, such as:
+                // - "string", "boolean", "plain-object", etc.
+                currentType: string; 
+                // Required type name (formatted according to formatCase)
+                validType: string;   
+              };
+              ```
+
+    <Callout type="warning" title={<strong>Note</strong>}> 
+      - The **`message`** value will trimmed automatically.
+      - The **`message`** fallback to the default, if:  
+        1. Value is not a string.  
+        2. Value is empty-string.  
+        3. Value is a function but does not return a string.
+    </Callout>
+  </div>
+
+  ---
+
+  #### `errorType` [#error-type]
+  <div className="ml-4">
+    - **Description:**  
+      *The JavaScript built-in error type to throw.*
+    - **Required:** <em><IconIsNonOptional /></em>
+    - **Type:**  
+      *`"Error"` | `"EvalError"` | `"RangeError"` | `"ReferenceError"` | `"SyntaxError"` | `"TypeError"` | `"URIError"` | `undefined`*
+    - **Default:**  
+      *`"TypeError"`*  
+    - **Example:**
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      assertIsArray("123", { 
+        message: ({ currentType, validType }) => {
+          return `Expected \`${validType}\` but got (${currentType}).`;
+        },
+        // [!code ++]
+        errorType: "RangeError",
+      });
+      // [!code word:RangeError]
+      // ➔ RangeError: "Expected `array` but got (string)."
+
+      assertIsArray(1000n, { 
+        message: ({ currentType, validType }) => {
+          return `Expected \`${validType}\` but got (${currentType}).`;
+        },
+        // [!code ++]
+        errorType: "SyntaxError",
+      });
+      // [!code word:SyntaxError]
+      // ➔ SyntaxError: "Expected `array` but got (bigint)."
+      ```
+
+    <Callout type="warning" title={<strong>Note</strong>}> 
+      The **`errorType`** fallback to the default, if the given value is invalid. 
+    </Callout>
+  </div>
+
+  ---
+
+  #### `formatCase` [#format-case]
+  <div className="ml-4">
+    - **Description:**  
+      *Controls how detected type names are formatted in error messages.*
+    - **Required:** <em><IconIsNonOptional /></em>
+    - **Type:**  
+      *`"toPascalCaseSpace"` | `"toPascalCase"` | `"toCamelCase"` | `"toKebabCase"` | `"toSnakeCase"` | `"toDotCase"` | `"slugify"` | `"toLowerCase"` | `undefined`* 
+    - **Default:**  
+      *`"toKebabCase"`*
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // [!code word:formatCase:1]
+      // with default formatCase: // [!code semiBold]
+      assertIsArray(/regex/, {
+        message: ({ currentType, validType }) => {
+          return `Expected ${validType} but got (${currentType}).`;
+        },
+      });
+      // [!code word:reg-exp]
+      // ➔ TypeError: "Expected `array` but got (reg-exp)."
+      
+      // [!code word:formatCase:1] [!code word:camel case:1]
+      // customize formatCase to camel case: // [!code semiBold]
+      assertIsArray(/regex/, {
+        message: ({ currentType, validType }) => {
+          return `Expected \`${validType}\` but got (${currentType}).`;
+        },
+        // [!code ++]
+        formatCase: "toCamelCase"
+      });
+      // [!code word:regExp]
+      // ➔ TypeError: "Expected `array` but got (regExp)."
+
+      // [!code word:formatCase:1] [!code word:pascal case space:1]
+      // customize formatCase to pascal case space: // [!code semiBold]
+      assertIsArray(async function () {}, {
+        message: ({ currentType, validType }) => {
+          return `Expected \`${validType}\` but got (${currentType}).`;
+        },
+        // [!code ++]
+        formatCase: "toPascalCaseSpace"
+      });
+      // [!code word:Async Function]
+      // ➔ TypeError: "Expected `array` but got (Async Function)."
+      ```
+
+    <Callout type="warning" title={<strong>Note</strong>}> 
+      - The **`formatCase`** fallback to the default, if the given value is invalid. 
+      - Special type (`-Infinity` | `Infinity` | `NaN`) will remain unchanged even if a different **`formatCase`** is applied.
+    </Callout>
+  </div>
+  
+  ---
+
+  #### `useAcronyms` [#use-acronyms]
+  <div className="ml-4">
+    - **Description:**  
+      *Control uppercase preservation of recognized acronyms during formatting.*
+    - **Required:** <em><IconIsNonOptional /></em>
+    - **Type:**  
+      *`boolean` | `undefined`*
+    - **Default:**  
+      *`false`*  
+    - **Example:**
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Case 1:
+      assertIsArray(new URL("https://example.com"),{
+        message: ({ currentType, validType }) => {
+          return `Expected ${validType} but got (${currentType}).`
+        }
+      });
+      // ➔ TypeError: "Expected array but got (url)." // [!code word:url:1]
+      assertIsArray(new URL("https://example.com"), {
+        useAcronyms: true, // [!code ++]
+        message: ({ currentType, validType }) => {
+          return `Expected ${validType} but got (${currentType}).`
+        }
+      });
+      // ➔ TypeError: "Expected array but got (URL)." // [!code word:URL:1]
+
+      // Case 2:
+      assertIsArray(new URLSearchParams, {
+        formatCase: "toPascalCase", // [!code ++]
+        message: ({ currentType, validType }) => {
+          return `Expected ${validType} but got (${currentType}).`
+        }
+      });
+      // ➔ TypeError: "Expected array but got (UrlSearchParams)." // [!code word:UrlSearchParams:1]
+      assertIsArray(new URLSearchParams, {
+        useAcronyms: true, // [!code ++]
+        formatCase: "toPascalCase", // [!code ++]
+        message: ({ currentType, validType }) => {
+          return `Expected ${validType} but got (${currentType}).`
+        }
+      });
+      // ➔ TypeError: "Expected array but got (URLSearchParams)." // [!code word:URLSearchParams:1]
+      ```
+
+    <UseAcronymsDetails />
+
+    ---
+
+    <Callout type="warning" title={<strong>Note</strong>} className="mt-2"> 
+      The **`useAcronyms`** fallback to the default, if the given value is invalid.  
+      This option affects **formatting output only**, not the underlying type detection, acronym preservation is applied **after** detecting and formatting the base type name.
+    </Callout>
+  </div>
+</section>
+
+<SeparatorSection />
+
+## Returns
+
+This function does **not** return a value.  
+It asserts the type of `value` and throws an error if the type check fails.
+
+<SeparatorSection />
+
+## Throws
+
+Throws a **built-in JavaScript error** when the provided value does not match the **`array`** type.
+
+Supported error types:
+
+- `TypeError` *(default)*
+- `Error`
+- `EvalError`
+- `RangeError`
+- `ReferenceError`
+- `SyntaxError`
+- `URIError`
+
+<SeparatorSection />
+
+## Examples
+
+```ts title="TypeScript/JavaScript" fileCodeIcon lineArrays
+import { assertIsArray } from "@rzl-zone/utils-js/assertions";
+
+// ✅ Works as expected // [!code extraBold italic]
+// [!code success:2]
+assertIsArray([123, "456"]);
+assertIsArray(new Array(123, "456"));
+
+// ❌ Throws TypeError (default behavior) // [!code extraBold italic]
+// Case 1: Invalid input type — received a string instead of a array // [!code semiBold]
+// [!code error:1]
+assertIsArray("42");
+// ➔ TypeError: "Parameter input (`value`) must be of type `array`, but received: `string`."
+
+// ❌ Throws RangeError (custom error type) // [!code extraBold italic]
+// [!code error:1]
+assertIsArray(new String("[]"), { errorType: "RangeError" }); 
+// [!code word:RangeError]
+// ➔ RangeError: "Parameter input (`value`) must be of type `array`, but received: `string-constructor`."
+
+// ❌ Throws a TypeError with a custom message function and formatCase // [!code extraBold italic]
+// [!code error:6]
+assertIsArray(async function () {}, {
+  message: ({ currentType, validType }) => {
+    return `Expected ${validType} but got (${currentType}).`;
+  },
+  formatCase: "toPascalCaseSpace"
+});
+// [!code word:Async Function]
+// ➔ TypeError: "Expected array but got (Async Function)."
+
+// ❌ Throws a TypeError with a custom useAcronyms option // [!code extraBold italic]
+// Case 1: With default formatCase option // [!code word:formatCase:1] [!code semiBold]
+// [!code error:5]
+assertIsArray(new URL("https://example.com"),{
+  message: ({ currentType, validType }) => {
+    return `Expected ${validType} but got (${currentType}).`
+  },
+});
+// ➔ TypeError: "Expected array but got (url)." // [!code word:url:1]
+// [!code error:6]
+assertIsArray(new URL("https://example.com"), {
+  useAcronyms: true,
+  message: ({ currentType, validType }) => {
+    return `Expected ${validType} but got (${currentType}).`
+  },
+});
+// ➔ TypeError: "Expected array but got (URL)." // [!code word:URL:1]
+
+// Case 2: With custom formatCase option // [!code word:formatCase:1] [!code semiBold]
+// [!code error:6]
+assertIsArray(new URLSearchParams, {
+  formatCase: "toPascalCase",
+  message: ({ currentType, validType }) => {
+    return `Expected ${validType} but got (${currentType}).`
+  },
+});
+// ➔ TypeError: "Expected array but got (UrlSearchParams)." // [!code word:UrlSearchParams:1]
+// [!code error:7]
+assertIsArray(new URLSearchParams, {
+  useAcronyms: true,
+  formatCase: "toPascalCase",
+  message: ({ currentType, validType }) => {
+    return `Expected ${validType} but got (${currentType}).`
+  },
+});
+// ➔ TypeError: "Expected array but got (URLSearchParams)." // [!code word:URLSearchParams:1]
+```
+
+<SeparatorSection />
+
+## Real-World Example
+
+```ts title="TypeScript/JavaScript" fileCodeIcon lineArrays
+// [!code warning:1]
+const mixedValue: string | boolean | string[] | undefined = getUserInput(); 
+
+// [!code word:mixedValue:1]
+// Runtime assertion: throws if mixedValue is not a array // [!code extraBold italic]
+// [!code debug:5]
+assertIsArray(mixedValue, {
+  message: "Must be array!",
+  errorType: "RangeError",
+  formatCase: "toPascalCase"
+});
+
+// [!code word:mixedValue] [!code word:array]
+// If no error thrown, TypeScript narrows mixedValue to array here // [!code extraBold italic]
+// [!code success:2]
+const result: string[] | Array<string> = mixedValue; 
+console.log(result.push("hello", "world")); // ➔ safe to call array method
+```
+
+<SeparatorSection />
+
+## Version Information
+
+<ApiVersionInfoComp packageName='utils-js' categoryApi='assertions' nameApi='assertIsArray' />
+
+<SeparatorSection />
+
+<MadeBy /> 

@@ -1,0 +1,37 @@
+---
+pageName: Requirements
+lastUpdateData: 2025/11/28
+packageMeta:
+  name: "UtilsJS"
+  version: "latest"
+  tag: [utils-js]
+pageData:
+  title: Requirements
+  description: Requirements for stable release of UtilsJS version 3.
+metaSeoData:
+  title: Requirements
+  description: Requirements for UtilsJS version 3 by Rzl Zone.
+---
+
+## **System Requirements** [#requirements]
+
+- **Node.js `≥18.18.0`**:   
+  This package leverages modern JavaScript & TypeScript features that require [`Node.js`](https://nodejs.org/en) version `18.18.0` or higher if not using <u>Next.js</u>, and for <u>Next.js</u> it must follow the official minimum Node.js version requirement depending on the version you use.
+
+  - 🔗 See official Next.js documentation: 
+    [**`NextJS System Requirements.`**](https://nextjs.org/docs/getting-started/installation#system-requirements)
+
+- **Works with:**
+  - ✅ Node.js (`≥18.18.0`).
+  - ✅ Modern browsers (via **ESM-compatible** bundlers such as [`Webpack`](https://webpack.js.org/), [`Turbopack`](https://vercel.com/blog/turbopack), [`Rollup`](https://rollupjs.org/), [`esbuild`](https://esbuild.github.io/), and higher-level tools like [`Vite`](https://vite.dev/), [`tsup`](https://tsup.egoist.dev/), and [`tsdown`](https://tsdown.dev/)).
+
+- **TypeScript Build Info:**
+  - Target: `ES2022`.
+  - Module: `ES2022`.
+  - Module Resolution: `bundler`.
+
+  <Callout type="info" title={<strong>Note</strong>}>
+    These TypeScript settings are used to build the package.  
+    Consumers do **not** need to match these settings ***unless*** they plan to build or modify the source code.
+  </Callout>
+ 

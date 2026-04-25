@@ -1,0 +1,19 @@
+{
+  "extends": "@workspace/typescript-config/base.json",
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "es2015",
+    "moduleResolution": "bundler",
+    "declarationMap": false
+  },
+  "include": [
+    "types",
+    "**/*.ts",
+    "**/*.tsx",
+    "./src/**/*"
+  ],
+  "exclude": [
+    "_deprecated",
+    "node_modules"
+  ]
+}

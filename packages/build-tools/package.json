@@ -1,0 +1,151 @@
+{
+  "name": "@rzl-zone/build-tools",
+  "version": "0.0.0",
+  "description": "Toolkit to standardize and improve build outputs for TypeScript and JavaScript packages.",
+  "license": "MIT",
+  "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
+  "contributors": [
+    "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>"
+  ],
+  "homepage": "https://github.com/rzl-zone/rzl-zone/tree/main/packages/build-tools",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rzl-zone/rzl-zone.git",
+    "directory": "packages/build-tools"
+  },
+  "keywords": [
+    "build",
+    "build tools",
+    "build-tools",
+    "typescript",
+    "javascript",
+    "ts",
+    "js",
+    "tools",
+    "build tools rzl",
+    "rzl build tools",
+    "rzl build",
+    "@rzl-zone",
+    "@rzl-zone/build-tools",
+    "rzl",
+    "rzl-zone",
+    "rzl zone"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "!**/*.test.*"
+  ],
+  "exports": {
+    "./.references": {
+      "import": {
+        "types": "./dist/.references/index.d.ts"
+      },
+      "require": {
+        "types": "./dist/.references/index.d.cts"
+      }
+    },
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./bundler/*": {
+      "import": {
+        "types": "./dist/bundler/*.d.ts",
+        "default": "./dist/bundler/*.js"
+      },
+      "require": {
+        "types": "./dist/bundler/*.d.cts",
+        "default": "./dist/bundler/*.cjs"
+      }
+    },
+    "./utils": {
+      "import": {
+        "types": "./dist/utils/client.d.ts",
+        "default": "./dist/utils/client.js"
+      },
+      "require": {
+        "types": "./dist/utils/client.d.cts",
+        "default": "./dist/utils/client.cjs"
+      }
+    },
+    "./utils/server": {
+      "import": {
+        "types": "./dist/utils/server.d.ts",
+        "default": "./dist/utils/server.js"
+      },
+      "require": {
+        "types": "./dist/utils/server.d.cts",
+        "default": "./dist/utils/server.cjs"
+      }
+    },
+    "./commander-kit": {
+      "import": {
+        "types": "./dist/commander-kit/index.d.ts",
+        "default": "./dist/commander-kit/index.js"
+      },
+      "require": {
+        "types": "./dist/commander-kit/index.d.cts",
+        "default": "./dist/commander-kit/index.cjs"
+      }
+    }
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "build": "tsdown --config-loader unrun",
+    "dev:package-build-tools": "tsdown --watch \"./src/**/*\" --config-loader unrun"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.29.2",
+    "@babel/traverse": "^7.29.0",
+    "@babel/types": "^7.29.0",
+    "@rzl-zone/node-only": "workspace:*",
+    "acorn": "^8.16.0",
+    "commander": "^14.0.3",
+    "dotenv": "^17.4.2",
+    "fast-glob": "^3.3.3",
+    "fs-extra": "^11.3.4",
+    "picocolors": "^1.1.1",
+    "semver": "^7.7.4"
+  },
+  "devDependencies": {
+    "@types/babel__traverse": "^7.28.0",
+    "@types/fs-extra": "^11.0.4",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "eslint": "^9.39.2",
+    "rolldown": "^1.0.0-rc.15",
+    "terser": "^5.46.1",
+    "tsdown": "0.21.8",
+    "type-fest": "5.5.0",
+    "typescript": "^6.0.2"
+  },
+  "peerDependencies": {
+    "rolldown": ">=1",
+    "tsdown": "^0.21.x"
+  },
+  "peerDependenciesMeta": {
+    "rolldown": {
+      "optional": true
+    },
+    "tsdown": {
+      "optional": true
+    }
+  }
+}

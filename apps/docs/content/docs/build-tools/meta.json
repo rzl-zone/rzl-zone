@@ -1,0 +1,12 @@
+{
+  "title": "Build Tools",
+  "root": true,
+  "pages": [
+    "---Package Info---",
+    "index",
+    "changelog",
+    "...(versions)/(latest)",
+    "---Community & Support---",
+    "...(community-support)"
+  ]
+}

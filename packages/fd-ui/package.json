@@ -1,0 +1,203 @@
+{
+  "name": "@workspace/fd-ui",
+  "version": "0.0.0",
+  "description": "A customized Fumadocs UI setup for Rzl Zone documentation web.",
+  "private": true,
+  "type": "module",
+  "sideEffects": true,
+  "exports": {
+    "./.references": "./dist/.references/index.d.ts",
+    "./auto-type/lib": {
+      "import": "./dist/auto-type/lib/index.js",
+      "types": "./dist/auto-type/lib/index.d.ts",
+      "default": "./dist/auto-type/lib/index.js"
+    },
+    "./auto-type-table": {
+      "import": "./dist/auto-type/auto-type-table.js",
+      "types": "./dist/auto-type/auto-type-table.d.ts",
+      "default": "./dist/auto-type/auto-type-table.js"
+    },
+    "./auto-type/create-project": {
+      "import": "./dist/auto-type/create-project.js",
+      "types": "./dist/auto-type/create-project.d.ts",
+      "default": "./dist/auto-type/create-project.js"
+    },
+    "./auto-type/markdown": {
+      "import": "./dist/auto-type/markdown.js",
+      "types": "./dist/auto-type/markdown.d.ts",
+      "default": "./dist/auto-type/markdown.js"
+    },
+    "./components/type-table": {
+      "import": "./dist/components/type-table/index.js",
+      "types": "./dist/components/type-table/index.d.ts",
+      "default": "./dist/components/type-table/index.js"
+    },
+    "./components/type-table/client": {
+      "import": "./dist/components/type-table/client.js",
+      "types": "./dist/components/type-table/client.d.ts",
+      "default": "./dist/components/type-table/client.js"
+    },
+    "./components/type-table/item-client-list": {
+      "import": "./dist/components/type-table/item-client-list.js",
+      "types": "./dist/components/type-table/item-client-list.d.ts",
+      "default": "./dist/components/type-table/item-client-list.js"
+    },
+    "./components/*": {
+      "import": "./dist/components/*.js",
+      "types": "./dist/components/*.d.ts",
+      "default": "./dist/components/*.js"
+    },
+    "./context/*": {
+      "import": "./dist/context/*.js",
+      "types": "./dist/context/*.d.ts",
+      "default": "./dist/context/*.js"
+    },
+    "./layout/notebook/page": {
+      "import": "./dist/layout/notebook/page/index.js",
+      "types": "./dist/layout/notebook/page/index.d.ts",
+      "default": "./dist/layout/notebook/page/index.js"
+    },
+    "./layout/notebook/page/*": {
+      "import": "./dist/layout/notebook/page/*.js",
+      "types": "./dist/layout/notebook/page/*.d.ts",
+      "default": "./dist/layout/notebook/page/*.js"
+    },
+    "./layout/notebook": {
+      "import": "./dist/layout/notebook/index.js",
+      "types": "./dist/layout/notebook/index.d.ts",
+      "default": "./dist/layout/notebook/index.js"
+    },
+    "./layout/notebook/*": {
+      "import": "./dist/layout/notebook/*.js",
+      "types": "./dist/layout/notebook/*.d.ts",
+      "default": "./dist/layout/notebook/*.js"
+    },
+    "./layout/notebook/sidebar/tabs": {
+      "import": "./dist/layout/notebook/sidebar/tabs/index.js",
+      "types": "./dist/layout/notebook/sidebar/tabs/index.d.ts",
+      "default": "./dist/layout/notebook/sidebar/tabs/index.js"
+    },
+    "./layout/notebook/sidebar/tabs/*": {
+      "import": "./dist/layout/notebook/sidebar/tabs/*.js",
+      "types": "./dist/layout/notebook/sidebar/tabs/*.d.ts",
+      "default": "./dist/layout/notebook/sidebar/tabs/*.js"
+    },
+    "./layout/notebook/sidebar/*": {
+      "import": "./dist/layout/notebook/sidebar/*.js",
+      "types": "./dist/layout/notebook/sidebar/*.d.ts",
+      "default": "./dist/layout/notebook/sidebar/*.js"
+    },
+    "./layout/*": {
+      "import": "./dist/layout/*.js",
+      "types": "./dist/layout/*.d.ts",
+      "default": "./dist/layout/*.js"
+    },
+    "./mdx": {
+      "node": "./dist/mdx/server.js",
+      "import": "./dist/mdx/index.js",
+      "types": "./dist/mdx/index.d.ts",
+      "default": "./dist/mdx/index.js"
+    },
+    "./next-js/link": {
+      "import": "./dist/next-js/link/index.js",
+      "types": "./dist/next-js/link/index.d.ts",
+      "default": "./dist/next-js/link/index.js"
+    },
+    "./providers/*": {
+      "import": "./dist/providers/*.js",
+      "types": "./dist/providers/*.d.ts",
+      "default": "./dist/providers/*.js"
+    },
+    "./toc": {
+      "import": "./dist/toc/index.js",
+      "types": "./dist/toc/index.d.ts",
+      "default": "./dist/toc/index.js"
+    },
+    "./toc/*": {
+      "import": "./dist/toc/*.js",
+      "types": "./dist/toc/*.d.ts",
+      "default": "./dist/toc/*.js"
+    },
+    "./ui/*": {
+      "import": "./dist/ui/*.js",
+      "types": "./dist/ui/*.d.ts",
+      "default": "./dist/ui/*.js"
+    },
+    "./utils/*": {
+      "import": "./dist/utils/*.js",
+      "types": "./dist/utils/*.d.ts",
+      "default": "./dist/utils/*.js"
+    },
+    "./css-ui/image-zoom.css": "./dist/components/image-zoom.css",
+    "./style.css": "./dist/style.css",
+    "./css/*": "./css/*"
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "build": "tsdown",
+    "build:tailwind": "tailwindcss -i css/style.css -o ./dist/style.css && tailwindcss -i src/components/image-zoom.css -o dist/components/image-zoom.css",
+    "dev:package": "tsdown --watch \"./src/**/*\"",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@fumadocs/base-ui": "^16.7.14",
+    "@rzl-zone/core": "workspace:*",
+    "@rzl-zone/core-react": "workspace:*",
+    "@rzl-zone/docs-ui": "workspace:*",
+    "@rzl-zone/next-kit": "workspace:*",
+    "@rzl-zone/node-only": "workspace:*",
+    "@rzl-zone/ts-types-plus": "workspace:*",
+    "@rzl-zone/utils-js": "latest",
+    "@types/hast": "^3.0.4",
+    "@types/mdast": "^4.0.4",
+    "fumadocs-core": "^16.7.14",
+    "fumadocs-mdx": "14.2.13",
+    "github-slugger": "^2.0.0",
+    "hast-util-to-jsx-runtime": "^2.3.6",
+    "react-medium-image-zoom": "^5.4.1",
+    "remark": "^15.0.1",
+    "remark-rehype": "^11.1.2",
+    "ts-morph": "^28.0.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@rzl-zone/build-tools": "workspace:*",
+    "@tailwindcss/cli": "^4.2.2",
+    "@tsdown/css": "^0.21.7",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^20.19.27",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/fd-core": "workspace:*",
+    "@workspace/fd-shiki": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "eslint": "^9.39.2",
+    "next": "^16.2.3",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "tailwindcss": "^4.2.2",
+    "tsdown": "0.21.8",
+    "typescript": "^6.0.2"
+  },
+  "peerDependencies": {
+    "next": "16",
+    "react": "19",
+    "react-dom": "19",
+    "tailwindcss": "4"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": false
+    },
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    },
+    "tailwindcss": {
+      "optional": false
+    }
+  }
+}

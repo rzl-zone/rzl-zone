@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "pages": [
+    "---Getting Started---",
+    "requirements",
+    "installation",
+    "---API Reference---",
+    "...(api)"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "extends": "@workspace/typescript-config/react-library.json",
+  "compilerOptions": {
+    "target": "es2022",
+    "sourceMap": true,
+    "declarationMap": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "types",
+    "*.config.ts",
+    "./src/**/*"
+  ],
+  "exclude": [
+    "_deprecated",
+    "node_modules"
+  ]
+}

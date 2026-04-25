@@ -1,0 +1,467 @@
+---
+pageName: cleanTypesBuildArtifacts
+pageNameAlias: "Cleaner: cleanTypesBuildArtifacts"
+lastUpdateData: 2026/04/13
+packageMeta:
+  name: "Build Tools"
+  version: "latest"
+  tag: [build-tools]
+pageData:
+  title: "Cleaner: cleanTypesBuildArtifacts"
+  description: Remove build artifact comments from TypeScript declaration files (.d.ts, .d.mts, .d.cts), including source maps, regions, and ESLint directives.
+metaSeoData:
+  title: "Cleaner: cleanTypesBuildArtifacts"
+  description: Learn how the cleanTypesBuildArtifacts utility in Build Tools by Rzl Zone removes build artifact comments from TypeScript declaration files (.d.ts, .d.mts, .d.cts) to produce cleaner output.
+---
+
+import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
+
+## Overview
+
+`cleanTypesBuildArtifacts` is a utility for cleaning TypeScript declaration output files by removing unnecessary build artifact comments.
+
+It processes `.d.ts`, `.d.mts`, and `.d.cts` files generated during TypeScript compilation.
+
+- **Source path comments** *(e.g. `//# sourceURL=...`)*  
+  - Removes comment lines that reference file paths containing `src/` or `node_modules/`, commonly emitted by bundlers or transpilers.  
+  - Supports relative paths (`./`, `../`), varying depths, and optional whitespace.
+
+  ```js disableCopy
+  //# sourceURL=webpack://./src/index.ts
+  //# sourceURL=../node_modules/library/index.ts
+  //# sourceURL=./src/utils/helper.ts
+  // ./src/utils/helper.ts
+  ```
+
+- **ESLint directive comments** *(e.g. `/* eslint-disable */`)*  
+  - Removes inline ESLint control comments used during development, including rule overrides and file-level directives.  
+  - Supports common patterns such as `eslint-disable`, `eslint-enable`, and `eslint-disable-next-line`.
+
+  ```js disableCopy
+  /* eslint-disable */
+  /* eslint-enable */
+  // eslint-disable-next-line no-console
+  ```
+
+- **Source map references** *(e.g. `//# sourceMappingURL=...`, `//@ sourceMappingURL=...`)*  
+  - Removes inline comments that reference external source map files.  
+  ➔ See option: [`removeSourceMap`](#remove-source-map).
+
+- **Source region comments** *(e.g. `// #region`, `// #endregion`, `//#region`, `//#endregion`)*  
+  - Removes region markers commonly added by editors or build tools.  
+  ➔ See option: [`removeSourceRegion`](#remove-source-region).
+
+---
+
+### Why use this?
+
+- Prepares cleaner files for production or distribution.
+- Removes development-only artifacts from build outputs.
+- Helps reduce bundle noise and improve maintainability.
+  
+<SeparatorSection />
+
+## Importing
+
+<Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
+  <Tab id="ESM" value="ESM">
+    ```ts
+    import { cleanTypesBuildArtifacts } from "@rzl-zone/build-tools";
+    ```
+  </Tab>
+  <Tab id="CJS" value="CJS">
+    ```ts
+    const { cleanTypesBuildArtifacts } = require("@rzl-zone/build-tools");
+    ```
+  </Tab>
+</Tabs> 
+
+<SeparatorSection />
+
+## Syntax
+
+<Tabs groupId="tabsSelect::language" defaultValue="TS" className="mt-1.5" persist>
+  <TabsList>
+    <TabsTrigger value="TS">
+      <BiLogoTypescript />
+      TypeScript
+    </TabsTrigger>
+    <TabsTrigger value="JS">
+      <BiLogoJavascript />
+      JavaScript
+    </TabsTrigger>
+  </TabsList>
+  <TabsContent value="TS">
+    ```ts 
+    // [!code word:pattern:2] [!code word:options:3]
+    cleanTypesBuildArtifacts(
+      pattern: StringCollection, 
+      options?: CleanTypesBuildArtifacts
+    ): Promise<void>
+    ```
+  </TabsContent>
+  <TabsContent value="JS">
+    ```js 
+    // [!code word:pattern:1] [!code word:options:1]
+    cleanTypesBuildArtifacts(pattern, options?): Promise<void>
+    ```
+  </TabsContent>
+</Tabs>
+
+<SeparatorSection />
+
+## Parameters
+
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/cleaner/props.ts" name="CleanTypesBuildArtifacts" />
+
+<SeparatorSection />
+
+### Pattern
+
+Glob pattern or list of patterns that target TypeScript declaration output files.
+
+Accepted values:
+
+- **`string`** ➔ single glob pattern.
+- **`string[]`** ➔ multiple glob patterns.  
+- **`Set<string>`** ➔ unique collection of patterns.
+
+---
+
+#### Supported Glob Features
+
+Patterns support common glob syntax, including:
+
+- **`*`** ➔ match any characters except `/`.
+- **`**`** ➔ match nested directories.
+- **`{}`** ➔ brace expansion (match multiple extensions or patterns).
+- **`!`** ➔ exclude patterns (can be combined with `options.patternOptions.ignore`).
+
+<Callout type="info" title={<strong>Info</strong>}> 
+  Pattern resolution behavior can be customized via `options.patternOptions` (e.g. hidden files, case sensitivity, concurrency, and ignore rules).
+</Callout>
+
+<Callout type="warning" title={<strong>File Matching Behavior</strong>}>
+  <div className="ml-4">
+
+  This utility only processes files that match **TypeScript declaration output formats**.
+
+  This filtering is applied **after pattern matching**.
+
+  Supported file types include:
+  - `.d.ts`
+  - `.d.mts`
+  - `.d.cts`
+
+  Files that do **not** match these formats will be automatically **ignored**, even if they are included in the provided pattern.
+
+  <div className="mt-2">
+
+  <strong>Examples:</strong>
+
+  - `dist/index.d.ts` ➔ ✅ processed  
+  - `dist/index.d.mts` ➔ ✅ processed  
+  - `dist/index.d.cts` ➔ ✅ processed  
+  - `dist/index.js` ➔ ❌ ignored  
+  - `dist/index.ts` ➔ ❌ ignored  
+  - `dist/styles.css` ➔ ❌ ignored  
+
+  </div>
+  </div>
+</Callout>
+
+---
+
+#### Examples
+
+```ts title="TypeScript/JavaScript" fileCodeIcon
+// Single pattern
+cleanTypesBuildArtifacts("dist/**/*.d.ts");
+
+// Multiple patterns
+cleanTypesBuildArtifacts(["dist/**/*.d.ts", "types/**/*.d.ts"]);
+
+// Using Set
+cleanTypesBuildArtifacts(new Set(["dist/**/*.d.ts"]));
+
+// With options
+cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+  patternOptions: {
+    ignore: ["**/*.test.d.ts"]
+  }
+});
+
+// Exclude pattern
+cleanTypesBuildArtifacts([
+  "dist/**/*.{d.ts,d.cts,d.mts}",
+  "!dist/**/*.test.d.ts"
+]);
+```
+
+<SeparatorSection />
+
+### Options
+
+Optional configuration object that defines how the utility function should behave 
+in various scenarios, allowing customization and greater control at runtime.
+
+---
+
+<section data-options="docs">
+  #### `removeSourceMap` [#remove-source-map]
+  <div className="ml-4">
+    - **Description:**  
+      *Whether to remove source map reference comments (`sourceMappingURL`) from output files.*
+
+      <div className="my-1.5 ml-1.5"> 
+        Detects and removes inline comments that reference source map files, including variations with optional whitespace, different comment prefixes (`//#` or `//@`), and different file extensions.
+      </div>  
+    
+      <Callout type="info" title={<strong>Common example matches include:</strong>}> 
+
+        ```js disableCopy 
+        //@ sourceMappingURL=index.d.ts.map
+        //# sourceMappingURL=index.d.cts.map
+        //# sourceMappingURL=index.d.mts.map
+        ```
+
+      </Callout>
+    - **Required:** <em><IconIsNonOptional /></em>  
+    - **Type:**  
+      *`boolean`*  
+    - **Default:**  
+      *`false`*  
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await cleanTypesBuildArtifacts(["dist/**/*.{d.ts,d.cts,d.mts}", "build/*/*.d.mts"], { 
+        // [!code ++]
+        removeSourceMap: true
+      });
+
+      // ➔ removes all matching source map reference comments from files
+      ```
+  </div>
+
+  ---
+
+  #### `removeRegion` [#remove-region]
+  <div className="ml-4">
+    - **Description:**  
+      *Whether to remove source region marker comments (e.g. `#region`, `#endregion`) from output files.*
+      <div className="my-1.5 ml-1.5">
+        Detects and removes single-line region markers commonly used for code folding and logical section grouping.  
+        Supports variations with leading whitespace, optional spacing between `//` and `#`, and trailing text.
+      </div>
+
+      <Callout type="info" title={<strong>Common example matches include:</strong>}> 
+
+          ```js disableCopy
+        //#region
+        //# region
+        // #region utils
+        // # region utils
+        //#endregion
+        //# endregion
+        // #endregion helpers
+        // # endregion helpers
+        ```
+        
+      </Callout> 
+
+      <Callout type="warning" title={<strong>Notes</strong>}> 
+        - Matches both opening (`#region`) and closing (`#endregion`) markers.  
+        - Ignores invalid patterns such as `#regionX`.  
+      </Callout>
+    - **Required:** <em><IconIsNonOptional /></em>  
+    - **Type:**  
+      *`boolean`*  
+    - **Default:**  
+      *`true`*  
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await cleanTypesBuildArtifacts(["dist/**/*.{d.ts,d.cts,d.mts}", "build/*/*.d.mts"], { 
+        // [!code ++]
+        removeRegion: false
+      });
+
+      // ➔ keeps region marker comments (disables removal)
+      ```
+  </div>
+
+  ---
+
+  #### `removeAdjacentEmptyLines` [#remove-adjacent-empty-lines]
+  <div className="ml-4">
+    - **Description:**  
+      *Whether to remove empty lines that appear adjacent to removed comments.*
+      <div className="my-1.5 ml-1.5">
+        Cleans up leftover blank lines after comment removal to keep output files compact and visually consistent.  
+        Targets lines that contain only whitespace (e.g. spaces or tabs) or are completely empty.
+      </div>
+
+      <Callout type="warning" title={<strong>Note</strong>}> 
+        - Matches empty or whitespace-only lines  
+        - Preserves lines that contain any visible characters  
+        - Typically applied after comment removal (e.g. source maps, regions, etc.)
+      </Callout> 
+    - **Required:** <em><IconIsNonOptional /></em>  
+    - **Type:**  
+      *`boolean`*  
+    - **Default:**  
+      *`false`*  
+    - **Example:**   
+      ```js title="Before (dist/index.d.ts)" disableCopy 
+      type a = string;
+
+
+      type b = boolean;
+
+      //# sourceMappingURL=index.d.ts.map
+      ```
+
+      ```ts title="TypeScript/JavaScript (Usage)" fileCodeIcon
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        // [!code ++]
+        removeAdjacentEmptyLines: true
+      });
+      // Removes empty lines left after comment cleanup
+      ```
+
+      ```js title="After (dist/index.d.ts)" disableCopy 
+      type a = string;
+      type b = boolean;
+      //# sourceMappingURL=index.d.ts.map
+      ```
+  </div>
+
+  ---
+  
+  #### `patternOptions` [#pattern-options]
+  <div className="ml-4">
+    - **Description:**  
+      *Controls how input file patterns are matched.*
+      <div className="my-1.5 ml-1.5">
+        Used to filter or adjust which files are included during processing.  
+        Useful for ignoring files, handling hidden files, or tweaking matching behavior.
+      </div>
+
+      <Callout type="info" title={<strong>Behavior</strong>}> 
+        - Affects which files are selected  
+        - Can exclude unwanted files (e.g. test files)  
+        - Falls back to default configuration when invalid type or not provided  
+      </Callout> 
+    - **Required:** <em><IconIsNonOptional /></em>  
+    - **Type:**  
+      *`object`*
+    - **Default:**  
+      ```ts fileCodeIcon disableCopy
+      {
+        absolute: false,
+        baseNameMatch: false,
+        caseSensitiveMatch: true,
+        concurrency: os.cpus().length,
+        dot: true,
+        followSymbolicLinks: true,
+        globstar: true,
+        ignore: [],
+        markDirectories: false,
+        objectMode: false,
+        onlyDirectories: false,
+        onlyFiles: true,
+        unique: true,
+        throwErrorOnBrokenSymbolicLink: false
+      }
+      ```
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Ignore source maps
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        patternOptions: {
+          // [!code ++]
+          ignore: ["**/*.map"]
+        }
+      });
+
+      // Case-insensitive matching
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        patternOptions: {
+          // [!code ++]
+          caseSensitiveMatch: false
+        }
+      });
+
+      // Disallowing patterns to match entries that begin with a period (.).
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        patternOptions: {
+          // [!code ++]
+          dot: false
+        }
+      });
+      ```
+  </div>  
+
+  ---
+
+  #### `logLevel` [#log-level]
+  <div className="ml-4">
+    - **Description:**  
+      *Logging verbosity level.*
+      <div className="my-1.5 ml-1.5">
+        Controls how detailed the logger output should be during execution.
+      </div>
+
+      <Callout type="info" title={<strong>Supported values</strong>}> 
+        - `silent` ➔ no output  
+        - `error` ➔ errors only  
+        - `info` ➔ standard logs (default)  
+        - `debug` ➔ verbose logs  
+      </Callout> 
+
+      <Callout type="warning" title={<strong>Notes</strong>}> 
+        - Invalid values are automatically reset to default  
+        - All levels include error output except `silent`  
+      </Callout> 
+    - **Required:** <em><IconIsNonOptional /></em>  
+    - **Type:**  
+      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*  
+    - **Default:**  
+      *`"info"`*  
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Minimal output (errors only)
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        // [!code ++]
+        logLevel: "error"
+      });
+
+      // Debug mode (verbose logs)
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        // [!code ++]
+        logLevel: "debug"
+      });
+
+      // Silent mode (no logs)
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        // [!code ++]
+        logLevel: "silent"
+      });
+      ```
+  </div>
+</section>
+
+<SeparatorSection />
+
+## Returns
+
+Returns a `Promise<void>`.  
+The function performs asynchronous file processing and does not return any value.
+
+<SeparatorSection />
+
+## Version Information
+
+<ApiVersionInfoComp packageName='build-tools' categoryApi='cleaner' nameApi='cleanTypesBuildArtifacts' />
+
+<SeparatorSection />
+
+<MadeBy /> 

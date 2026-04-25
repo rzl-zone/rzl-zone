@@ -1,0 +1,158 @@
+---
+pageName: Contributing
+lastUpdateData: 2026/04/10
+packageMeta:
+  name: "Build Tools"
+  version: null
+  tag: [build-tools]
+pageData:
+  title: Contributing
+  description: Learn how to contribute to Build Tools — including local setup, code style conventions, and the pull request process.
+metaSeoData:
+  title: Contributing
+  description: "Contribution guidelines for contributors and maintainers of Build Tools by Rzl Zone."
+---
+
+## About Contributing [#about-contributing]
+
+Hello there! 🎉  
+We’re excited that you want to contribute to **@rzl-zone/build-tools**. 🙌  
+This guide will help you set things up so you can start improving the build output system and overall developer experience.
+
+<SeparatorSection />
+
+## How You Can Contribute?
+
+We welcome all types of contributions, including:
+
+- Fixing build output inconsistencies.
+- Improving export handling or structure.
+- Documentation improvements.
+- Refactors or performance improvements.
+
+No contribution is too small — every PR helps make the project better! 
+
+<SeparatorSection />
+
+## Getting started
+
+<Callout type='info'>
+  This package is part of a monorepo.  
+  All contributions are made through the main repository.
+</Callout>
+
+#### Follow these steps to set up your local development environment:
+
+<Steps>
+  <Step>
+    **Fork the repository**  
+
+      *Click the **Fork** button on the main repository:*  
+      [*`https://github.com/rzl-zone/rzl-zone`*](https://github.com/rzl-zone/rzl-zone)  
+      This creates your own copy of the project under your GitHub account.
+  </Step>
+
+  <Step>
+    **Clone your fork**
+
+      ```bash title="terminal"
+      # Clone your fork of the monorepo
+      git clone https://github.com/[YOUR-USERNAME]/rzl-zone.git
+
+      # Navigate into the repository
+      cd rzl-zone
+
+      # Navigate to the build-tools package
+      cd packages/build-tools
+      ```
+  </Step>
+
+  <Step>
+    **Install dependencies**
+
+      ```bash title="terminal"
+      pnpm install
+      ```
+  </Step>
+  
+  <Step>
+    **Create a new branch**
+
+      It’s best practice to work on a dedicated feature branch instead of the **`main` branch**.
+
+      ```bash title="terminal"
+      git checkout -b feature/my-awesome-feature
+      ```
+  </Step>
+  
+  <Step>
+    **Make your changes, add tests script**  
+      *Make your updates related to build output handling, then run the test suite and build the package:*  
+
+      ```bash title="terminal"
+      npx vitest run
+      pnpm --filter @rzl-zone/build-tools build
+      ```
+  </Step>
+  
+  <Step>
+    **Commit your changes**  
+      *Use clear and descriptive commit messages that follow the conventional commit style:*
+
+      ```bash title="terminal"
+      git add .
+      git commit -m "feat(build-tools): improve output structure"
+      ```
+  </Step>
+  
+  <Step>
+    **Push to your fork**
+
+      ```bash title="terminal"
+      git push origin feature/my-awesome-feature
+      ```
+  </Step>
+  
+  <Step>
+    **Create a Pull Request (PR)**  
+      Go to your fork on GitHub, click Compare & pull request, and submit your **PR** to:  
+      [*`https://github.com/rzl-zone/rzl-zone`*](https://github.com/rzl-zone/rzl-zone)  
+      *Please ensure your branch is up-to-date with the latest **`main`** before submitting.*
+  </Step>
+</Steps>
+
+<SeparatorSection />
+
+<Callout type="info"> 
+  🧑‍💻 **For internal contributors:**  
+      Use the `main` branch for maintenance or version bumps only, all features and fixes should go through a feature branch and PR review. 
+</Callout>
+
+<SeparatorSection />
+
+## Code style
+
+- Use **TypeScript** for all new code.
+- Follow the existing **folder and file structure**.
+- Keep logic **focused and predictable** (especially for build output handling).
+- Write **meaningful commit messages** (use [Conventional Commits](https://www.conventionalcommits.org/)).
+
+<SeparatorSection />
+
+## Before you submit
+- Ensure the package **builds successfully**.
+- Run **tests** and confirm all pass.
+- Verify output structure matches expected `exports`.
+- Fix any **lint or TypeScript errors**.
+- Rebase if your branch is behind **`main`**.
+
+<SeparatorSection />
+
+## Thank you [!toc]
+
+We truly appreciate your contribution!  
+Whether it’s fixing output structure, improving exports handling, or refining the build process — you’re awesome. ✨
+
+<SeparatorSection />
+
+**_Made with ❤️ by [**@rzl-app**](https://github.com/rzl-app)_**.

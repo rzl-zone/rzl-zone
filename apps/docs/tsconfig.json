@@ -1,0 +1,52 @@
+{
+  "extends": "@workspace/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "incremental": true,
+    "jsx": "react-jsx",
+    "target": "es2022",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "~/*": [
+        "./*"
+      ],
+      "collections/*": [
+        "./.source/*"
+      ],
+      "@/.source": [
+        "./.source/index.ts"
+      ],
+      "@/docs-content/*": [
+        "./content/docs/*"
+      ],
+      "@/fumadocs/*": [
+        "./src/fumadocs/*"
+      ],
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "content/**/*.md",
+    "content/**/*.mdx",
+    "**/*.ts",
+    "data-/cache/**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "_deprecated",
+    "node_modules"
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "name": "@rzl-zone/ts-types-plus",
+  "version": "0.1.3",
+  "description": "A lightweight, modern collection of TypeScript types and interfaces to enhance type safety and improve code maintainability.",
+  "license": "MIT",
+  "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
+  "contributors": [
+    "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>"
+  ],
+  "homepage": "https://github.com/rzl-zone/rzl-zone/tree/main/packages/ts-types-plus",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rzl-zone/rzl-zone.git",
+    "directory": "packages/ts-types-plus"
+  },
+  "bugs": {
+    "url": "https://github.com/rzl-zone/rzl-zone/issues"
+  },
+  "keywords": [
+    "typescript",
+    "utils",
+    "helpers",
+    "library",
+    "packages",
+    "package",
+    "@rzl-zone/ts-types-plus",
+    "rzl",
+    "rzl-zone",
+    "rzl zone",
+    "ts-types-plus",
+    "ts types plus",
+    "ts-types",
+    "ts types",
+    "type-plus",
+    "type plus",
+    "utility",
+    "ts",
+    "types",
+    "types-plus",
+    "types plus",
+    "interfaces",
+    "rzl-ts-types-plus",
+    "helper"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "!**/*.test.*"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.ts",
+      "require": "./dist/index.ts"
+    }
+  },
+  "scripts": {
+    "check-types:package": "tsc --noEmit",
+    "build": "tsdown",
+    "dev:package": "tsdown --watch \"./src/**/*\"",
+    "check-publish": "pnpm build && pnpm pack --dry-run",
+    "release-patch": "pnpm version patch && git push && git push --tags && pnpm publish"
+  },
+  "devDependencies": {
+    "@rzl-zone/build-tools": "workspace:*",
+    "@rzl-zone/eslint": "workspace:*",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "@types/node": "^18.18.0",
+    "del-cli": "^7.0.0",
+    "eslint": "^9.39.2",
+    "tsdown": "0.21.8",
+    "typescript": "^6.0.2"
+  },
+  "peerDependencies": {
+    "typescript": ">=5.9.0",
+    "@types/node": ">=18.18.0"
+  }
+}
