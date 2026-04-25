@@ -148,7 +148,7 @@ export async function POST(req: Request) {
         const err = error as ErrorResStream["error"];
         const msg = err?.responseBody;
 
-        console.debug({ msg });
+        // console.debug({ msg });
 
         if (msg?.includes("This request requires more credits")) {
           return `Something when wrong, code:"${INTERNAL_CODE.ERROR.AI.SEARCH.ERROR.CREDIT_API.code}"`;
