@@ -1,6 +1,6 @@
 {
   "name": "@rzl-zone/next-kit",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "A flexible and extensible Next.js toolkit for modern fullstack app development, featuring utilities, helpers, and conventions tailored for clean code architecture.",
   "license": "MIT",
   "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",

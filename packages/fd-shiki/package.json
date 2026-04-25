@@ -1,6 +1,6 @@
 {
   "name": "@workspace/fd-shiki",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A customized Fumadocs setup of Shiki for Rzl Zone documentation web.",
   "private": true,
   "type": "module",
