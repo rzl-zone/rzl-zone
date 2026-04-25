@@ -1,6 +1,6 @@
 {
   "name": "@rzl-zone/click-feedback",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A lightweight React component that provides visual feedback on user clicks, enhancing interaction clarity on buttons and interactive UI elements.",
   "license": "MIT",
   "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
