@@ -1,5 +1,12 @@
 # @rzl-zone/build-tools-cli
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [e9110f0]
+  - @rzl-zone/build-tools@0.0.8
+
 ## 0.0.7
 
 ### Patch Changes

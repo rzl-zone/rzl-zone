@@ -1,6 +1,6 @@
 {
   "name": "@rzl-zone/build-tools-cli",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Build tools cli for packages in the Rzl Zone ecosystem",
   "license": "MIT",
   "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
