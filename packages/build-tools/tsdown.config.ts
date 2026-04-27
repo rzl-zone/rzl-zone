@@ -11,7 +11,11 @@ import {
 
 import { nodeExternalPatterns } from "@/bundler/utils";
 import { externalEsmRequirePlugin } from "@/bundler/rolldown";
-import { type ConfigOptions, resolveDefaultConfig } from "@/bundler/tsdown";
+import {
+  applyWarningFilter,
+  type ConfigOptions,
+  resolveDefaultConfig
+} from "@/bundler/tsdown";
 
 const _browserBuild: ConfigOptions = () => {
   return {
@@ -33,7 +37,7 @@ const _browserBuild: ConfigOptions = () => {
 };
 
 export default resolveDefaultConfig(() => {
-  // applyWarningFilter();
+  applyWarningFilter();
 
   return [
     {

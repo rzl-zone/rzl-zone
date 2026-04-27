@@ -77,14 +77,6 @@ export {
 } from "@/core/normalize";
 
 export {
-  type StripJsCommentsOptions,
-  commandSjcIdentity,
-  stripJsComments,
-  DEFAULT_SJC_PATTERN_POLICY,
-  resolvedSjcPatternOption
-} from "@/core/strip";
-
-export {
   type RunCommandCaptureOptions,
   type RunCommandCaptureResult,
   type RunCommandOptions,
@@ -93,3 +85,11 @@ export {
   runCommand,
   runCommandCapture
 } from "@/core/run";
+
+export {
+  type StripJsCommentsOptions,
+  commandSjcIdentity,
+  stripJsComments,
+  DEFAULT_SJC_PATTERN_POLICY,
+  resolvedSjcPatternOption
+} from "@/core/strip";

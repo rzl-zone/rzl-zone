@@ -104,7 +104,7 @@ export const getPackageJson = async (
         throw new Error(
           `[@rzl-zone/build-tools] - (get-package-json): Invalid package.json at '${pkgPath}'` +
             EOL +
-            `Reason: ${(err as Error).message}`,
+            `Reason: ${(err as Error)?.message || "unknown"}`,
           { cause: err }
         );
       }

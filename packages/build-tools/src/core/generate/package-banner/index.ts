@@ -4,7 +4,7 @@ import type { PackageJson } from "type-fest";
 
 import { isNonEmptyString, isPlainObject } from "@/_internal/utils/helper";
 
-import { joinLinesLoose } from "@/utils/helper/formatter";
+import { EOL, joinLinesLoose } from "@/utils/helper/formatter";
 import { getPackageJson } from "../../get/package-json";
 
 //? Types ----------------------------------------------------------------
@@ -68,10 +68,16 @@ export type GeneratePackageBannerOptions = {
  * This utility generates a formatted banner comment suitable
  * for insertion at the top of bundled output files.
  *
+ * By default, it automatically locates and reads the nearest
+ * `package.json` file, you may also provide a custom package object
+ * through the options parameter.
+ *
  * - *Banner features:*
  *     - Reads metadata from the nearest `package.json`.
+ *     - Supports custom package metadata via options.
  *     - Provides safe fallbacks for missing fields.
  *     - Produces a consistent, readable comment block.
+ *     - Normalizes repository URLs when possible.
  *
  * - *This function is intended for:*
  *     - Bundler banners (tsdown, tsup, rollup, esbuild, etc).
@@ -81,8 +87,14 @@ export type GeneratePackageBannerOptions = {
  * @param {GeneratePackageBannerOptions} [options]
  * Optional banner configuration.
  *
- * @returns {string}
+ * @returns {Promise<string>}
  * A formatted banner comment string.
+ *
+ * @throws {Error}
+ * If no `package.json` can be found.
+ *
+ * @throws {Error}
+ * If the resolved `package.json` contains invalid JSON.
  *
  * @example
  * ```ts
@@ -100,29 +112,48 @@ export type GeneratePackageBannerOptions = {
 export const generatePackageBanner = async (
   options: GeneratePackageBannerOptions = {}
 ): Promise<string> => {
-  const pkg = options.packageJson ?? (await getPackageJson());
+  let pkgJson: PackageJson | undefined;
+
+  if (isPlainObject(options.packageJson)) {
+    pkgJson = options.packageJson;
+  } else {
+    try {
+      pkgJson = await getPackageJson();
+    } catch (error) {
+      throw new Error(
+        "[@rzl-zone/build-tools] - (generate-package-banner): Failed to resolve package.json" +
+          EOL +
+          `Reason: ${(error as Error)?.message || "unknown"}`,
+        { cause: error }
+      );
+    }
+  }
+
   const withEof = options.withEof ?? true;
 
   const title =
     options.title ??
-    (isNonEmptyString(pkg.name) ? pkg.name : "Unknown Package");
+    (isNonEmptyString(pkgJson.name) ? pkgJson.name : "Unknown Package");
 
-  const version = isNonEmptyString(pkg.version) ? pkg.version : "Unknown";
+  const version = isNonEmptyString(pkgJson.version)
+    ? pkgJson.version
+    : "Unknown";
 
   const author =
     options.author ??
-    (isNonEmptyString(pkg.author)
-      ? pkg.author
-      : isPlainObject(pkg.author) && isNonEmptyString(pkg.author.name)
-        ? pkg.author.name
+    (isNonEmptyString(pkgJson.author)
+      ? pkgJson.author
+      : isPlainObject(pkgJson.author) && isNonEmptyString(pkgJson.author.name)
+        ? pkgJson.author.name
         : "Unknown");
 
-  const repository = isNonEmptyString(pkg.homepage)
-    ? pkg.homepage.split("#")[0]
-    : isNonEmptyString(pkg.repository)
-      ? pkg.repository.replace(/^git\+/, "").replace(/\.git$/, "")
-      : isPlainObject(pkg.repository) && isNonEmptyString(pkg.repository.url)
-        ? pkg.repository.url.replace(/^git\+/, "").replace(/\.git$/, "")
+  const repository = isNonEmptyString(pkgJson.homepage)
+    ? pkgJson.homepage.split("#")[0]
+    : isNonEmptyString(pkgJson.repository)
+      ? pkgJson.repository.replace(/^git\+/, "").replace(/\.git$/, "")
+      : isPlainObject(pkgJson.repository) &&
+          isNonEmptyString(pkgJson.repository.url)
+        ? pkgJson.repository.url.replace(/^git\+/, "").replace(/\.git$/, "")
         : "Unknown";
 
   return joinLinesLoose(
