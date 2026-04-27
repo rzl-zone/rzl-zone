@@ -127,3 +127,12 @@ svg[data-bg="override"] > path {
   transform-origin: center;
   transform: scale(1.45);
 }
+
+.prose
+  :where(p, hr, ul, ol):has(code):not(
+    :where([class~="not-prose"], [class~="not-prose"] *)
+  ) {
+  --tw-leading: calc(var(--spacing) * 5.25);
+  line-height: calc(var(--spacing) * 5.25);
+  margin-block: 6px;
+}

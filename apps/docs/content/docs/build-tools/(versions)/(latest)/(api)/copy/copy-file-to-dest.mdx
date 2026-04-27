@@ -1,0 +1,457 @@
+---
+pageName: copyFileToDest
+pageNameAlias: "Copy: copyFileToDest"
+lastUpdateData: 2026/04/13
+packageMeta:
+  name: "Build Tools"
+  version: "latest"
+  tag: [build-tools]
+pageData:
+  title: "Copy: copyFileToDest"
+  description: Copy one or more files of any type into destination directories, with support for custom output roots, file renaming, and absolute target paths.
+metaSeoData:
+  title: "Copy: copyFileToDest"
+  description: Learn how the copyFileToDest utility in Build Tools by Rzl Zone copies assets such as CSS, JavaScript, JSON, images, fonts, and other static files into your build output directories.
+---
+
+import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
+
+## Overview
+
+`copyFileToDest` is a utility for copy one or more files of any type into destination directories.  
+
+This utility is file-type agnostic and can be used to copy any kind of asset, including CSS, JavaScript, JSON, images, fonts, or other static files.  
+
+- **The function supports:**
+  - Copying a single file using a single configuration object.
+  - Copying multiple files using an array or a Set of configuration objects.
+  - When using a Set, it is recommended to use [`createCopyFileToDestParameterSet()`](#createcopyfiletodestparameterset) to ensure proper TypeScript inference and autocomplete support.
+
+---
+
+### Why use this?
+
+- Copy static assets directly into your build output directories.
+- Organize files using custom target folders or output roots.
+- Rename files during copy for cleaner distribution structure.
+- Supports batch copying with arrays or Set configurations.
+- Useful for CSS, JavaScript, JSON, images, fonts, and other static assets.
+  
+<SeparatorSection />
+
+## Importing
+
+<Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
+  <Tab id="ESM" value="ESM">
+    ```ts
+    import { copyFileToDest } from "@rzl-zone/build-tools";
+    ```
+  </Tab>
+  <Tab id="CJS" value="CJS">
+    ```ts
+    const { copyFileToDest } = require("@rzl-zone/build-tools");
+    ```
+  </Tab>
+</Tabs> 
+
+<SeparatorSection />
+
+## Syntax
+
+<Tabs groupId="tabsSelect::language" defaultValue="TS" className="mt-1.5" persist>
+  <TabsList>
+    <TabsTrigger value="TS">
+      <BiLogoTypescript />
+      TypeScript
+    </TabsTrigger>
+    <TabsTrigger value="JS">
+      <BiLogoJavascript />
+      JavaScript
+    </TabsTrigger>
+  </TabsList>
+  <TabsContent value="TS">
+    ```ts 
+    // [!code word:param:2] [!code word:options:3]
+    copyFileToDest(
+      param: CopyFileToDestParam, 
+      options?: CopyFileToDestOptions
+    ): Promise<void>
+    ```
+  </TabsContent>
+  <TabsContent value="JS">
+    ```js 
+    // [!code word:param:1] [!code word:options:1]
+    copyFileToDest(pattern, options?): Promise<void>
+    ```
+  </TabsContent>
+</Tabs>
+
+<SeparatorSection />
+
+## Parameters
+
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/copy/props.ts" name="CopyFileToDest" />
+
+<SeparatorSection />
+
+### Param
+
+The parameter options for copying a file.
+
+A single `CopyFileToDestParam` object, an array, or a Set of `CopyFileToDestParam`.
+  
+  - *When a collection is provided:*
+    - Each item is validated independently.
+    - Files are copied sequentially.
+    - Logging reflects the cumulative copy progress.
+
+  - **Example:**   
+    ```ts title="TypeScript/JavaScript" fileCodeIcon
+    import {
+      copyFileToDest,
+      createCopyFileToDestParameterSet,
+      type CopyFileToDestParam 
+    } from "@rzl-zone/build-tools";
+
+    // Copy single file.
+    await copyFileToDest({source: "src/assets/logo.png", target: "dist/assets/images"}); 
+    
+    // Copy multiple file using array.
+    await copyFileToDest([
+        { source: "src/assets/logo.png", target: "dist/assets/images" },
+        { source: "src/assets/style.css", target: "dist/assets/styles" },
+      ] 
+    ); 
+
+    // Copy multiple files using Set.
+    // ⚠️ Requires explicit typing for proper inference.
+    await copyFileToDest(new Set<CopyFileToDestParam>([
+      {
+        source: "src/config/a.json",
+        target: "config"
+      },
+      {
+        source: "src/config/b.json",
+        target: "config"
+      }
+    ]));
+
+    // Recommended: using helper for Set (better DX).
+    await copyFileToDest(
+      createCopyFileToDestParameterSet([
+        {
+          source: "src/config/a.json",
+          target: "config"
+        },
+        {
+          source: "src/config/b.json",
+          target: "config"
+        }
+      ])
+    );
+
+    ```
+
+---
+
+<section data-options="docs">
+  #### `source` [#source]
+  <div className="ml-4">
+    - **Description:**   
+      Path to the source file to be copied, can be either an absolute path or a path relative to the project root.
+
+    - **Required:** <em><CheckIcon /></em>
+
+    - **Type:**  
+      *`string`*  
+
+    - **Default:**  
+      *`-`*  
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await copyFileToDest({
+        // [!code ++]
+        source: "src/assets/logo.png"
+      }); 
+      ```
+  </div>
+  
+  ---
+  
+  #### `target` [#target]
+  <div className="ml-4">
+    - **target:**   
+      Target directory where the file will be copied.
+
+    - **Required:** <em><CheckIcon /></em>
+
+    - **Type:**  
+      *`string`*  
+
+    - **Default:**  
+      *`-`*  
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await copyFileToDest({
+        // [!code ++]
+        target: "dist/assets/images",
+        source: "src/assets/logo.png"
+      }); 
+      ```
+
+    <Callout type="warning" title={<strong>Notes</strong>}> 
+      - When `absoluteTarget` is `false` **(default)**, this path is resolved relative to `outputRoot`.
+      - When `absoluteTarget` is `true`, this path is treated as an absolute path relative to the project root.
+    </Callout> 
+  </div>
+
+  ---
+
+  #### `fileName` [#fileName]
+  <div className="ml-4">
+    - **fileName:**   
+      Optional custom file name for the copied file.
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`string`*  
+
+    - **Default:**  
+      *`undefined`*  
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await copyFileToDest({
+        // [!code ++]
+        fileName: "logo-new.png",
+        target: "dist/assets/images",
+        source: "src/assets/logo.png"
+      }); 
+      ``` 
+
+    <Callout type="warning" title={<strong>Note</strong>}> 
+      If omitted, the original file name from `source` will be preserved.
+    </Callout> 
+  </div>
+  
+  ---
+
+  #### `outputRoot` [#outputRoot]
+  <div className="ml-4">
+    - **outputRoot:**   
+      Output root directory used when resolving the `target` path.
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`string`*  
+
+    - **Default:**  
+      *`"dist"`*  
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await copyFileToDest({
+        // [!code ++]
+        outputRoot: "build",
+      }); 
+      ``` 
+
+    <Callout type="warning" title={<strong>Note</strong>}> 
+      When `absoluteTarget` is `false`, the final copy destination will be `<project-root>/<outputRoot>/<target>`.
+    </Callout> 
+  </div>
+  
+  ---
+
+  #### `absoluteTarget` [#absoluteTarget]
+  <div className="ml-4">
+    - **absoluteTarget:**   
+      Use this when you want to copy directly to an absolute path inside the project, bypassing the `outputRoot` prefix.
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`boolean`*  
+
+    - **Default:**  
+      *`false`*  
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await copyFileToDest({
+        // [!code ++]
+        absoluteTarget: true,
+      }); 
+      ``` 
+
+    <Callout type="warning" title={<strong>Note</strong>}> 
+      When `true`, disables `outputRoot` prefixing and treats `target` as an absolute path relative to the project root.
+    </Callout> 
+  </div>
+  
+  ---
+
+  #### `ignoreMissingSourceError` [#ignoreMissingSourceError]
+  <div className="ml-4">
+    - **ignoreMissingSourceError:**   
+      When `true`, suppresses errors when the source file does not exist.
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`boolean`*  
+
+    - **Default:**  
+      *`false`*  
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await copyFileToDest({
+        // [!code ++]
+        ignoreMissingSourceError: true,
+      }); 
+      ``` 
+
+    <Callout type="warning" title={<strong>Notes</strong>}> 
+      - Instead of throwing or logging an error, the operation will be skipped.
+      - Useful in development or watch mode where build outputs may not be immediately available.
+    </Callout> 
+  </div>
+</section> 
+    
+<SeparatorSection />
+
+### Options
+
+Optional configuration object that defines how the utility function should behave 
+in various scenarios, allowing customization and greater control at runtime.
+
+---
+
+<section data-options="docs">
+  #### `logLevel` [#log-level]
+  <div className="ml-4">
+    - **Description:**  
+      *Logging verbosity level.*
+      <div className="my-1.5 ml-1.5">
+        Controls how detailed the logger output should be during execution.
+      </div>
+
+      <Callout type="info" title={<strong>Supported values</strong>}> 
+        - `silent` ➔ no output.
+        - `error` ➔ errors only.
+        - `info` ➔ standard logs (default).
+        - `debug` ➔ verbose logs.
+      </Callout> 
+
+      <Callout type="warning" title={<strong>Notes</strong>}> 
+        - Invalid values are automatically reset to default  
+        - All levels include error output except `silent`  
+      </Callout> 
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*  
+
+    - **Default:**  
+      *`"info"`*  
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Minimal output (errors only)
+      await copyFileToDest({source: "src/assets/logo.png", target: "dist/assets/images"}, {
+        // [!code ++]
+        logLevel: "error"
+      });
+
+      // Debug mode (verbose logs)
+      await copyFileToDest({source: "src/assets/logo.png", target: "dist/assets/images"}, {
+        // [!code ++]
+        logLevel: "debug"
+      });
+
+      // Silent mode (no logs)
+      await copyFileToDest({source: "src/assets/logo.png", target: "dist/assets/images"}, {
+        // [!code ++]
+        logLevel: "silent"
+      });
+      ```
+  </div>
+</section>
+
+<SeparatorSection />
+
+## Helper
+
+### `createCopyFileToDestParameterSet`
+  Creates a Set of parameters for copy-file-to-dest.
+
+  Utility helper to construct a Set of `CopyFileToDestParam` with proper type inference and editor autocomplete support.
+
+  This is primarily useful when passing parameters as a Set, since directly using `new Set([...])` may result in poor TypeScript inference and missing autocomplete for object literals.
+
+  - Behavior:
+    - Accepts a single parameter or an array of parameters.
+    - Automatically normalizes the input into a `Set`.
+
+  - Example:
+    ```ts title="TypeScript/JavaScript" fileCodeIcon
+    import { copyFileToDest, createCopyFileToDestParameterSet } from "@rzl-zone/build-tools";
+
+    // single item
+    const setA = createCopyFileToDestParameterSet({
+      source: "dist/index.d.ts",
+      target: "dist"
+    });
+
+    // multiple items
+    const setB = createCopyFileToDestParameterSet([
+      {
+        source: "dist/a.d.ts",
+        target: "dist"
+      },
+      {
+        source: "dist/b.d.ts",
+        target: "dist"
+      }
+    ]);
+
+    // usage with copyFileToDest
+    await copyFileToDest(setB);
+
+    // or directly usage without create new variable
+    await copyFileToDest(
+      createCopyFileToDestParameterSet([
+        {
+          source: "src/config/a.json",
+          target: "config"
+        },
+        {
+          source: "src/config/b.json",
+          target: "config"
+        }
+      ])
+    );
+    ```
+
+<SeparatorSection />
+
+## Returns
+
+Returns a `Promise<void>`.  
+The function performs asynchronous file processing and does not return any value.
+
+<SeparatorSection />
+
+## Version Information
+
+<ApiVersionInfoComp packageName='build-tools' categoryApi='copy' nameApi='copyFileToDest' />
+
+<SeparatorSection />
+
+<MadeBy /> 

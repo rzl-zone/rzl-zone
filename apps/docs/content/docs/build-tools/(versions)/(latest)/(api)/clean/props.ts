@@ -4,7 +4,7 @@ import type {
 } from "@rzl-zone/build-tools";
 import type { Prettify } from "@rzl-zone/ts-types-plus";
 
-/** @version 0.0.1
+/** @version 0.0.7
  *
  * @default []
  */
@@ -20,11 +20,11 @@ type DefaultOptionsCleanBuildArtifacts = {
    * @default { removeSourceMap: false; removeRegion: true; removeAdjacentEmptyLines: false; logLevel: "info"; patternOptions: { absolute: false, baseNameMatch: false, caseSensitiveMatch: true, concurrency: os.cpus().length, dot: true, followSymbolicLinks: true, globstar: true, ignore: [], markDirectories: false, objectMode: false, onlyDirectories: false, onlyFiles: true, unique: true, throwErrorOnBrokenSymbolicLink: false } }
    * @link [CleanJsBuildArtifacts | CleanTypesBuildArtifacts](#options)
    */
-  options?: Prettify<CleanJsArtifactsOptions, { recursive: true }>;
+  options?: CleanJsArtifactsOptions;
 };
 
 //! cleanJsBuildArtifacts
-/** @version 0.0.1 */
+/** @version 0.0.7 */
 export type CleanJsBuildArtifacts = Prettify<
   {
     /** **Glob pattern or list of patterns pointing to JS output files.**
@@ -34,11 +34,12 @@ export type CleanJsBuildArtifacts = Prettify<
      * @link [CleanJsBuildArtifacts](#pattern)
      */
     pattern: StringCollection;
-  } & DefaultOptionsCleanBuildArtifacts
+  } & DefaultOptionsCleanBuildArtifacts,
+  { recursive: true }
 >;
 
 //! cleanTsBuildArtifacts
-/** @version 0.0.1 */
+/** @version 0.0.7 */
 export type CleanTypesBuildArtifacts = Prettify<
   {
     /** **Glob pattern or list of patterns pointing to Types output files.**
@@ -48,5 +49,6 @@ export type CleanTypesBuildArtifacts = Prettify<
      * @link [CleanTypesBuildArtifacts](#pattern)
      */
     pattern: StringCollection;
-  } & DefaultOptionsCleanBuildArtifacts
+  } & DefaultOptionsCleanBuildArtifacts,
+  { recursive: true }
 >;

@@ -1,0 +1,431 @@
+---
+pageName: ensureCssImport
+pageNameAlias: "Ensure: ensureCssImport"
+lastUpdateData: 2026/04/13
+packageMeta:
+  name: "Build Tools"
+  version: "latest"
+  tag: [build-tools]
+pageData:
+  title: "Ensure: ensureCssImport"
+  description: Ensure one or more CSS imports exist in compiled JavaScript files, with optional deduplication and sorting.
+metaSeoData:
+  title: "Ensure: ensureCssImport"
+  description: Learn how the ensureCssImport utility in Build Tools by Rzl Zone ensures CSS imports exist in compiled JavaScript files with optional deduplication and sorting.
+---
+
+import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
+
+## Overview
+
+`ensureCssImport` ensures required CSS imports exist in compiled JavaScript files, with optional deduplication and sorting.
+
+---
+
+### Why use this?
+
+- Supports multiple CSS imports.
+- Fully idempotent.
+- Optional dedupe & sorting.
+  
+<SeparatorSection />
+
+## Importing
+
+<Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
+  <Tab id="ESM" value="ESM">
+    ```ts
+    import { ensureCssImport } from "@rzl-zone/build-tools";
+    ```
+  </Tab>
+  <Tab id="CJS" value="CJS">
+    ```ts
+    const { ensureCssImport } = require("@rzl-zone/build-tools");
+    ```
+  </Tab>
+</Tabs> 
+
+<SeparatorSection />
+
+## Syntax
+
+<Tabs groupId="tabsSelect::language" defaultValue="TS" className="mt-1.5" persist>
+  <TabsList>
+    <TabsTrigger value="TS">
+      <BiLogoTypescript />
+      TypeScript
+    </TabsTrigger>
+    <TabsTrigger value="JS">
+      <BiLogoJavascript />
+      JavaScript
+    </TabsTrigger>
+  </TabsList>
+  <TabsContent value="TS">
+    ```ts 
+    // [!code word:pattern:2] [!code word:options:3]
+    ensureCssImport(
+      pattern: StringCollection, 
+      options: EnsureCssImportOptions
+    ): Promise<void>
+    ```
+  </TabsContent>
+  <TabsContent value="JS">
+    ```js 
+    // [!code word:pattern:1] [!code word:options:1]
+    ensureCssImport(pattern, options): Promise<void>
+    ```
+  </TabsContent>
+</Tabs>
+
+<SeparatorSection />
+
+## Parameters
+
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/ensure/props.ts" name="EnsureCssImport" />
+
+<SeparatorSection />
+
+### Pattern
+
+Glob pattern or list of patterns that target JavaScript output files.
+
+Accepted values:
+
+- **`string`** ➔ single glob pattern.
+- **`string[]`** ➔ multiple glob patterns.  
+- **`Set<string>`** ➔ unique collection of patterns.
+
+---
+
+#### Supported Glob Features
+
+Patterns support common glob syntax, including:
+
+- **`*`** ➔ match any characters except `/`.
+- **`**`** ➔ match nested directories.
+- **`{}`** ➔ brace expansion (match multiple extensions or patterns).
+- **`!`** ➔ exclude patterns (can be combined with `options.patternOptions.ignore`).
+
+<Callout type="info" title={<strong>Info</strong>}> 
+  Pattern resolution behavior can be customized via <FumaNextLink href='#pattern-options'>`options.patternOptions`</FumaNextLink> (e.g. hidden files, case sensitivity, concurrency, and ignore rules).
+</Callout>
+
+<Callout type="warning" title={<strong>File Matching Behavior</strong>}>
+  <div className="ml-4">
+    - This utility only processes files that match **recognized JavaScript build output formats**.
+    - This filtering is applied **after pattern matching**.
+    - Supported file types include:
+      - `.js`
+      - `.mjs`
+      - `.cjs`
+      - `.esm.js`
+      - `.module.js`
+
+    Files that do **not** match these formats will be automatically **ignored**, even if they are included in the provided pattern.
+
+    <div className="mt-2">
+      <strong>Examples:</strong>
+
+      - `dist/index.js` ➔ ✅ processed.
+      - `dist/index.ts` ➔ ❌ ignored.
+      - `dist/styles.css` ➔ ❌ ignored.
+      - `dist/index.js.map` ➔ ❌ ignored.
+    </div>
+  </div>
+</Callout>
+
+---
+
+#### Examples
+
+```ts title="TypeScript/JavaScript" fileCodeIcon
+// Single pattern
+ensureCssImport("dist/**/*.js");
+
+// Multiple patterns
+ensureCssImport(["dist/**/*.js", "build/**/*.js"]);
+
+// Using Set
+ensureCssImport(new Set(["dist/**/*.js"]));
+
+// With options
+ensureCssImport("dist/**/*.{js,cjs,mjs}", {
+  patternOptions: {
+    ignore: ["**/*.test.js"]
+  }
+});
+
+// Exclude pattern
+ensureCssImport([
+  "dist/**/*.{js,cjs,mjs}",
+  "!dist/**/*.test.js"
+]);
+```
+
+<SeparatorSection />
+
+### Options
+
+Optional configuration object that defines how the utility function should behave 
+in various scenarios, allowing customization and greater control at runtime.
+
+---
+
+<section data-options="docs">
+  #### `cssImportPath` [#css-import-path]
+  <div className="ml-4">
+    - **Description:**  
+      *CSS import path(s) to ensure exist in JS output.*
+
+      <div className="my-1.5 ml-1.5"> 
+        Accepts a single path or multiple paths.
+      </div>
+
+    - **Required:** <em><CheckIcon /></em>
+
+    - **Type:**  
+      *`string` | `readonly (string | readonly string[])[]` | `Set<string>`*  
+
+    - **Default:**  
+      `-` 
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await ensureCssImport(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        cssImportPath: "./search.css"
+      });
+      
+      // Using array, css import path
+      await ensureCssImport(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        cssImportPath: ["./search.css", "./theme.css"]
+      });
+      
+      // Using set, css import path
+      await ensureCssImport(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        cssImportPath: new Set(["./search.css", "./theme.css"])
+      });
+      ```
+    
+    <Callout type="warning" title={<strong>Notes</strong>}> 
+      - Will throw error if this value is empty string, empty array or unset.
+    </Callout> 
+    
+  </div>
+
+  ---
+
+  #### `dedupe` [#dedupe]
+  <div className="ml-4">
+    - **Description:**  
+      *Remove duplicate CSS imports (recommended).*
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`boolean`*
+
+    - **Default:**  
+      *`true`*
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await ensureCssImport(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        dedupe: false
+      });
+      ```
+  </div>
+
+  ---
+  
+  #### `sort` [#sort]
+  <div className="ml-4">
+    - **Description:**  
+      Sort CSS imports alphabetically before inserting.
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`boolean`*
+
+    - **Default:**  
+      *`false`*
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await ensureCssImport(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        sort: true
+      });
+      ```
+  </div>
+  
+  ---
+
+  #### `minify` [#minify]
+  <div className="ml-4">
+    - **Description:**  
+      Minify JS output (except directive prologue).
+
+      - Keeps `"use client"` / `"use strict"` on separate lines.
+      - Everything else is collapsed into a single line.
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`boolean`*
+
+    - **Default:**  
+      *`false`*
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await ensureCssImport(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        minify: true
+      });
+      ```
+  </div>
+
+  ---
+
+  #### `logLevel` [#log-level]
+  <div className="ml-4">
+    - **Description:**  
+      *Logging verbosity level.*
+      <div className="my-1.5 ml-1.5">
+        Controls how detailed the logger output should be during execution.
+      </div>
+
+      <Callout type="info" title={<strong>Supported values</strong>}> 
+        - `silent` ➔ no output  
+        - `error` ➔ errors only  
+        - `info` ➔ standard logs (default)  
+        - `debug` ➔ verbose logs  
+      </Callout> 
+
+      <Callout type="warning" title={<strong>Notes</strong>}> 
+        - Invalid values are automatically reset to default  
+        - All levels include error output except `silent`  
+      </Callout> 
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*  
+
+    - **Default:**  
+      *`"info"`*  
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Minimal output (errors only)
+      await ensureCssImport("dist/**/*.js", {
+        // [!code ++]
+        logLevel: "error"
+      });
+
+      // Debug mode (verbose logs)
+      await ensureCssImport("dist/**/*.js", {
+        // [!code ++]
+        logLevel: "debug"
+      });
+
+      // Silent mode (no logs)
+      await ensureCssImport("dist/**/*.js", {
+        // [!code ++]
+        logLevel: "silent"
+      });
+      ```
+  </div>
+
+  ---
+  
+  #### `patternOptions` [#pattern-options]
+  <div className="ml-4">
+    - **Description:**  
+      *Controls how input file patterns are matched.*
+      <div className="my-1.5 ml-1.5">
+        Used to filter or adjust which files are included during processing.  
+        Useful for ignoring files, handling hidden files, or tweaking matching behavior.
+      </div>
+
+      <Callout type="info" title={<strong>Behavior</strong>}> 
+        - Affects which files are selected  
+        - Can exclude unwanted files (e.g. test files)  
+        - Falls back to default configuration when invalid type or not provided  
+      </Callout> 
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`object`*  
+
+    - **Default:**  
+      ```ts fileCodeIcon disableCopy
+      {
+        absolute: false,
+        baseNameMatch: false,
+        caseSensitiveMatch: true,
+        concurrency: os.cpus().length,
+        dot: true,
+        followSymbolicLinks: true,
+        globstar: true,
+        ignore: [],
+        markDirectories: false,
+        objectMode: false,
+        onlyDirectories: false,
+        onlyFiles: true,
+        unique: true,
+        throwErrorOnBrokenSymbolicLink: false
+      }
+      ```
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Ignore source maps
+      await ensureCssImport("dist/**/*.{js,cjs}", {
+        patternOptions: {
+          // [!code ++]
+          ignore: ["**/*.map"]
+        }
+      });
+
+      // Case-insensitive matching
+      await ensureCssImport("dist/**/*.{js,cjs}", {
+        patternOptions: {
+          // [!code ++]
+          caseSensitiveMatch: false
+        }
+      });
+
+      // Disallowing patterns to match entries that begin with a period (.).
+      await ensureCssImport("dist/**/*.{js,cjs}", {
+        patternOptions: {
+          // [!code ++]
+          dot: false
+        }
+      });
+      ```
+  </div>
+</section>
+
+<SeparatorSection />
+
+## Returns
+
+Returns a `Promise<void>`.  
+The function performs asynchronous file processing and does not return any value.
+
+<SeparatorSection />
+
+## Version Information
+
+<ApiVersionInfoComp packageName='build-tools' categoryApi='ensure' nameApi='ensureCssImport' />
+
+<SeparatorSection />
+
+<MadeBy /> 

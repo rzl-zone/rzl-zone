@@ -59,10 +59,10 @@ export const cacheJsonLD = [
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "Cleaner: cleanJsBuildArtifacts - Build Tools | Rzl Zone",
-    "description": "Learn how the cleanJsBuildArtifacts utility in Build Tools by Rzl Zone removes build artifact comments from compiled JavaScript files to produce cleaner output.",
-    "url": "https://rzlzone.vercel.app/docs/build-tools/cleaner/clean-js-build-artifacts",
-    "image": "https://rzlzone.vercel.app/og/docs/build-tools/cleaner/clean-js-build-artifacts/image.png",
+    "headline": "Clean: cleanJsBuildArtifacts - Build Tools | Rzl Zone",
+    "description": "Learn how the cleanJsBuildArtifacts utility in Build Tools by Rzl Zone removes build artifact comments from compiled JavaScript files to produce clean output.",
+    "url": "https://rzlzone.vercel.app/docs/build-tools/clean/clean-js-build-artifacts",
+    "image": "https://rzlzone.vercel.app/og/docs/build-tools/clean/clean-js-build-artifacts/image.png",
     "publisher": {
       "@type": "Organization",
       "name": "Rzl Zone",
@@ -72,10 +72,62 @@ export const cacheJsonLD = [
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "Cleaner: cleanTypesBuildArtifacts - Build Tools | Rzl Zone",
-    "description": "Learn how the cleanTypesBuildArtifacts utility in Build Tools by Rzl Zone removes build artifact comments from TypeScript declaration files (.d.ts, .d.mts, .d.cts) to produce cleaner output.",
-    "url": "https://rzlzone.vercel.app/docs/build-tools/cleaner/clean-ts-build-artifacts",
-    "image": "https://rzlzone.vercel.app/og/docs/build-tools/cleaner/clean-ts-build-artifacts/image.png",
+    "headline": "Clean: cleanTypesBuildArtifacts - Build Tools | Rzl Zone",
+    "description": "Learn how the cleanTypesBuildArtifacts utility in Build Tools by Rzl Zone removes build artifact comments from TypeScript declaration files (.d.ts, .d.mts, .d.cts) to produce clean output.",
+    "url": "https://rzlzone.vercel.app/docs/build-tools/clean/clean-ts-build-artifacts",
+    "image": "https://rzlzone.vercel.app/og/docs/build-tools/clean/clean-ts-build-artifacts/image.png",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Rzl Zone",
+      "url": "https://rzlzone.vercel.app"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Copy: copyFileToDest - Build Tools | Rzl Zone",
+    "description": "Learn how the copyFileToDest utility in Build Tools by Rzl Zone copies assets such as CSS, JavaScript, JSON, images, fonts, and other static files into your build output directories.",
+    "url": "https://rzlzone.vercel.app/docs/build-tools/copy/copy-file-to-dest",
+    "image": "https://rzlzone.vercel.app/og/docs/build-tools/copy/copy-file-to-dest/image.png",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Rzl Zone",
+      "url": "https://rzlzone.vercel.app"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Ensure: ensureCssImport - Build Tools | Rzl Zone",
+    "description": "Learn how the ensureCssImport utility in Build Tools by Rzl Zone ensures CSS imports exist in compiled JavaScript files with optional deduplication and sorting.",
+    "url": "https://rzlzone.vercel.app/docs/build-tools/ensure/ensure-css-import",
+    "image": "https://rzlzone.vercel.app/og/docs/build-tools/ensure/ensure-css-import/image.png",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Rzl Zone",
+      "url": "https://rzlzone.vercel.app"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Ensure: ensureFinalNewline - Build Tools | Rzl Zone",
+    "description": "Learn how the ensureFinalNewline utility in Build Tools by Rzl Zone ensures matched files end with exactly one final newline while preserving internal formatting.",
+    "url": "https://rzlzone.vercel.app/docs/build-tools/ensure/ensure-final-newline",
+    "image": "https://rzlzone.vercel.app/og/docs/build-tools/ensure/ensure-final-newline/image.png",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Rzl Zone",
+      "url": "https://rzlzone.vercel.app"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Generate: generatePackageBanner - Build Tools | Rzl Zone",
+    "description": "Learn how the generatePackageBanner utility in Build Tools by Rzl Zone creates standardized banner comments from package.json metadata for build and distribution outputs.",
+    "url": "https://rzlzone.vercel.app/docs/build-tools/generate/generate-package-banner",
+    "image": "https://rzlzone.vercel.app/og/docs/build-tools/generate/generate-package-banner/image.png",
     "publisher": {
       "@type": "Organization",
       "name": "Rzl Zone",

@@ -35,7 +35,7 @@ import { useEffectEvent } from "@rzl-zone/core-react/hooks";
 const cache = new Map<string, Promise<string>>();
 
 /**
- * see https://fumadocs.dev/docs/integrations/llms#page-actions to customise.
+ * see https://fumadocs.dev/docs/integrations/llms#page-actions to customize.
  */
 export function MarkdownCopyButton({
   markdownUrl,
@@ -124,7 +124,7 @@ export function MarkdownCopyButton({
 }
 
 /**
- * see https://fumadocs.dev/docs/integrations/llms#page-actions to customise.
+ * see https://fumadocs.dev/docs/integrations/llms#page-actions to customize.
  */
 export function ViewOptionsPopover({
   markdownUrl,

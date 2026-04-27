@@ -25,7 +25,7 @@ export const PACKAGES_CONFIGS: PackagesConfigs = {
       "https://github.com/rzl-zone/rzl-zone/tree/main/packages/build-tools",
     actualVersionLatest: {
       // beta: "1.0.0-beta.1",
-      latest: "0.0.1"
+      latest: "0.0.7"
     },
     description: "Build tools Rzl Zone.",
     url: function (toPath: string, version?: string) {

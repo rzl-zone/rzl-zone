@@ -64,7 +64,11 @@ export function getMDXComponents(components?: MDXComponents) {
     TabsList,
     TabsTrigger,
 
+    XIcon: IconIsNonOptional,
+    CheckIcon: IconIsOptional,
+    /** @deprecated Use `CheckIcon` instead. */
     IconIsOptional,
+    /** @deprecated Use `XIcon` instead. */
     IconIsNonOptional,
     SeparatorSection,
     h1: (props: HTMLAttributes<HTMLHeadingElement>) => (

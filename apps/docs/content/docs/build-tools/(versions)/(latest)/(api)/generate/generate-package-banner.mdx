@@ -1,0 +1,269 @@
+---
+pageName: generatePackageBanner
+pageNameAlias: "Generate: generatePackageBanner"
+lastUpdateData: 2026/04/13
+packageMeta:
+  name: "Build Tools"
+  version: "latest"
+  tag: [build-tools]
+pageData:
+  title: "Generate: generatePackageBanner"
+  description: Generate a standardized banner comment from package.json metadata for bundled output files.
+metaSeoData:
+  title: "Generate: generatePackageBanner"
+  description: Learn how the generatePackageBanner utility in Build Tools by Rzl Zone creates standardized banner comments from package.json metadata for build and distribution outputs.
+---
+
+import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
+
+## Overview
+
+`generatePackageBanner` generates a standardized banner comment using metadata from the nearest `package.json` file or a provided package object.
+
+It automatically resolves package information, applies safe fallbacks for missing fields, and returns a consistent, readable banner suitable for bundled or distributed output files.
+
+- Resolved banner fields include:
+  - **Title** ➔ `options.title`, otherwise `package.json.name`, otherwise `Unknown Package`.
+  - **Version** ➔ `package.json.version`, otherwise `Unknown`.
+  - **Author** ➔ `options.author`, `package.json.author`, or `package.json.author.name`, otherwise `Unknown`.
+  - **Repository** ➔ `package.json.homepage`, `repository`, or `repository.url` (normalized), otherwise `Unknown`.
+- Additional behavior:
+  - Automatically strips `git+` prefixes from repository URLs.
+  - Automatically removes trailing `.git` suffixes.
+  - Supports optional final newline output via `withEof`.
+
+---
+
+### Why use this?
+
+- Automatically reads metadata from the nearest `package.json`.
+- Accepts a custom `packageJson` object when needed.
+- Provides safe fallbacks for missing fields.
+- Produces consistent banner output across builds.
+- Normalizes repository URLs automatically.
+- Supports optional final newline output.
+- Ideal for bundler banners (`tsdown`, `tsup`, `rollup`, `esbuild`, etc.).
+- Useful for generated artifacts and distributed library files.
+
+<SeparatorSection />
+
+## Importing
+
+<Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
+  <Tab id="ESM" value="ESM">
+    ```ts
+    import { generatePackageBanner } from "@rzl-zone/build-tools";
+    ```
+  </Tab>
+  <Tab id="CJS" value="CJS">
+    ```ts
+    const { generatePackageBanner } = require("@rzl-zone/build-tools");
+    ```
+  </Tab>
+</Tabs> 
+
+<SeparatorSection />
+
+## Syntax
+
+<Tabs groupId="tabsSelect::language" defaultValue="TS" className="mt-1.5" persist>
+  <TabsList>
+    <TabsTrigger value="TS">
+      <BiLogoTypescript />
+      TypeScript
+    </TabsTrigger>
+    <TabsTrigger value="JS">
+      <BiLogoJavascript />
+      JavaScript
+    </TabsTrigger>
+  </TabsList>
+  <TabsContent value="TS">
+    ```ts 
+    // [!code word:options:2]
+    generatePackageBanner(
+      options?: GeneratePackageBannerOptions
+    ): Promise<string>
+    ```
+  </TabsContent>
+  <TabsContent value="JS">
+    ```js 
+    // [!code word:options:1]
+    generatePackageBanner(options?): Promise<string>
+    ```
+  </TabsContent>
+</Tabs>
+
+<SeparatorSection />
+
+## Parameters
+
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/generate/props.ts" name="GeneratePackageBanner" />
+
+<SeparatorSection />
+
+### Options
+
+Optional configuration object that defines how the utility function should behave 
+in various scenarios, allowing customization and greater control at runtime.
+
+---
+
+<section data-options="docs">
+  #### `title` [#title]
+  <div className="ml-4">
+    - **Description:**  
+      Display title shown in the banner.
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`string`*  
+
+    - **Default:**  
+      *`string`* 
+
+      <Callout type="warning" title={<strong>Notes</strong>}> 
+        - Defaults to the `name` field from `package.json` when available, otherwise return `"Unknown Package"`.
+      </Callout> 
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generatePackageBanner(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        title: "@my-org/my-package"
+      });
+      ```  
+
+    <Callout type="warning" title={<strong>Notes</strong>}> 
+      - Invalid values or empty-string are automatically reset to default.
+    </Callout>  
+  </div>
+
+  ---
+
+  #### `author` [#author]
+  <div className="ml-4">
+    - **Description:**  
+      Author name displayed in the banner.
+
+      When omitted, attempts to resolve from:
+        1. `author` *(If empty-string or unset will check to `author.name`)*.
+        2. `author.name` *(If empty-string or unset will return `"Unknown"`)*.
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`string`*
+
+    - **Default:**  
+      *`string`*
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generatePackageBanner(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        author: "John Doe"
+      });
+      ```
+    
+    <Callout type="warning" title={<strong>Notes</strong>}> 
+      - Invalid values or empty-string are automatically reset to default.
+    </Callout>  
+  </div>
+
+  ---
+  
+  #### `packageJson` [#package-json]
+  <div className="ml-4">
+    - **Description:**  
+      Custom package metadata override.
+
+      When provided, this object will be used instead of reading from the filesystem.
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`object`*
+
+    - **Default:**  
+      *`object`*
+
+      <Callout type="warning" title={<strong>Notes</strong>}> 
+        - Defaults automatically locates and loads the closest `package.json`.
+        - `Throws Error` if:
+          - If no `package.json` can be found `Throws Error`.
+          - If the located `package.json` is invalid JSON.
+      </Callout>  
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generatePackageBanner(["dist/**/*.js", "build/*/*.mjs"], { 
+        packageJson: { // [!code ++]
+          name: "@my-org/my-package", // [!code ++]
+          version: "1.2.3", // [!code ++]
+          author: "John Doe", // [!code ++]
+          homepage: "https://github.com/my-org/my-package" // [!code ++]
+        } // [!code ++]
+      });
+      ```
+
+    <Callout type="warning" title={<strong>Notes</strong>}> 
+      - Invalid values are automatically reset to default. 
+    </Callout>  
+  </div>
+  
+  ---
+
+  #### `withEof` [#with-eof]
+  <div className="ml-4">
+    - **Description:**  
+      Append an end-of-file newline to the banner output.
+
+      - When enabled, a trailing newline is appended to ensure:
+        - POSIX-compliant text files.
+        - Clean concatenation with subsequent source content.
+        - Consistent formatting during code injection.
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`boolean`*
+
+    - **Default:**  
+      *`true`*
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generatePackageBanner(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        withEof: false
+      });
+      ```
+  </div>
+</section>
+
+<SeparatorSection />
+
+## Returns
+
+Returns a `Promise<string>`.  
+The function performs asynchronous file processing and return a string value of banner generated.
+
+<SeparatorSection />
+
+## Throws
+
+Throws a **built-in JavaScript error** in the following cases:
+
+- No `package.json` file can be found while walking up the directory tree.
+- The located `package.json` contains invalid JSON and cannot be parsed.
+
+<SeparatorSection />
+
+## Version Information
+
+<ApiVersionInfoComp packageName='build-tools' categoryApi='generate' nameApi='generatePackageBanner' />
+
+<SeparatorSection />
+
+<MadeBy /> 

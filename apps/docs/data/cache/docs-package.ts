@@ -15,7 +15,7 @@ export const cacheDocsPackage = [
     ],
     "githubUrl": "https://github.com/rzl-zone/rzl-zone/tree/main/packages/build-tools",
     "actualVersionLatest": {
-      "latest": "0.0.1"
+      "latest": "0.0.7"
     }
   },
   {
