@@ -46,10 +46,10 @@ export default async function Layout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <head>
-        {/* <meta
+        <meta
           name="google-site-verification"
           content="YJ8bVTEZALFb4zNMeFeiNpZ2JU5IULIroCbUSr4_11M"
-        /> */}
+        />
         <JsonLD jsonLdData={await getCachedJsonLD()} />
       </head>
       <body className="flex flex-col min-h-screen rzl-primary">

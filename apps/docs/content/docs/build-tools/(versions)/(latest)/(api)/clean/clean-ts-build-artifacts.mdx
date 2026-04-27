@@ -1,7 +1,7 @@
 ---
 pageName: cleanTypesBuildArtifacts
 pageNameAlias: "Clean: cleanTypesBuildArtifacts"
-lastUpdateData: 2026/04/13
+lastUpdateData: 2026/04/28
 packageMeta:
   name: "Build Tools"
   version: "latest"
@@ -206,11 +206,11 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `removeSourceMap` [#remove-source-map]
   <div className="ml-4">
     - **Description:**  
-      *Whether to remove source map reference comments (`sourceMappingURL`) from output files.*
+      Whether to remove source map reference comments (`sourceMappingURL`) from output files.
 
-      <div className="my-1.5 ml-1.5"> 
+      <Callout type="info">
         Detects and removes inline comments that reference source map files, including variations with optional whitespace, different comment prefixes (`//#` or `//@`), and different file extensions.
-      </div>  
+      </Callout>
     
       <Callout type="info" title={<strong>Common example matches include:</strong>}> 
 
@@ -246,11 +246,12 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `removeRegion` [#remove-region]
   <div className="ml-4">
     - **Description:**  
-      *Whether to remove source region marker comments (e.g. `#region`, `#endregion`) from output files.*
-      <div className="my-1.5 ml-1.5">
+      Whether to remove source region marker comments (e.g. `#region`, `#endregion`) from output files.
+
+      <Callout type="info">
         Detects and removes single-line region markers commonly used for code folding and logical section grouping.  
         Supports variations with leading whitespace, optional spacing between `//` and `#`, and trailing text.
-      </div>
+      </Callout>
 
       <Callout type="info" title={<strong>Common example matches include:</strong>}> 
 
@@ -296,11 +297,12 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `removeAdjacentEmptyLines` [#remove-adjacent-empty-lines]
   <div className="ml-4">
     - **Description:**  
-      *Whether to remove empty lines that appear adjacent to removed comments.*
-      <div className="my-1.5 ml-1.5">
+      Whether to remove empty lines that appear adjacent to removed comments.
+
+      <Callout type="info">
         Cleans up leftover blank lines after comment removal to keep output files compact and visually consistent.  
         Targets lines that contain only whitespace (e.g. spaces or tabs) or are completely empty.
-      </div>
+      </Callout>
 
       <Callout type="warning" title={<strong>Note</strong>}> 
         - Matches empty or whitespace-only lines.
@@ -346,10 +348,7 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `logLevel` [#log-level]
   <div className="ml-4">
     - **Description:**  
-      *Logging verbosity level.*
-      <div className="my-1.5 ml-1.5">
-        Controls how detailed the logger output should be during execution.
-      </div>
+      Controls how detailed the logger output should be during execution.
 
       <Callout type="info" title={<strong>Supported values</strong>}> 
         - `silent` ➔ no output.
@@ -398,11 +397,12 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `patternOptions` [#pattern-options]
   <div className="ml-4">
     - **Description:**  
-      *Controls how input file patterns are matched.*
-      <div className="my-1.5 ml-1.5">
+      Controls how input file patterns are matched.
+      
+      <Callout type="info">
         Used to filter or adjust which files are included during processing.  
         Useful for ignoring files, handling hidden files, or tweaking matching behavior.
-      </div>
+      </Callout> 
 
       <Callout type="info" title={<strong>Behavior</strong>}> 
         - Affects which files are selected.

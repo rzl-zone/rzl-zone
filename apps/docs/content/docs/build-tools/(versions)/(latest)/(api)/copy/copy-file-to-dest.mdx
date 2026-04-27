@@ -1,7 +1,7 @@
 ---
 pageName: copyFileToDest
 pageNameAlias: "Copy: copyFileToDest"
-lastUpdateData: 2026/04/13
+lastUpdateData: 2026/04/28
 packageMeta:
   name: "Build Tools"
   version: "latest"
@@ -336,10 +336,7 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `logLevel` [#log-level]
   <div className="ml-4">
     - **Description:**  
-      *Logging verbosity level.*
-      <div className="my-1.5 ml-1.5">
-        Controls how detailed the logger output should be during execution.
-      </div>
+      Controls how detailed the logger output should be during execution.
 
       <Callout type="info" title={<strong>Supported values</strong>}> 
         - `silent` ➔ no output.
@@ -349,34 +346,34 @@ in various scenarios, allowing customization and greater control at runtime.
       </Callout> 
 
       <Callout type="warning" title={<strong>Notes</strong>}> 
-        - Invalid values are automatically reset to default  
-        - All levels include error output except `silent`  
-      </Callout> 
+        - Invalid values are automatically reset to default.
+        - All levels include error output except `silent`.
+      </Callout>
 
     - **Required:** <em><XIcon /></em>
 
     - **Type:**  
-      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*  
+      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*
 
     - **Default:**  
-      *`"info"`*  
+      *`"info"`*
 
-    - **Example:**   
+    - **Example:**  
       ```ts title="TypeScript/JavaScript" fileCodeIcon
       // Minimal output (errors only)
-      await copyFileToDest({source: "src/assets/logo.png", target: "dist/assets/images"}, {
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
         // [!code ++]
         logLevel: "error"
       });
 
       // Debug mode (verbose logs)
-      await copyFileToDest({source: "src/assets/logo.png", target: "dist/assets/images"}, {
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
         // [!code ++]
         logLevel: "debug"
       });
 
       // Silent mode (no logs)
-      await copyFileToDest({source: "src/assets/logo.png", target: "dist/assets/images"}, {
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
         // [!code ++]
         logLevel: "silent"
       });

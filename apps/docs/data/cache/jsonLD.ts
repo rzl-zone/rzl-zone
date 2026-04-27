@@ -137,6 +137,32 @@ export const cacheJsonLD = [
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
+    "headline": "Generate: generateReferenceIndex - Build Tools | Rzl Zone",
+    "description": "Learn how the generateReferenceIndex utility in Build Tools by Rzl Zone generates a TypeScript declaration reference index file from matched output files with optional exports.",
+    "url": "https://rzlzone.vercel.app/docs/build-tools/generate/generate-reference-index",
+    "image": "https://rzlzone.vercel.app/og/docs/build-tools/generate/generate-reference-index/image.png",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Rzl Zone",
+      "url": "https://rzlzone.vercel.app"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Get: getPackageJson - Build Tools | Rzl Zone",
+    "description": "Learn how the getPackageJson utility in Build Tools by Rzl Zone resolves and reads the nearest package.json for build tools, bundlers, CLI utilities, and monorepo-aware infrastructure code.",
+    "url": "https://rzlzone.vercel.app/docs/build-tools/get/get-package-json",
+    "image": "https://rzlzone.vercel.app/og/docs/build-tools/get/get-package-json/image.png",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Rzl Zone",
+      "url": "https://rzlzone.vercel.app"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
     "headline": "Installation - Build Tools | Rzl Zone",
     "description": "Installation instructions for Build Tools (latest version) by Rzl Zone.",
     "url": "https://rzlzone.vercel.app/docs/build-tools/installation",

@@ -1,7 +1,7 @@
 ---
 pageName: ensureCssImport
 pageNameAlias: "Ensure: ensureCssImport"
-lastUpdateData: 2026/04/13
+lastUpdateData: 2026/04/28
 packageMeta:
   name: "Build Tools"
   version: "latest"
@@ -175,11 +175,11 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `cssImportPath` [#css-import-path]
   <div className="ml-4">
     - **Description:**  
-      *CSS import path(s) to ensure exist in JS output.*
+      CSS import path(s) to ensure exist in JS output.
 
-      <div className="my-1.5 ml-1.5"> 
+      <Callout type="info">
         Accepts a single path or multiple paths.
-      </div>
+      </Callout>
 
     - **Required:** <em><CheckIcon /></em>
 
@@ -220,7 +220,7 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `dedupe` [#dedupe]
   <div className="ml-4">
     - **Description:**  
-      *Remove duplicate CSS imports (recommended).*
+      Remove duplicate CSS imports (recommended).
 
     - **Required:** <em><XIcon /></em>
 
@@ -295,47 +295,44 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `logLevel` [#log-level]
   <div className="ml-4">
     - **Description:**  
-      *Logging verbosity level.*
-      <div className="my-1.5 ml-1.5">
-        Controls how detailed the logger output should be during execution.
-      </div>
+      Controls how detailed the logger output should be during execution.
 
       <Callout type="info" title={<strong>Supported values</strong>}> 
-        - `silent` ➔ no output  
-        - `error` ➔ errors only  
-        - `info` ➔ standard logs (default)  
-        - `debug` ➔ verbose logs  
+        - `silent` ➔ no output.
+        - `error` ➔ errors only.
+        - `info` ➔ standard logs (default).
+        - `debug` ➔ verbose logs.
       </Callout> 
 
       <Callout type="warning" title={<strong>Notes</strong>}> 
-        - Invalid values are automatically reset to default  
-        - All levels include error output except `silent`  
-      </Callout> 
+        - Invalid values are automatically reset to default.
+        - All levels include error output except `silent`.
+      </Callout>
 
     - **Required:** <em><XIcon /></em>
 
     - **Type:**  
-      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*  
+      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*
 
     - **Default:**  
-      *`"info"`*  
+      *`"info"`*
 
-    - **Example:**   
+    - **Example:**  
       ```ts title="TypeScript/JavaScript" fileCodeIcon
       // Minimal output (errors only)
-      await ensureCssImport("dist/**/*.js", {
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
         // [!code ++]
         logLevel: "error"
       });
 
       // Debug mode (verbose logs)
-      await ensureCssImport("dist/**/*.js", {
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
         // [!code ++]
         logLevel: "debug"
       });
 
       // Silent mode (no logs)
-      await ensureCssImport("dist/**/*.js", {
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
         // [!code ++]
         logLevel: "silent"
       });
@@ -347,22 +344,23 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `patternOptions` [#pattern-options]
   <div className="ml-4">
     - **Description:**  
-      *Controls how input file patterns are matched.*
-      <div className="my-1.5 ml-1.5">
+      Controls how input file patterns are matched.
+      
+      <Callout type="info">
         Used to filter or adjust which files are included during processing.  
         Useful for ignoring files, handling hidden files, or tweaking matching behavior.
-      </div>
+      </Callout> 
 
       <Callout type="info" title={<strong>Behavior</strong>}> 
-        - Affects which files are selected  
-        - Can exclude unwanted files (e.g. test files)  
-        - Falls back to default configuration when invalid type or not provided  
-      </Callout> 
+        - Affects which files are selected.
+        - Can exclude unwanted files (e.g. test files).
+        - Falls back to default configuration when invalid type or not provided.
+      </Callout>
 
     - **Required:** <em><XIcon /></em>
 
     - **Type:**  
-      *`object`*  
+      *`object`*
 
     - **Default:**  
       ```ts fileCodeIcon disableCopy
@@ -387,7 +385,7 @@ in various scenarios, allowing customization and greater control at runtime.
     - **Example:**   
       ```ts title="TypeScript/JavaScript" fileCodeIcon
       // Ignore source maps
-      await ensureCssImport("dist/**/*.{js,cjs}", {
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
         patternOptions: {
           // [!code ++]
           ignore: ["**/*.map"]
@@ -395,7 +393,7 @@ in various scenarios, allowing customization and greater control at runtime.
       });
 
       // Case-insensitive matching
-      await ensureCssImport("dist/**/*.{js,cjs}", {
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
         patternOptions: {
           // [!code ++]
           caseSensitiveMatch: false
@@ -403,7 +401,7 @@ in various scenarios, allowing customization and greater control at runtime.
       });
 
       // Disallowing patterns to match entries that begin with a period (.).
-      await ensureCssImport("dist/**/*.{js,cjs}", {
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
         patternOptions: {
           // [!code ++]
           dot: false

@@ -1,0 +1,717 @@
+---
+pageName: generateReferenceIndex
+pageNameAlias: "Generate: generateReferenceIndex"
+lastUpdateData: 2026/04/28
+packageMeta:
+  name: "Build Tools"
+  version: "latest"
+  tag: [build-tools]
+pageData:
+  title: "Generate: generateReferenceIndex"
+  description: Generates a TypeScript reference index file (.d.ts) from matched declaration and module output files.
+metaSeoData:
+  title: "Generate: generateReferenceIndex"
+  description: Learn how the generateReferenceIndex utility in Build Tools by Rzl Zone generates a TypeScript declaration reference index file from matched output files with optional exports.
+---
+
+import { getHrefPackage } from "@/utils/packages/docs";
+import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
+
+## Overview
+
+`generateReferenceIndex` generates a TypeScript declaration reference index file (`.d.ts`) from matched output files.
+
+It scans declaration and supported module outputs, then creates a single aggregated entry file containing TypeScript reference directives and optional re-export statements.
+
+---
+
+### Why use this?
+
+- Combine multiple declaration outputs into one entry point.
+- Supports glob patterns and multiple input sources.
+- Optional `export * from` type generation.
+- Helps simplify package type distribution.
+- Deterministic and repeatable output.
+
+<SeparatorSection />
+
+## Importing
+
+<Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
+  <Tab id="ESM" value="ESM">
+    ```ts
+    import { generateReferenceIndex } from "@rzl-zone/build-tools";
+    ```
+  </Tab>
+  <Tab id="CJS" value="CJS">
+    ```ts
+    const { generateReferenceIndex } = require("@rzl-zone/build-tools");
+    ```
+  </Tab>
+</Tabs> 
+
+<SeparatorSection />
+
+## Syntax
+
+<Tabs groupId="tabsSelect::language" defaultValue="TS" className="mt-1.5" persist>
+  <TabsList>
+    <TabsTrigger value="TS">
+      <BiLogoTypescript />
+      TypeScript
+    </TabsTrigger>
+    <TabsTrigger value="JS">
+      <BiLogoJavascript />
+      JavaScript
+    </TabsTrigger>
+  </TabsList>
+  <TabsContent value="TS">
+    ```ts 
+    // [!code word:pattern:2] [!code word:options:3]
+    generateReferenceIndex(
+      pattern: StringCollection, 
+      options: GenerateReferenceOptions
+    ): Promise<void>
+    ```
+  </TabsContent>
+  <TabsContent value="JS">
+    ```js 
+    // [!code word:pattern:1] [!code word:options:1]
+    generateReferenceIndex(pattern, options): Promise<void>
+    ```
+  </TabsContent>
+</Tabs>
+
+<SeparatorSection />
+
+## Parameters
+
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/generate/props.ts" name="GenerateReferenceIndex" />
+
+<SeparatorSection />
+
+### Pattern
+
+Glob pattern or list of patterns used to match declaration and module output files.
+
+- Accepted values:
+  - **`string`** ➔ single glob pattern.
+  - **`string[]`** ➔ multiple glob patterns.
+  - **`Set<string>`** ➔ unique collection of patterns.
+
+- Supported matched file extensions include:
+  - `.d.ts`
+  - `.d.mts`
+  - `.d.cts`
+  - `.js`
+  - `.mjs`
+  - `.cjs`
+
+- When `onlyDeclarations` is `true` (default), matched files are filtered to standard declaration formats only:
+  - `.d.ts`
+  - `.d.mts`
+  - `.d.cts`
+
+- When `onlyDeclarations` is `false`, all matched supported files are eligible.
+
+#### Supported Glob Features
+
+Patterns support common glob syntax, including:
+
+- **`*`** ➔ match any characters except `/`.
+- **`**`** ➔ match nested directories.
+- **`{}`** ➔ brace expansion (match multiple extensions or patterns).
+- **`!`** ➔ exclude patterns (can also be combined with `options.patternOptions.ignore`).
+
+<Callout type="info" title={<strong>Info</strong>}>
+  Pattern resolution behavior can be customized via <FumaNextLink href="#pattern-options">`options.patternOptions`</FumaNextLink> such as hidden files, case sensitivity, concurrency, and ignore rules.
+</Callout>
+
+<Callout type="warning" title={<strong>File Matching Behavior</strong>}>
+  <div className="ml-4">
+    - Pattern matching happens first based on the provided glob input.  
+    - Extension filtering happens after matching.  
+    - Files with unsupported extensions are automatically ignored.
+
+    <div className="mt-2">
+      <strong>Examples:</strong>
+
+      - `dist/index.d.ts` ➔ ✅ included by default.
+      - `dist/index.d.mts` ➔ ✅ included by default.
+      - `dist/index.d.cts` ➔ ✅ included by default.
+      - `dist/index.js` ➔ ✅ included when `onlyDeclarations: false`.
+      - `dist/index.ts` ➔ ❌ ignored unless explicitly matched and `onlyDeclarations: false`.
+      - `dist/styles.css` ➔ ❌ ignored.
+      - `dist/index.js.map` ➔ ❌ ignored.
+    </div>
+  </div>
+</Callout>
+
+---
+
+#### Examples
+
+```ts title="TypeScript/JavaScript" fileCodeIcon
+// Single pattern
+generateReferenceIndex("dist/**/*.js");
+
+// Multiple patterns
+generateReferenceIndex(["dist/**/*.js", "build/**/*.js"]);
+
+// Using Set
+generateReferenceIndex(new Set(["dist/**/*.js"]));
+
+// With options
+generateReferenceIndex("dist/**/*.{js,cjs,mjs}", {
+  patternOptions: {
+    ignore: ["**/*.test.js"]
+  }
+});
+
+// Exclude pattern
+generateReferenceIndex([
+  "dist/**/*.{js,cjs,mjs}",
+  "!dist/**/*.test.js"
+]);
+```
+
+<SeparatorSection />
+
+### Options
+
+Optional configuration object that defines how the utility function should behave 
+in various scenarios, allowing customization and greater control at runtime.
+
+---
+
+<section data-options="docs">
+  #### `outDir` [#out-dir]
+  <div className="ml-4">
+    - **Description:**  
+      Directory where the generated index file will be written.
+
+      <Callout type="info">
+        Used as the base path for the final generated declaration file.
+      </Callout>
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`string`*  
+
+    - **Default:**  
+      `"dist/.references"` 
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generateReferenceIndex(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        outDir: "dist/types/refs"
+      }); 
+      ```
+    
+    <Callout type="warning" title={<strong>Notes</strong>}>
+      - Value is normalized before use.
+      - Leading and trailing whitespace is trimmed.
+      - Trailing slash is removed automatically.
+      - Empty results are not rejected by this function unless validated elsewhere.
+    </Callout>
+  </div>
+
+  ---
+
+  #### `outFileName` [#out-filename]
+  <div className="ml-4">
+    - **Description:**  
+      File name used for the generated declaration index output.
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`boolean`*
+
+    - **Default:**  
+      *`"index.d.ts"`*
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generateReferenceIndex(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        outFileName: "index.d.cts"
+      });
+      ```
+
+    <Callout type="warning" title={<strong>Validation Behavior</strong>}>
+      <div className="ml-4">
+        - Must be a file name only, not a path.  
+        - Forward slash `/` and backslash `\` are not allowed.  
+        - Leading and trailing whitespace is trimmed before use.  
+        - Throws an error when the value contains `/` or `\`.  
+
+        <div className="mt-2">
+          <strong>Examples:</strong>
+
+          - `" index.d.cts "` ➔ `"index.d.cts"`
+          - `" index.d.mts "` ➔ `"index.d.mts"`
+          - `"dist/index.d.ts"` ➔ ❌ throws `Invalid outFileName`
+          - `"../index.d.ts"` ➔ ❌ throws `Invalid outFileName`
+          - `"..\\index.d.ts"` ➔ ❌ throws `Invalid outFileName`
+        </div>
+      </div>
+    </Callout>
+  </div>
+
+  ---
+  
+  #### `withExportTypes` [#with-export-types]
+  <div className="ml-4">
+    - **Description:**  
+      Enables generation of additional type `export * from "..."` statements for resolved modules.
+
+      <Callout type="info">
+        When enabled, the output file contains both TypeScript reference paths and aggregated module re-exports.
+      </Callout>
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`boolean`*
+
+    - **Default:**  
+      *`false`*
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generateReferenceIndex(["dist/**/*.js", "build/*/*.mjs"], { 
+        // [!code ++]
+        withExportTypes: true
+      });
+      ```
+
+      Result (dist/.references/index.d.ts):
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // References Paths:
+      /// <reference path="../types/user.d.ts" />
+      /// <reference path="../types/user.d.cts" />
+      /// <reference path="../types/post.d.ts" />
+      /// <reference path="../types/post.d.cts" />
+
+      // Exported Types:
+      export * from "../types/user";
+      export * from "../types/post";
+      ```
+
+  </div>
+  
+  ---
+
+  #### `inputDirReference` [#input-dir-reference]
+  <div className="ml-4">
+    - **Description:**  
+      Base directory used for resolving reference paths.
+
+      <Callout type="info">
+        Used to compute relative paths inside the generated index file.
+      </Callout> 
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`string`*
+
+    - **Default:**  
+      *`"dist"`*
+
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generateReferenceIndex(
+        [
+          "dist/types/**/*.d.ts",
+          "dist/generated/**/*.d.{js,cjs,mjs}"
+        ],
+        {
+          inputDirReference: "dist"
+        }
+      );
+      ```
+
+      Result (`dist/.references/index.d.ts`):
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // References Paths:
+      /// <reference path="../types/user.d.ts" />
+      /// <reference path="../generated/schema.d.js" />
+      /// <reference path="../generated/config.d.cjs" />
+      ```
+
+    <Callout type="info" title={<strong>Behavior</strong>}>
+      <div className="ml-4">
+        - Used as the base path when generating relative reference targets.  
+        - Matching files under this directory will have the leading base path removed before output generation.  
+        - Useful when combining multiple input folders under one shared root.
+      </div>
+    </Callout>
+
+    <Callout type="warning" title={<strong>Normalization</strong>}>
+      <div className="ml-4">
+        - Leading and trailing whitespace is trimmed.  
+        - Trailing slash `/` is removed automatically.  
+
+        <div className="mt-2">
+          <strong>Examples:</strong>
+
+          - `"dist/"` ➔ `"dist"`
+          - `" dist "` ➔ `"dist"`
+        </div>
+      </div>
+    </Callout>
+  </div>
+  
+  ---
+
+  #### `onlyDeclarations` [#only-declarations]
+  <div className="ml-4">
+    - **Description:**  
+      Restricts matched input files to TypeScript declaration files only.
+
+      <Callout type="info">
+        When enabled, only `.d.ts`, `.d.mts`, and `.d.cts` files are included after glob matching.
+      </Callout>
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`boolean`*
+
+    - **Default:**  
+      *`true`*
+
+    - **Example:**  
+      * *example 1:*
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generateReferenceIndex(
+        "dist/**/*",
+        {
+          onlyDeclarations: true
+        }
+      );
+      ```
+
+      Result (`dist/.references/index.d.ts`):
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // References Paths:
+      /// <reference path="../types/user.d.ts" />
+      /// <reference path="../types/post.d.cts" />
+      ```
+
+      ---
+
+      * *example 2:*
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generateReferenceIndex(
+        "dist/**/*",
+        {
+          onlyDeclarations: false
+        }
+      );
+      ```
+
+      Result (`dist/.references/index.d.ts`):
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // References Paths:
+      /// <reference path="../models/order.ts" />
+      /// <reference path="../models/user.js" />
+      /// <reference path="../models/another.cjs" />
+      ```
+
+    <Callout type="info" title={<strong>Behavior</strong>}>
+      <div className="ml-4">
+        - Filtering is applied after files are matched by the provided glob patterns.  
+        - When `true`, non-declaration files such as `.js`, `.mjs`, `.cjs`, `.ts`, `.mts`, and `.cts` are excluded.  
+        - When `false`, all matched supported files remain eligible for reference generation.  
+        - Useful to prevent accidental inclusion of source files or JavaScript build outputs.
+      </div>
+    </Callout>
+
+    <Callout type="warning" title={<strong>Examples</strong>}>
+      <div className="ml-4">
+        - Pattern `"dist/**/*.d.ts"` + `true` ➔ no practical change.  
+        - Pattern `"dist/**/*"` + `true` ➔ only declaration files kept.  
+        - Pattern `"dist/**/*.js"` + `true` ➔ no files included.  
+        - Pattern `"dist/**/*.ts"` + `true` ➔ only matching generated `.d.ts` style declarations are included when available.
+      </div>
+    </Callout>
+  </div>
+
+  ---
+
+  #### `banner` [#banner]
+  <div className="ml-4">
+    - **Description:**  
+      Controls the banner text prepended to the generated output file.
+
+      <Callout type="info">
+        The banner is inserted at the top of the generated reference index file before reference paths and export statements.
+      </Callout>
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`boolean | string | Promise<string>`*
+
+    - **Default:**  
+      *`true`*
+
+    - **Example:**  
+      * *example 1:*
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generateReferenceIndex(
+        "dist/**/*",
+        {
+          banner: true
+        }
+      );
+      ```
+
+      Result (`dist/.references/index.d.ts`):
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      /*!
+        * ========================================================================
+        *  @my-org/my-package
+        * ------------------------------------------------------------------------
+        *  Version: `1.2.3`
+        *  Author: `John Doe`
+        *  Repository: `https://github.com/my-org/my-package`
+        * ========================================================================
+        */
+
+      // References Paths:
+      /// <reference path="../types/user.d.ts" />
+      ```
+
+      ---
+
+      * *example 2:*
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generateReferenceIndex(
+        "dist/**/*",
+        {
+          banner: false
+        }
+      );
+      ```
+
+      Result (`dist/.references/index.d.ts`):
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // References Paths:
+      /// <reference path="../types/user.d.ts" />
+      ```
+
+      --- 
+      
+      * *example 3:*
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generateReferenceIndex(
+        "dist/**/*",
+        {
+          banner: "/* Custom Build Banner */"
+        }
+      );
+      ```
+
+      Result (`dist/.references/index.d.ts`):
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      /* Custom Build Banner */
+
+      // References Paths:
+      /// <reference path="../types/user.d.ts" />
+      ```
+
+      * *example 4:*
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await generateReferenceIndex(
+        "dist/**/*",
+        {
+          banner: Promise.resolve("/* Async Banner */")
+        }
+      );
+      ```
+
+      Result (`dist/.references/index.d.ts`):
+
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      /* Async Banner */
+
+      // References Paths:
+      /// <reference path="../types/user.d.ts" />
+      ```
+
+    <Callout type="info" title={<strong>Behavior</strong>}>
+      <div className="ml-4">
+        - `true` uses an automatically generated banner from `package.json` via <FumaNextLink href={getHrefPackage("build-tools","generate/generate-package-banner")}>`generatePackageBanner()`</FumaNextLink>.  
+        - `false` disables banner injection entirely.  
+        - `string` uses the provided custom banner text as-is.  
+        - `Promise<string>` is awaited, then the resolved value is used as banner text.  
+        - Empty or non-string resolved values produce no banner output.
+      </div>
+    </Callout>
+
+    <Callout type="warning" title={<strong>Output Notes</strong>}>
+      <div className="ml-4">
+        - Banner content is written before all generated lines.  
+        - A line break is appended after generated automatic banners.  
+        - The final output file always ends with a trailing newline.  
+        - Custom banner content should already be properly formatted.
+      </div>
+    </Callout>
+  </div>
+
+  ---
+
+  #### `logLevel` [#log-level]
+  <div className="ml-4">
+    - **Description:**  
+      Controls how detailed the logger output should be during execution.
+
+      <Callout type="info" title={<strong>Supported values</strong>}> 
+        - `silent` ➔ no output.
+        - `error` ➔ errors only.
+        - `info` ➔ standard logs (default).
+        - `debug` ➔ verbose logs.
+      </Callout> 
+
+      <Callout type="warning" title={<strong>Notes</strong>}> 
+        - Invalid values are automatically reset to default.
+        - All levels include error output except `silent`.
+      </Callout>
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*
+
+    - **Default:**  
+      *`"info"`*
+
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Minimal output (errors only)
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        // [!code ++]
+        logLevel: "error"
+      });
+
+      // Debug mode (verbose logs)
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        // [!code ++]
+        logLevel: "debug"
+      });
+
+      // Silent mode (no logs)
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        // [!code ++]
+        logLevel: "silent"
+      });
+      ```
+  </div>
+
+  ---
+  
+  #### `patternOptions` [#pattern-options]
+  <div className="ml-4">
+    - **Description:**  
+      Controls how input file patterns are matched.
+      
+      <Callout type="info">
+        Used to filter or adjust which files are included during processing.  
+        Useful for ignoring files, handling hidden files, or tweaking matching behavior.
+      </Callout> 
+
+      <Callout type="info" title={<strong>Behavior</strong>}> 
+        - Affects which files are selected.
+        - Can exclude unwanted files (e.g. test files).
+        - Falls back to default configuration when invalid type or not provided.
+      </Callout>
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`object`*
+
+    - **Default:**  
+      ```ts fileCodeIcon disableCopy
+      {
+        absolute: false,
+        baseNameMatch: false,
+        caseSensitiveMatch: true,
+        concurrency: os.cpus().length,
+        dot: true,
+        followSymbolicLinks: true,
+        globstar: true,
+        ignore: [],
+        markDirectories: false,
+        objectMode: false,
+        onlyDirectories: false,
+        onlyFiles: true,
+        unique: true,
+        throwErrorOnBrokenSymbolicLink: false
+      }
+      ```
+
+    - **Example:**   
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Ignore source maps
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        patternOptions: {
+          // [!code ++]
+          ignore: ["**/*.map"]
+        }
+      });
+
+      // Case-insensitive matching
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        patternOptions: {
+          // [!code ++]
+          caseSensitiveMatch: false
+        }
+      });
+
+      // Disallowing patterns to match entries that begin with a period (.).
+      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+        patternOptions: {
+          // [!code ++]
+          dot: false
+        }
+      });
+      ```
+  </div>
+</section>
+
+<SeparatorSection />
+
+## Returns
+
+Returns a `Promise<void>`.  
+The function performs asynchronous file processing and does not return any value.
+
+<SeparatorSection />
+
+## Version Information
+
+<ApiVersionInfoComp packageName='build-tools' categoryApi='generate' nameApi='generateReferenceIndex' />
+
+<SeparatorSection />
+
+<MadeBy /> 

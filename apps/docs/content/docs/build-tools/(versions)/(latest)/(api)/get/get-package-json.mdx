@@ -1,0 +1,203 @@
+---
+pageName: getPackageJson
+pageNameAlias: "Get: getPackageJson"
+lastUpdateData: 2026/04/28
+packageMeta:
+  name: "Build Tools"
+  version: "latest"
+  tag: [build-tools]
+pageData:
+  title: "Get: getPackageJson"
+  description: Resolve and read the nearest package.json by walking up the directory tree from a working directory.
+metaSeoData:
+  title: "Get: getPackageJson"
+  description: Learn how the getPackageJson utility in Build Tools by Rzl Zone resolves and reads the nearest package.json for build tools, bundlers, CLI utilities, and monorepo-aware infrastructure code.
+---
+
+import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
+
+## Overview
+
+`getPackageJson` is a utility for resolving and reading the nearest `package.json` file from a given working directory.
+
+It walks up the directory tree starting from `cwd` (or `process.cwd()`) until a valid `package.json` is found, then returns the parsed result as a fully typed object.
+
+- **The function supports:**
+  - Automatic nearest `package.json` discovery.
+  - Custom starting directory via `cwd`.
+  - Node ESM and CommonJS environments.
+  - Monorepo and nested workspace structures.
+  - Typed results through `PackageJson`.
+
+---
+
+### Why use this?
+
+- Read package metadata without hardcoding file paths.
+- Useful for build tools and bundler configuration.
+- Works reliably in monorepos and nested packages.
+- Avoids JSON module import limitations.
+- Ideal for CLI tools and infrastructure scripts.
+- Returns typed package metadata such as name, version, exports, and dependencies.
+
+<SeparatorSection />
+
+## Importing
+
+<Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
+  <Tab id="ESM" value="ESM">
+    ```ts
+    import { getPackageJson } from "@rzl-zone/build-tools";
+    ```
+  </Tab>
+  <Tab id="CJS" value="CJS">
+    ```ts
+    const { getPackageJson } = require("@rzl-zone/build-tools");
+    ```
+  </Tab>
+</Tabs> 
+
+<SeparatorSection />
+
+## Syntax
+
+<Tabs groupId="tabsSelect::language" defaultValue="TS" className="mt-1.5" persist>
+  <TabsList>
+    <TabsTrigger value="TS">
+      <BiLogoTypescript />
+      TypeScript
+    </TabsTrigger>
+    <TabsTrigger value="JS">
+      <BiLogoJavascript />
+      JavaScript
+    </TabsTrigger>
+  </TabsList>
+  <TabsContent value="TS">
+    ```ts 
+    // [!code word:options:2]
+    getPackageJson( 
+      options?: GetPackageJsonOptions
+    ): Promise<PackageJson>
+    ```
+  </TabsContent>
+  <TabsContent value="JS">
+    ```js 
+    // [!code word:options:1]
+    getPackageJson(options?): Promise<PackageJson>
+    ```
+  </TabsContent>
+</Tabs>
+
+<SeparatorSection />
+
+## Parameters
+
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/get/props.ts" name="GetPackageJson" />
+
+<SeparatorSection />
+
+### Options
+
+Optional configuration object that defines how the utility function should behave 
+in various scenarios, allowing customization and greater control at runtime.
+
+---
+
+<section data-options="docs">
+  #### `cwd` [#cwd]
+  <div className="ml-4">
+    - **Description:**  
+      Working directory of the target project.
+
+      <Callout type="info" title={<strong>Behavior</strong>}>
+        - Determines where lookup for the nearest `package.json` will start.  
+        - Resolution walks upward through parent directories until a matching file is found.  
+        - If provided, resolution begins from this directory.  
+        - If omitted, defaults to `process.cwd()`.
+      </Callout>
+
+      <Callout type="warning" title={<strong>Notes</strong>}>
+        - This should be the directory containing your project or workspace.  
+        - Useful for monorepos, CLI tools, bundler configs, and infrastructure scripts.  
+        - Results are not cached by default.  
+        - Designed for infrastructure-level usage, not hot paths.
+      </Callout>
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`string`*
+
+    - **Default:**  
+      *`process.cwd()`*
+
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Use current working directory
+      const pkg1 = await getPackageJson();
+
+      console.log(pkg1.name, pkg1.version);
+
+      // Resolve from a custom project path
+      const pkg2 = await getPackageJson({
+        cwd: "/workspace/apps/web"
+      });
+
+      // Resolve from monorepo root
+      const pkg3 = await getPackageJson({
+        cwd: "/workspace"
+      });
+      ```
+
+    <Callout type="warning" title={<strong>Throws</strong>}>
+      <div className="ml-4">
+        - Throws if no `package.json` can be found.  
+        - Throws if the located `package.json` contains invalid JSON.
+      </div>
+    </Callout>
+  </div>
+</section>
+
+<SeparatorSection />
+
+## Returns
+
+Returns a `Promise<PackageJson>`.
+
+`PackageJson` represents the parsed contents of a `package.json` file as a structured object containing package metadata.
+
+Common fields may include:
+
+- `name`
+- `version`
+- `description`
+- `license`
+- `author`
+- `type`
+- `main`
+- `module`
+- `exports`
+- `scripts`
+- `dependencies`
+- `devDependencies`
+- `peerDependencies`
+
+<SeparatorSection />
+
+## Throws
+
+Throws a **built-in JavaScript error** in the following cases:
+
+- No `package.json` file can be found while walking up the directory tree.
+- The located `package.json` contains invalid JSON and cannot be parsed.
+- The resolved `package.json` cannot be read due to file system access issues.
+
+<SeparatorSection />
+
+## Version Information
+
+<ApiVersionInfoComp packageName='build-tools' categoryApi='get' nameApi='getPackageJson' />
+
+<SeparatorSection />
+
+<MadeBy /> 

@@ -2,157 +2,169 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rzlzone.vercel.app/docs</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/changelog</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/code-of-conduct</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/contributing</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/installation</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/license</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/main-index</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/requirements</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/security</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/clean/clean-js-build-artifacts</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/clean/clean-ts-build-artifacts</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/copy/copy-file-to-dest</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/ensure/ensure-css-import</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/ensure/ensure-final-newline</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/build-tools/generate/generate-package-banner</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://rzlzone.vercel.app/docs/build-tools/generate/generate-reference-index</loc>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://rzlzone.vercel.app/docs/build-tools/get/get-package-json</loc>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/utils-js</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/utils-js/cdn-usage</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/utils-js/changelog</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/utils-js/code-of-conduct</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/utils-js/contributing</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/utils-js/installation</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/utils-js/license</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/utils-js/requirements</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/utils-js/security</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://rzlzone.vercel.app/docs/utils-js/assertions/assert-is-array</loc>
-    <lastmod>2026-04-27T17:40:07.286Z</lastmod>
+    <lastmod>2026-04-27T23:42:36.283Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>

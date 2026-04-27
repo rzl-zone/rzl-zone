@@ -1,7 +1,7 @@
 ---
 pageName: ensureFinalNewline
 pageNameAlias: "Ensure: ensureFinalNewline"
-lastUpdateData: 2026/04/13
+lastUpdateData: 2026/04/28
 packageMeta:
   name: "Build Tools"
   version: "latest"
@@ -156,10 +156,7 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `logLevel` [#log-level]
   <div className="ml-4">
     - **Description:**  
-      *Logging verbosity level.*
-      <div className="my-1.5 ml-1.5">
-        Controls how detailed the logger output should be during execution.
-      </div>
+      Controls how detailed the logger output should be during execution.
 
       <Callout type="info" title={<strong>Supported values</strong>}> 
         - `silent` ➔ no output.
@@ -208,11 +205,12 @@ in various scenarios, allowing customization and greater control at runtime.
   #### `patternOptions` [#pattern-options]
   <div className="ml-4">
     - **Description:**  
-      *Controls how input file patterns are matched.*
-      <div className="my-1.5 ml-1.5">
+      Controls how input file patterns are matched.
+      
+      <Callout type="info">
         Used to filter or adjust which files are included during processing.  
         Useful for ignoring files, handling hidden files, or tweaking matching behavior.
-      </div>
+      </Callout> 
 
       <Callout type="info" title={<strong>Behavior</strong>}> 
         - Affects which files are selected.

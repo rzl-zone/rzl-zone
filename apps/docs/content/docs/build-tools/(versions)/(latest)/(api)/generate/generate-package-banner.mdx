@@ -1,7 +1,7 @@
 ---
 pageName: generatePackageBanner
 pageNameAlias: "Generate: generatePackageBanner"
-lastUpdateData: 2026/04/13
+lastUpdateData: 2026/04/28
 packageMeta:
   name: "Build Tools"
   version: "latest"
@@ -177,8 +177,10 @@ in various scenarios, allowing customization and greater control at runtime.
   <div className="ml-4">
     - **Description:**  
       Custom package metadata override.
-
-      When provided, this object will be used instead of reading from the filesystem.
+      
+      <Callout type="info">
+        When provided, this object will be used instead of reading from the filesystem.
+      </Callout> 
 
     - **Required:** <em><XIcon /></em>
 
@@ -219,11 +221,14 @@ in various scenarios, allowing customization and greater control at runtime.
     - **Description:**  
       Append an end-of-file newline to the banner output.
 
-      - When enabled, a trailing newline is appended to ensure:
-        - POSIX-compliant text files.
-        - Clean concatenation with subsequent source content.
-        - Consistent formatting during code injection.
+      <Callout type="info">
+        - When enabled, a trailing newline is appended to ensure:
+          - POSIX-compliant text files.
+          - Clean concatenation with subsequent source content.
+          - Consistent formatting during code injection.
 
+      </Callout> 
+    
     - **Required:** <em><XIcon /></em>
 
     - **Type:**  

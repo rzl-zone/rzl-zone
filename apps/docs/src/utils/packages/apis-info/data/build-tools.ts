@@ -46,7 +46,7 @@ export const apiBuildTools = {
   },
   get: {
     getPackageJson: {
-      since: "v0.0.8",
+      since: "v0.0.7",
       category: "get",
       stability: "stable"
     }
