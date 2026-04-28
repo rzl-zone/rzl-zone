@@ -134,7 +134,7 @@ _Please see **[License File](https://github.com/rzl-zone/rzl-zone/blob/main/LICE
 
 ---
 
-<h2 id="enjoy-with-packages">❤️ <strong>Enjoy using `@rzl-zone` packages?  </strong></h2>
+<h2 id="enjoy-with-packages">❤️ <strong>Enjoy using <code>@rzl-zone</code> packages?  </strong></h2>
 
 👉 _Star the monorepo [`⭐`](https://github.com/rzl-zone/rzl-zone) and share it with other JavaScript developers!_  
 👉 _Explore other packages under [`@rzl-zone`](https://github.com/rzl-zone/rzl-zone/tree/main/packages) and help support the project._  
