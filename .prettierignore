@@ -38,5 +38,7 @@ yarn.lock
 # Docs content (handled manually)
 apps/docs/**/*.md
 apps/docs/**/*.mdx
-apps/docs-new/**/*.md
-apps/docs-new/**/*.mdx
+
+README.md
+./README.md
+/README.md

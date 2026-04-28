@@ -101,11 +101,12 @@ Official documentation for all `@rzl-zone` packages is available here:
 
 The documentation includes:
 
-- Package overviews
-- Installation guides
-- API references
-- Usage examples
-- Design & philosophy notes
+- Package overviews.
+- Installation guides.
+- API references.
+- Usage examples.
+- Design & philosophy notes.
+- Package changelog.
 
 > 📖 Each package may also contain additional documentation inside its own directory.
 
@@ -128,13 +129,14 @@ The documentation includes:
 
 <h2 id="license">📜 <strong>License</strong></h2>
 
-**The MIT License (MIT).**
+**The MIT License (MIT).**  
 _Please see **[License File](https://github.com/rzl-zone/rzl-zone/blob/main/LICENSE)** for more information._
 
 ---
 
-✅ **Enjoy using `@rzl-zone` packages?**
-_Star the monorepo [⭐](https://github.com/rzl-zone/rzl-zone) and share it with other JavaScript developers!_
-📦 Explore other packages under [`@rzl-zone`](https://github.com/rzl-zone/rzl-zone) and help support the project 🚀
+<h2 id="enjoy-with-packages">❤️ <strong>Enjoy using `@rzl-zone` packages?  </strong></h2>
+
+👉 _Star the monorepo [`⭐`](https://github.com/rzl-zone/rzl-zone) and share it with other JavaScript developers!_  
+👉 _Explore other packages under [`@rzl-zone`](https://github.com/rzl-zone/rzl-zone/tree/main/packages) and help support the project._  
 
 ---
