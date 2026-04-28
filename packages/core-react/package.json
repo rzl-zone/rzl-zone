@@ -1,7 +1,7 @@
 {
   "name": "@rzl-zone/core-react",
   "version": "0.0.7",
-  "description": "Core React utilities and primitives by the Rzl Zone ecosystem",
+  "description": "Modern React core utilities and primitives.",
   "license": "MIT",
   "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
   "contributors": [

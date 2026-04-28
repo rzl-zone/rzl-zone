@@ -1,7 +1,7 @@
 {
   "name": "@rzl-zone/build-tools-cli",
   "version": "0.0.8",
-  "description": "Build tools cli for packages in the Rzl Zone ecosystem",
+  "description": "CLI for Build Tools to standardize and improve TypeScript and JavaScript build outputs",
   "license": "MIT",
   "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
   "contributors": [

@@ -1,7 +1,7 @@
 {
   "name": "@rzl-zone/eslint",
   "version": "0.0.7",
-  "description": "Official ESLint plugin and flat-config presets maintained by the Rzl Zone ecosystem",
+  "description": "ESLint plugin and flat config presets for modern TypeScript and React projects.",
   "license": "MIT",
   "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",
   "contributors": [

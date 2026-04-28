@@ -73,12 +73,16 @@ This monorepo contains multiple published and experimental packages under the
 
 ### Public Packages
 
-| Package                     | Description                                                                      | Links                                                                                                                                      |
-| --------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| **@rzl-zone/build-tools**   | A toolkit to standardize and improve build outputs for TypeScript and JavaScript | [npm](https://npmjs.com/package/@rzl-zone/build-tools) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/build-tools)     |
-| **@rzl-zone/next-kit**      | Modern toolkit for scalable Next.js applications                                 | [npm](https://npmjs.com/package/@rzl-zone/next-kit) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/next-kit)           |
-| **@rzl-zone/utils-js**      | Type-safe JavaScript & TypeScript utilities                                      | [npm](https://npmjs.com/package/@rzl-zone/utils-js) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/utils-js)           |
-| **@rzl-zone/ts-types-plus** | Advanced TypeScript utility types and interface helper                           | [npm](https://npmjs.com/package/@rzl-zone/ts-types-plus) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/ts-types-plus) |
+| Package                         | Description                                                                               | Links                                                                                                                                                     |
+| ------------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **@rzl-zone/build-tools**       | A toolkit to standardize and improve build outputs for TypeScript and JavaScript          | [npm](https://npmjs.com/package/@rzl-zone/build-tools) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/build-tools)                    |
+| **@rzl-zone/build-tools-cli**   | A CLI toolkit to standardize and improve build outputs for TypeScript and JavaScript      | [npm](https://npmjs.com/package/@rzl-zone/build-tools-cli) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/build-tools-cli)            |
+| **@rzl-zone/click-feedback**    | Lightweight React component for visual click feedback on interactive elements             | [npm](https://npmjs.com/package/@rzl-zone/click-feedback) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/click-feedback)              |
+| **@rzl-zone/core**              | Modern TypeScript and JavaScript core utilities by Rzl Zone                               | [npm](https://npmjs.com/package/@rzl-zone/core) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/core)                                  |
+| **@rzl-zone/core-react**        | Modern React core utilities and primitives.                                               | [npm](https://npmjs.com/package/@rzl-zone/core-react) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/core-react)                      |
+| **@rzl-zone/next-kit**          | Modern toolkit for scalable Next.js applications                                          | [npm](https://npmjs.com/package/@rzl-zone/next-kit) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/next-kit)                          |
+| **@rzl-zone/utils-js**          | Type-safe JavaScript & TypeScript utilities                                               | [npm](https://npmjs.com/package/@rzl-zone/utils-js) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/utils-js)                          |
+| **@rzl-zone/ts-types-plus**     | Advanced TypeScript utility types and interface helper                                    | [npm](https://npmjs.com/package/@rzl-zone/ts-types-plus) · [source](https://github.com/rzl-zone/rzl-zone/tree/main/packages/ts-types-plus)                |
 
 > 📌 Each package has its own README, documentation, and release lifecycle.
 
@@ -102,52 +106,6 @@ The documentation includes:
 - Design & philosophy notes
 
 > 📖 Each package may also contain additional documentation inside its own directory.
-
----
-
-<h2 id="philosophy">ℹ️ <strong>Philosophy</strong></h2>
-
-All `@rzl-zone` packages follow the same core principles:
-
-- ✅ **Type-first design**
-- 🧪 Strong TypeScript inference & safety
-- 🧩 Small, composable utilities
-- 🚀 Developer experience focused
-- 📐 Opinionated, but flexible conventions
-
----
-
-<h2 id="development">🛠 <strong>Development</strong></h2>
-
-**_This repository uses_**
-
-- **pnpm workspaces**
-- **Turborepo**
-- **TypeScript**
-- **Changesets** (for versioning & publishing)
-
-**_Getting Started_**
-
-```bash
-git clone https://github.com/YOUR-USERNAME/rzl-zone.git
-cd rzl-zone
-pnpm install
-```
-
-**_Working on a specific package (example)_**
-
-```bash
-pnpm -F @rzl-zone/next-kit dev
-pnpm -F @rzl-zone/next-kit build
-```
-
----
-
-<h2 id="changelog">📝 <strong>Changelog</strong></h2>
-
-**All notable changes are documented here:**
-
-**👉 [CHANGELOG](https://github.com/rzl-zone/rzl-zone/blob/main/CHANGELOG.md).**
 
 ---
 
@@ -176,7 +134,5 @@ _Please see **[License File](https://github.com/rzl-zone/rzl-zone/blob/main/LICE
 ✅ **Enjoy using `@rzl-zone` packages?**
 _Star the monorepo [⭐](https://github.com/rzl-zone/rzl-zone) and share it with other JavaScript developers!_
 📦 Explore other packages under [`@rzl-zone`](https://github.com/rzl-zone/rzl-zone) and help support the project 🚀
-
-Explore the docs at 👉 **[Docs](https://rzlzone.vercel.app/docs)** 🚀
 
 ---
