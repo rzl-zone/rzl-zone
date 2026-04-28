@@ -1,6 +1,6 @@
 {
   "name": "@rzl-zone/build-tools",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Toolkit to standardize and improve TypeScript and JavaScript build outputs.",
   "license": "MIT",
   "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",

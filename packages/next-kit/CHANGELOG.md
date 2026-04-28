@@ -1,5 +1,14 @@
 # @rzl-zone/next-kit
 
+## 0.9.7
+
+### Patch Changes
+
+- Updated dependencies [e3c093f]
+  - @rzl-zone/core-react@0.0.8
+  - @rzl-zone/core@0.0.8
+  - @rzl-zone/ts-types-plus@0.1.4
+
 ## 0.9.6
 
 ### Patch Changes

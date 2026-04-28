@@ -1,5 +1,13 @@
 # @rzl-zone/build-tools
 
+## 0.0.9
+
+### Patch Changes
+
+- e3c093f: Update package descriptions and refresh monorepo `README.md`.
+- Updated dependencies [e3c093f]
+  - @rzl-zone/node-only@0.0.8
+
 ## 0.0.8
 
 ### Patch Changes
