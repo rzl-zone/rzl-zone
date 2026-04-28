@@ -1,6 +1,6 @@
 {
   "name": "@workspace/fd-ui",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A customized Fumadocs UI setup for Rzl Zone documentation web.",
   "private": true,
   "type": "module",
