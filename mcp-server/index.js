@@ -1,50 +1,31 @@
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+// @ts-check
+
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {
-  ListToolsRequestSchema,
-  CallToolRequestSchema
-} from "@modelcontextprotocol/sdk/types.js";
-
 import fs from "fs/promises";
+import { z } from "zod";
 
-const server = new Server(
-  {
-    name: "monorepo-ai",
-    version: "1.0.0"
-  },
-  {
-    capabilities: {
-      tools: {}
-    }
-  }
-);
-
-// LIST TOOLS
-server.setRequestHandler(ListToolsRequestSchema, async () => {
-  return {
-    tools: [
-      {
-        name: "readFile",
-        description: "Read file from repo",
-        inputSchema: {
-          type: "object",
-          properties: {
-            path: { type: "string" }
-          },
-          required: ["path"]
-        }
-      }
-    ]
-  };
+const server = new McpServer({
+  name: "monorepo-ai",
+  version: "1.0.0"
 });
 
-// CALL TOOL
-server.setRequestHandler(CallToolRequestSchema, async (req) => {
-  const { name, arguments: args } = req.params;
+const readFileSchema = z.object({
+  path: z.string()
+});
 
-  if (name === "readFile") {
+// TOOL
+server.registerTool(
+  "readFile",
+  {
+    description: "Read file from repo",
+    inputSchema: readFileSchema
+  },
+  async (args) => {
+    const { path } = args;
+
     try {
-      const content = await fs.readFile(args.path, "utf-8");
+      const content = await fs.readFile(path, "utf-8");
 
       return {
         content: [
@@ -59,23 +40,29 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
         content: [
           {
             type: "text",
-            text: "Error: " + err.message
+            text: "Error: " + (err instanceof Error ? err.message : String(err))
           }
-        ]
+        ],
+        isError: true
       };
     }
   }
+);
 
-  return {
-    content: [
-      {
-        type: "text",
-        text: "Unknown tool"
-      }
-    ]
-  };
-});
+/** @param {...unknown} args */
+const log = (...args) => console.error("[MCP]", ...args);
 
-// START SERVER
-const transport = new StdioServerTransport();
-await server.connect(transport);
+/** @param {...unknown} args */
+const logError = (...args) => console.error("[MCP ERROR]", ...args);
+
+async function main() {
+  try {
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    log("server running");
+  } catch (error) {
+    logError("failed:", error);
+  }
+}
+
+main();
