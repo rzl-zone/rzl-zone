@@ -105,7 +105,7 @@
     "@workspace/fd-shiki": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9.39.2",
-    "next": "^16.2.3",
+    "next": "^16.2.4",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "tsdown": "0.21.8",
