@@ -1,6 +1,6 @@
 {
   "name": "@workspace/fd-core",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A customized Fumadocs Core setup for Rzl Zone documentation web.",
   "private": true,
   "type": "module",

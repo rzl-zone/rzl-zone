@@ -1,5 +1,11 @@
 # @rzl-zone/node-only
 
+## 0.0.9
+
+### Patch Changes
+
+- 9a5c803: chore: refine and improve TSDoc comments across packages.
+
 ## 0.0.8
 
 ### Patch Changes
