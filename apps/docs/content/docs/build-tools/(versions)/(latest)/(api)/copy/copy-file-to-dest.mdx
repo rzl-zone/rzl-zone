@@ -25,7 +25,7 @@ This utility is file-type agnostic and can be used to copy any kind of asset, in
 - **The function supports:**
   - Copying a single file using a single configuration object.
   - Copying multiple files using an array or a Set of configuration objects.
-  - When using a Set, it is recommended to use [`createCopyFileToDestParameterSet()`](#createcopyfiletodestparameterset) to ensure proper TypeScript inference and autocomplete support.
+  - When using a Set, it is recommended to use [`createCopyFileToDestParameterSet()`](#create-copy-file-to-dest-parameter-set) to ensure proper TypeScript inference and autocomplete support.
 
 ---
 
@@ -36,7 +36,7 @@ This utility is file-type agnostic and can be used to copy any kind of asset, in
 - Rename files during copy for cleaner distribution structure.
 - Supports batch copying with arrays or Set configurations.
 - Useful for CSS, JavaScript, JSON, images, fonts, and other static assets.
-  
+
 <SeparatorSection />
 
 ## Importing
@@ -94,7 +94,7 @@ This utility is file-type agnostic and can be used to copy any kind of asset, in
 
 <SeparatorSection />
 
-### Param
+### `param`
 
 The parameter options for copying a file.
 
@@ -325,7 +325,7 @@ A single `CopyFileToDestParam` object, an array, or a Set of `CopyFileToDestPara
     
 <SeparatorSection />
 
-### Options
+### `options`
 
 Optional configuration object that defines how the utility function should behave 
 in various scenarios, allowing customization and greater control at runtime.
@@ -385,7 +385,7 @@ in various scenarios, allowing customization and greater control at runtime.
 
 ## Helper
 
-### `createCopyFileToDestParameterSet`
+### `createCopyFileToDestParameterSet` [#create-copy-file-to-dest-parameter-set]
   Creates a Set of parameters for copy-file-to-dest.
 
   Utility helper to construct a Set of `CopyFileToDestParam` with proper type inference and editor autocomplete support.
@@ -421,7 +421,7 @@ in various scenarios, allowing customization and greater control at runtime.
     // usage with copyFileToDest
     await copyFileToDest(setB);
 
-    // or directly usage without create new variable
+    // or directly usage without creating a new variable
     await copyFileToDest(
       createCopyFileToDestParameterSet([
         {
@@ -445,7 +445,7 @@ The function performs asynchronous file processing and does not return any value
 
 <SeparatorSection />
 
-## Version Information
+## Version information
 
 <ApiVersionInfoComp packageName='build-tools' categoryApi='copy' nameApi='copyFileToDest' />
 

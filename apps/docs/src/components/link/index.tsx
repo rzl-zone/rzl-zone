@@ -334,3 +334,5 @@ export const FumaNextLink: FC<FumaNextLinkType> = ({
     </NextLink>
   );
 };
+
+export { PackageLink } from "./package-link";

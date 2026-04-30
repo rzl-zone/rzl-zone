@@ -1,37 +1,65 @@
 ---
-pageName: ensureFinalNewline
-pageNameAlias: "Ensure: ensureFinalNewline"
+pageName: normalizeJsBuildNewlines
+pageNameAlias: "Normalize: normalizeJsBuildNewlines"
 lastUpdateData: 2026/04/28
 packageMeta:
   name: "Build Tools"
   version: "latest"
   tag: [build-tools]
 pageData:
-  title: "Ensure: ensureFinalNewline"
-  description: Ensure files end with exactly one final newline by normalizing trailing line endings in matched files.
+  title: "Normalize: normalizeJsBuildNewlines"
+  description: Normalize excessive blank lines in compiled JavaScript files by collapsing multiple consecutive newlines into a consistent format.
 metaSeoData:
-  title: "Ensure: ensureFinalNewline"
-  description: Learn how the ensureFinalNewline utility in Build Tools by Rzl Zone ensures matched files end with exactly one final newline while preserving internal formatting.
+  title: "Normalize: normalizeJsBuildNewlines"
+  description: Learn how the normalizeJsBuildNewlines utility in Build Tools by Rzl Zone normalizes excessive blank lines in compiled JavaScript files for cleaner output.
 ---
 
 import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
 
 ## Overview
 
-`ensureFinalNewline` ensures matched files end with exactly one final newline character.
+`normalizeJsBuildNewlines` is a utility for normalizing compiled JavaScript files by removing excessive blank lines.
 
-It removes trailing newline characters at the end of each file, then appends a single platform-consistent newline while preserving all internal formatting and whitespace.
+It processes files based on the provided pattern(s) and ensures that:
+
+- **Excessive newlines are collapsed**  
+  - Any occurrence of **three or more consecutive line breaks** (`\n` or `\r\n`) will be normalized into a consistent newline format.  
+  - This helps prevent unnecessarily large gaps in compiled output.
+
+  <Callout type="info" title={<strong>Example</strong>}> 
+    **Before:* 
+    ```js disableCopy lineNumbers 
+    const a = 1;
+
+
+
+    const b = 2;
+    ```
+    ---
+    **After:*
+    ```js disableCopy lineNumbers 
+    const a = 1;
+
+    const b = 2;
+    ```
+  </Callout>
+
+
+- **Only affected files are rewritten**  
+  - Files are only modified when excessive newlines are detected.  
+  - Safe to run multiple times without introducing changes.
+
+- **Supports common JavaScript build outputs**  
+  - Includes `.js`, `.cjs`, `.mjs`, `.esm.js`, `.module.js`.
 
 ---
 
 ### Why use this?
 
-- Ensures exactly one final newline at the end of each file.
-- Supports both LF (`\n`) and CRLF (`\r\n`).
-- Fully idempotent.
-- Preserves internal formatting and whitespace.
-- Writes only when file content changes.
-- Useful for post-build output normalization and POSIX compatibility.
+- Cleans up messy build output formatting.
+- Improves readability of compiled files.
+- Keeps distribution artifacts consistent.
+- Safe for repeated post-build execution (idempotent).
 
 <SeparatorSection />
 
@@ -40,12 +68,12 @@ It removes trailing newline characters at the end of each file, then appends a s
 <Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
   <Tab id="ESM" value="ESM">
     ```ts
-    import { ensureFinalNewline } from "@rzl-zone/build-tools";
+    import { normalizeJsBuildNewlines } from "@rzl-zone/build-tools";
     ```
   </Tab>
   <Tab id="CJS" value="CJS">
     ```ts
-    const { ensureFinalNewline } = require("@rzl-zone/build-tools");
+    const { normalizeJsBuildNewlines } = require("@rzl-zone/build-tools");
     ```
   </Tab>
 </Tabs> 
@@ -68,16 +96,16 @@ It removes trailing newline characters at the end of each file, then appends a s
   <TabsContent value="TS">
     ```ts 
     // [!code word:pattern:2] [!code word:options:3]
-    ensureFinalNewline(
+    normalizeJsBuildNewlines(
       pattern: StringCollection, 
-      options?: EnsureFinalNewlineOptions
+      options?: NormalizeJsArtifactsOptions
     ): Promise<void>
     ```
   </TabsContent>
   <TabsContent value="JS">
     ```js 
     // [!code word:pattern:1] [!code word:options:1]
-    ensureFinalNewline(pattern, options): Promise<void>
+    normalizeJsBuildNewlines(pattern, options?): Promise<void>
     ```
   </TabsContent>
 </Tabs>
@@ -86,7 +114,7 @@ It removes trailing newline characters at the end of each file, then appends a s
 
 ## Parameters
 
-<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/ensure/props.ts" name="EnsureFinalNewline" />
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/normalize/props.ts" name="NormalizeJsBuildNewlines" />
 
 <SeparatorSection />
 
@@ -97,7 +125,7 @@ Glob pattern or list of patterns that target JavaScript output files.
 Accepted values:
 
 - **`string`** ➔ single glob pattern.
-- **`string[]`** ➔ multiple glob patterns.  
+- **`string[]`** ➔ multiple glob patterns.
 - **`Set<string>`** ➔ unique collection of patterns.
 
 ---
@@ -115,29 +143,51 @@ Patterns support common glob syntax, including:
   Pattern resolution behavior can be customized via <FumaNextLink href='#pattern-options'>`options.patternOptions`</FumaNextLink> (e.g. hidden files, case sensitivity, concurrency, and ignore rules).
 </Callout>
 
+<Callout type="warning" title={<strong>File Matching Behavior</strong>}>
+  - This utility only processes files that match **recognized JavaScript build output formats**.
+  - This filtering is applied **after pattern matching**.
+  - Supported file types include:
+    - `.js`.
+    - `.mjs`.
+    - `.cjs`.
+    - `.esm.js`.
+    - `.module.js`.
+
+  Files that do **not** match these formats will be automatically **ignored**, even if they are included in the provided pattern.
+
+  <div className="mt-2">
+    <strong>Examples:</strong>
+
+    - `dist/index.js` ➔ ✅ processed.
+    - `dist/index.ts` ➔ ❌ ignored.
+    - `dist/styles.css` ➔ ❌ ignored.
+    - `dist/index.js.map` ➔ ❌ ignored.
+  </div>
+</Callout>
+
 ---
 
 #### Examples
 
 ```ts title="TypeScript/JavaScript" fileCodeIcon
 // Single pattern
-ensureFinalNewline("dist/**/*.js");
+normalizeJsBuildNewlines("dist/**/*.js");
 
 // Multiple patterns
-ensureFinalNewline(["dist/**/*.js", "build/**/*.js"]);
+normalizeJsBuildNewlines(["dist/**/*.js", "build/**/*.js"]);
 
 // Using Set
-ensureFinalNewline(new Set(["dist/**/*.js"]));
+normalizeJsBuildNewlines(new Set(["dist/**/*.js"]));
 
 // With options
-ensureFinalNewline("dist/**/*.{js,cjs,mjs}", {
+normalizeJsBuildNewlines("dist/**/*.{js,cjs,mjs}", {
   patternOptions: {
     ignore: ["**/*.test.js"]
   }
 });
 
 // Exclude pattern
-ensureFinalNewline([
+normalizeJsBuildNewlines([
   "dist/**/*.{js,cjs,mjs}",
   "!dist/**/*.test.js"
 ]);
@@ -168,7 +218,7 @@ in various scenarios, allowing customization and greater control at runtime.
       <Callout type="warning" title={<strong>Notes</strong>}> 
         - Invalid values are automatically reset to default.
         - All levels include error output except `silent`.
-      </Callout>
+      </Callout> 
 
     - **Required:** <em><XIcon /></em>
 
@@ -181,19 +231,19 @@ in various scenarios, allowing customization and greater control at runtime.
     - **Example:**  
       ```ts title="TypeScript/JavaScript" fileCodeIcon
       // Minimal output (errors only)
-      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+      await normalizeJsBuildNewlines("dist/**/*.js", {
         // [!code ++]
         logLevel: "error"
       });
 
       // Debug mode (verbose logs)
-      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+      await normalizeJsBuildNewlines("dist/**/*.js", {
         // [!code ++]
         logLevel: "debug"
       });
 
       // Silent mode (no logs)
-      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+      await normalizeJsBuildNewlines("dist/**/*.js", {
         // [!code ++]
         logLevel: "silent"
       });
@@ -216,12 +266,12 @@ in various scenarios, allowing customization and greater control at runtime.
         - Affects which files are selected.
         - Can exclude unwanted files (e.g. test files).
         - Falls back to default configuration when invalid type or not provided.
-      </Callout>
+      </Callout> 
 
     - **Required:** <em><XIcon /></em>
 
     - **Type:**  
-      *`object`*
+      *`object`*  
 
     - **Default:**  
       ```ts fileCodeIcon disableCopy
@@ -243,10 +293,10 @@ in various scenarios, allowing customization and greater control at runtime.
       }
       ```
 
-    - **Example:**   
+    - **Example:**  
       ```ts title="TypeScript/JavaScript" fileCodeIcon
       // Ignore source maps
-      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+      await normalizeJsBuildNewlines("dist/**/*.{js,cjs}", {
         patternOptions: {
           // [!code ++]
           ignore: ["**/*.map"]
@@ -254,7 +304,7 @@ in various scenarios, allowing customization and greater control at runtime.
       });
 
       // Case-insensitive matching
-      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+      await normalizeJsBuildNewlines("dist/**/*.{js,cjs}", {
         patternOptions: {
           // [!code ++]
           caseSensitiveMatch: false
@@ -262,7 +312,7 @@ in various scenarios, allowing customization and greater control at runtime.
       });
 
       // Disallowing patterns to match entries that begin with a period (.).
-      await cleanTypesBuildArtifacts("dist/**/*.{d.ts,d.cts,d.mts}", {
+      await normalizeJsBuildNewlines("dist/**/*.{js,cjs}", {
         patternOptions: {
           // [!code ++]
           dot: false
@@ -283,7 +333,7 @@ The function performs asynchronous file processing and does not return any value
 
 ## Version information
 
-<ApiVersionInfoComp packageName='build-tools' categoryApi='ensure' nameApi='ensureFinalNewline' />
+<ApiVersionInfoComp packageName='build-tools' categoryApi='normalize' nameApi='normalizeJsBuildNewlines' />
 
 <SeparatorSection />
 

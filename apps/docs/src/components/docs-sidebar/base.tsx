@@ -60,7 +60,7 @@ export interface SidebarProviderProps {
   defaultOpenLevel?: number;
 
   /**
-   * Prefetch links, default behaviour depends on your React.js framework.
+   * Prefetch links, default behavior depends on your React.js framework.
    */
   prefetch?: FumaNextLinkType["prefetch"];
 

@@ -16,8 +16,6 @@ import { TbBrandTypescript } from "react-icons/tb";
 
 import ImgLogo from "@/images/rzl-logo.png";
 
-import { getHrefPackage } from "@/utils/packages/docs";
-
 <div className="flex mb-0 flex-col items-stretch text-center">
   <Image
     className="mx-auto rounded-full"
@@ -82,9 +80,10 @@ import { getHrefPackage } from "@/utils/packages/docs";
     />
   </FumaNextLink>
   
-  <FumaNextLink
+  <PackageLink
     className="not-prose"
-    href={getHrefPackage("build-tools","contributing")} 
+    packageName="build-tools"
+    toPath="contribute"
     aria-label="Contribute"
   >
     <img 
@@ -94,11 +93,12 @@ import { getHrefPackage } from "@/utils/packages/docs";
       width={10}
       height={10}
     />
-  </FumaNextLink>
+  </PackageLink>
   
-  <FumaNextLink
+  <PackageLink
     className="not-prose"
-    href={getHrefPackage("build-tools","license")} 
+    packageName="build-tools"
+    toPath="license" 
     aria-label="License"
   >
     <img 
@@ -108,7 +108,7 @@ import { getHrefPackage } from "@/utils/packages/docs";
       width={10}
       height={10}
     />
-  </FumaNextLink>
+  </PackageLink>
   
   <FumaNextLink
     className="not-prose"

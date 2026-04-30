@@ -10,7 +10,7 @@ export type GetPackageJson = Prettify<
      * - [`cwd`](#cwd): Working directory of the target project.
      *
      * @default { cwd: process.cwd(); }
-     * @link [GetPackageJson](#options)
+     * @link [`GetPackageJsonOptions-options`](#options)
      */
     options?: GetPackageJsonOptions;
   },

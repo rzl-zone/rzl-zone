@@ -27,7 +27,7 @@ It walks up the directory tree starting from `cwd` (or `process.cwd()`) until a 
   - Custom starting directory via `cwd`.
   - Node ESM and CommonJS environments.
   - Monorepo and nested workspace structures.
-  - Typed results through `PackageJson`.
+  - Typed results through [`PackageJson`](#returns).
 
 ---
 
@@ -96,7 +96,7 @@ It walks up the directory tree starting from `cwd` (or `process.cwd()`) until a 
 
 <SeparatorSection />
 
-### Options
+### `options`
 
 Optional configuration object that defines how the utility function should behave 
 in various scenarios, allowing customization and greater control at runtime.
@@ -168,19 +168,19 @@ Returns a `Promise<PackageJson>`.
 
 Common fields may include:
 
-- `name`
-- `version`
-- `description`
-- `license`
-- `author`
-- `type`
-- `main`
-- `module`
-- `exports`
-- `scripts`
-- `dependencies`
-- `devDependencies`
-- `peerDependencies`
+- `name`.
+- `version`.
+- `description`.
+- `license`.
+- `author`.
+- `type`.
+- `main`.
+- `module`.
+- `exports`.
+- `scripts`.
+- `dependencies`.
+- `devDependencies`.
+- `peerDependencies`.
 
 <SeparatorSection />
 
@@ -194,7 +194,7 @@ Throws a **built-in JavaScript error** in the following cases:
 
 <SeparatorSection />
 
-## Version Information
+## Version information
 
 <ApiVersionInfoComp packageName='build-tools' categoryApi='get' nameApi='getPackageJson' />
 

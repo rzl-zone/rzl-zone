@@ -1,34 +1,47 @@
 "use client";
 
 import type { Prettify } from "@rzl-zone/ts-types-plus";
+
+import {
+  type ComponentProps,
+  type ReactNode,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
+
 import semver from "semver";
-import { type ComponentProps, type ReactNode, useMemo, useState } from "react";
 
 import { usePathname } from "next/navigation";
 
 import { LuTags } from "react-icons/lu";
 import { GoPackage } from "react-icons/go";
+
+import { cn } from "@rzl-zone/docs-ui/utils";
 import {
   Check,
   ChevronsUpDown
 } from "@rzl-zone/docs-ui/components/icons/lucide";
+import { Button } from "@rzl-zone/docs-ui/components/button";
 
-import { useRouter } from "@rzl-zone/next-kit/progress-bar/app";
-
-import { delay } from "@rzl-zone/utils-js/promises";
-import { normalizePathname } from "@rzl-zone/utils-js/urls";
 import {
   isArray,
   isNonEmptyString,
   isSet
 } from "@rzl-zone/utils-js/predicates";
+import { normalizePathname } from "@rzl-zone/utils-js/urls";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
-import { Button } from "@rzl-zone/docs-ui/components/button";
+import { useEffectEvent } from "@rzl-zone/core-react/hooks";
+
+import { useRouter } from "@rzl-zone/next-kit/progress-bar/app";
+
 import { SOURCE_CONFIG } from "@/configs/source/package";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+
 import { isTabActive } from "@/utils/fumadocs";
 import type { SidebarTab } from "@/utils/fumadocs/types";
+
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { delay } from "@rzl-zone/utils-js/promises";
 
 export type OptionSideBarNavToggle = Prettify<
   {
@@ -109,7 +122,7 @@ export function SidebarNavToggle({
   typeControl: "versions" | "packages";
   placeholder?: ReactNode;
   options: SidebarNavToggleOptions[];
-} & ComponentProps<"button">) {
+} & Omit<ComponentProps<"button">, "onClick">) {
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -119,6 +132,12 @@ export function SidebarNavToggle({
   const selected = useMemo(() => {
     return options.findLast((item) => isTabActive(item, pathname));
   }, [options, pathname]);
+
+  const openSetter = useEffectEvent((open: boolean) => setOpen(open));
+
+  useEffect(() => {
+    if (open) openSetter(false);
+  }, [pathname]);
 
   const item = selected ? (
     <>
@@ -178,7 +197,7 @@ export function SidebarNavToggle({
           });
 
           const isActive = itemUrl === selectedUrl;
-          if (!isActive && item.unlisted) return;
+          if (!isActive && item.unlisted) return null;
 
           const isSameUrl = itemUrl === pathname;
           const disableNavigationPackage = currentSelectedPackage({
@@ -193,19 +212,15 @@ export function SidebarNavToggle({
               variant={"ghost"}
               tabIndex={-1}
               {...item.props}
-              onClick={(e) => {
-                e.preventDefault();
-
+              onClick={async () => {
                 if (isSameUrl || disableNavigationPackage) {
                   setOpen(false);
                   return;
                 }
 
+                router.push(itemUrl);
+                await delay(50);
                 setOpen(false);
-
-                setTimeout(() => {
-                  router.push(itemUrl);
-                }, 0);
               }}
               {...(isSameUrl || disableNavigationPackage
                 ? { "data-prevent-rzl-progress-bar": true }

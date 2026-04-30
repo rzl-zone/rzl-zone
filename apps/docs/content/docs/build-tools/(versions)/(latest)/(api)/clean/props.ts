@@ -18,7 +18,7 @@ type DefaultOptionsCleanBuildArtifacts = {
    *   - [`patternOptions`](#pattern-options): Optional configuration for controlling file pattern resolution.
    *
    * @default { removeSourceMap: false; removeRegion: true; removeAdjacentEmptyLines: false; logLevel: "info"; patternOptions: { absolute: false, baseNameMatch: false, caseSensitiveMatch: true, concurrency: os.cpus().length, dot: true, followSymbolicLinks: true, globstar: true, ignore: [], markDirectories: false, objectMode: false, onlyDirectories: false, onlyFiles: true, unique: true, throwErrorOnBrokenSymbolicLink: false } }
-   * @link [CleanJsBuildArtifacts | CleanTypesBuildArtifacts](#options)
+   * @link [`CleanJsBuildArtifacts-options` | `CleanTypesBuildArtifacts-options`](#options)
    */
   options?: CleanJsArtifactsOptions;
 };
@@ -31,7 +31,7 @@ export type CleanJsBuildArtifacts = Prettify<
      *
      * @default -
      *
-     * @link [CleanJsBuildArtifacts](#pattern)
+     * @link [`CleanJsBuildArtifacts-pattern`](#pattern)
      */
     pattern: StringCollection;
   } & DefaultOptionsCleanBuildArtifacts,
@@ -46,7 +46,7 @@ export type CleanTypesBuildArtifacts = Prettify<
      *
      * @default -
      *
-     * @link [CleanTypesBuildArtifacts](#pattern)
+     * @link [`CleanTypesBuildArtifacts-pattern`](#pattern)
      */
     pattern: StringCollection;
   } & DefaultOptionsCleanBuildArtifacts,

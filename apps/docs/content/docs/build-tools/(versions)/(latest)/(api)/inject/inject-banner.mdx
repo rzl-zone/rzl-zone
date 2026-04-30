@@ -1,0 +1,696 @@
+---
+pageName: injectBanner
+pageNameAlias: "Inject: injectBanner"
+lastUpdateData: 2026/04/28
+packageMeta:
+  name: "Build Tools"
+  version: "latest"
+  tag: [build-tools]
+pageData:
+  title: "Inject: injectBanner"
+  description: Inject banner comments into compiled JavaScript files with flexible replacement, ordering, and deduplication options.
+metaSeoData:
+  title: "Inject: injectBanner"
+  description: Learn how the injectBanner utility in Build Tools injects and manages banner comments in JavaScript output files.
+---
+
+import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
+
+## Overview
+
+`injectBanner` is a utility for injecting banner comments into compiled output files.
+
+It scans files based on the provided glob pattern(s) and inserts one or more banner comment blocks at the top of each file when applicable.
+
+Unlike comment-stripping utilities, this function **does not remove existing comments** (except when explicitly replacing existing banner blocks). Instead, it focuses on consistent and controlled banner injection.
+
+---
+
+### Key Capabilities
+
+- **Banner Injection**  
+  Adds one or multiple banner blocks to matched files.
+
+- **Targeted File Processing**  
+  - Scans files based on glob patterns.
+  - Skips files that are empty, contain no executable code, or are not safe to modify.
+
+- **Smart Placement**  
+  - Injected after shebang (`#!`) if present.
+  - Respects existing banner structure.
+
+- **Content Preservation**  
+  Keeps the original file structure intact without modifying existing code.
+
+- **Idempotent Operation**  
+  Running multiple times will not duplicate or alter existing banners unnecessarily.
+
+---
+
+<Callout type="info" title={<strong>Learn more</strong>}> 
+  - See <FumaNextLink href="#pattern">`pattern`</FumaNextLink> for file matching and filtering rules.
+  - See <FumaNextLink href="#banner-text">`bannerText`</FumaNextLink> for injection behavior, ordering, and normalization.
+  - See <FumaNextLink href="#replace-banner">`replaceBanner`</FumaNextLink>, <FumaNextLink href="#banner-position">`bannerPosition`</FumaNextLink>, and <FumaNextLink href="#remove-duplicate">`removeDuplicate`</FumaNextLink> for advanced options. 
+</Callout>
+
+---
+
+### Why use this?
+
+- Adds license headers or metadata to build outputs.
+- Ensures consistent banner formatting across files.
+- Automates banner management during build pipelines.
+- Prevents duplicate or inconsistent banner insertion.
+
+<SeparatorSection />
+
+## Importing
+
+<Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
+  <Tab id="ESM" value="ESM">
+    ```ts
+    import { injectBanner } from "@rzl-zone/build-tools";
+    ```
+  </Tab>
+  <Tab id="CJS" value="CJS">
+    ```ts
+    const { injectBanner } = require("@rzl-zone/build-tools");
+    ```
+  </Tab>
+</Tabs> 
+
+<SeparatorSection />
+
+## Syntax
+
+<Tabs groupId="tabsSelect::language" defaultValue="TS" className="mt-1.5" persist>
+  <TabsList>
+    <TabsTrigger value="TS">
+      <BiLogoTypescript />
+      TypeScript
+    </TabsTrigger>
+    <TabsTrigger value="JS">
+      <BiLogoJavascript />
+      JavaScript
+    </TabsTrigger>
+  </TabsList>
+  <TabsContent value="TS">
+    ```ts 
+    // [!code word:pattern]
+    // [!code word:bannerText]
+    // [!code word:options]
+    injectBanner(
+      pattern: StringCollection,
+      bannerText: StringCollection, 
+      options?: InjectJsArtifactsOptions
+    ): Promise<void>
+    ```
+  </TabsContent>
+  <TabsContent value="JS">
+    ```js 
+    // [!code word:pattern]
+    // [!code word:bannerText]
+    // [!code word:options]
+    injectBanner(pattern, bannerText, options?): Promise<void>
+    ```
+  </TabsContent>
+</Tabs>
+
+<SeparatorSection />
+
+## Parameters
+
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/inject/props.ts" name="InjectBanner" />
+
+<SeparatorSection />
+
+### `pattern`
+
+Glob pattern or list of patterns used to target files for banner injection.
+
+Accepted values:
+
+- **`string`** ➔ single glob pattern.
+- **`string[]`** ➔ multiple glob patterns.
+- **`Set<string>`** ➔ unique collection of patterns.
+
+---
+
+#### Supported glob features
+
+Patterns support common glob syntax:
+
+- **`*`** ➔ match any characters except `/`.
+- **`**`** ➔ match nested directories.
+- **`{}`** ➔ brace expansion (multiple patterns/extensions).
+- **`!`** ➔ exclude patterns (can be combined with `options.patternOptions.ignore`).
+
+<Callout type="info" title={<strong>Info</strong>}>
+  Pattern resolution behavior can be customized via <FumaNextLink href="#pattern-options">`options.patternOptions`</FumaNextLink> (e.g. hidden files, case sensitivity, concurrency, and ignore rules).
+</Callout>
+
+---
+
+#### File processing behavior
+
+All files matched by the provided pattern(s) are scanned.
+There is **no filtering based on file extension**.
+Instead, files are skipped only if they are considered **non-commentable** or unsafe to modify.
+
+---
+
+#### Non-commentable files (always skipped)
+
+The following file types are **never modified** because they do not support JavaScript-style comments or must remain strictly machine-readable.
+
+**Strict JSON Specification (RFC 8259 compliant):**
+
+- `.json`.
+- `.map` (source maps).
+- `.webmanifest`.
+- `.har`.
+- `.geojson`.
+- `.topojson`.
+
+**Lock files & dependency metadata (machine-generated):**
+
+- `package-lock.json`.
+- `composer.lock`.
+- `bun.lockb`.
+
+**Tooling / compiler artifacts:**
+
+- `.tsbuildinfo`.
+
+---
+
+#### Important notes
+
+- JSON strictly **does not allow comments**.
+- Source maps are JSON and must remain **spec-compliant**.
+- Lock files must **never be modified**.
+- This rule is intentionally strict for build tooling safety.
+
+---
+
+#### Explicitly not included
+
+The following formats are **allowed** (they support comments):
+
+- `.jsonc`.
+- `.yaml` / `.yml`.
+- `.toml`.
+- `.xml`.
+
+---
+
+#### Examples
+
+```ts title="TypeScript/JavaScript" fileCodeIcon
+// Single pattern
+injectBanner("dist/**/*.js");
+
+// Multiple patterns
+injectBanner(["dist/**/*.js", "build/**/*.js"]);
+
+// Using Set
+injectBanner(new Set(["dist/**/*.js"]));
+
+// With options
+injectBanner(
+  "dist/**/*.{js,cjs,mjs}",
+  `/** New Banner */`,
+  {
+    patternOptions: {
+      ignore: ["**/*.test.js"]
+    } 
+  }
+);
+
+// Exclude pattern
+injectBanner([
+  "dist/**/*.{js,cjs,mjs}",
+  "!dist/**/*.test.js"
+]);
+```
+
+---
+
+#### Summary
+
+- File selection is controlled by **glob patterns**.
+- File exclusion is controlled by **non-commentable rules**.
+- There is **no file extension whitelist**.
+- Any file outside the excluded categories may be processed.
+
+<SeparatorSection />
+
+### `bannerText` [#banner-text]
+
+Banner string or collection of strings to inject into matched files.
+
+Accepted values:
+
+- **`string`** ➔ single banner block.
+- **`string[]`** ➔ multiple banner blocks.
+- **`Set<string>`** ➔ unique collection of banner blocks.
+
+Each entry represents a **complete banner comment block** that will be injected into the file.
+
+---
+
+#### Injection behavior
+
+- Banner blocks are inserted at the top of each file (respecting [`options.bannerPosition`](#banner-position)).
+- Existing shebang (`#!`) is preserved and remains at the very top.
+- Existing banner-style comments at the top of the file are automatically detected.
+
+---
+
+#### Replace mode
+
+Controlled by [`options.replaceBanner`](#replace-banner):
+
+- **`true`** ➔ replaces existing banner blocks using default detection.
+- **`RegExp`** ➔ replaces using a custom matching pattern.
+
+If a match is found, existing banner blocks will be **fully replaced** by the new `bannerText`.
+
+---
+
+#### Banner ordering
+
+Controlled by [`options.bannerPosition`](#banner-position):
+
+- `"top"` ➔ new banner is placed before existing banners.
+- `"after-existing"` ➔ new banner is appended after existing banners.
+
+---
+
+#### Deduplication
+
+If [`options.removeDuplicate`](#remove-duplicate) is enabled (default):
+
+- Duplicate banner blocks are removed based on trimmed content.
+- Original order is preserved.
+
+---
+
+#### Normalization
+
+Each banner block is automatically formatted before injection:
+
+- Line endings are made consistent across all files.
+- Each banner is separated with clean spacing.
+- Extra whitespace is normalized.
+
+The operation is **idempotent** — running it multiple times will not change the result further.
+
+---
+
+#### Important notes
+
+- `bannerText` should contain **valid comment syntax** (e.g. `/** ... */` or `// ...`).
+- The utility does **not validate comment correctness**, it only injects text.
+- Multiple banner blocks are injected **in order**.
+
+---
+
+#### Examples
+
+**Single banner:**
+  ```ts title="TypeScript/JavaScript" fileCodeIcon
+  await injectBanner(
+    "dist/**/*",
+    `/** My Library v1.0.0 */`
+  );
+```
+
+**Multiple banners:**
+  ```ts title="TypeScript/JavaScript" fileCodeIcon
+  await injectBanner(
+    "dist/**/*",
+    [
+      `/** Project: MyApp */`,
+      `/** License: MIT */`
+    ]
+  );
+```
+
+**With replace mode:**
+  ```ts title="TypeScript/JavaScript" fileCodeIcon
+  await injectBanner(
+    "dist/**/*",
+    `/** Updated Banner */`,
+    { replaceBanner: true }
+  );
+```
+
+---
+
+#### Summary
+
+- `bannerText` defines what content gets injected.
+- Supports single or multiple banner blocks.
+- Controlled by replace, ordering, and deduplication rules.
+- Normalized automatically for consistent output.
+
+<SeparatorSection />
+
+### `options`
+
+Optional configuration object that defines how the utility function should behave 
+in various scenarios, allowing customization and greater control at runtime.
+
+---
+
+<section data-options="docs">
+  #### `replaceBanner` [#replace-banner]
+  <div className="ml-4">
+    - **Description:**  
+      Whether to replace existing banner comment blocks at the top of output files.
+
+      <Callout type="info">
+        Detects banner-style comments at the beginning of files and replaces them with the provided `bannerText` when enabled.
+      </Callout>
+    
+      <Callout type="info" title={<strong>Common behavior:</strong>}> 
+
+        ```js disableCopy
+        /** Old Banner */
+        /** License Info */
+
+        // ➔ replaced with new bannerText when replaceBanner is enabled
+        ```
+
+      </Callout>
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`boolean | RegExp`*
+
+      <Callout type="info" title={<strong>Behavior</strong>}>
+        <div className="ml-4">
+          - **`false`** ➔ keeps existing banner blocks (no replacement).
+          - **`true`** ➔ replaces existing banners using the default detection pattern.
+          - **`RegExp`** ➔ replaces banners that match the provided pattern.
+        </div>
+      </Callout>
+      
+    - **Default:**  
+      *`false`*  
+
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await injectBanner("dist/**/*.js", `/** Updated Banner */`, { 
+        // [!code ++]
+        replaceBanner: true
+      });
+
+      // ➔ replaces existing banner blocks at the top of files
+      ```
+
+    <Callout type="warning" title={<strong>Notes</strong>}>
+      <div className="ml-4">
+        - Custom `RegExp` is internally executed **without the `g` flag** to avoid state-related issues.
+        - Replacement only applies to banner-style comments at the top of the file.
+        - Non-banner comments elsewhere in the file are not affected.
+      </div>
+    </Callout>
+  </div>
+
+  ---
+
+  #### `removeDuplicate` [#remove-duplicate]
+  <div className="ml-4">
+    - **Description:**  
+      Whether to remove duplicate banner blocks during injection.
+
+      <Callout type="info">
+        When enabled, identical banner blocks are automatically deduplicated to prevent repeated insertion across multiple runs.
+      </Callout>
+
+      <Callout type="info" title={<strong>How it works:</strong>}> 
+
+        ```js disableCopy
+        /** License: MIT */
+        /** License: MIT */
+
+        // ➔ becomes
+
+        /** License: MIT */
+        ```
+
+      </Callout> 
+
+      <Callout type="warning" title={<strong>Notes</strong>}> 
+        <div className="ml-4">
+          - Deduplication is based on trimmed content comparison.
+          - Order of banner blocks is preserved.
+          - Only affects banner blocks, not other comments in the file.
+        </div>
+      </Callout>
+
+    - **Required:** <em><XIcon /></em>
+      
+    - **Type:**  
+      *`boolean`*
+
+      <Callout type="info" title={<strong>Behavior</strong>}>
+        <div className="ml-4">
+          - **`true`** ➔ removes duplicate banner blocks.
+          - **`false`** ➔ keeps all banner blocks as-is (no deduplication).
+        </div>
+      </Callout>
+
+    - **Default:**  
+      *`true`*
+
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      await injectBanner("dist/**/*.js", [
+        `/** License: MIT */`,
+        `/** License: MIT */`
+      ], { 
+        // [!code ++]
+        removeDuplicate: false
+      });
+
+      // ➔ duplicate banners are preserved (no deduplication)
+      ```
+  </div>
+
+  ---
+
+  #### `bannerPosition` [#banner-position]
+  <div className="ml-4">
+    - **Description:**  
+      Controls where new banner block(s) are inserted relative to existing banners.
+
+      <Callout type="info">
+        Determines the position of the injected `bannerText` when existing banner-style comments are already present at the top of the file.
+      </Callout>
+
+      <Callout type="warning" title={<strong>Note</strong>}> 
+        - Only affects files that already contain banner blocks.
+        - Does not affect non-banner comments.
+        - Works together with `replaceBanner` and `removeDuplicate`.
+      </Callout>
+
+    - **Required:** <em><XIcon /></em>
+    
+    - **Type:**  
+      *`"top" | "after-existing"`*
+
+    - **Default:**  
+      *`"after-existing"`*
+
+      <Callout type="info" title={<strong>Behavior</strong>}>
+        <div className="ml-4">
+          - **`"top"`** ➔ places new banner before existing banners.
+          - **`"after-existing"`** ➔ appends new banner after existing banners.
+        </div>
+      </Callout>
+
+    - **Example:**  
+      ```js title="dist/index.js (Before)" disableCopy
+      /** Existing Banner */
+      const a = 1;
+      ```
+
+      ```ts title="TypeScript/JavaScript (Usage)" fileCodeIcon
+      await injectBanner("dist/**/*.js", `/** New Banner */`, {
+        // [!code ++]
+        bannerPosition: "top"
+      });
+      ```
+
+      ```js title="dist/index.js (After)" disableCopy 
+      /** New Banner */
+      /** Existing Banner */
+      const a = 1;
+      ```
+  </div>
+
+  ---
+
+  #### `logLevel` [#log-level]
+  <div className="ml-4">
+    - **Description:**  
+      Controls how detailed the logger output should be during execution.
+
+      <Callout type="info" title={<strong>Supported values</strong>}> 
+        - `silent` ➔ no output.
+        - `error` ➔ errors only.
+        - `info` ➔ standard logs (default).
+        - `debug` ➔ verbose logs.
+      </Callout> 
+
+      <Callout type="warning" title={<strong>Notes</strong>}> 
+        - Invalid values are automatically reset to default.
+        - All levels include error output except `silent`.
+      </Callout> 
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*
+
+    - **Default:**  
+      *`"info"`*
+
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Minimal output (errors only)
+      await injectBanner(
+        "dist/**/*.js",
+        `/** My Custom Banner */`,
+        {
+          // [!code ++]
+          logLevel: "error"
+        }
+      );
+
+      // Debug mode (verbose logs)
+      await injectBanner(
+        "dist/**/*.js",
+        [`/** My Custom Banner */`, `/** License: MIT */`],
+        {
+          // [!code ++]
+          logLevel: "debug"
+        }
+      );
+
+      // Silent mode (no logs)
+      await injectBanner(
+        "dist/**/*.js",
+        new Set([`/** My Custom Banner */`, `/** License: MIT */`]),
+        {
+          // [!code ++]
+          logLevel: "silent"
+        }
+      );
+      ```
+  </div>
+
+  ---
+  
+  #### `patternOptions` [#pattern-options]
+  <div className="ml-4">
+    - **Description:**  
+      Controls how input file patterns are matched.
+      
+      <Callout type="info">
+        Used to filter or adjust which files are included during processing.  
+        Useful for ignoring files, handling hidden files, or tweaking matching behavior.
+      </Callout> 
+
+      <Callout type="info" title={<strong>Behavior</strong>}> 
+        - Affects which files are selected.
+        - Can exclude unwanted files (e.g. test files).
+        - Falls back to default configuration when invalid type or not provided.
+      </Callout> 
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`object`*  
+
+    - **Default:**  
+      ```ts fileCodeIcon disableCopy
+      {
+        absolute: false,
+        baseNameMatch: false,
+        caseSensitiveMatch: true,
+        concurrency: os.cpus().length,
+        dot: true,
+        followSymbolicLinks: true,
+        globstar: true,
+        ignore: [],
+        markDirectories: false,
+        objectMode: false,
+        onlyDirectories: false,
+        onlyFiles: true,
+        unique: true,
+        throwErrorOnBrokenSymbolicLink: false
+      }
+      ```
+
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Ignore source maps
+      await injectBanner(
+        "dist/**/*.{js,cjs}",
+        `/** My Custom Banner */`,
+        {
+          patternOptions: {
+            // [!code ++]
+            ignore: ["**/*.map"]
+          }
+        }
+      );
+
+      // Case-insensitive matching
+      await injectBanner(
+        "dist/**/*.{js,cjs}",
+        [`/** My Custom Banner */`, `/** License: MIT */`],
+        {
+          patternOptions: {
+            // [!code ++]
+            caseSensitiveMatch: false
+          }
+        }
+      );
+
+      // Disallowing patterns to match entries that begin with a period (.).
+      await injectBanner(
+        "dist/**/*.{js,cjs}",
+        new Set([`/** My Custom Banner */`, `/** License: MIT */`]),
+        {
+          patternOptions: {
+            // [!code ++]
+            dot: false
+          }
+        }
+      );
+      ```
+  </div>
+</section>
+
+<SeparatorSection />
+
+## Returns
+
+Returns a `Promise<void>`.  
+The function performs asynchronous file processing and does not return any value.
+
+<SeparatorSection />
+
+## Version information
+
+<ApiVersionInfoComp packageName='build-tools' categoryApi='inject' nameApi='injectBanner' />
+
+<SeparatorSection />
+
+<MadeBy /> 

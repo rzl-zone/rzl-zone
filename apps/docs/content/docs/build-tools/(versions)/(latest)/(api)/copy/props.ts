@@ -19,7 +19,7 @@ export type CopyFileToDest = Prettify<
      *
      * @default -
      *
-     * @link [CopyFileToDestParam](#param)
+     * @link [`CopyFileToDestParam-param`](#param)
      */
     param:
       | Prettify<CopyFileToDestParam>
@@ -31,7 +31,7 @@ export type CopyFileToDest = Prettify<
      * - [`logLevel`](#log-level): Controls how verbose the logger output should be.
      *
      * @default { logLevel: "info"; }
-     * @link [CopyFileToDest](#options)
+     * @link [`CopyFileToDestOptions-options`](#options)
      */
     options?: CopyFileToDestOptions;
   },

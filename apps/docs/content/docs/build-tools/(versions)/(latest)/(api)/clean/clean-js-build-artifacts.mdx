@@ -49,7 +49,7 @@ It processes files based on the provided pattern(s) and removes:
 
 - **Source region comments** *(e.g. `// #region`, `// #endregion`, `//#region`, `//#endregion`)*  
   - Removes region markers commonly added by editors or build tools.  
-  ➔ See option: [`removeSourceRegion`](#remove-source-region).
+  ➔ See option: [`removeRegion`](#remove-region).
 
 ---
 
@@ -58,7 +58,7 @@ It processes files based on the provided pattern(s) and removes:
 - Prepares clean files for production or distribution.
 - Removes development-only artifacts from build outputs.
 - Helps reduce bundle noise and improve maintainability.
-  
+
 <SeparatorSection />
 
 ## Importing
@@ -116,7 +116,7 @@ It processes files based on the provided pattern(s) and removes:
 
 <SeparatorSection />
 
-### Pattern
+### `pattern`
 
 Glob pattern or list of patterns that target JavaScript output files.
 
@@ -128,7 +128,7 @@ Accepted values:
 
 ---
 
-#### Supported Glob Features
+#### Supported glob features
 
 Patterns support common glob syntax, including:
 
@@ -142,26 +142,24 @@ Patterns support common glob syntax, including:
 </Callout>
 
 <Callout type="warning" title={<strong>File Matching Behavior</strong>}>
-  <div className="ml-4">
-    - This utility only processes files that match **recognized JavaScript build output formats**.
-    - This filtering is applied **after pattern matching**.
-    - Supported file types include:
-      - `.js`
-      - `.mjs`
-      - `.cjs`
-      - `.esm.js`
-      - `.module.js`
+  - This utility only processes files that match **recognized JavaScript build output formats**.
+  - This filtering is applied **after pattern matching**.
+  - Supported file types include:
+    - `.js`.
+    - `.mjs`.
+    - `.cjs`.
+    - `.esm.js`.
+    - `.module.js`.
 
-    Files that do **not** match these formats will be automatically **ignored**, even if they are included in the provided pattern.
+  Files that do **not** match these formats will be automatically **ignored**, even if they are included in the provided pattern.
 
-    <div className="mt-2">
-      <strong>Examples:</strong>
+  <div className="mt-2">
+    <strong>Examples:</strong>
 
-      - `dist/index.js` ➔ ✅ processed.
-      - `dist/index.ts` ➔ ❌ ignored.
-      - `dist/styles.css` ➔ ❌ ignored.
-      - `dist/index.js.map` ➔ ❌ ignored.
-    </div>
+    - `dist/index.js` ➔ ✅ processed.
+    - `dist/index.ts` ➔ ❌ ignored.
+    - `dist/styles.css` ➔ ❌ ignored.
+    - `dist/index.js.map` ➔ ❌ ignored.
   </div>
 </Callout>
 
@@ -195,7 +193,7 @@ cleanJsBuildArtifacts([
 
 <SeparatorSection />
 
-### Options
+### `options`
 
 Optional configuration object that defines how the utility function should behave 
 in various scenarios, allowing customization and greater control at runtime.
@@ -475,7 +473,7 @@ The function performs asynchronous file processing and does not return any value
 
 <SeparatorSection />
 
-## Version Information
+## Version information
 
 <ApiVersionInfoComp packageName='build-tools' categoryApi='clean' nameApi='cleanJsBuildArtifacts' />
 

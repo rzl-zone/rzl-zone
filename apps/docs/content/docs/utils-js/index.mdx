@@ -17,9 +17,7 @@ import { TbBrandTypescript } from "react-icons/tb";
 
 import { FumaNextLink } from "@/components/link";
  
-import ImgLogo from "@/images/rzl-logo.png";
-
-import { getHrefPackage } from "@/utils/packages/docs";
+import ImgLogo from "@/images/rzl-logo.png"; 
 
 <div className="flex mb-0 flex-col items-stretch text-center">
   <Image
@@ -79,9 +77,10 @@ import { getHrefPackage } from "@/utils/packages/docs";
     />
   </FumaNextLink>
   
-  <FumaNextLink
-    className="not-prose"
-    href={getHrefPackage("utils-js","contributing")} 
+  <PackageLink
+    packageName="utils-js"
+    toPath="/contributing"
+    className="not-prose" 
     aria-label="Contribute"
   >
     <img 
@@ -89,11 +88,12 @@ import { getHrefPackage } from "@/utils/packages/docs";
       src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?color=28A745" 
       alt="Contribute"
     />
-  </FumaNextLink>
+  </PackageLink>
   
-  <FumaNextLink
-    className="not-prose"
-    href={getHrefPackage("utils-js","license")} 
+  <PackageLink
+    packageName="utils-js"
+    toPath="/license"
+    className="not-prose" 
     aria-label="License"
   >
     <img 
@@ -101,7 +101,7 @@ import { getHrefPackage } from "@/utils/packages/docs";
       src="https://img.shields.io/badge/License-MIT-blue.svg?color=3DA639" 
       alt="License"
     />
-  </FumaNextLink>
+  </PackageLink>
   
   <FumaNextLink
     className="not-prose"
@@ -182,5 +182,5 @@ We focus on ***developer experience*** and ***clarity*** — every utility has c
 UtilsJS is an open-source project under the MIT license.  
 Contributions, whether big or small, are always welcome, from fixing typos to adding new utilities, every contribution helps strengthen the ecosystem.
 
-If you'd like to contribute, check out our <FumaNextLink href={getHrefPackage("utils-js","contributing")}>Contributing Guide</FumaNextLink> and read the <FumaNextLink href={getHrefPackage("utils-js","code-of-conduct")}>Code of Conduct</FumaNextLink> to understand how we work together as a community.
+If you'd like to contribute, check out our <PackageLink packageName="utils-js" toPath="/contributing">Contributing Guide</PackageLink> and read the <PackageLink packageName="utils-js" toPath="/code-of-conduct">Code of Conduct</PackageLink> to understand how we work together as a community.
  

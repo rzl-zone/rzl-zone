@@ -163,6 +163,45 @@ export const cacheJsonLD = [
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
+    "headline": "Inject: injectBanner - Build Tools | Rzl Zone",
+    "description": "Learn how the injectBanner utility in Build Tools injects and manages banner comments in JavaScript output files.",
+    "url": "https://rzlzone.vercel.app/docs/build-tools/inject/inject-banner",
+    "image": "https://rzlzone.vercel.app/og/docs/build-tools/inject/inject-banner/image.png",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Rzl Zone",
+      "url": "https://rzlzone.vercel.app"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Inject: injectDirective - Build Tools | Rzl Zone",
+    "description": "Learn how the injectDirective utility in Build Tools injects and manages directive statements like \"use strict\" or \"use client\" in JavaScript output files.",
+    "url": "https://rzlzone.vercel.app/docs/build-tools/inject/inject-directive",
+    "image": "https://rzlzone.vercel.app/og/docs/build-tools/inject/inject-directive/image.png",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Rzl Zone",
+      "url": "https://rzlzone.vercel.app"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Normalize: normalizeJsBuildNewlines - Build Tools | Rzl Zone",
+    "description": "Learn how the normalizeJsBuildNewlines utility in Build Tools by Rzl Zone normalizes excessive blank lines in compiled JavaScript files for cleaner output.",
+    "url": "https://rzlzone.vercel.app/docs/build-tools/normalize/normalize-js-build-newlines",
+    "image": "https://rzlzone.vercel.app/og/docs/build-tools/normalize/normalize-js-build-newlines/image.png",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Rzl Zone",
+      "url": "https://rzlzone.vercel.app"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
     "headline": "Installation - Build Tools | Rzl Zone",
     "description": "Installation instructions for Build Tools (latest version) by Rzl Zone.",
     "url": "https://rzlzone.vercel.app/docs/build-tools/installation",

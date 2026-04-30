@@ -13,7 +13,7 @@ export type EnsureCssImport = Prettify<
      *
      * @default -
      *
-     * @link [EnsureCssImport](#pattern)
+     * @link [`EnsureCssImport-pattern`](#pattern)
      */
     pattern: StringCollection;
 
@@ -27,7 +27,7 @@ export type EnsureCssImport = Prettify<
      *   - [`patternOptions`](#pattern-options): Optional configuration for controlling file pattern resolution.
      *
      * @default -
-     * @link [EnsureCssImportOptions](#options)
+     * @link [`EnsureCssImportOptions-options`](#options)
      */
     options: EnsureCssImportOptions;
   },
@@ -42,7 +42,7 @@ export type EnsureFinalNewline = Prettify<
      *
      * @default -
      *
-     * @link [EnsureFinalNewline](#pattern)
+     * @link [`EnsureFinalNewline-pattern`](#pattern)
      */
     pattern: StringCollection;
 
@@ -52,7 +52,7 @@ export type EnsureFinalNewline = Prettify<
      *   - [`patternOptions`](#pattern-options): Optional configuration for controlling file pattern resolution.
      *
      * @default { logLevel: "info"; patternOptions: { absolute: false, baseNameMatch: false, caseSensitiveMatch: true, concurrency: os.cpus().length, dot: true, followSymbolicLinks: true, globstar: true, ignore: [], markDirectories: false, objectMode: false, onlyDirectories: false, onlyFiles: true, unique: true, throwErrorOnBrokenSymbolicLink: false } }
-     * @link [EnsureFinalNewlineOptions](#options)
+     * @link [`EnsureFinalNewlineOptions-options`](#options)
      */
     options?: EnsureFinalNewlineOptions;
   },

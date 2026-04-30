@@ -1,0 +1,492 @@
+---
+pageName: injectDirective
+pageNameAlias: "Inject: injectDirective"
+lastUpdateData: 2026/04/28
+packageMeta:
+  name: "Build Tools"
+  version: "latest"
+  tag: [build-tools]
+pageData:
+  title: "Inject: injectDirective"
+  description: Inject directive statements into JavaScript output files with deduplication and normalization support.
+metaSeoData:
+  title: "Inject: injectDirective"
+  description: Learn how the injectDirective utility in Build Tools injects and manages directive statements like "use strict" or "use client" in JavaScript output files.
+---
+
+import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
+
+## Overview
+
+`injectDirective` is a utility for injecting JavaScript directive statements into compiled output files.
+
+It scans files based on the provided glob pattern(s) and inserts one or more directive statements (e.g. `"use strict"`, `"use client"`) at the top of each file when applicable.
+
+Directives are injected in a safe and controlled way, ensuring they are not duplicated and do not interfere with existing file structure.
+
+---
+
+### Key capabilities
+
+- **Directive Injection**  
+  Adds one or multiple directive statements to matched files.
+
+- **Targeted File Processing**  
+  - Processes only JavaScript output files.
+  - Skips files that are empty, contain no executable code, or only directives.
+
+- **Smart Placement**  
+  - Injected after shebang (`#!`) and banner comments.
+  - Maintains correct execution order.
+
+- **Content Preservation**  
+  Keeps the original file structure intact without modifying existing code.
+
+- **Idempotent Operation**  
+  Running multiple times will not duplicate directives.
+
+---
+
+<Callout type="info" title={<strong>Learn more</strong>}>
+  - See <FumaNextLink href="#directive">`directive`</FumaNextLink> for injection behavior, normalization, and examples.
+  - See <FumaNextLink href="#pattern">`pattern`</FumaNextLink> for file matching and processing rules.
+</Callout>
+
+---
+
+### Why use this?
+
+- Ensures required directives (e.g. `"use strict"`, `"use client"`) are consistently applied.
+- Prevents duplicate directive declarations.
+- Automatically adapts to file type (e.g. CommonJS vs ESM).
+- Helps maintain correct runtime behavior.
+- Simplifies directive management in build pipelines.
+
+<SeparatorSection />
+
+## Importing
+
+<Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
+  <Tab id="ESM" value="ESM">
+    ```ts
+    import { injectDirective } from "@rzl-zone/build-tools";
+    ```
+  </Tab>
+  <Tab id="CJS" value="CJS">
+    ```ts
+    const { injectDirective } = require("@rzl-zone/build-tools");
+    ```
+  </Tab>
+</Tabs> 
+
+<SeparatorSection />
+
+## Syntax
+
+<Tabs groupId="tabsSelect::language" defaultValue="TS" className="mt-1.5" persist>
+  <TabsList>
+    <TabsTrigger value="TS">
+      <BiLogoTypescript />
+      TypeScript
+    </TabsTrigger>
+    <TabsTrigger value="JS">
+      <BiLogoJavascript />
+      JavaScript
+    </TabsTrigger>
+  </TabsList>
+  <TabsContent value="TS">
+    ```ts 
+    // [!code word:pattern]
+    // [!code word:bannerText]
+    // [!code word:options]
+    injectDirective(
+      pattern: StringCollection,
+      bannerText: StringCollection, 
+      options?: InjectJsArtifactsOptions
+    ): Promise<void>
+    ```
+  </TabsContent>
+  <TabsContent value="JS">
+    ```js 
+    // [!code word:pattern]
+    // [!code word:bannerText]
+    // [!code word:options]
+    injectDirective(pattern, bannerText, options?): Promise<void>
+    ```
+  </TabsContent>
+</Tabs>
+
+<SeparatorSection />
+
+## Parameters
+
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/inject/props.ts" name="InjectDirective" />
+
+<SeparatorSection />
+
+### `pattern`
+
+Glob pattern or list of patterns used to target files for directive injection.
+
+Accepted values:
+
+- **`string`** ➔ single glob pattern.
+- **`string[]`** ➔ multiple glob patterns.
+- **`Set<string>`** ➔ unique collection of patterns.
+
+---
+
+#### Supported glob features
+
+Patterns support common glob syntax:
+
+- **`*`** ➔ match any characters except `/`.
+- **`**`** ➔ match nested directories.
+- **`{}`** ➔ brace expansion (multiple patterns/extensions).
+- **`!`** ➔ exclude patterns (can be combined with `options.patternOptions.ignore`).
+
+<Callout type="info" title={<strong>Info</strong>}>
+  Pattern resolution behavior can be customized via  
+  <FumaNextLink href="#pattern-options">`options.patternOptions`</FumaNextLink>  
+  (e.g. hidden files, case sensitivity, concurrency, and ignore rules).
+</Callout>
+
+---
+
+#### File processing behavior
+
+All files matched by the provided pattern(s) are scanned.
+
+Only files recognized as **JavaScript output files** are processed.
+
+This includes common formats such as:
+
+- `.js`.
+- `.mjs`.
+- `.cjs`.
+- `.esm.js`.
+- `.module.js`.
+
+Files outside these formats are automatically skipped.
+
+---
+
+#### Additional filtering
+
+A matched file will be skipped if it:
+
+- Is empty or contains only whitespace.
+- Contains no executable JavaScript code.
+- Contains only directive statements.
+
+---
+
+#### Important notes
+
+- Directive injection only applies to valid JavaScript output files.
+- Existing directives are automatically detected and not duplicated.
+- File structure (shebang, banners, and code order) is preserved.
+
+---
+
+#### Examples
+
+```ts title="TypeScript/JavaScript" fileCodeIcon
+// Single pattern
+injectDirective("dist/**/*.js", "use strict");
+
+// Multiple patterns
+injectDirective(["dist/**/*.js", "build/**/*.mjs"], "use client");
+
+// Using Set
+injectDirective(new Set(["dist/**/*.js"]), "use strict");
+
+// With options
+injectDirective(
+  "dist/**/*.{js,cjs,mjs}",
+  ["use strict", "use client"],
+  {
+    patternOptions: {
+      ignore: ["**/*.test.js"]
+    }
+  }
+);
+
+// Exclude pattern
+injectDirective([
+  "dist/**/*.{js,cjs,mjs}",
+  "!dist/**/*.test.js"
+], "use strict");
+```
+
+---
+
+#### Summary
+
+- Uses glob patterns to select target files.
+- Processes only valid JavaScript output files.
+- Skips non-executable or directive-only files.
+
+<SeparatorSection />
+
+### `directive`
+
+Directive string or collection of strings to inject into matched files.
+
+Accepted values:
+
+- **`string`** ➔ single directive.
+- **`string[]`** ➔ multiple directives.
+- **`Set<string>`** ➔ unique collection of directives.
+
+Each entry represents a directive that will be injected as a standalone statement.
+
+---
+
+#### Injection behavior
+
+- Directives are inserted at the top of each file.
+- Existing shebang (`#!`) and banner comments are preserved.
+- Existing `"use *"` directives are automatically detected.
+- Duplicate directives are not injected.
+
+Each directive is normalized into:
+
+```js
+"directive-name";
+```
+
+---
+
+#### Automatic handling
+
+- `"use strict"` is automatically handled for CommonJS files.
+- Duplicate `"use strict"` will not be inserted.
+- Custom directives are trimmed and normalized before injection.
+
+---
+
+#### Normalization
+
+Each directive is normalized before injection:
+
+- Wrapped in quotes if needed.
+- Ensured to end with a semicolon.
+- Consistent line formatting is applied.
+
+The operation is **idempotent** — running multiple times will not duplicate directives.
+
+---
+
+#### Important notes
+
+- Only top-level `"use *"` directives are considered.
+- Directives are inserted before executable code.
+- Existing file structure (shebang, banners, code order) is preserved.
+
+---
+
+#### Examples
+
+**Single directive:**
+```ts title="TypeScript/JavaScript" fileCodeIcon
+await injectDirective(
+  "dist/**/*",
+  "use strict"
+);
+```
+
+**Multiple directives:**
+```ts title="TypeScript/JavaScript" fileCodeIcon
+await injectDirective(
+  "dist/**/*",
+  ["use strict", "use client"]
+);
+```
+
+**Using Set:**
+```ts title="TypeScript/JavaScript" fileCodeIcon
+await injectDirective(
+  "dist/**/*",
+  new Set(["use strict", "use client"])
+);
+```
+
+---
+
+#### Summary
+
+- `directive` defines which directive statements are injected.
+- Supports single or multiple directives.
+- Automatically avoids duplicates.
+- Normalized into valid `"use *"` statements.
+
+<SeparatorSection />
+
+### `options`
+
+Optional configuration object that defines how the utility function should behave 
+in various scenarios, allowing customization and greater control at runtime.
+
+---
+
+<section data-options="docs">
+  #### `logLevel` [#log-level]
+  <div className="ml-4">
+    - **Description:**  
+      Controls how detailed the logger output should be during execution.
+
+      <Callout type="info" title={<strong>Supported values</strong>}> 
+        - `silent` ➔ no output.
+        - `error` ➔ errors only.
+        - `info` ➔ standard logs (default).
+        - `debug` ➔ verbose logs.
+      </Callout> 
+
+      <Callout type="warning" title={<strong>Notes</strong>}> 
+        - Invalid values are automatically reset to default.
+        - All levels include error output except `silent`.
+      </Callout> 
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*
+
+    - **Default:**  
+      *`"info"`*
+
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Minimal output (errors only)
+      await injectDirective(
+        "dist/**/*.js", 
+        "use client",
+        {
+          // [!code ++]
+          logLevel: "error"
+        }
+      );
+
+      // Debug mode (verbose logs)
+      await injectDirective(
+        "dist/**/*.js", 
+        ["use strict", "use client"],
+        {
+          // [!code ++]
+          logLevel: "debug"
+        }
+      );
+
+      // Silent mode (no logs)
+      await injectDirective(
+        "dist/**/*.js", 
+        new Set(["use strict", "use client"]),
+        {
+          // [!code ++]
+          logLevel: "silent"
+        }
+      );
+      ```
+  </div>
+
+  ---
+  
+  #### `patternOptions` [#pattern-options]
+  <div className="ml-4">
+    - **Description:**  
+      Controls how input file patterns are matched.
+      
+      <Callout type="info">
+        Used to filter or adjust which files are included during processing.  
+        Useful for ignoring files, handling hidden files, or tweaking matching behavior.
+      </Callout> 
+
+      <Callout type="info" title={<strong>Behavior</strong>}> 
+        - Affects which files are selected.
+        - Can exclude unwanted files (e.g. test files).
+        - Falls back to default configuration when invalid type or not provided.
+      </Callout> 
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`object`*  
+
+    - **Default:**  
+      ```ts fileCodeIcon disableCopy
+      {
+        absolute: false,
+        baseNameMatch: false,
+        caseSensitiveMatch: true,
+        concurrency: os.cpus().length,
+        dot: true,
+        followSymbolicLinks: true,
+        globstar: true,
+        ignore: [],
+        markDirectories: false,
+        objectMode: false,
+        onlyDirectories: false,
+        onlyFiles: true,
+        unique: true,
+        throwErrorOnBrokenSymbolicLink: false
+      }
+      ```
+
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Ignore source maps
+      await injectDirective(
+        "dist/**/*.{js,cjs}",
+        "use client",
+        {
+          patternOptions: {
+            // [!code ++]
+            ignore: ["**/*.map"]
+          }
+        }
+      );
+
+      // Case-insensitive matching
+      await injectDirective(
+        "dist/**/*.{js,cjs}", 
+        ["use strict", "use client"],
+        {
+          patternOptions: {
+            // [!code ++]
+            caseSensitiveMatch: false
+          }
+        }
+      );
+
+      // Disallowing patterns to match entries that begin with a period (.).
+      await injectDirective(
+        "dist/**/*.{js,cjs}", 
+        new Set(["use strict", "use client"]),
+        {
+          patternOptions: {
+            // [!code ++]
+            dot: false
+          }
+        }
+      );
+      ```
+  </div>
+</section>
+
+<SeparatorSection />
+
+## Returns
+
+Returns a `Promise<void>`.  
+The function performs asynchronous file processing and does not return any value.
+
+<SeparatorSection />
+
+## Version information
+
+<ApiVersionInfoComp packageName='build-tools' categoryApi='inject' nameApi='injectDirective' />
+
+<SeparatorSection />
+
+<MadeBy /> 

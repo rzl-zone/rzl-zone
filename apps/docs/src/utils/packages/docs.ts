@@ -2,7 +2,7 @@ import type { AnyString, Prettify } from "@rzl-zone/ts-types-plus";
 
 import semver from "semver";
 import {
-  hasOwnProp,
+  isFunction,
   isNonEmptyArray,
   isNonEmptyString,
   isPlainObject
@@ -340,9 +340,10 @@ export const getHrefPackage = (
   toPath: string,
   version?: string
 ) => {
-  const config = PACKAGES_CONFIGS[packageName];
-  if (isPlainObject(config) && hasOwnProp(config, "url")) {
-    return config.url(toPath, version);
+  const configPkg = getPackageData(packageName);
+
+  if (configPkg && isFunction(configPkg.url)) {
+    return configPkg.url(toPath, version);
   }
 
   return PACKAGES_CONFIGS.URL_DOCS;

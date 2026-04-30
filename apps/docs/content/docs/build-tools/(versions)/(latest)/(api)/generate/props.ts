@@ -17,7 +17,7 @@ export type GeneratePackageBanner = {
    *   - [`withEof`](#with-eof): Append an end-of-file newline to the banner output.
    *
    * @default { title: string, author: string, packageJson: object, withEof: true }
-   * @link [GeneratePackageBannerOptions](#options)
+   * @link [`GeneratePackageBannerOptions-options`](#options)
    */
   options?: Prettify<
     OmitStrict<GeneratePackageBannerOptions, "packageJson"> & {
@@ -34,7 +34,7 @@ export type GenerateReferenceIndex = Prettify<
      *
      * @default -
      *
-     * @link [GenerateReferenceIndex](#pattern)
+     * @link [`GenerateReferenceIndex-pattern`](#pattern)
      */
     pattern: StringCollection;
 
@@ -50,7 +50,7 @@ export type GenerateReferenceIndex = Prettify<
      *   - [`patternOptions`](#pattern-options): Optional configuration for controlling file pattern resolution.
      *
      * @default { outDir: "dist/.references"; outFileName: "index.d.ts"; withExportTypes: false; inputDirReference: "dist"; onlyDeclarations: true; banner: true; logLevel: "info"; patternOptions: { absolute: false, baseNameMatch: false, caseSensitiveMatch: true, concurrency: os.cpus().length, dot: true, followSymbolicLinks: true, globstar: true, ignore: [], markDirectories: false, objectMode: false, onlyDirectories: false, onlyFiles: true, unique: true, throwErrorOnBrokenSymbolicLink: false } }
-     * @link [GenerateReferenceOptions](#options)
+     * @link [`GenerateReferenceOptions-options`](#options)
      */
     options?: GenerateReferenceOptions;
   },

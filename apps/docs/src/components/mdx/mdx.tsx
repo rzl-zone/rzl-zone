@@ -27,11 +27,12 @@ import * as StepsComponents from "./steps";
 import MadeBy from "../docs/MadeBy";
 import { ApiVersionInfoComp } from "../docs/ApiVersionInfoComp";
 
-import { FumaNextLink } from "@/components/link";
+import { FumaNextLink, PackageLink } from "@/components/link";
 
 export function getMDXComponents(components?: MDXComponents) {
   return {
     ...defaultMdxComponents,
+    PackageLink,
     AutoTypeTable: (props: Partial<AutoTypeTableProps>) => (
       <AutoTypeTable
         {...props}

@@ -50,5 +50,24 @@ export const apiBuildTools = {
       category: "get",
       stability: "stable"
     }
+  },
+  inject: {
+    injectBanner: {
+      since: "v0.0.7",
+      category: "inject",
+      stability: "stable"
+    },
+    injectDirective: {
+      since: "v0.0.7",
+      category: "inject",
+      stability: "stable"
+    }
+  },
+  normalize: {
+    normalizeJsBuildNewlines: {
+      since: "v0.0.7",
+      category: "normalize",
+      stability: "stable"
+    }
   }
 } satisfies Record<string, Record<string, ApiVersionInfoType>>;
