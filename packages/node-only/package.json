@@ -1,6 +1,6 @@
 {
   "name": "@rzl-zone/node-only",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Marker package to restrict imports to Node.js and server-only environments.",
   "license": "MIT",
   "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",

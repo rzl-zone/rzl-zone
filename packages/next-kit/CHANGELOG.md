@@ -1,5 +1,15 @@
 # @rzl-zone/next-kit
 
+## 0.9.8
+
+### Patch Changes
+
+- 9a5c803: chore: refine and improve TSDoc comments across packages.
+- Updated dependencies [9a5c803]
+  - @rzl-zone/core@0.0.9
+  - @rzl-zone/core-react@0.0.9
+  - @rzl-zone/ts-types-plus@0.1.5
+
 ## 0.9.7
 
 ### Patch Changes

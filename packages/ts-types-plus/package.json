@@ -1,6 +1,6 @@
 {
   "name": "@rzl-zone/ts-types-plus",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A lightweight, modern collection of TypeScript types and interfaces to enhance type safety and improve code maintainability.",
   "license": "MIT",
   "author": "Rizalvin Dwiky <rizalvindwiky1998@gmail.com>",

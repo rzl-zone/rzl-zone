@@ -1,5 +1,14 @@
 # @rzl-zone/build-tools-cli
 
+## 0.0.10
+
+### Patch Changes
+
+- 9a5c803: chore: refine and improve TSDoc comments across packages.
+- Updated dependencies [9a5c803]
+  - @rzl-zone/build-tools@0.0.10
+  - @rzl-zone/node-only@0.0.9
+
 ## 0.0.9
 
 ### Patch Changes

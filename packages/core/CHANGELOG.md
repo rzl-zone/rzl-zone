@@ -1,5 +1,13 @@
 # @rzl-zone/core
 
+## 0.0.9
+
+### Patch Changes
+
+- 9a5c803: chore: refine and improve TSDoc comments across packages.
+- Updated dependencies [9a5c803]
+  - @rzl-zone/node-only@0.0.9
+
 ## 0.0.8
 
 ### Patch Changes
