@@ -79,9 +79,13 @@ type VersionItem = {
 export const getSortedVersions = (
   pkg: CachedDoc,
   options: {
-    /** @default true */
+    /**
+     * @default true
+     */
     appendLatest?: boolean;
-    /** @default ["canary", "dev", "alpha", "beta", "rc"] */
+    /**
+     * @default ["canary", "dev", "alpha", "beta", "rc"]
+     */
     channelOrder?: string[];
   } = {}
 ) => {

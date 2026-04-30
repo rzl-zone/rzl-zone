@@ -6,7 +6,9 @@ import {
   ChildProcess
 } from "node:child_process";
 
-/** @deprecated Use `typeof spawn` from "node:child_process" instead. */
+/**
+ * @deprecated Use `typeof spawn` from "node:child_process" instead.
+ */
 export type typesSpawn = typeof spawn;
 
 /** ----------------------------------------------------------------

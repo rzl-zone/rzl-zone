@@ -13,7 +13,9 @@ import type { ButtonProps } from "@rzl-zone/docs-ui/components/button";
 export interface SearchTriggerProps
   extends Omit<ComponentProps<"button">, "color">, ButtonProps {
   hideIfDisabled?: boolean;
-  /** @deprecated  Use `Variant` Instead. */
+  /**
+   * @deprecated  Use `Variant` Instead.
+   */
   color?: Exclude<ButtonProps["variant"], null>;
 }
 

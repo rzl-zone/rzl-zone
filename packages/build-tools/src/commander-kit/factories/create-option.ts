@@ -21,5 +21,7 @@ import { CliOption } from "../core/option";
 export const cliCreateOption = (arg: string, description?: string): CliOption =>
   new CliOption(arg, description);
 
-/** @deprecated `Un-Used`. */
+/**
+ * @deprecated `Un-Used`.
+ */
 export type OptionType = Option;

@@ -82,9 +82,13 @@ export type FumaNextLinkType = Omit<
    * @default `true` (pages router) or `null` (app router)
    */
   prefetch?: NextLinkProps["prefetch"] | "onHover";
-  /** @default "https://github.com/rzl-zone" */
+  /**
+   * @default "https://github.com/rzl-zone"
+   */
   defaultUrlOnInvalid?: string;
-  /** @default -1 */
+  /**
+   * @default -1
+   */
   tabIndex?: number;
 };
 

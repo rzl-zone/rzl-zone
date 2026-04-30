@@ -4,7 +4,9 @@ import type { IsStringLiteral } from "./is-string-literal";
 import type { IsPositive, ParseNumber } from "./number";
 import type { Split } from "./split";
 
-/** @private ***types for {@link CharAt}.*** */
+/** @private ***types for {@link CharAt}.***
+ *
+ */
 type _CharAt<
   I extends string,
   N extends number | `${number}`,

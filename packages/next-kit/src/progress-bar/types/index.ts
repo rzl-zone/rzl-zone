@@ -30,104 +30,103 @@ export type RzlProgressEasing =
   | "ease-out"
   | "ease-in-out";
 
-export type RzlProgressOptions = Pick<
-  RzlNextProgressBarProps,
-  "classNameIfLoading"
-> & {
-  /** * ***The initial position for the Progress Bar Loader in percentage, 0.08 is 8%.***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type number, otherwise will return default value.
-   * @default 0.08
-   */
-  minimum?: number;
-  /** * ***The the maximum percentage used upon finishing, 1 is 100%.***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type number, otherwise will return default value.
-   * @default 1
-   */
-  maximum?: number;
-  /** * ***Defines a template for the Progress Bar Loader.***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type string, otherwise will return default value.
-   * @default
-   * ```jsx
-   * `<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>`
-   * ```
-   */
-  template?: string;
-  /** * ***Animation settings using easing (a CSS easing string).***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type {@link RzlProgressEasing | *`RzlProgressEasing`*}, otherwise will return default value.
-   * @default "linear"
-   */
-  easing?: RzlProgressEasing;
-  /** * ***Animation speed in ms for the Progress Bar Loader.***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type integer number, otherwise will return default value.
-   * @default 200
-   */
-  speed?: number;
-  /** * ***Auto incrementing behavior for the Progress Bar Loader.***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type boolean, otherwise will return default value.
-   * @default true
-   */
-  trickle?: boolean;
-  /** * ***The increment delay speed in milliseconds.***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type integer number, otherwise will return default value.
-   * @default 200
-   */
-  trickleSpeed?: number;
-  /** * ***To show spinner or not.***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type boolean, otherwise will return default value.
-   * @default true
-   */
-  showSpinner?: boolean;
-  /** * ***Specify this to change the parent container.***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type {@link HTMLElement | *`HTMLElement`*} or string, otherwise will return default value.
-   * @default "body"
-   */
-  parent?: HTMLElement | string;
-  /**
-   * - **⚠️ Warning:**
-   *    - The value must be of type string, otherwise will return default value.
-   * @default ""
-   */
-  positionUsing?: string;
-  /** * ***The selector attribute position.***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type string, otherwise will return default value.
-   * @default '[role="bar"]'
-   */
-  barSelector?: string;
-  /** * ***The selector attribute spinner.***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type string, otherwise will return default value.
-   * @default '[role="spinner"]'
-   */
-  spinnerSelector?: string;
-  /** * ***The direction bar.***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type {@link RzlProgressDirection | *`RzlProgressDirection`*}, otherwise will return default value.
-   * @default 'ltr'
-   */
-  direction?: RzlProgressDirection;
-};
+export type RzlProgressOptions = Prettify<
+  Pick<RzlNextProgressBarProps, "classNameIfLoading"> & {
+    /** * ***The initial position for the Progress Bar Loader in percentage, 0.08 is 8%.***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type number, otherwise will return default value.
+     * @default 0.08
+     */
+    minimum?: number;
+    /** * ***The the maximum percentage used upon finishing, 1 is 100%.***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type number, otherwise will return default value.
+     * @default 1
+     */
+    maximum?: number;
+    /** * ***Defines a template for the Progress Bar Loader.***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type string, otherwise will return default value.
+     * @default
+     * ```jsx
+     * `<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>`
+     * ```
+     */
+    template?: string;
+    /** * ***Animation settings using easing (a CSS easing string).***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type {@link RzlProgressEasing | *`RzlProgressEasing`*}, otherwise will return default value.
+     * @default "linear"
+     */
+    easing?: RzlProgressEasing;
+    /** * ***Animation speed in ms for the Progress Bar Loader.***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type integer number, otherwise will return default value.
+     * @default 200
+     */
+    speed?: number;
+    /** * ***Auto incrementing behavior for the Progress Bar Loader.***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type boolean, otherwise will return default value.
+     * @default true
+     */
+    trickle?: boolean;
+    /** * ***The increment delay speed in milliseconds.***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type integer number, otherwise will return default value.
+     * @default 200
+     */
+    trickleSpeed?: number;
+    /** * ***To show spinner or not.***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type boolean, otherwise will return default value.
+     * @default true
+     */
+    showSpinner?: boolean;
+    /** * ***Specify this to change the parent container.***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type {@link HTMLElement | *`HTMLElement`*} or string, otherwise will return default value.
+     * @default "body"
+     */
+    parent?: HTMLElement | string;
+    /**
+     * - **⚠️ Warning:**
+     *    - The value must be of type string, otherwise will return default value.
+     * @default ""
+     */
+    positionUsing?: string;
+    /** * ***The selector attribute position.***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type string, otherwise will return default value.
+     * @default '[role="bar"]'
+     */
+    barSelector?: string;
+    /** * ***The selector attribute spinner.***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type string, otherwise will return default value.
+     * @default '[role="spinner"]'
+     */
+    spinnerSelector?: string;
+    /** * ***The direction bar.***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type {@link RzlProgressDirection | *`RzlProgressDirection`*}, otherwise will return default value.
+     * @default 'ltr'
+     */
+    direction?: RzlProgressDirection;
+  }
+>;
 
 type RzlTopLoaderAttribute = {
   /** * Force trigger loader bar on action.
@@ -161,24 +160,30 @@ export type SpinnerPosition =
 
 export type ColorBase = {
   type: "base";
-  /** * ***Support only Valid Color CSS.*** */
+  /** * ***Support only Valid Color CSS.***
+   *
+   */
   ValueBase?: ColorCssNamed;
 };
 export type ColorAdvance = {
   type: "advance";
-  /** * ***Support only HEX, RGB, RGBA, HSL, HSLA, HWB, LAB, LCH.*** */
+  /** * ***Support only HEX, RGB, RGBA, HSL, HSLA, HWB, LAB, LCH.***
+   *
+   */
   ValueAdvance?: string;
 };
 
-export type RzlProgressType = {
-  /** * ***Animation settings using easing (a CSS easing string).***
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type {@link RzlProgressEasing}, otherwise will return default value.
-   * @default "ease"
-   */
-  easing?: RzlProgressEasing;
-} & RzlProgressOptions;
+export type RzlProgressType = Prettify<
+  {
+    /** * ***Animation settings using easing (a CSS easing string).***
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type {@link RzlProgressEasing}, otherwise will return default value.
+     * @default "ease"
+     */
+    easing?: RzlProgressEasing;
+  } & RzlProgressOptions
+>;
 
 export type RzlNextProgressBarProps = {
   /** * ***CSS class name that will be applied to the loader container
@@ -329,68 +334,104 @@ export type RzlNextProgressBarProps = {
    * @deprecated Unused anymore.
    */
   showProgressOnInitial?: {
-    /** @default true */
+    /**
+     * @default true
+     */
     enabled?: boolean;
     /** * ***Delaying Before Trigger Stop Progress Bar.***
      *
-     *  @default 100
+     * @default 100
      */
     delay?: number;
   };
-  /** * ***Options of `RzlProgress`.*** */
+  /** * ***Options of `RzlProgress`.***
+   *
+   */
   options?: RzlProgressType;
 };
 
-export type ProgressBarPagesComponentProps = Omit<
-  RzlNextProgressBarProps,
-  "showForHashAnchor"
-> & {
-  /** Disable triggering progress bar on the same URL
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type boolean, otherwise will return default value.
-   * @default false
-   */
-  disableSameURL?: boolean;
-  /** If the progress bar is not displayed when you use shallow routing
-   *
-   * - **⚠️ Warning:**
-   *    - The value must be of type boolean, otherwise will return default value.
-   * @default false
-   */
-  shallowRouting?: boolean;
-};
+export type ProgressBarPagesComponentProps = Prettify<
+  Omit<RzlNextProgressBarProps, "showForHashAnchor"> & {
+    /** Disable triggering progress bar on the same URL
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type boolean, otherwise will return default value.
+     * @default false
+     */
+    disableSameURL?: boolean;
+    /** If the progress bar is not displayed when you use shallow routing
+     *
+     * - **⚠️ Warning:**
+     *    - The value must be of type boolean, otherwise will return default value.
+     * @default false
+     */
+    shallowRouting?: boolean;
+  }
+>;
 
-type OptionsRzlProgress = RzlProgressType &
-  Partial<PickStrict<RzlNextProgressBarProps, "startPosition">>;
+type OptionsRzlProgress = Prettify<
+  RzlProgressType &
+    Partial<PickStrict<RzlNextProgressBarProps, "startPosition">>
+>;
 
 export type OptionsUseRouter = {
-  /** @default false */
+  /** * ***Disabling Progress Bar.***.
+   *
+   * @default false
+   */
   disableProgressBar?: boolean;
-  /** @default false */
+  /** * ***Disabling on any action.***.
+   *
+   * @default false
+   */
   disablePreventAnyAction?: boolean;
-  /** * ***Options of `RzlProgress`.*** */
+  /** * ***Options of `RzlProgress`.***
+   *
+   */
   options?: OptionsRzlProgress;
 };
 
-export type NavigateOptionsUseRouter = OptionsUseRouter & {
-  /** * ***Scrolling to top of page.***
-   *
-   * @default true
-   */
-  scroll?: boolean;
-};
-export type NavigateFwdOptionsUseRouter = OptionsUseRouter & {
-  /** @default 100 */
-  delayStops?: number;
-};
+export type NavigateOptionsUseRouter = Prettify<
+  OptionsUseRouter & {
+    /** * ***Scrolling to top of page.***
+     *
+     * @default true
+     */
+    scroll?: boolean;
+    /**
+     * Transition types to apply when navigating. These types are passed to
+     * [`React.addTransitionType`](https://react.dev/reference/react/addTransitionType)
+     * inside the navigation transition, enabling
+     * [`<ViewTransition>`](https://react.dev/reference/react/ViewTransition) components
+     * to apply different animations based on the type of navigation.
+     *
+     * **⚠️ Supported only in (***Next.js >= 16.2.0***) and (***React >= 19.2***).**
+     *
+     */
+    transitionTypes?: string[];
+  }
+>;
+export type NavigateFwdOptionsUseRouter = Prettify<
+  OptionsUseRouter & {
+    /**
+     * @default 100
+     */
+    delayStops?: number;
+  }
+>;
 
 export type AppRouterInstance = {
-  /** * ***Navigate to the previous history entry.*** */
+  /** * ***Navigate to the previous history entry.***
+   *
+   */
   back(options?: OptionsUseRouter): void;
-  /** * ***Navigate to the next history entry.*** */
+  /** * ***Navigate to the next history entry.***
+   *
+   */
   forward(options?: NavigateFwdOptionsUseRouter): void;
-  /** * ***Refresh the current page.*** */
+  /** * ***Refresh the current page.***
+   *
+   */
   refresh(options?: OptionsUseRouter): void;
   /** * ***Navigate to the provided href.***
    *

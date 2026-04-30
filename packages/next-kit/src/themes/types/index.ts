@@ -11,7 +11,9 @@ import type { AnyString as AnyThemeAsString } from "@rzl-zone/ts-types-plus";
 import type { useTheme } from "../index";
 import { defaultThemes } from "../configs";
 
-/** * The default themes fetched from the main config. */
+/** * The default themes fetched from the main config.
+ *
+ */
 type _DefaultThemes = typeof defaultThemes;
 
 type ValueObject = {
@@ -418,21 +420,33 @@ export type RzlThemeProviderProps<EnabledSystem extends boolean = true> = {
  * updating the active theme, including support for system-based themes.**
  */
 export type ThemeCtx = {
-  /** ***List of all available theme names.*** */
+  /** ***List of all available theme names.***
+   *
+   */
   themes: Array<AnyThemeAsString | ThemeMode>;
-  /** ***Forced theme name for the current page.*** */
+  /** ***Forced theme name for the current page.***
+   *
+   */
   forcedTheme?: AnyThemeAsString | ThemeMode;
-  /** ***Update the theme.*** */
+  /** ***Update the theme.***
+   *
+   */
   setTheme: Dispatch<SetStateAction<AnyThemeAsString | ThemeMode>>;
-  /** ***Active theme name.*** */
+  /** ***Active theme name.***
+   *
+   */
   theme?: AnyThemeAsString | ThemeMode;
-  /** ***If `enableSystem` is `true` and the active theme is `"system"`, this returns whether the system preference resolved to` "dark" or "light"`. Otherwise, identical to `theme`.*** */
+  /** ***If `enableSystem` is `true` and the active theme is `"system"`, this returns whether the system preference resolved to` "dark" or "light"`. Otherwise, identical to `theme`.***
+   *
+   */
   resolvedTheme?:
     | AnyThemeAsString
     | Exclude<ThemeMode, "system">
     | "dark"
     | "light";
-  /** ***If enableSystem is true, returns the System theme preference (`"dark"` or `"light"`), regardless what the active theme is.*** */
+  /** ***If enableSystem is true, returns the System theme preference (`"dark"` or `"light"`), regardless what the active theme is.***
+   *
+   */
   systemTheme?:
     | AnyThemeAsString
     | Exclude<ThemeMode, "system">

@@ -34,7 +34,7 @@ type SuspensedForwardRefExoticComponent<P, R> = ForwardRefExoticComponent<
  * ```tsx
  * const UserCard = (props: { id: string }) => <>...</>;
  * const Wrapped = WithSuspense(UserCard);
- * //             ^? FC<{ id: string }>  ✅ inferred correctly
+ * //               ^? FC<{ id: string }>  ✅ inferred correctly
  * ```
  *
  * However, TypeScript may fail to infer `P` precisely if the
@@ -49,10 +49,10 @@ type SuspensedForwardRefExoticComponent<P, R> = ForwardRefExoticComponent<
  * ```tsx
  * const Profile = (props?: ProfileProps) => <>...</>;
  * const Broken = WithSuspense(Profile);
- * //             ^? FC<object>        ❌ incorrect
+ * //              ^? FC<object>        ❌ incorrect
  *
  * const Fixed = WithSuspense<ProfileProps>(Profile);
- * //             ^? FC<ProfileProps>  ✅ correct
+ * //              ^? FC<ProfileProps>  ✅ correct
  * ```
  *
  * -------------------------------------------------------------
@@ -72,7 +72,7 @@ type SuspensedForwardRefExoticComponent<P, R> = ForwardRefExoticComponent<
  * );
  *
  * const SuspenseInput = WithSuspense(Input);
- * //    ^? ForwardRefExoticComponent<{ label: string } & RefAttributes<HTMLInputElement>>
+ * //     ^? ForwardRefExoticComponent<{ label: string } & RefAttributes<HTMLInputElement>>
  * ```
  *
  * -------------------------------------------------------------
@@ -150,9 +150,13 @@ export function WithSuspense<P, R>(
 //    forwarding only when supported, preserving backward compatibility.
 
 // eslint-disable-next-line @rzl-zone/eslint/no-react19-api
-export function WithSuspense(Component: any, suspenseProps?: any) {
+export function WithSuspense<T>(
+  Component: React.ComponentType<T>,
+  suspenseProps?: Partial<SuspenseProps>
+) {
   const Wrapped = forwardRef((props: any, ref) => {
     const supportsRef =
+      "$$typeof" in Component &&
       Component?.$$typeof === Symbol?.for?.("react.forward_ref");
 
     return (

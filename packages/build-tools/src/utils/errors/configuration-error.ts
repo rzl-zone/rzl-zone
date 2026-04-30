@@ -29,13 +29,19 @@ import { deepFreeze, isNonEmptyString } from "@/_internal/utils/helper";
  * - Intended for machine-readable data (not human-facing text).
  */
 export interface ConfigurationErrorDetails {
-  /** * ***The actual received value that caused the validation failure.*** */
+  /** * ***The actual received value that caused the validation failure.***
+   *
+   */
   readonly received?: unknown;
 
-  /** * ***Logical origin of the validation (e.g. function name).*** */
+  /** * ***Logical origin of the validation (e.g. function name).***
+   *
+   */
   readonly context?: string;
 
-  /** * ***Additional arbitrary metadata.*** */
+  /** * ***Additional arbitrary metadata.***
+   *
+   */
   readonly [key: string]: unknown;
 }
 

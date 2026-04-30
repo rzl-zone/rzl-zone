@@ -89,9 +89,13 @@ type MainRzlFumadocsProviderProps = {
      * } */
     intoViewFromIfNeed?: Omit<StandardBehaviorOptions, "boundary">;
   };
-  /** @default false */
+  /**
+   * @default false
+   */
   defaultPrefetch?: FumaNextLinkType["prefetch"];
-  /** @default false */
+  /**
+   * @default false
+   */
   defaultDisableBodyScroll?: boolean;
 };
 

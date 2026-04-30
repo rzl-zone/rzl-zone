@@ -17,13 +17,21 @@ function getFoldersSync({
   sortDecs = false,
   isRoot = false
 }: {
-  /** @default "" */
+  /**
+   * @default ""
+   */
   folderName?: string | undefined | null;
-  /** @default SOURCE_CONFIG.DOCS.DEFINE_DOCS.DIR */
+  /**
+   * @default SOURCE_CONFIG.DOCS.DEFINE_DOCS.DIR
+   */
   dirContent?: string;
-  /** @default false */
+  /**
+   * @default false
+   */
   sortDecs?: boolean;
-  /** @default false */
+  /**
+   * @default false
+   */
   isRoot?: boolean;
 } = {}): string[] {
   if (!isString(folderName) || !isString(dirContent.trim())) return [];

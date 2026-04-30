@@ -77,9 +77,13 @@ export function TypeTable({
   allowMultiple = false,
   ...props
 }: { type: Record<string, TypeNode> } & ComponentProps<"div"> & {
-    /** @default "Prop" */
+    /**
+     * @default "Prop"
+     */
     textParam?: string;
-    /** @default "Type" */
+    /**
+     * @default "Type"
+     */
     textType?: string;
 
     /**

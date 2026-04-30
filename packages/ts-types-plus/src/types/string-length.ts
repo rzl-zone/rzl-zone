@@ -1,7 +1,7 @@
 import type { IsEmptyString } from "./string";
 import type { Sum } from "./sum";
 
-/** @ts-expect-error this still safe not to much deep */
+// @ts-expect-error this still safe not to much deep
 // prettier-ignore
 type _safeSum<Parts extends [string[], string[], string[], string[]] = [[], [], [], []]> = Sum<
     Sum<Parts[0]["length"], Parts[1]["length"]>,

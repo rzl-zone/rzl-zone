@@ -55,7 +55,9 @@ export async function TypeTableCustom({
   textParam?: string;
   textType?: string;
   renderType?: typeof renderTypeDefault;
-  /** @deprecated Still useless */
+  /**
+   * @deprecated Still useless
+   */
   renderMarkdown?: typeof renderMarkdownDefault;
 } & Pick<
   ComponentPropsWithoutRef<typeof ItemTypeTableClientList>,

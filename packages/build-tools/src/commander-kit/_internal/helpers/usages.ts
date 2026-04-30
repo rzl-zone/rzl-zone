@@ -53,14 +53,22 @@ export function styleUsage(
       context = "styleUsage"
     } = {}
   }: {
-    /** @default false */
+    /**
+     * @default false
+     */
     fromHelpCommandUsage?: true;
     errorConfig?: {
-      /** @default "raw" */
+      /**
+       * @default "raw"
+       */
       field?: string;
-      /** @default "a non-empty string" */
+      /**
+       * @default "a non-empty string"
+       */
       expected?: string;
-      /** @default "styleUsage" */
+      /**
+       * @default "styleUsage"
+       */
       context?: string;
     };
   } = {}
@@ -146,11 +154,17 @@ export function reorderUsage(
     } = {}
   }: {
     errorConfig?: {
-      /** @default "raw" */
+      /**
+       * @default "raw"
+       */
       field?: string;
-      /** @default "a non-empty string" */
+      /**
+       * @default "a non-empty string"
+       */
       expected?: string;
-      /** @default "reorderUsage" */
+      /**
+       * @default "reorderUsage"
+       */
       context?: string;
     };
   } = {}

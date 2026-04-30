@@ -28,41 +28,73 @@ export type {
  * @internal
  */
 export type CommanderInternalState = {
-  /** @default undefined */
+  /**
+   * @default undefined
+   */
   ui?: CommanderUiOptions;
-  /** @default undefined */
+  /**
+   * @default undefined
+   */
   packageName?: string;
-  /** @default undefined */
+  /**
+   * @default undefined
+   */
   manualUsage?: string;
-  /** @default false */
+  /**
+   * @default false
+   */
   disableUsage?: boolean;
 
-  /** @default undefined */
+  /**
+   * @default undefined
+   */
   help?: {
-    /** @default undefined */
+    /**
+     * @default undefined
+     */
     flags?: string;
-    /** @default undefined */
+    /**
+     * @default undefined
+     */
     description?: string;
-    /** @default undefined */
+    /**
+     * @default undefined
+     */
     disabled?: boolean;
   };
 
-  /** @default false */
+  /**
+   * @default false
+   */
   versionInjected?: boolean;
-  /** @default false */
+  /**
+   * @default false
+   */
   versionDisable?: boolean;
-  /** @default false */
+  /**
+   * @default false
+   */
   versionSetByUser?: boolean;
-  /** @default undefined */
+  /**
+   * @default undefined
+   */
   versionOriginal?: CommandInternal["version"] | Command["version"];
 
-  /** @default undefined */
+  /**
+   * @default undefined
+   */
   versionMeta?: {
-    /** @default undefined */
+    /**
+     * @default undefined
+     */
     value: string;
-    /** @default undefined */
+    /**
+     * @default undefined
+     */
     flags?: string;
-    /** @default undefined */
+    /**
+     * @default undefined
+     */
     description?: string;
   };
 };

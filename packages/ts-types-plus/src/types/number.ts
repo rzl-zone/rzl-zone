@@ -704,12 +704,16 @@ export type IsScientificNumber<T extends string> = Extends<
   `${"-" | ""}${number}${"e" | "E"}${number}`
 >;
 
-/** * ***Helper for {@link ParseScientificNumber | **`ParseScientificNumber`**}.*** */
+/** * ***Helper for {@link ParseScientificNumber | **`ParseScientificNumber`**}.***
+ *
+ */
 type BuildTuple<
   L extends number,
   T extends unknown[] = []
 > = T["length"] extends L ? T : BuildTuple<L, [...T, unknown]>;
-/** * ***Helper for {@link ParseScientificNumber | **`ParseScientificNumber`**}.*** */
+/** * ***Helper for {@link ParseScientificNumber | **`ParseScientificNumber`**}.***
+ *
+ */
 type _DecrementParseScientific<N extends number> =
   BuildTuple<N> extends [infer _, ...infer Rest] ? Rest["length"] : never;
 

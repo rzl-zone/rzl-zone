@@ -166,7 +166,9 @@ export type PathToFieldsOptions = Prettify<
   },
   { recursive: true }
 >;
-/** * ***Default options for {@link PathToFields}.*** */
+/** * ***Default options for {@link PathToFields}.***
+ *
+ */
 export type DefaultPathToFieldsOptions = {
   ignoredTypes: never;
   stopTypes: string | number | boolean | symbol | Date | AnyFunction;

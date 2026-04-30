@@ -3,41 +3,73 @@ import { getBaseUrl, getBeApiUrl } from "@rzl-zone/utils-js/next";
 import { env } from "@/utils/env";
 
 type AppConfig = {
-  /** * ***The URL settings for the application.*** */
+  /**
+   * * ***The URL settings for the application.***
+   */
   URL: {
-    /** * ***Base URL of the app.*** */
+    /**
+     * * ***Base URL of the app.***
+     */
     BASE_URL_APP: string;
-    /** * ***Base URL of the backend API.*** */
+    /**
+     * * ***Base URL of the backend API.***
+     */
     BASE_API_URL: string;
 
-    /** * ***Base URL of the app (DEV MODE).*** */
+    /**
+     * * ***Base URL of the app (DEV MODE).***
+     */
     BASE_URL_APP_LOCAL: string;
-    /** * ***Base URL of the backend API (DEV MODE).*** */
+    /**
+     * * ***Base URL of the backend API (DEV MODE).***
+     */
     BASE_API_URL_LOCAL: string;
 
-    /** * ***Value from env `NEXT_PUBLIC_GITHUB_REPO_URL`.*** */
+    /**
+     * * ***Value from env `NEXT_PUBLIC_GITHUB_REPO_URL`.***
+     */
     GITHUB_REPO_URL: string;
-    /** * ***Value from env `NEXT_PUBLIC_GITHUB_ORG_URL`.*** */
+    /**
+     * * ***Value from env `NEXT_PUBLIC_GITHUB_ORG_URL`.***
+     */
     GITHUB_ORG_URL: string;
   };
-  /** * ***The name of the application.*** */
+  /**
+   * * ***The name of the application.***
+   */
   APP_NAME: string;
-  /** * ***The release year of the application.*** */
+  /**
+   * * ***The release year of the application.***
+   */
   APP_RELEASE: number;
-  /** * ***Information about the entity powering the application.*** */
+  /**
+   * * ***Information about the entity powering the application.***
+   */
   APP_POWERED_BY: string;
-  /** * ***Link to the entity powering the app.*** */
+  /**
+   * * ***Link to the entity powering the app.***
+   */
   APP_POWERED_BY_LINK: string;
-  /** * ***Server action headers for cookies and API calls.*** */
+  /**
+   * * ***Server action headers for cookies and API calls.***
+   */
   SERVER_ACTION: {
-    /** * ***Cookie header to indicate server action.*** */
+    /**
+     * * ***Cookie header to indicate server action.***
+     */
     COOKIES: string;
-    /** * ***General header for server action.*** */
+    /**
+     * * ***General header for server action.***
+     */
     HEADER: string;
   };
-  /** * ***Cookies Configs.*** */
+  /**
+   * * ***Cookies Configs.***
+   */
   COOKIES: {
-    /** * ***Cookies For SideBar State.*** */
+    /**
+     * * ***Cookies For SideBar State.***
+     */
     SIDEBAR_DASHBOARD_STATE: string;
   };
 };
@@ -49,9 +81,7 @@ type AppConfig = {
  * @description This includes base URLs, app metadata, and server action-related values.
  */
 export const APP_CONFIG: AppConfig = {
-  /**
-   * The URL settings for the application.
-   */
+  /** The URL settings for the application. */
   URL: {
     // Base URL of the app
     BASE_URL_APP: getBaseUrl(),

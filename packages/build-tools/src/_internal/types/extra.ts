@@ -961,7 +961,9 @@ type IfNonEmptyString<
   IfFalse = false,
   WithTrim extends boolean = true
 > = IfNot<IsNever<NonEmptyString<T, WithTrim>>, IfTrue, IfFalse>;
-/** @private ***types for {@link AreAnagrams}.*** */
+/**
+ * @private ***types for {@link AreAnagrams}.***
+ */
 type _AreAnagrams<Str1 extends string, Str2 extends string> =
   IsEmptyString<Str1> extends true
     ? IsEmptyString<Str2> extends true

@@ -2,7 +2,9 @@ import type { And } from "./and";
 import type { IsStringLiteral } from "./is-string-literal";
 import type { IsEmptyString } from "./string";
 
-/** @private ***types for {@link AreAnagrams}.*** */
+/** @private ***types for {@link AreAnagrams}.***
+ *
+ */
 type _AreAnagrams<Str1 extends string, Str2 extends string> =
   IsEmptyString<Str1> extends true
     ? IsEmptyString<Str2> extends true

@@ -67,7 +67,6 @@ const cmdIdentity = commandSjcIdentity
   .setPackageName(PACKAGE_META.name)
   .setVersion(PACKAGE_META.version);
 
-/** @preserve @removeDocRuntime  tes */
 const program = createBaseProgram({
   commandIdentity: cmdIdentity,
   ui: {

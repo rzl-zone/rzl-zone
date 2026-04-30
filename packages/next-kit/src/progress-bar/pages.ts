@@ -81,9 +81,13 @@ const ProgressBarPagesComponent = (
 
   const stopProgress = useCallback(
     (
-      /** @default true */
+      /**
+       * @default true
+       */
       withDelay = true,
-      /** @default false */
+      /**
+       * @default false
+       */
       force?: boolean
     ) => {
       if (!isBoolean(withDelay)) withDelay = true;

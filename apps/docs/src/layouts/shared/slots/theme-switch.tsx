@@ -41,7 +41,9 @@ const showingToast = (currentTheme: string) => {
 };
 
 export interface ThemeSwitchProps extends React.ComponentProps<"div"> {
-  /** @default "light-dark" */
+  /**
+   * @default "light-dark"
+   */
   mode?: "light-dark" | "light-dark-system";
 }
 

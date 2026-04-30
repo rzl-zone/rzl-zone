@@ -150,7 +150,7 @@ type _safeSumArr<
   Num1 extends number
 > =
   // prettier-ignore
-  /** @ts-expect-error this still safe not to much deep */
+  // @ts-expect-error this still safe not to much deep
   _SumArr<Rest, Sum<CurrentSum, Num1>>;
 
 type _SumArr<T extends readonly number[], CurrentSum extends number = 0> =

@@ -477,7 +477,7 @@ export class RzlProgress {
     speed: number,
     ease: string
   ): Partial<CSSStyleDeclaration> {
-    let barCSS: Partial<CSSStyleDeclaration> = {};
+    let barCSS: Partial<CSSStyleDeclaration>;
 
     if (this.settings.positionUsing === "translate3d") {
       barCSS = {

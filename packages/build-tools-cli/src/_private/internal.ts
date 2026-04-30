@@ -23,7 +23,9 @@ export function resolveGlobPatterns(
   {
     argsName = "<glob...>"
   }: {
-    /** @default "<glob...>" */
+    /**
+     * @default "<glob...>"
+     */
     argsName?: string;
   } = {}
 ): string[] {

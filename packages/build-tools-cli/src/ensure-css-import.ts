@@ -28,7 +28,9 @@ type CliOptions = {
   dedupe?: boolean;
   sort?: boolean;
   minify?: boolean;
-  /** @deprecated  */
+  /**
+   * @deprecated
+   */
   insertTop?: boolean;
   logLevel?: LogLevel | boolean;
   patternOptions?: string;

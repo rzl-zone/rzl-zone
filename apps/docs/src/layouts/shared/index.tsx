@@ -61,7 +61,9 @@ interface SearchToggleOptions {
   enabled?: boolean;
   sm?: SearchTriggerProps;
   full?: FullSearchTriggerProps;
-  /** @deprecated use `slots.searchTrigger` instead */
+  /**
+   * @deprecated use `slots.searchTrigger` instead
+   */
   components?: {
     sm?: ReactNode;
     lg?: ReactNode;
@@ -70,7 +72,9 @@ interface SearchToggleOptions {
 
 interface ThemeSwitchOptions extends ThemeSwitchProps {
   enabled?: boolean;
-  /** @deprecated use `slots.themeSwitch` instead */
+  /**
+   * @deprecated use `slots.themeSwitch` instead
+   */
   component?: ReactNode;
 }
 

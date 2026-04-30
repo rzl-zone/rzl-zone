@@ -81,5 +81,7 @@ export function handleCommanderExit(err: unknown): never {
   process.exit(1);
 }
 
-/** @deprecated Used for `tsDoc` only. */
+/**
+ * @deprecated Used for `tsDoc` only.
+ */
 export type CliCommandInstance = CliCommand;

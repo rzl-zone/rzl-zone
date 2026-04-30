@@ -85,7 +85,7 @@ class ActionClass<Return extends AnyFn<ActionContext<any>>> {
   }
 }
 
-/** Parses the 'x-forwarded-for' header to extract the client's IP address.
+/** Parses the `x-forwarded-for` header to extract the client's IP address.
  *
  * This header may contain multiple IP addresses in the format "client IP, proxy 1 IP, proxy 2 IP".
  * This function extracts and returns the first valid IP address.

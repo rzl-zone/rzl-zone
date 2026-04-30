@@ -1,6 +1,8 @@
 import type { Whitespace } from "./common";
 
-/** **Helper Type Internal.** */
+/**
+ * **Helper Type Internal.**
+ */
 type SafeKeyTrimming<T> = Exclude<T, symbol>;
 
 /** --------------------------------------------------

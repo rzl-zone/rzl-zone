@@ -22,5 +22,7 @@ export const cliCreateArgument = (
   description?: string
 ): CliArgument => new CliArgument(name, description);
 
-/** @deprecated `Un-Used`. */
+/**
+ * @deprecated `Un-Used`.
+ */
 export type ArgumentType = Argument;

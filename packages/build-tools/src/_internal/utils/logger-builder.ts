@@ -709,9 +709,13 @@ export const BUILD_LOGGER = {
 };
 
 type LoggerBuilderSection = {
-  /** @default `ICON.config` */
+  /**
+   * @default ICON.config
+   */
   icon?: string;
-  /** @default "" */
+  /**
+   * @default ""
+   */
   indent?: string;
 };
 type LoggerBuilderOnStarting = {

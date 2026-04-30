@@ -67,9 +67,13 @@ export function getMDXComponents(components?: MDXComponents) {
 
     XIcon: IconIsNonOptional,
     CheckIcon: IconIsOptional,
-    /** @deprecated Use `CheckIcon` instead. */
+    /**
+     * @deprecated Use `CheckIcon` instead.
+     */
     IconIsOptional,
-    /** @deprecated Use `XIcon` instead. */
+    /**
+     * @deprecated Use `XIcon` instead.
+     */
     IconIsNonOptional,
     SeparatorSection,
     h1: (props: HTMLAttributes<HTMLHeadingElement>) => (

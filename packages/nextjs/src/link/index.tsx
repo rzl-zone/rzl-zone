@@ -66,7 +66,9 @@ export type LinkCustomType = Omit<
    * @default `true` (pages router) or `null` (app router)
    */
   prefetch?: NextLinkProps["prefetch"] | "onHover";
-  /** @default "https://github.com/rzl-zone" */
+  /**
+   * @default "https://github.com/rzl-zone"
+   */
   defaultUrlOnInvalid?: string;
 
   scrollBehavior?: {

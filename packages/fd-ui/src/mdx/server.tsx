@@ -16,7 +16,9 @@ import { type PageMdxDataType } from "@/providers/main-rzl-fumadocs";
 type DefaultDataMdx = PageMdxDataType &
   DocData &
   DocMethods & {
-    /** @deprecated In older versions of fumadocs, we still included deleteObjectType just in case it was updated again by the official fumadocs. */
+    /**
+     * @deprecated In older versions of fumadocs, we still included deleteObjectType just in case it was updated again by the official fumadocs.
+     */
     extractedReferences?: Record<string, unknown>;
   };
 

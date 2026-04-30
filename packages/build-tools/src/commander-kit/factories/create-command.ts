@@ -21,5 +21,7 @@ import { CliCommand } from "../core/command";
 export const cliCreateCommand = (name?: string): CliCommand =>
   new CliCommand(name);
 
-/** @deprecated `Un-Used`. */
+/**
+ * @deprecated `Un-Used`.
+ */
 export type CommandType = Command;

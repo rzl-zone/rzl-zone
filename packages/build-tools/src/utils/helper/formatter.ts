@@ -395,13 +395,21 @@ export function joinLinesLoose(
 }
 
 type FormatOptionValueOptions = {
-  /** @default false */
+  /**
+   * @default false
+   */
   pretty?: boolean;
-  /** @default 2 */
+  /**
+   * @default 2
+   */
   indent?: number;
-  /** @default false */
+  /**
+   * @default false
+   */
   sortKeys?: boolean;
-  /** @default false */
+  /**
+   * @default false
+   */
   sortArray?: boolean;
 };
 

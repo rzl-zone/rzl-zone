@@ -99,7 +99,9 @@ const InitNextAppProgressBar = memo((props: RzlNextProgressBarProps) => {
 
   const startProgress = useCallback(
     (
-      /** @default true */
+      /**
+       * @default true
+       */
       withDelay = true
     ) => {
       if (!isBoolean(withDelay)) withDelay = true;
@@ -123,9 +125,13 @@ const InitNextAppProgressBar = memo((props: RzlNextProgressBarProps) => {
 
   const stopProgress = useCallback(
     (
-      /** @default true */
+      /**
+       * @default true
+       */
       withDelay = true,
-      /** @default false */
+      /**
+       * @default false
+       */
       force?: boolean
     ) => {
       if (!isBoolean(withDelay)) withDelay = true;

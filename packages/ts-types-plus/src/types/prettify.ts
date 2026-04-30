@@ -5,7 +5,9 @@ import type { IsFunction } from "./is-function";
 import type { IsPrimitive } from "./primitive";
 import type { NonPlainObject } from "./type-data";
 
-/** * Applies readonly behavior according to mode. */
+/** * Applies readonly behavior according to mode.
+ *
+ */
 type ApplyReadonlyMode<
   T,
   Mode extends PrettifyOptions["readonlyMode"]
@@ -280,6 +282,7 @@ export type Prettify<
               : T;
 
 /** * ***Accepts a type and returns its simplified version for better readability. Transforms interface to type, simplifies intersections. If `recursive` option is `true` transforms the children object properties as well.***
+ *
  * @example
  * ```ts
  * // { a: string; b: string }

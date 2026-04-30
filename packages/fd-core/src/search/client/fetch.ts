@@ -73,7 +73,9 @@ export interface FetchOptions {
 
 const cache = new Map<string, SortedResult[]>();
 
-/** @deprecated Use {@link fetchClient | `fetchClient`} instead. */
+/**
+ * @deprecated Use {@link fetchClient | `fetchClient`} instead.
+ */
 export async function fetchDocs(
   query: string,
   { api = "/api/search", locale, tag }: FetchOptions

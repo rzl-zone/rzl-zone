@@ -27,6 +27,7 @@ export default defineConfig([
       "internal-global.d.ts"
     ],
     rules: {
+      "no-useless-assignment": "warn",
       "react-hooks/refs": "warn",
       "react-hooks/preserve-manual-memoization": "off",
       "@typescript-eslint/no-unused-expressions": "off"
