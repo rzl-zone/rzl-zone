@@ -1,12 +1,12 @@
-import { apiBuildTools } from "@/utils/packages/apis-info/data/build-tools";
-import { apisNextKit } from "@/utils/packages/apis-info/data/next-kit";
-import { apisUtilsJS } from "@/utils/packages/apis-info/data/utils-js";
-import { type ApiVersionInfoType } from "@/utils/packages/apis-info/types";
 import {
   getLinkUrl,
   type PackagesConfigs,
   type PackagesName
 } from "@/utils/packages/docs";
+import { apiBuildTools } from "@/utils/packages/apis-info/data/build-tools";
+import { apisNextKit } from "@/utils/packages/apis-info/data/next-kit";
+import { apisUtilsJS } from "@/utils/packages/apis-info/data/utils-js";
+import { type ApiVersionInfoType } from "@/utils/packages/apis-info/types";
 
 export const apiVersionEntries = {
   "build-tools": apiBuildTools,

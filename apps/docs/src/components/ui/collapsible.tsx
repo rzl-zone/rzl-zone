@@ -1,30 +1,28 @@
 "use client";
 
-import { forwardRef, useEffect, useState } from "react";
+import { useEffect, useState, type ComponentPropsWithRef } from "react";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
-import { useEffectEvent } from "@rzl-zone/core-react/hooks";
 import * as Primitive from "@rzl-zone/docs-ui/components/radix-ui-collapsible";
 
-const Collapsible = Primitive.Root;
+import { cn } from "@/lib/cn";
 
-const CollapsibleTrigger = Primitive.CollapsibleTrigger;
+export const Collapsible = Primitive.Root;
 
-const CollapsibleContent = forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof Primitive.CollapsibleContent>
->(({ children, ...props }, ref) => {
+export const CollapsibleTrigger = Primitive.CollapsibleTrigger;
+
+export function CollapsibleContent({
+  children,
+  ...props
+}: ComponentPropsWithRef<typeof Primitive.CollapsibleContent>) {
   const [mounted, setMounted] = useState(false);
 
-  const setMountedEvent = useEffectEvent((value: boolean) => setMounted(value));
-
   useEffect(() => {
-    setMountedEvent(true);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
   }, []);
 
   return (
     <Primitive.CollapsibleContent
-      ref={ref}
       {...props}
       className={cn(
         "overflow-hidden",
@@ -36,11 +34,7 @@ const CollapsibleContent = forwardRef<
       {children}
     </Primitive.CollapsibleContent>
   );
-});
-
-CollapsibleContent.displayName = Primitive.CollapsibleContent.displayName;
-
-export { Collapsible, CollapsibleTrigger, CollapsibleContent };
+}
 
 export type CollapsibleProps = Primitive.CollapsibleProps;
 export type CollapsibleContentProps = Primitive.CollapsibleContentProps;

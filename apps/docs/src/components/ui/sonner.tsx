@@ -2,7 +2,6 @@
 
 import { useTheme } from "@rzl-zone/next-kit/themes";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
 import {
   Toaster as Sonner,
   type ToasterProps
@@ -15,6 +14,8 @@ import {
   TriangleAlertIcon,
   X
 } from "@rzl-zone/docs-ui/components/icons/lucide";
+
+import { cn } from "@/lib/cn";
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme } = useTheme();

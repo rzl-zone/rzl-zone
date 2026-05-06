@@ -8,6 +8,25 @@ import {
   useState
 } from "react";
 
+import { mergeRefs } from "@rzl-zone/core-react/utils";
+import { useEffectEvent } from "@rzl-zone/core-react/hooks";
+
+import {
+  CheckSquare,
+  LinkIcon
+} from "@rzl-zone/docs-ui/components/icons/lucide";
+import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
+import { Button } from "@rzl-zone/docs-ui/components/button";
+import { Transition } from "@rzl-zone/docs-ui/components/headless-ui-react";
+
+import { delay } from "@rzl-zone/utils-js/promises";
+import { isNonEmptyString } from "@rzl-zone/utils-js/predicates";
+
+import { cn } from "@/lib/cn";
+import { copyText } from "@/utils/clipboard/copyText";
+import { useCopyButton } from "@/hooks/use-copy-button";
+import { useMainRzlFumadocs } from "@/context/main-rzl-fumadocs";
+
 import {
   Accordion as Root,
   AccordionContent,
@@ -15,20 +34,6 @@ import {
   AccordionItem,
   AccordionTrigger
 } from "../ui/accordion";
-import { mergeRefs } from "@rzl-zone/core-react/utils";
-import { cn } from "@rzl-zone/docs-ui/utils";
-import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
-import { useCopyButtonFD } from "@/hooks/use-copy-button-fd";
-import {
-  Check,
-  ChevronRight,
-  LinkIcon
-} from "@rzl-zone/docs-ui/components/icons/lucide";
-import { Button } from "@rzl-zone/docs-ui/components/button";
-import { useEffectEvent } from "@rzl-zone/core-react/hooks";
-import { useMainRzlFumadocs } from "@/context/main-rzl-fumadocs";
-import { delay } from "@rzl-zone/utils-js/promises";
-import { isNonEmptyString } from "@rzl-zone/utils-js/predicates";
 
 export function Accordions({
   type = "single",
@@ -62,6 +67,7 @@ export function Accordions({
   return (
     // @ts-expect-error -- Multiple types
     <Root
+      {...props}
       type={type}
       ref={composedRef}
       value={value}
@@ -71,7 +77,6 @@ export function Accordions({
         "divide-y divide-fd-border overflow-hidden rounded-lg border bg-fd-card",
         className
       )}
-      {...props}
     />
   );
 }
@@ -134,7 +139,7 @@ export function Accordion({
             if (!target) return;
 
             const header = target;
-            const content = header.nextElementSibling as HTMLElement | null;
+            const content = header.nextElementSibling;
             if (!content) return;
 
             const startTop =
@@ -195,12 +200,13 @@ export function Accordion({
 }
 
 function CopyButton({ id }: { id: string }) {
-  const [checked, onClick] = useCopyButtonFD({
-    onCopy: () => {
+  const [checked, onClick] = useCopyButton({
+    onCopy: async () => {
       const url = new URL(window.location.href);
       url.hash = id;
 
-      return navigator.clipboard.writeText(url.toString());
+      return void (await copyText(url.toString()));
+      // return navigator.clipboard.writeText(url.toString());
     }
   });
 
@@ -208,19 +214,45 @@ function CopyButton({ id }: { id: string }) {
     <Button
       type="button"
       aria-label="Copy Link"
+      onClick={onClick}
       className={cn(
         buttonVariants({
           variant: "ghost",
           className: "text-fd-muted-foreground me-2"
         })
       )}
-      onClick={onClick}
     >
-      {checked ? (
-        <Check className="size-3.5" />
-      ) : (
-        <LinkIcon className="size-3.5" />
-      )}
+      <div className="relative size-3 min-w-3 min-h-3">
+        <Transition
+          show={!checked}
+          enter="transition-all duration-300 ease-out"
+          enterFrom="opacity-0 scale-75"
+          enterTo="opacity-100 scale-100"
+          leave="transition-all duration-300 ease-in"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-75"
+        >
+          <div className="absolute inset-0 flex items-center justify-center">
+            <LinkIcon className="size-3.5" />
+            <span className="sr-only">Copy</span>
+          </div>
+        </Transition>
+
+        <Transition
+          show={checked}
+          enter="transition-all duration-300 ease-out"
+          enterFrom="opacity-0 scale-75"
+          enterTo="opacity-100 scale-100"
+          leave="transition-all duration-300 ease-in"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-75"
+        >
+          <div className="absolute inset-0 flex items-center justify-center">
+            <CheckSquare className="size-3.5" />
+            <span className="sr-only">Copied!</span>
+          </div>
+        </Transition>
+      </div>
     </Button>
   );
 }

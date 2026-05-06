@@ -1,5 +1,5 @@
 {
-  "$schema": "node_modules/@fumadocs/cli/dist/schema/src.json",
+  "$schema": "node_modules/@fumadocs/cli/dist/schema.json",
   "aliases": {
     "uiDir": "./components/ui",
     "componentsDir": "./components",
@@ -9,5 +9,6 @@
   },
   "baseDir": "src",
   "uiLibrary": "radix-ui",
+  "framework": "next",
   "commands": {}
 }

@@ -10,18 +10,20 @@ import {
 } from "react";
 
 import { mergeRefs } from "@rzl-zone/core-react/utils";
+import { createRequiredContext } from "@rzl-zone/core-react/context";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
 import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
 import { CheckSquare, Copy } from "@rzl-zone/docs-ui/components/icons/lucide";
 
+import { Button } from "@rzl-zone/docs-ui/components/button";
 import { ScrollArea } from "@rzl-zone/docs-ui/components/scroll-area";
 import { Transition } from "@rzl-zone/docs-ui/components/headless-ui-react";
 
-import { useCopyButtonFD } from "@/hooks/use-copy-button-fd";
+import { cn } from "@/lib/cn";
+import { copyText } from "@/utils/clipboard/copyText";
+import { useCopyButton } from "@/hooks/use-copy-button";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { createRequiredContext } from "@rzl-zone/core-react/context";
-import { Button } from "@rzl-zone/docs-ui/components/button";
 
 export interface CodeBlockProps extends ComponentProps<"figure"> {
   /**
@@ -198,7 +200,7 @@ function CopyButton({
 }: ComponentProps<"button"> & {
   containerRef: RefObject<HTMLElement | null>;
 }) {
-  const [checked, onClick] = useCopyButtonFD({
+  const [checked, onClick] = useCopyButton({
     onCopy: () => {
       const pre = containerRef.current?.getElementsByTagName("pre").item(0);
       if (!pre) return;
@@ -208,7 +210,8 @@ function CopyButton({
         node.replaceWith("\n");
       });
 
-      void navigator.clipboard.writeText(clone.textContent ?? "");
+      // void navigator.clipboard.writeText(clone.textContent ?? "");
+      void copyText(clone.textContent ?? "");
     }
   });
 

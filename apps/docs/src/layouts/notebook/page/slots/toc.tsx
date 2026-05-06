@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  useCallback,
   useEffect,
   useEffectEvent,
   useMemo,
@@ -11,22 +10,18 @@ import {
   type ReactNode
 } from "react";
 
-import useDetectScroll from "@smakss/react-scroll-direction";
-
 import { useTreePath } from "fumadocs-ui/contexts/tree";
 import { I18nLabel, useI18n } from "fumadocs-ui/contexts/i18n";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
+import { scrollToTop } from "@rzl-zone/utils-js/events";
+import { createRequiredContext } from "@rzl-zone/core-react/context";
+
 import {
   ChevronDown,
   CircleArrowUp,
   Text
 } from "@rzl-zone/docs-ui/components/icons/lucide";
 import { Button } from "@rzl-zone/docs-ui/components/button";
-
-import { scrollToTop } from "@rzl-zone/utils-js/events";
-import { mergeProps } from "@rzl-zone/core-react/utils";
-import { createRequiredContext } from "@rzl-zone/core-react/context";
 
 import {
   Collapsible,
@@ -36,20 +31,21 @@ import {
 import * as Base from "@/components/toc";
 import * as TocClerk from "@/components/toc/clerk";
 import * as TocDefault from "@/components/toc/default";
-import { useNotebookLayout } from "@/layouts/notebook/client";
 
+import { cn } from "@/lib/cn";
 import { useMainRzlFumadocs } from "@/context/main-rzl-fumadocs";
 
-export type TOCProviderProps = Base.TOCProviderProps;
+import { useNotebookLayout } from "../../client";
+import { useTOCListener } from "fumadocs-core/toc";
 
-export type ExtraTOCPopover = { tocPopover?: boolean };
+export type TOCProviderProps = Base.TOCProviderProps;
 
 export function TOCProvider(props: TOCProviderProps) {
   return <Base.TOCProvider {...props} />;
 }
 
-export interface TOCProps {
-  container?: ComponentProps<"div">;
+export type TOCProps = {
+  container?: ComponentProps<"aside">;
   /**
    * Custom content in TOC container, before the main TOC
    */
@@ -59,32 +55,64 @@ export interface TOCProps {
    * Custom content in TOC container, after the main TOC
    */
   footer?: ReactNode;
+} & (
+  | {
+      /**
+       * @default "clerk"
+       */
+      style?: "normal";
+      list?: TocDefault.TOCItemsProps;
+    }
+  | {
+      /**
+       * @default "clerk"
+       */
+      style: "clerk";
+      list?: TocClerk.TOCItemsProps;
+    }
+);
 
-  /**
-   * @defaultValue 'clerk'
-   */
-  style?: "normal" | "clerk";
-}
+export function TOC({
+  container,
+  header,
+  footer,
+  style = "clerk",
+  list
+}: TOCProps) {
+  const items = Base.useTOCItems();
+  const { TOCItems, TOCEmpty, TOCItem } =
+    style === "clerk" ? TocClerk : TocDefault;
 
-export function TOC({ container, header, footer, style }: TOCProps) {
   return (
-    <div
+    <aside
       id="nd-toc"
       {...container}
-      // className={cn(
-      //   "sticky top-(--fd-docs-row-3) [grid-area:toc] h-[calc(var(--fd-docs-height)-var(--fd-docs-row-3))] flex flex-col w-(--fd-toc-width) pt-12 pe-4 pb-2 xl:layout:[--fd-toc-width:268px] max-xl:hidden",
-      //   container?.className
-      // )}
       className={cn(
-        "sticky top-(--fd-docs-row-3) [grid-area:toc] pt-8 pe-4 xl:layout:[--fd-toc-width:268px] max-xl:hidden",
-        "h-[calc(var(--fd-docs-height)-var(--fd-docs-row-3))]",
-        "flex flex-col justify-between",
+        "sticky top-(--fd-docs-row-3) [grid-area:toc] h-[calc(var(--fd-docs-height)-var(--fd-docs-row-3))] flex flex-col w-(--fd-toc-width) pt-12 pe-4 pb-2 xl:layout:[--fd-toc-width:268px] max-xl:hidden",
+        "justify-between",
         container?.className
       )}
     >
       <div className="flex flex-col w-(--fd-toc-width) max-h-[85%]">
         {header}
-        <TocAsideMain style={style} />
+        <h3
+          id="toc-title"
+          className="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground"
+        >
+          <Text className="size-4" />
+          <I18nLabel label="toc" />
+        </h3>
+        <Base.TOCScrollArea type="hover">
+          <TOCItems {...list}>
+            {items.length === 0 && <TOCEmpty />}
+            {items.map((item) => (
+              <TOCItem
+                key={item.url}
+                item={item}
+              />
+            ))}
+          </TOCItems>
+        </Base.TOCScrollArea>
         {footer}
       </div>
 
@@ -93,19 +121,16 @@ export function TOC({ container, header, footer, style }: TOCProps) {
 
         <TocAsideScrollToTop />
       </div>
-    </div>
+    </aside>
   );
 }
 
 export const TocPopoverContext = createRequiredContext<{
   open: boolean;
-  ref?: React.RefObject<HTMLElement | null>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}>("TocPopoverContext");
+  setOpen: (open: boolean) => void;
+} | null>("TocPopoverContext", null);
 
-export const useTocPopover = () => TocPopoverContext.use();
-
-export interface TOCPopoverProps {
+export type TOCPopoverProps = {
   container?: ComponentProps<"div">;
   trigger?: ComponentProps<"button">;
   content?: ComponentProps<"div">;
@@ -119,12 +144,22 @@ export interface TOCPopoverProps {
    * Custom content in TOC container, after the main TOC
    */
   footer?: ReactNode;
-
-  /**
-   * @defaultValue 'clerk'
-   */
-  style?: "normal" | "clerk";
-}
+} & (
+  | {
+      /**
+       * @default "clerk"
+       */
+      style?: "normal";
+      list?: TocDefault.TOCItemsProps;
+    }
+  | {
+      /**
+       * @default "clerk"
+       */
+      style: "clerk";
+      list?: TocClerk.TOCItemsProps;
+    }
+);
 
 export function TOCPopover({
   container,
@@ -132,59 +167,37 @@ export function TOCPopover({
   content,
   header,
   footer,
-  style = "clerk"
+  style = "clerk",
+  list
 }: TOCPopoverProps) {
-  return (
-    <PageTOCPopover {...container}>
-      <PageTOCPopoverTrigger {...trigger} />
-      <PageTOCPopoverContent {...content}>
-        {header}
-        <TocAsideMain
-          style={style}
-          tocPopover
-        />
-        {footer}
-      </PageTOCPopoverContent>
-    </PageTOCPopover>
-  );
-}
-
-function PageTOCPopover({
-  className,
-  children,
-  ...rest
-}: ComponentProps<"div">) {
+  const items = Base.useTOCItems();
   const ref = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const { isNavTransparent } = useNotebookLayout();
+  const { TOCItems, TOCItem, TOCEmpty } =
+    style === "clerk" ? TocClerk : TocDefault;
 
-  const scrollDir = useDetectScroll();
+  const onClickOutside = useEffectEvent((e: Event) => {
+    if (!open || !(e.target instanceof HTMLElement)) return;
 
-  const onClick = useEffectEvent((e: Event) => {
-    if (!open) return;
+    if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+  });
 
-    if (ref.current && !ref.current.contains(e.target as HTMLElement))
-      setOpen(false);
+  const onClickItem = () => {
+    setOpen(false);
+  };
+
+  useTOCListener(() => {
+    if (open) onClickItem();
   });
 
   useEffect(() => {
-    window.addEventListener("click", onClick);
+    window.addEventListener("click", onClickOutside);
 
     return () => {
-      window.removeEventListener("click", onClick);
+      window.removeEventListener("click", onClickOutside);
     };
   }, []);
-
-  useEffect(() => {
-    let id: NodeJS.Timeout | number | undefined = undefined;
-    if (open) {
-      id = setTimeout(() => setOpen(false), 0);
-    }
-
-    return () => {
-      if (id) clearTimeout(id);
-    };
-  }, [scrollDir.scrollDir]);
 
   return (
     <TocPopoverContext.Provider
@@ -200,11 +213,11 @@ function PageTOCPopover({
         open={open}
         onOpenChange={setOpen}
         data-toc-popover=""
+        {...container}
         className={cn(
           "sticky top-(--fd-docs-row-2) z-10 [grid-area:toc-popover] h-(--fd-toc-popover-height) xl:hidden max-xl:layout:[--fd-toc-popover-height:--spacing(10)]",
-          className
+          container?.className
         )}
-        {...rest}
       >
         <header
           ref={ref}
@@ -214,7 +227,23 @@ function PageTOCPopover({
             open && "shadow-lg"
           )}
         >
-          {children}
+          <PageTOCPopoverTrigger {...trigger} />
+          <PageTOCPopoverContent {...content}>
+            {header}
+            <Base.TOCScrollArea>
+              <TOCItems {...list}>
+                {items.length === 0 && <TOCEmpty />}
+                {items.map((item) => (
+                  <TOCItem
+                    key={item.url}
+                    item={item}
+                    onClick={onClickItem}
+                  />
+                ))}
+              </TOCItems>
+            </Base.TOCScrollArea>
+            {footer}
+          </PageTOCPopoverContent>
         </header>
       </Collapsible>
     </TocPopoverContext.Provider>
@@ -226,15 +255,11 @@ function PageTOCPopoverTrigger({
   ...props
 }: ComponentProps<"button">) {
   const { text } = useI18n();
-  const { open } = useTocPopover();
-  const items = Base.useTOCItems();
-  const active = Base.useActiveAnchor();
-  const selected = useMemo(
-    () => items.findIndex((item) => active === item.url.slice(1)),
-    [items, active]
-  );
+  const { open } = TocPopoverContext.useSuspense() || {};
+  const items = Base.useItems();
+  const selectedIdx = items.findIndex((item) => item.active);
   const path = useTreePath().at(-1);
-  const showItem = selected !== -1 && !open;
+  const showItem = selectedIdx !== -1 && !open;
 
   return (
     <CollapsibleTrigger
@@ -246,7 +271,10 @@ function PageTOCPopoverTrigger({
       {...props}
     >
       <ProgressCircle
-        value={(selected + 1) / Math.max(1, items.length)}
+        value={
+          (items.findLastIndex((item) => item.active) + 1) /
+          Math.max(1, items.length)
+        }
         max={1}
         className={cn("shrink-0", open && "text-fd-primary")}
       />
@@ -266,7 +294,7 @@ function PageTOCPopoverTrigger({
             !showItem && "opacity-0 translate-y-full pointer-events-none"
           )}
         >
-          {items[selected]?.title}
+          {items[selectedIdx]?.original.title}
         </span>
       </span>
       <ChevronDown
@@ -298,14 +326,15 @@ function clamp(input: number, min: number, max: number): number {
 
 function ProgressCircle({
   value,
-  strokeWidth = 2,
-  size = 24,
+  strokeWidth = 1.5,
+  size = 18,
   min = 0,
   max = 100,
+  style,
   ...restSvgProps
 }: ProgressCircleProps) {
   const normalizedValue = clamp(value, min, max);
-  const radius = (size - strokeWidth) / 2;
+  const radius = size / 2 - strokeWidth;
   const circumference = 2 * Math.PI * radius;
   const progress = (normalizedValue / max) * circumference;
   const circleProps = {
@@ -323,6 +352,7 @@ function ProgressCircle({
       aria-valuenow={normalizedValue}
       aria-valuemin={min}
       aria-valuemax={max}
+      style={{ width: size, height: size, ...style }}
       {...restSvgProps}
     >
       <circle
@@ -343,35 +373,14 @@ function ProgressCircle({
 }
 
 function PageTOCPopoverContent(props: ComponentProps<"div">) {
-  const { setOpen, open } = useTocPopover();
-
-  const mergeCollapsibleContentProps = useCallback(() => {
-    return mergeProps<
-      Array<
-        Pick<
-          ComponentProps<typeof CollapsibleContent>,
-          "onClick" | "className" | "style"
-        >
-      >
-    >(
-      { onClick: props.onClick },
-      {
-        onClick: () => {
-          if (!open) return;
-          setOpen(() => false);
-        }
-      }
-    );
-  }, [props.onClick, setOpen, open]);
-
   return (
     <CollapsibleContent
       data-toc-popover-content=""
       {...props}
-      {...mergeCollapsibleContentProps()}
-      className={cn("flex flex-col px-4 max-h-[50vh] md:px-6", props.className)}
     >
-      {props.children}
+      <div className="flex flex-col px-4 max-h-[50vh] md:px-6">
+        {props.children}
+      </div>
     </CollapsibleContent>
   );
 }
@@ -398,32 +407,5 @@ export const TocAsideScrollToTop = () => {
         />
       </div>
     </Button>
-  );
-};
-
-export const TocAsideMain = ({
-  style = "clerk",
-  tocPopover
-}: Pick<TOCPopoverProps, "style"> & ExtraTOCPopover) => {
-  return (
-    <>
-      {!tocPopover ? (
-        <h3
-          id="toc-title"
-          className="inline-flex items-center gap-1.75 text-sm text-fd-muted-foreground data-[active=true]:text-fd-primary"
-        >
-          <Text className="size-4" />
-          <I18nLabel label="toc" />
-        </h3>
-      ) : null}
-
-      <Base.TOCScrollArea>
-        {style === "clerk" ? (
-          <TocClerk.TOCItems tocPopover={tocPopover} />
-        ) : (
-          <TocDefault.TOCItems />
-        )}
-      </Base.TOCScrollArea>
-    </>
   );
 };

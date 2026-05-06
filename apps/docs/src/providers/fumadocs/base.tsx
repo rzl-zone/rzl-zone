@@ -1,10 +1,12 @@
 "use client";
-import { lazy } from "react";
 
 import type { OmitStrict } from "@rzl-zone/ts-types-plus";
 import type { RootProviderProps } from "fumadocs-ui/provider/base";
 
 import type { Framework } from "fumadocs-core/framework";
+
+import dynamic from "next/dynamic";
+
 import { NextProvider } from "fumadocs-core/framework/next";
 
 import { I18nProvider } from "fumadocs-ui/contexts/i18n";
@@ -15,10 +17,13 @@ import { type RzlThemeProviderProps } from "@rzl-zone/next-kit/themes";
 
 import { DirectionProvider } from "@rzl-zone/docs-ui/components/radix-ui-direction";
 
-import { FumaNextLink } from "@/components/link";
+import { CustomNextLink } from "@/components/link";
 
-const DefaultSearchDialog = lazy(
-  () => import("fumadocs-ui/components/dialog/search-default")
+const DefaultSearchDialog = dynamic(
+  () => import("fumadocs-ui/components/dialog/search-default"),
+  {
+    ssr: false
+  }
 );
 
 interface RootFdBaseProviderProps extends OmitStrict<
@@ -70,7 +75,7 @@ export function RootFdBaseProvider({
 
   return (
     <NextProvider
-      Link={components?.Link ?? (FumaNextLink as Framework["Link"])}
+      Link={components?.Link ?? (CustomNextLink as Framework["Link"])}
       Image={components?.Image}
     >
       <DirectionProvider dir={dir}>{body}</DirectionProvider>

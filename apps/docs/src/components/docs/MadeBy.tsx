@@ -1,7 +1,8 @@
 import React from "react";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
 import { env } from "@/utils/env";
+
+import { cn } from "@/lib/cn";
 
 const MadeBy = (props?: React.ComponentPropsWithRef<"div">) => {
   return (

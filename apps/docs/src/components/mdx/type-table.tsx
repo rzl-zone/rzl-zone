@@ -9,12 +9,7 @@ import {
 
 import Link from "fumadocs-core/link";
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger
-} from "@/components/ui/collapsible";
-import { cn, cva } from "@rzl-zone/docs-ui/utils";
+import { cva } from "@rzl-zone/docs-ui/utils";
 import {
   ChevronDown,
   IconIsNonOptional,
@@ -26,6 +21,14 @@ import {
   isString
 } from "@rzl-zone/utils-js/predicates";
 import { normalizeSpaces } from "@rzl-zone/utils-js/strings";
+
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from "@/components/ui/collapsible";
+
+import { cn } from "@/lib/cn";
 
 export interface ParameterNode {
   name: string;
@@ -74,7 +77,7 @@ export function TypeTable({
   className,
   textParam = "Prop",
   textType = "Type",
-  allowMultiple = false,
+  allowMultiple = true,
   ...props
 }: { type: Record<string, TypeNode> } & ComponentProps<"div"> & {
     /**
@@ -89,10 +92,10 @@ export function TypeTable({
     /**
      * Determines whether multiple items can be open at the same time.
      *
-     * - If `true`: multiple sections can be expanded simultaneously.
-     * - If `false`: only one section stays open at a time (default).
+     * - If `true` (default): multiple sections can be expanded simultaneously.
+     * - If `false`: only one section stays open at a time.
      *
-     * @default false
+     * @default true
      */
     allowMultiple?: boolean;
   }) {

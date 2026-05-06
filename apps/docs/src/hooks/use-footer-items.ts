@@ -5,8 +5,37 @@ import { useTreeContext } from "fumadocs-ui/contexts/tree";
 
 const footerCache = new Map<string, PageTree.Item[]>();
 
-/**
- * @returns a list of page tree items (linear), that you can obtain footer items
+/** ------------------------------------------------------------
+ * * ***Flattens page tree into a linear list for footer navigation.***
+ * ------------------------------------------------------------
+ *
+ * This hook traverses the page tree from `useTreeContext()` and returns
+ * a flat (linear) list of all internal page items.
+ *
+ * The result is cached per `root.$id` to avoid recomputation on
+ * subsequent renders.
+ *
+ * Traversal behavior:
+ * - Recursively visits all folders and their children
+ * - Includes `index` pages inside folders (if present)
+ * - Excludes external pages (`node.external === true`)
+ *
+ * @returns An array of page items in traversal order,
+ * suitable for footer navigation (e.g., previous/next links).
+ *
+ * @remarks
+ * - The result is memoized using a module-level cache (`Map`).
+ * - Cache is keyed by `root.$id`, so it assumes the tree is stable per ID.
+ * - Does not react to dynamic mutations of the tree after initial caching.
+ *
+ * @example
+ * ```ts
+ * const items = useFooterItems();
+ *
+ * const currentIndex = items.findIndex(i => i.url === currentPath);
+ * const prev = items[currentIndex - 1];
+ * const next = items[currentIndex + 1];
+ * ```
  */
 export function useFooterItems(): PageTree.Item[] {
   const { root } = useTreeContext();

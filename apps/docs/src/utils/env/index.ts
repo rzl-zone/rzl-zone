@@ -16,18 +16,19 @@ export const env = createEnv({
       .string({
         error: "Is required value with valid type `string`."
       })
-      .nonempty({
-        error: "Value cannot be empty-string."
-      }),
-
+      .optional(),
+    // .nonempty({
+    //   error: "Value cannot be empty-string."
+    // })
     // ALGOLIA
     ALGOLIA_SECRET_API_KEY: z
       .string({
         error: "Is required value with valid type `string`."
       })
-      .nonempty({
-        error: "Value cannot be empty-string."
-      })
+      .optional()
+    // .nonempty({
+    //   error: "Value cannot be empty-string."
+    // })
   },
   client: {
     // MAIN BASE APP
@@ -119,32 +120,36 @@ export const env = createEnv({
       .string({
         error: "Is required value with valid type `string`."
       })
-      .nonempty({
-        error: "Value cannot be empty-string."
-      }),
+      .optional(),
+    // .nonempty({
+    //   error: "Value cannot be empty-string."
+    // })
     NEXT_PUBLIC_ORAMA_ENDPOINT: z
       .url({
         error: "Is required value with valid type `URL` format."
       })
-      .nonempty({
-        error: "Value cannot be empty-string."
-      }),
+      .optional(),
+    // .nonempty({
+    //   error: "Value cannot be empty-string."
+    // }),
 
     // ALGOLIA
     NEXT_PUBLIC_ALGOLIA_APP_ID: z
       .string({
         error: "Is required value with valid type `string`."
       })
-      .nonempty({
-        error: "Value cannot be empty-string."
-      }),
+      .optional(),
+    // .nonempty({
+    //   error: "Value cannot be empty-string."
+    // })
     NEXT_PUBLIC_ALGOLIA_API_KEY: z
       .string({
         error: "Is required value with valid type `string`."
       })
-      .nonempty({
-        error: "Value cannot be empty-string."
-      })
+      .optional()
+    // .nonempty({
+    //   error: "Value cannot be empty-string."
+    // })
   },
   experimental__runtimeEnv: {
     // MAIN BASE APP

@@ -1,3 +1,5 @@
+"use client";
+
 import { type ComponentProps, useMemo, Fragment } from "react";
 
 import {
@@ -7,8 +9,10 @@ import {
 import Link from "fumadocs-core/link";
 import { useTreeContext, useTreePath } from "fumadocs-ui/contexts/tree";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
 import { ChevronRight } from "@rzl-zone/docs-ui/components/icons/lucide";
+
+import { cn } from "@/lib/cn";
+import { usePathname } from "next/navigation";
 
 export type BreadcrumbProps = BreadcrumbOptions & ComponentProps<"div">;
 
@@ -18,6 +22,7 @@ export function Breadcrumb({
   includePage,
   ...props
 }: BreadcrumbProps) {
+  const pathname = usePathname();
   const path = useTreePath();
   const { root } = useTreeContext();
   const items = useMemo(() => {
@@ -34,7 +39,7 @@ export function Breadcrumb({
     <div
       {...props}
       className={cn(
-        "flex items-center gap-1.5 text-sm text-fd-muted-foreground",
+        "flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-2",
         props.className
       )}
     >
@@ -47,7 +52,7 @@ export function Breadcrumb({
         return (
           <Fragment key={i}>
             {i !== 0 && <ChevronRight className="size-3.5 shrink-0" />}
-            {item.url ? (
+            {item.url && item.url !== pathname ? (
               <Link
                 href={item.url}
                 className={cn(className, "transition-opacity hover:opacity-80")}

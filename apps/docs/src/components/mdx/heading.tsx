@@ -2,9 +2,10 @@
 
 import type { ComponentPropsWithoutRef } from "react";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
 import { Link } from "@rzl-zone/docs-ui/components/icons/lucide";
 import { useMainRzlFumadocs } from "@/context/main-rzl-fumadocs";
+
+import { cn } from "@/lib/cn";
 
 type Types = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 type HeadingProps<T extends Types> = Omit<ComponentPropsWithoutRef<T>, "as"> & {

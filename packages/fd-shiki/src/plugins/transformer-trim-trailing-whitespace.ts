@@ -1,5 +1,5 @@
 import type { ElementContent, Element } from "hast";
-import { type ShikiTransformer } from "shiki";
+import type { ShikiTransformer } from "shiki";
 
 /** --------------------------------------------------------------------------
  * * ***Shiki transformer to trim trailing whitespace in code blocks.***

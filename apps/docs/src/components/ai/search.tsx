@@ -12,10 +12,12 @@ import {
   useRef,
   useState
 } from "react";
+
+import { usePathname } from "next/navigation";
+
 import { DefaultChatTransport, type Tool, type UIToolInvocation } from "ai";
 import { type UIMessage, useChat, type UseChatHelpers } from "@ai-sdk/react";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
 import {
   Loader2,
   MessageCircleIcon,
@@ -28,11 +30,13 @@ import { Button } from "@rzl-zone/docs-ui/components/button";
 import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
 import { Presence } from "@rzl-zone/docs-ui/components/radix-ui-presence";
 
-import { INTERNAL_CODE } from "@/constants/code";
-import { Markdown } from "../mdx/markdown";
-import { useMainRzlFumadocs } from "@/context/main-rzl-fumadocs";
 import { createRequiredContext } from "@rzl-zone/core-react/context";
-import { usePathname } from "next/navigation";
+
+import { cn } from "@/lib/cn";
+import { INTERNAL_CODE } from "@/constants/code";
+import { useMainRzlFumadocs } from "@/context/main-rzl-fumadocs";
+
+import { Markdown } from "@/components/mdx/markdown";
 
 const Context = createRequiredContext<{
   open: boolean;

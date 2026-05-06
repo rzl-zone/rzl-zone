@@ -1,9 +1,8 @@
 {
   "extends": "@workspace/typescript-config/nextjs.json",
   "compilerOptions": {
-    "incremental": true,
-    "jsx": "react-jsx",
-    "target": "es2022",
+    "target": "es2020",
+    "jsx": "preserve",
     "lib": [
       "dom",
       "dom.iterable",
@@ -40,7 +39,7 @@
     "content/**/*.md",
     "content/**/*.mdx",
     "**/*.ts",
-    "data-/cache/**/*.ts",
+    "data/cache/**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"

@@ -1,20 +1,21 @@
 "use client";
 
-import { type ComponentProps, createContext, type FC, use } from "react";
-
+import { type ComponentProps, type FC } from "react";
 import { TreeContextProvider } from "fumadocs-ui/contexts/tree";
-import { useIsScrollTop } from "fumadocs-ui/utils/use-is-scroll-top";
+import { createRequiredContext } from "@rzl-zone/core-react/context";
 
-import { useMainRzlFumadocs } from "@/context/main-rzl-fumadocs";
+import { useIsScrollTop } from "@/hooks/use-is-scroll-top";
+
+import { type DocsLayoutProps } from "./index";
+
 import {
-  type LinkItemType,
   baseSlots,
   type BaseSlots,
   type BaseSlotsProps,
   type LayoutTab,
   useLinkItems
-} from "@/layouts/shared";
-import { type DocsLayoutProps } from "@/layouts/notebook";
+} from "../shared";
+import { type LinkItemType } from "../shared";
 
 import {
   Sidebar,
@@ -24,14 +25,14 @@ import {
   useSidebar,
   type SidebarProps,
   type SidebarProviderProps
-} from "@/layouts/notebook/slots/sidebar";
-import { Header } from "@/layouts/notebook/slots/header";
-import { Container } from "@/layouts/notebook/slots/container";
+} from "./slots/sidebar";
+import { Header } from "./slots/header";
+import { Container } from "./slots/container";
 
 export interface DocsSlots extends BaseSlots {
-  container?: FC<ComponentProps<"div">>;
-  header?: FC<ComponentProps<"header">>;
-  sidebar?: {
+  container: FC<ComponentProps<"div">>;
+  header: FC<ComponentProps<"header">>;
+  sidebar: {
     provider: FC<SidebarProviderProps>;
     root: FC<SidebarProps>;
     trigger: FC<ComponentProps<"button">>;
@@ -56,21 +57,18 @@ interface SlotsProps extends BaseSlotsProps<DocsLayoutProps> {
   tabs: LayoutTab[];
 }
 
-const LayoutContext = createContext<{
+const LayoutContext = createRequiredContext<{
   props: SlotsProps;
   isNavTransparent: boolean;
   navItems: LinkItemType[];
   menuItems: LinkItemType[];
   slots: DocsSlots;
-} | null>(null);
+}>("LayoutContext");
 
 export function useNotebookLayout() {
-  const context = use(LayoutContext);
-  if (!context)
-    throw new Error(
-      "Please use <DocsPage /> (`fumadocs-ui/layouts/notebook/page`) under <DocsLayout /> (`fumadocs-ui/layouts/notebook`)."
-    );
-  return context;
+  return LayoutContext.useSuspense(
+    "Please use <DocsPage /> (`@/layouts/notebook/page`) under <DocsLayout /> (`@/layouts/notebook`)."
+  );
 }
 
 export function LayoutBody(
@@ -78,18 +76,12 @@ export function LayoutBody(
     tabs: LayoutTab[];
   }
 ) {
-  const { link } = useMainRzlFumadocs();
-
   const {
     nav: {
       enabled: navEnabled = true,
       transparentMode: navTransparentMode = "none"
     } = {},
-    sidebar: {
-      defaultOpenLevel,
-      prefetch = link.prefetch,
-      ...sidebarProps
-    } = {},
+    sidebar: { defaultOpenLevel, prefetch, ...sidebarProps } = {},
     slots: defaultSlots,
     tabMode = "sidebar",
     tabs,
@@ -105,7 +97,7 @@ export function LayoutBody(
   const linkItems = useLinkItems(props);
   const slots: DocsSlots = {
     ...baseSlots,
-    header: navEnabled ? (defaultSlots?.header ?? Header) : undefined,
+    header: defaultSlots?.header ?? Header,
     container: defaultSlots?.container ?? Container,
     sidebar: defaultSlots?.sidebar ?? {
       provider: SidebarProvider,
@@ -116,47 +108,36 @@ export function LayoutBody(
     }
   };
 
-  let content = (
-    <>
-      {slots.header && <slots.header />}
-      {slots.sidebar && <slots.sidebar.root {...sidebarProps} />}
-      {children}
-    </>
-  );
-
-  if (slots.container) {
-    content = <slots.container {...containerProps}>{content}</slots.container>;
-  }
-
-  if (slots.sidebar) {
-    content = (
-      <slots.sidebar.provider
-        defaultOpenLevel={defaultOpenLevel}
-        prefetch={prefetch}
-      >
-        {content}
-      </slots.sidebar.provider>
-    );
-  }
-
   return (
-    <TreeContextProvider tree={tree}>
-      <LayoutContext
-        value={{
-          props: {
-            tabs,
-            tabMode,
-            sidebar: sidebarProps,
-            ...baseProps
-          },
-          isNavTransparent,
-          slots,
-          ...linkItems
-        }}
-      >
-        {/* <AiSearchProvider /> */}
-        {content}
-      </LayoutContext>
-    </TreeContextProvider>
+    <>
+      <TreeContextProvider tree={tree}>
+        <LayoutContext.Provider
+          value={{
+            props: {
+              tabs,
+              tabMode,
+              sidebar: sidebarProps,
+              ...baseProps
+            },
+            isNavTransparent,
+            slots,
+            ...linkItems
+          }}
+        >
+          <slots.sidebar.provider
+            defaultOpenLevel={defaultOpenLevel}
+            prefetch={prefetch}
+          >
+            <slots.container {...containerProps}>
+              {navEnabled && <slots.header />}
+
+              <slots.sidebar.root {...sidebarProps} />
+
+              {children}
+            </slots.container>
+          </slots.sidebar.provider>
+        </LayoutContext.Provider>
+      </TreeContextProvider>
+    </>
   );
 }

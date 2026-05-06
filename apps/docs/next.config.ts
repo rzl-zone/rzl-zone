@@ -1,29 +1,35 @@
+import type { NextConfig } from "next";
+
 import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
 
-/** @type {import('next').NextConfig["output"]} */
-const typeOutput = undefined;
-
+const typeOutput: NextConfig["output"] = undefined;
 const isExportOutput = typeOutput === "export";
 
-/** @type {import('next').NextConfig} */
-const config = {
+const config: NextConfig = {
   output: typeOutput,
   reactStrictMode: true,
-  serverExternalPackages: ["@takumi-rs/image-response"],
-  experimental: {
-    staleTimes: {
-      static: 3600 * 24
-    }
-  },
-  staticPageGenerationTimeout: 3600 * 24,
+  serverExternalPackages: [
+    "ts-morph",
+    "typescript",
+    "oxc-transform",
+    "twoslash",
+    "shiki",
+    "@workspace/fd-shiki",
+    "@workspace/fd-core",
+    "@takumi-rs/image-response"
+  ],
+  // experimental: {
+  //   staleTimes: {
+  //     static: 3600 * 24
+  //   }
+  // },
+  // staticPageGenerationTimeout: 3600 * 24,
   poweredByHeader: false,
   allowedDevOrigins: [
     "192.168.1.*",
     "rzlzone.com",
-    "local-origin.dev",
-    "*.local-origin.dev",
     "rzlzone.pages.dev",
     "rzlzone.vercel.app"
   ],
@@ -63,18 +69,18 @@ const config = {
                   value: "public, max-age=31536000, immutable"
                 }
               ]
-            },
+            }
 
             // 📚 Cache Page Docs (Balanced)
-            {
-              source: "/docs/:path*",
-              headers: [
-                {
-                  key: "Cache-Control",
-                  value: "public, max-age=180, stale-while-revalidate=300"
-                }
-              ]
-            }
+            // {
+            //   source: "/docs/:path*",
+            //   headers: [
+            //     {
+            //       key: "Cache-Control",
+            //       value: "public, max-age=180, stale-while-revalidate=300"
+            //     }
+            //   ]
+            // }
           ];
         },
         async redirects() {
@@ -99,6 +105,8 @@ const config = {
       }
     : {}),
 
+  // htmlLimitedBots: /.*/,
+
   // Remote Images
   images: {
     unoptimized: isExportOutput,
@@ -109,9 +117,7 @@ const config = {
         hostname: "img.shields.io"
       }
     ]
-  },
-
-  htmlLimitedBots: /.*/
+  }
 };
 
 export default withMDX(config);

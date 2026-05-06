@@ -1,5 +1,29 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from "fumadocs-ui/components/ui/popover";
+import { useTreeContext } from "fumadocs-ui/contexts/tree";
+import { buttonVariants } from "fumadocs-ui/components/ui/button";
+
+import type { Item, Node } from "fumadocs-core/page-tree";
+import { useDocsSearch } from "fumadocs-core/search/client";
+
+import {
+  ArrowRight,
+  ChevronDown
+} from "@rzl-zone/docs-ui/components/icons/lucide";
+import { Button } from "@rzl-zone/docs-ui/components/button";
+
+import { useRouter } from "@rzl-zone/next-kit/progress-bar/app";
+
+import { cn } from "@/lib/cn";
+import { SEARCH_TAGS, type TagsOptions } from "@/utils/packages/docs-search";
+
 import {
   useSearch,
   SearchDialog,
@@ -12,27 +36,7 @@ import {
   SearchDialogOverlay,
   type SearchItemType,
   type SharedProps
-} from "fumadocs-ui/components/dialog/search";
-import { useDocsSearch } from "fumadocs-core/search/client";
-import { Suspense, useEffect, useMemo, useState } from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from "fumadocs-ui/components/ui/popover";
-// import { ArrowRight, ChevronDown } from "lucide-react";
-import { buttonVariants } from "fumadocs-ui/components/ui/button";
-// import { cn } from "@/lib/cn";
-import { useTreeContext } from "fumadocs-ui/contexts/tree";
-import type { Item, Node } from "fumadocs-core/page-tree";
-import { useRouter } from "next/navigation";
-import {
-  ArrowRight,
-  ChevronDown
-} from "@rzl-zone/docs-ui/components/icons/lucide";
-import { cn } from "@rzl-zone/docs-ui/utils";
-import { SEARCH_TAGS, type TagsOptions } from "@/utils/packages/docs-search";
-import { Button } from "@rzl-zone/docs-ui/components/button";
+} from "./component";
 
 const AllPackageOption: NonNullable<TagsOptions[number]> = {
   label: "All Package",
@@ -77,7 +81,9 @@ export default function CustomSearchDialog(props: SharedProps) {
 
   // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const pageTreeAction = useMemo<SearchItemType | undefined>(() => {
-    if (search.length === 0) return;
+    if (search.length === 0) {
+      return;
+    }
 
     const normalized = search.toLowerCase();
     for (const [k, page] of searchMap) {

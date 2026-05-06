@@ -2,19 +2,20 @@
 
 import { type ComponentProps, useMemo } from "react";
 
-import Link from "fumadocs-core/link";
 import { useI18n } from "fumadocs-ui/contexts/i18n";
-import { usePathname } from "fumadocs-core/framework";
-import type * as PageTree from "fumadocs-core/page-tree";
 import { useFooterItems } from "fumadocs-ui/utils/use-footer-items";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
+import Link from "fumadocs-core/link";
+import { usePathname } from "fumadocs-core/framework";
+import type * as PageTree from "fumadocs-core/page-tree";
+
 import {
   ChevronLeft,
   ChevronRight
 } from "@rzl-zone/docs-ui/components/icons/lucide";
 
-import { isActive } from "@/lib/urls";
+import { cn } from "@/lib/cn";
+import { isActive } from "@/utils/fumadocs";
 
 type Item = Pick<PageTree.Item, "name" | "description" | "url" | "nameAlias">;
 
@@ -27,6 +28,7 @@ export interface FooterProps extends ComponentProps<"div"> {
     next?: Item;
   };
   bottomComponent?: React.ReactNode;
+  topComponent?: React.ReactNode;
   linkComponentProps?: Omit<
     React.ComponentPropsWithRef<"a">,
     "children" | "href"
@@ -36,6 +38,7 @@ export interface FooterProps extends ComponentProps<"div"> {
 export function Footer({
   items,
   bottomComponent,
+  topComponent,
   linkComponentProps,
   children,
   className,
@@ -56,40 +59,38 @@ export function Footer({
   }, [footerList, items, pathname]);
 
   return (
-    <>
-      {previous || next ? (
-        <div
-          className={cn(
-            "@container grid gap-4",
-            previous && next ? "grid-cols-2" : "grid-cols-1",
-            className
-          )}
-          {...props}
-        >
-          {previous ? (
-            <FooterItem
-              {...linkComponentProps}
-              item={previous}
-              index={0}
-            />
-          ) : null}
-          {next ? (
-            <FooterItem
-              {...linkComponentProps}
-              item={next}
-              index={1}
-            />
-          ) : null}
-        </div>
-      ) : null}
-
+    <footer>
+      {topComponent}
+      <nav
+        className={cn(
+          "@container grid gap-4",
+          previous && next ? "grid-cols-2" : "grid-cols-1",
+          className
+        )}
+        {...props}
+      >
+        {previous && (
+          <FooterItem
+            {...linkComponentProps}
+            item={previous}
+            index={0}
+          />
+        )}
+        {next && (
+          <FooterItem
+            {...linkComponentProps}
+            item={next}
+            index={1}
+          />
+        )}
+      </nav>
       {children}
       {bottomComponent}
-    </>
+    </footer>
   );
 }
 
-export function FooterItem({ item, index }: { item: Item; index: 0 | 1 }) {
+function FooterItem({ item, index }: { item: Item; index: 0 | 1 }) {
   const { text } = useI18n();
   const Icon = index === 0 ? ChevronLeft : ChevronRight;
 
@@ -108,6 +109,7 @@ export function FooterItem({ item, index }: { item: Item; index: 0 | 1 }) {
         )}
       >
         <Icon className="-mx-1 size-4 shrink-0 rtl:rotate-180" />
+        {/* <p>{item.name}</p> */}
         <p>{item.nameAlias ?? item.name}</p>
       </div>
       <p className="text-fd-muted-foreground truncate">

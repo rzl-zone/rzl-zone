@@ -1,26 +1,37 @@
-import { getHrefPackage, type PackagesName } from "@/utils/packages/docs";
-import { FumaNextLink, type FumaNextLinkType } from ".";
+import type { FC } from "react";
 import type { OmitStrict } from "@rzl-zone/ts-types-plus";
+import { getHrefPackage, type PackagesName } from "@/utils/packages/docs";
+
+import { CustomNextLink, type CustomNextLinkType } from ".";
 
 type PackageLinkProps = OmitStrict<
-  FumaNextLinkType,
+  CustomNextLinkType,
   "href" | "passHref" | "as"
 > & {
+  /**
+   * Package Name
+   */
   packageName: PackagesName;
+  /**
+   * Pathname on package name route
+   */
   toPath: string;
+  /**
+   * version on selected package route
+   */
   version?: string;
 };
 
-export function PackageLink({
+export const PackageLink: FC<PackageLinkProps> = ({
   packageName,
   toPath,
   version,
   ...props
-}: PackageLinkProps) {
+}) => {
   return (
-    <FumaNextLink
+    <CustomNextLink
       {...props}
       href={getHrefPackage(packageName, toPath, version)}
     />
   );
-}
+};

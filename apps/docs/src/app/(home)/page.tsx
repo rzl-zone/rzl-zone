@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { CustomNextLink } from "@/components/link";
 
 export default function HomePage() {
   return (
@@ -6,12 +6,12 @@ export default function HomePage() {
       <h1 className="text-2xl font-bold mb-4">Hello World</h1>
       <p>
         You can open{" "}
-        <Link
+        <CustomNextLink
           href="/docs"
           className="font-medium underline"
         >
           /docs
-        </Link>{" "}
+        </CustomNextLink>{" "}
         and see the documentation.
       </p>
     </div>

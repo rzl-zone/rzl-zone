@@ -2,8 +2,6 @@
 
 import {
   type ComponentProps,
-  createContext,
-  use,
   useEffectEvent,
   useLayoutEffect,
   useMemo,
@@ -12,8 +10,10 @@ import {
 } from "react";
 // import * as Primitive from '@radix-ui/react-tabs';
 
-import * as Primitive from "@rzl-zone/docs-ui/components/radix-ui-tabs";
 import { mergeRefs } from "@rzl-zone/core-react/utils";
+import { createRequiredContext } from "@rzl-zone/core-react/context";
+
+import * as Primitive from "@rzl-zone/docs-ui/components/radix-ui-tabs";
 
 type ChangeListener = (v: string) => void;
 const listeners = new Map<string, Set<ChangeListener>>();
@@ -35,15 +35,11 @@ export interface TabsProps extends ComponentProps<typeof Primitive.Tabs> {
   updateAnchor?: boolean;
 }
 
-const TabsContext = createContext<{
+const TabsContext = createRequiredContext<{
   valueToIdMap: Map<string, string>;
-} | null>(null);
+}>("TabsContext");
 
-function useTabContext() {
-  const ctx = use(TabsContext);
-  if (!ctx) throw new Error("You must wrap your component in <Tabs>");
-  return ctx;
-}
+const useTabContext = () => TabsContext.useSuspense();
 
 export const TabsList = Primitive.TabsList;
 
@@ -122,9 +118,11 @@ export function Tabs({
       }}
       {...props}
     >
-      <TabsContext value={useMemo(() => ({ valueToIdMap }), [valueToIdMap])}>
+      <TabsContext.Provider
+        value={useMemo(() => ({ valueToIdMap }), [valueToIdMap])}
+      >
         {props.children}
-      </TabsContext>
+      </TabsContext.Provider>
     </Primitive.Tabs>
   );
 }

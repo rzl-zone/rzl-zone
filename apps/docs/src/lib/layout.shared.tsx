@@ -1,3 +1,4 @@
+// import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import type { BaseLayoutProps } from "@/layouts/shared";
 import Image from "next/image";
 import ImgLogo from "@/images/rzl-logo.png";

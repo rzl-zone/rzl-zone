@@ -1,5 +1,3 @@
-"use client";
-
 import { type ComponentProps, type ComponentPropsWithRef } from "react";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 

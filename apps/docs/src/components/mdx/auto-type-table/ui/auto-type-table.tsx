@@ -1,6 +1,6 @@
 import type { Nodes } from "hast";
 
-import { type ComponentProps, type ReactNode } from "react";
+import React, { type ComponentProps, type ReactNode } from "react";
 
 import * as JsxRuntime from "react/jsx-runtime";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
@@ -10,7 +10,7 @@ import {
   type TypeNode,
   TypeTable
 } from "@/components/mdx/type-table";
-import { getMDXComponents } from "@/components/mdx/mdx";
+// import { getMDXComponents } from "@/components/mdx/mdx";
 
 import {
   type BaseTypeTableProps,
@@ -19,6 +19,8 @@ import {
 import { type Generator } from "../lib/base";
 import { parseTags } from "../lib/parse-tags";
 import { markdownRenderer, type ShikiOptions } from "../markdown";
+
+import defaultMdxComponents from "fumadocs-ui/mdx";
 
 export interface AutoTypeTableProps
   extends BaseTypeTableProps, ComponentProps<"div"> {
@@ -32,7 +34,7 @@ export interface AutoTypeTableProps
   renderType?: (type: string) => Promise<ReactNode>;
 }
 
-export async function AutoTypeTable({
+async function AutoTypeTableInternal({
   generator,
   options,
   renderType,
@@ -100,10 +102,16 @@ export async function AutoTypeTable({
   });
 }
 
-const customDefaultMdxComponents = getMDXComponents();
+export const AutoTypeTable = AutoTypeTableInternal;
+
+// const { AutoTypeTable: _, ...customDefaultMdxComponents } = getMDXComponents();
+
 function toJsx(hast: Nodes) {
   return toJsxRuntime(hast, {
     ...JsxRuntime,
-    components: { ...customDefaultMdxComponents, img: undefined }
+    components: {
+      ...defaultMdxComponents,
+      img: undefined
+    }
   });
 }

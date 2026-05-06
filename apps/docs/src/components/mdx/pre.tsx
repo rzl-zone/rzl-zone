@@ -3,11 +3,11 @@
 import React, { createElement } from "react";
 import { BiLogoTypescript } from "react-icons/bi";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
 import { icons } from "@rzl-zone/docs-ui/components/icons/lucide";
 import { isReactNode } from "@rzl-zone/core-react/utils";
 import { isBoolean, isNonEmptyString } from "@rzl-zone/utils-js/predicates";
 
+import { cn } from "@/lib/cn";
 import { CodeBlock, Pre } from "./codeblock";
 
 export const PreFdMdx = ({
@@ -91,7 +91,7 @@ export const PreFdMdx = ({
 // }: React.ComponentProps<"button"> & {
 //   containerRef: React.RefObject<HTMLElement | null>;
 // }) {
-//   const [checked, onClick] = useCopyButtonFD({
+//   const [checked, onClick] = useCopyButton({
 //     onCopy: () => {
 //       const pre = containerRef.current?.getElementsByTagName("pre").item(0);
 //       if (!pre) return;

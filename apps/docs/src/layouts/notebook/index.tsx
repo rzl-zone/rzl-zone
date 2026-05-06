@@ -2,35 +2,27 @@ import { type HTMLAttributes, useMemo } from "react";
 
 import type * as PageTree from "fumadocs-core/page-tree";
 
-import type {
-  SidebarProps,
-  SidebarProviderProps
-} from "@/layouts/notebook/slots/sidebar";
-
 import {
   type GetLayoutTabsOptions,
   type LayoutTab,
   type NavOptions,
   type BaseLayoutProps,
   getLayoutTabs
-} from "@/layouts/shared";
-import { type DocsSlots, LayoutBody } from "@/layouts/notebook/client";
+} from "../shared";
+import { type DocsSlots, LayoutBody } from "./client";
+import type { SidebarProps, SidebarProviderProps } from "./slots/sidebar";
 
-export interface DocsLayoutProps extends BaseLayoutProps {
+export interface DocsLayoutProps extends Omit<BaseLayoutProps, "nav"> {
   tree: PageTree.Root;
   tabs?: LayoutTab[] | GetLayoutTabsOptions | false;
   tabMode?: "sidebar" | "navbar";
   sidebar?: SidebarOptions;
-  nav?: Nav;
+  nav?: NavOptions & { mode?: "top" | "auto" };
   containerProps?: HTMLAttributes<HTMLDivElement>;
-  slots?: DocsSlots;
+  slots?: Partial<DocsSlots>;
 }
 
-interface Nav extends NavOptions {
-  mode?: "top" | "auto";
-}
-
-interface SidebarOptions extends SidebarProps, SidebarProviderProps {
+export interface SidebarOptions extends SidebarProps, SidebarProviderProps {
   /**
    * @deprecated use layout-level `tabs` option instead.
    */

@@ -5,25 +5,20 @@ import type { ComponentProps } from "react";
 import { useI18n } from "fumadocs-ui/contexts/i18n";
 import { useSearchContext } from "fumadocs-ui/contexts/search";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
-import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
 import { Search } from "@rzl-zone/docs-ui/components/icons/lucide";
-import type { ButtonProps } from "@rzl-zone/docs-ui/components/button";
+
+import { cn } from "@/lib/cn";
+import { type ButtonProps, buttonVariants } from "@/components/ui/button";
 
 export interface SearchTriggerProps
   extends Omit<ComponentProps<"button">, "color">, ButtonProps {
   hideIfDisabled?: boolean;
-  /**
-   * @deprecated  Use `Variant` Instead.
-   */
-  color?: Exclude<ButtonProps["variant"], null>;
 }
 
 export function SearchTrigger({
   hideIfDisabled,
   size = "icon-sm",
   color = "ghost",
-  variant = "ghost",
   ...props
 }: SearchTriggerProps) {
   const { setOpenSearch, enabled } = useSearchContext();
@@ -35,9 +30,7 @@ export function SearchTrigger({
       className={cn(
         buttonVariants({
           size,
-
-          variant: color ?? variant
-          // color
+          color
         }),
         props.className
       )}

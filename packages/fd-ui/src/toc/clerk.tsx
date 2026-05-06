@@ -224,6 +224,7 @@ function TOCItemPopover({
 
   const anchors = Primitive.useActiveAnchors();
   const anchorRef = useRef<HTMLAnchorElement>(null);
+  // eslint-disable-next-line react-hooks/refs
   const mergedRef = mergeRefs(anchorRef);
   const isPageTop = item.url === "#page-top";
 

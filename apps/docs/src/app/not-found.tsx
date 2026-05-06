@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { type Metadata } from "next";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
 import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
 
+import { cn } from "@/lib/cn";
 import ImgLogo from "@/images/rzl-logo.png";
 import { APP_CONFIG } from "@/constants/app";
-import { FumaNextLink } from "@/components/link";
+import { CustomNextLink } from "@/components/link";
 import { SOURCE_CONFIG } from "@/configs/source/package";
 
 export const metadata: Metadata = {
@@ -63,7 +63,7 @@ const NotFound = () => {
         </p>
 
         <div className={cn("mt-4 flex flex-col items-center gap-2")}>
-          <FumaNextLink
+          <CustomNextLink
             href={SOURCE_CONFIG.LOADER.BASE_URL}
             aria-label={SOURCE_CONFIG.LOADER.BASE_URL}
           >
@@ -83,7 +83,7 @@ const NotFound = () => {
             >
               Back to Docs
             </button>
-          </FumaNextLink>
+          </CustomNextLink>
         </div>
       </div>
     </main>

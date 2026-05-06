@@ -1,9 +1,11 @@
 "use client";
 
+import type { ComponentProps } from "react";
+
 import { ChevronRight } from "@rzl-zone/docs-ui/components/icons/lucide";
 import * as Primitive from "@rzl-zone/docs-ui/components/radix-ui-accordion";
-import { cn } from "@rzl-zone/docs-ui/utils";
-import type { ComponentProps } from "react";
+
+import { cn } from "@/lib/cn";
 
 export function Accordion({
   className,

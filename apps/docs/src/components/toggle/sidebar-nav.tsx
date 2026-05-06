@@ -17,7 +17,6 @@ import { usePathname } from "next/navigation";
 import { LuTags } from "react-icons/lu";
 import { GoPackage } from "react-icons/go";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
 import {
   Check,
   ChevronsUpDown
@@ -29,19 +28,25 @@ import {
   isNonEmptyString,
   isSet
 } from "@rzl-zone/utils-js/predicates";
+import { delay } from "@rzl-zone/utils-js/promises";
 import { normalizePathname } from "@rzl-zone/utils-js/urls";
 
 import { useEffectEvent } from "@rzl-zone/core-react/hooks";
 
 import { useRouter } from "@rzl-zone/next-kit/progress-bar/app";
 
-import { SOURCE_CONFIG } from "@/configs/source/package";
-
 import { isTabActive } from "@/utils/fumadocs";
 import type { SidebarTab } from "@/utils/fumadocs/types";
 
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { delay } from "@rzl-zone/utils-js/promises";
+import { SOURCE_CONFIG } from "@/configs/source/package";
+
+import { cn } from "@/lib/cn";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from "../../../_deprecated/src/components/ui/popover__";
 
 export type OptionSideBarNavToggle = Prettify<
   {
@@ -219,7 +224,7 @@ export function SidebarNavToggle({
                 }
 
                 router.push(itemUrl);
-                await delay(50);
+                await delay(150);
                 setOpen(false);
               }}
               {...(isSameUrl || disableNavigationPackage

@@ -2,13 +2,57 @@
 
 import { useEffect, useState } from "react";
 
-/** Find the active heading of page
+/** ------------------------------------------------------------
+ * * ***Tracks active heading(s) based on full viewport visibility (scroll spy).***
+ * ------------------------------------------------------------
  *
- * It selects the top heading by default, and the last item when reached the bottom of page.
+ * This hook observes a list of element IDs and determines which ones are
+ * currently **fully visible** in the viewport using the Intersection Observer API
+ * (`threshold: 1`).
  *
- * @param watch - An array of element ids to watch
- * @param single - only one active item at most
- * @returns Active anchor
+ * It maintains an internal ordered list of visible elements and updates
+ * the active anchor(s) accordingly.
+ *
+ * Behavior differs based on `single` mode:
+ *
+ * - **`single` = `true`**
+ *     - Returns only one active ID (first visible).
+ *     - When scrolled to the very top → selects the first item in `watch`.
+ *     - When scrolled to the bottom → selects the last item in `watch`.
+ *     - Uses a more aggressive `rootMargin` to prioritize top alignment.
+ *
+ * - **`single` = `false`**
+ *     - Returns all currently visible IDs (ordered by detection).
+ *     - When reaching the bottom → returns remaining items from the current
+ *       active position to the end of `watch`.
+ *
+ * Additional behavior:
+ * - A scroll listener is used to handle edge cases (top & bottom of page).
+ * - Elements must exist in the DOM and have matching IDs.
+ *
+ * @param watch - Ordered list of element IDs to observe.
+ * @param single - Whether to limit the result to a single active anchor.
+ *
+ * @returns Array of active anchor IDs:
+ * - Single mode → array with max length of 1
+ * - Multi mode → array of visible IDs
+ *
+ * @remarks
+ * - Uses `IntersectionObserver` with `threshold: 1` (fully visible only).
+ * - Attaches a global scroll listener for edge detection.
+ * - Intended for client-side navigation helpers (e.g., table of contents).
+ *
+ * @example
+ * ```ts
+ * const active = useAnchorObserver(["intro", "usage", "api"], true);
+ * // => ["usage"]
+ * ```
+ *
+ * @example
+ * ```ts
+ * const active = useAnchorObserver(headings, false);
+ * // => ["intro", "usage"]
+ * ```
  */
 export function useAnchorObserver(watch: string[], single: boolean): string[] {
   const [activeAnchor, setActiveAnchor] = useState<string[]>([]);

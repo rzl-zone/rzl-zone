@@ -1,6 +1,6 @@
-import { cn } from "@rzl-zone/docs-ui/utils";
 import { SeparatorSection } from "@rzl-zone/docs-ui/components/separator";
 
+import { cn } from "@/lib/cn";
 import { env } from "@/utils/env";
 
 const FooterPage = () => {
@@ -11,8 +11,9 @@ const FooterPage = () => {
     currentYear === releaseYear ? currentYear : `${releaseYear}-${currentYear}`;
 
   return (
-    <footer className={cn("mt-0")}>
+    <div className={cn("mt-4")}>
       <SeparatorSection className="my-0" />
+
       <div
         className={cn(
           "text-fd-secondary-foreground/80 text-md leading-4.5",
@@ -27,7 +28,7 @@ const FooterPage = () => {
         </span>
         <span>All rights reserved.</span>
       </div>
-    </footer>
+    </div>
   );
 };
 

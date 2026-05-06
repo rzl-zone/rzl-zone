@@ -3,42 +3,67 @@ import type { MdxJsxFlowElement } from "mdast-util-mdx";
 import type { BlockContent, Heading, Root, RootContent } from "mdast";
 
 import { visit } from "unist-util-visit";
-
 import { handleTag } from "./utils";
 
 export interface RemarkStepsOptions {
-  /**
-   * Class name for steps container
-   *
-   * @defaultValue fd-steps
-   */
   steps?: string;
-
-  /**
-   * Class name for step container
-   *
-   * @defaultValue fd-step
-   */
   step?: string;
 }
 
 const StepRegex = /^(\d+)\.\s(.+)$/;
 const StepTag = "[step]";
+const StepStartTag = "[step-start]";
+const StepEndTag = "[step-end]";
 
-/**
- * Convert headings in the format of `1. Hello World` into steps.
- */
+function isHeading(node: RootContent): node is Heading {
+  return node.type === "heading";
+}
+
+function isTagNode(node: RootContent, tag: string): boolean {
+  return (
+    node.type === "paragraph" &&
+    node.children.length === 1 &&
+    node.children[0]?.type === "text" &&
+    node.children[0].value.trim() === tag
+  );
+}
+
 export function remarkSteps({
   steps = "fd-steps",
   step = "fd-step"
 }: RemarkStepsOptions = {}): Transformer<Root, Root> {
-  function convertToSteps(nodes: RootContent[]): MdxJsxFlowElement {
+  function isStepHeading(node: Heading): boolean {
+    const head = node.children[0];
+
+    if (head?.type === "text") {
+      const match = StepRegex.exec(head.value);
+      if (match?.[2]) {
+        head.value = match[2];
+        return true;
+      }
+    }
+
+    const tail = node.children.at(-1);
+    if (tail?.type === "text") {
+      const res = handleTag(tail.value, StepTag);
+      if (res !== false) {
+        tail.value = res;
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function buildSteps(nodes: RootContent[]): MdxJsxFlowElement {
     const depth = (nodes[0] as Heading).depth;
-    const children: MdxJsxFlowElement[] = [];
+
+    const items: MdxJsxFlowElement[] = [];
+    let current: MdxJsxFlowElement | null = null;
 
     for (const node of nodes) {
-      if (node.type === "heading" && node.depth === depth) {
-        children.push({
+      if (isHeading(node) && node.depth === depth) {
+        current = {
           type: "mdxJsxFlowElement",
           name: "div",
           attributes: [
@@ -49,9 +74,10 @@ export function remarkSteps({
             }
           ],
           children: [node]
-        });
+        };
+        items.push(current);
       } else {
-        children[children.length - 1]?.children.push(node as BlockContent);
+        current?.children.push(node as BlockContent);
       }
     }
 
@@ -65,86 +91,88 @@ export function remarkSteps({
           value: steps
         }
       ],
-      children
+      children: items
     };
-  }
-
-  function handleHeadingStep(node: Heading): boolean {
-    const head = node.children[0];
-    if (head && head.type === "text") {
-      const match = StepRegex.exec(head.value);
-      if (match && match[2]) {
-        head.value = match[2];
-        return true;
-      }
-    }
-
-    const tail = node.children[node.children.length - 1];
-    if (tail && tail.type === "text") {
-      const step = handleTag(tail.value, StepTag);
-      if (step !== false) {
-        tail.value = step;
-        return true;
-      }
-    }
-
-    return false;
   }
 
   return (tree) => {
     visit(tree, (parent) => {
-      if (!("children" in parent) || parent.type === "heading") return "skip";
+      if (!("children" in parent) || parent.type === "heading") return;
 
-      let startIdx = -1;
-      let i = 0;
-      let currentStep = 1;
+      const result: RootContent[] = [];
 
-      const onEnd = () => {
-        if (startIdx === -1) return;
-        const item = {};
-        const nodes = parent.children.splice(
-          startIdx,
-          i - startIdx,
-          item as RootContent
-        );
-        Object.assign(item, convertToSteps(nodes));
-        i = startIdx + 1;
-        startIdx = -1;
-        currentStep = 1;
+      let buffer: RootContent[] = [];
+      let collecting = false;
+      let anchorDepth: number | null = null;
+      let stepIndex = 1;
+
+      const flush = () => {
+        if (buffer.length > 0) {
+          result.push(buildSteps(buffer));
+          buffer = [];
+          anchorDepth = null;
+          stepIndex = 1;
+        }
       };
 
-      for (; i < parent.children.length; i++) {
-        const node = parent.children[i];
-
-        if (
-          node?.type !== "heading" ||
-          (node?.data?.hProperties as { "data-fd-step": unknown })?.[
-            "data-fd-step"
-          ] !== undefined
-        )
+      for (const node of parent.children) {
+        // start boundary
+        if (isTagNode(node, StepStartTag)) {
+          collecting = true;
+          buffer = [];
+          anchorDepth = null;
+          stepIndex = 1;
           continue;
-        if (startIdx !== -1) {
-          const startDepth = (parent.children[startIdx] as Heading).depth;
+        }
 
-          if (node.depth !== startDepth) {
-            if (node.depth < startDepth) onEnd();
+        // end boundary
+        if (isTagNode(node, StepEndTag)) {
+          flush();
+          collecting = false;
+          continue;
+        }
+
+        // outside step block → passthrough
+        if (!collecting) {
+          result.push(node);
+          continue;
+        }
+
+        if (isHeading(node)) {
+          const isStep = isStepHeading(node);
+
+          if (!isStep) {
+            buffer.push(node);
             continue;
           }
-        }
 
-        if (!handleHeadingStep(node)) {
-          onEnd();
+          if (anchorDepth === null) {
+            anchorDepth = node.depth;
+          }
+
+          if (node.depth > anchorDepth) {
+            buffer.push(node);
+            continue;
+          }
+
+          if (node.depth < anchorDepth) {
+            flush();
+            anchorDepth = node.depth;
+          }
+
+          node.data = node.data ?? {};
+          node.data.hProperties = node.data.hProperties ?? {};
+          node.data.hProperties["data-fd-step"] = stepIndex++;
+
+          buffer.push(node);
           continue;
         }
 
-        node.data ??= {};
-        node.data.hProperties ??= {};
-        (node.data.hProperties as { "data-fd-step": unknown })["data-fd-step"] =
-          currentStep++;
-        if (startIdx === -1) startIdx = i;
+        buffer.push(node);
       }
 
-      onEnd();
+      flush();
+      parent.children = result;
     });
   };
 }

@@ -24,8 +24,8 @@ import {
 } from "@workspace/fd-shiki/plugins";
 
 import { generatorCreature } from "@/configs/auto-table";
-
 import { pageSchema, metaSchema } from "@/configs/source/schema";
+
 import { remarkSteps } from "@/lib/fuma/mdx-plugins/remark-steps";
 import { remarkAutoTypeTable } from "@/components/mdx/auto-type-table";
 
@@ -49,7 +49,7 @@ export default defineConfig({
   mdxOptions: {
     rehypeCodeOptions: {
       lazy: true,
-      langs: ["php", "ts", "js", "html", "tsx", "mdx", "json", "ts-tags"],
+      langs: ["ts", "js", "tsx", "json", "bash", "jsonc"],
       inline: "tailing-curly-colon",
       themes: {
         light: "github-light-high-contrast",
@@ -77,23 +77,6 @@ export default defineConfig({
         ]);
 
         const data: Record<string, unknown> = parsed.attributes;
-
-        // const data: Record<string, unknown> = {};
-
-        // const attrs = parsed.attributes;
-
-        // if (attrs.title) data["mdx-title"] = attrs.title;
-        // if (attrs.fileCodeIcon !== undefined)
-        //   data["mdx-file-code-icon"] = attrs.fileCodeIcon;
-        // if (typeof attrs.allowCopy === "boolean") {
-        //   data["mdx-allow-copy"] = attrs.allowCopy;
-        // }
-        // if (attrs.icon) data["mdx-icon"] = attrs.icon;
-        // if (attrs.customIcon) data["mdx-custom-icon"] = attrs.customIcon;
-        // if (attrs.noIcon !== undefined) data["mdx-no-icon"] = attrs.noIcon;
-        // if (attrs.dtsIcon !== undefined) data["mdx-dts-icon"] = attrs.dtsIcon;
-        // if (attrs.keepBackground !== undefined)
-        //   data["mdx-keep-background"] = attrs.keepBackground;
 
         function parseLineNumber(str: string, data: Record<string, unknown>) {
           return str.replace(/lineNumbers=(\d+)|lineNumbers/, (_, ...args) => {
@@ -181,7 +164,6 @@ export default defineConfig({
     remarkPlugins: [
       remarkSteps,
       remarkMath,
-      remarkAutoTypeTable,
       remarkTypeScriptToJavaScript,
       [remarkAutoTypeTable, { createGenerator: generatorCreature }]
     ],

@@ -1,6 +1,8 @@
 "use client";
 
-import React from "react";
+import type { Prettify } from "@rzl-zone/ts-types-plus";
+
+import { startTransition, useLayoutEffect, useState } from "react";
 
 import { delay } from "@rzl-zone/utils-js/promises";
 import { toPascalCaseSpace } from "@rzl-zone/utils-js/strings";
@@ -8,10 +10,12 @@ import { toPascalCaseSpace } from "@rzl-zone/utils-js/strings";
 import { useTheme } from "@rzl-zone/next-kit/themes";
 import { useEffectEvent } from "@rzl-zone/core-react/hooks";
 
-import { cn, cva } from "@rzl-zone/docs-ui/utils";
+import { cva } from "@rzl-zone/docs-ui/utils";
 import { toast } from "@rzl-zone/docs-ui/components/sonner";
 import { Button } from "@rzl-zone/docs-ui/components/button";
 import { Moon, Sun, Airplay } from "@rzl-zone/docs-ui/components/icons/lucide";
+
+import { cn } from "@/lib/cn";
 
 const itemVariants = cva(
   "size-6.5 rounded-full p-1.5 text-fd-muted-foreground",
@@ -40,26 +44,25 @@ const showingToast = (currentTheme: string) => {
   });
 };
 
-export interface ThemeSwitchProps extends React.ComponentProps<"div"> {
-  /**
-   * @default "light-dark"
-   */
-  mode?: "light-dark" | "light-dark-system";
-}
+export type ThemeSwitchProps = Prettify<
+  {
+    /**
+     * @default "light-dark"
+     */
+    mode?: "light-dark" | "light-dark-system";
+  } & React.ComponentProps<"div">
+>;
 
-export function ThemeSwitch({
-  className,
-  mode = "light-dark",
-  ...props
-}: ThemeSwitchProps) {
+export function ThemeSwitch(options?: ThemeSwitchProps) {
+  const { className, mode = "light-dark", ...props } = options || {};
   const { setTheme, theme, resolvedTheme, themes } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const setMounting = useEffectEvent((mount: boolean) => {
     setMounted(mount);
   });
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     setMounting(true);
   }, []);
 
@@ -87,8 +90,8 @@ export function ThemeSwitch({
           <Button
             variant={"ghost"}
             tabIndex={-1}
-            key={`${key}_${((idx / 2) * 18) / 5}`}
-            aria-label={key}
+            key={`themes_toggle_${key}_${(idx + 1) * 2.75}`}
+            aria-label={`Themes Toggle (${key})`}
             className={cn(itemVariants({ active: value === key }))}
             onClick={(e) => {
               if (value === key || !themes.includes(key)) {
@@ -97,7 +100,7 @@ export function ThemeSwitch({
 
               setTheme(key);
 
-              React.startTransition(() => {
+              startTransition(() => {
                 showingToast(key);
               });
             }}

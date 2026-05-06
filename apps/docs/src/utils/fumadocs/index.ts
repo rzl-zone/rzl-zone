@@ -66,7 +66,7 @@ export async function getCachedJsonLD(): Promise<CachedJsonLD[]> {
  *
  * @param url - Target URL to compare.
  * @param pathname - Current pathname.
- * @param nested - Whether nested routes should be considered active, default: `true`.
+ * @param nested - Whether nested routes should be considered active, default: `false`.
  *
  * @returns
  * `true` if the URL is considered active, otherwise `false`.
@@ -84,7 +84,7 @@ export async function getCachedJsonLD(): Promise<CachedJsonLD[]> {
 export function isActive(
   url: UrlObject | string,
   pathname: string,
-  nested = true
+  nested = false
 ): boolean {
   url = normalizePathname(formatStringOrUrl(url));
   pathname = normalizePathname(formatStringOrUrl(pathname));

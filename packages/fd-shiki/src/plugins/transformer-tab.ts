@@ -1,4 +1,4 @@
-import { type ShikiTransformer } from "shiki";
+import type { ShikiTransformer } from "shiki";
 import type { MdxJsxFlowElement } from "mdast-util-mdx-jsx";
 
 /** --------------------------------------------------------------------------

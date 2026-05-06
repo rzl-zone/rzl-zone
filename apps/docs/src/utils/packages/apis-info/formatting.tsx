@@ -1,6 +1,6 @@
-import { cn } from "@rzl-zone/docs-ui/utils";
+import { cn } from "@/lib/cn";
 
-type Status = "beta" | "stable";
+type Status = "beta" | "stable" | "deprecated";
 
 type StatusFormat = {
   icon: string;
@@ -27,6 +27,12 @@ export const formatApisVersInfo = {
         title: "Beta",
         desc: "(Unstable)",
         colorDecs: cn("text-orange-500 dark:text-orange-400")
+      },
+      deprecated: {
+        icon: "⚠️",
+        title: "Deprecated",
+        desc: "(No Recommend)",
+        colorDecs: cn("text-red-600 dark:text-red-500")
       },
       stable: {
         icon: "✅",

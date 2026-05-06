@@ -1,6 +1,7 @@
-import { cn } from "@rzl-zone/docs-ui/utils";
 import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
 import { MessageCircleIcon } from "@rzl-zone/docs-ui/components/icons/lucide";
+
+import { cn } from "@/lib/cn";
 
 import {
   AISearchProvider,

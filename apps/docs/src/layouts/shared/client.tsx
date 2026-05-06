@@ -3,30 +3,28 @@
 import { type FC, type ComponentProps } from "react";
 
 import Link from "fumadocs-core/link";
-import { useI18n } from "fumadocs-ui/contexts/i18n";
 import { usePathname } from "fumadocs-core/framework";
+
+import { useI18n } from "fumadocs-ui/contexts/i18n";
 
 import {
   isLinkItemActive,
   type BaseLayoutProps,
   type LinkItemType
-} from "@/layouts/shared";
-import {
-  type ThemeSwitchProps,
-  ThemeSwitch
-} from "@/layouts/shared/slots/theme-switch";
-import {
-  type SearchTriggerProps,
-  type FullSearchTriggerProps,
-  SearchTrigger,
-  FullSearchTrigger
-} from "@/layouts/shared/slots/search-trigger";
+} from "./index";
 import {
   type LanguageSelectProps,
   type LanguageSelectTextProps,
   LanguageSelect,
   LanguageSelectText
-} from "@/layouts/shared/slots/language-select";
+} from "./slots/language-select";
+import {
+  type SearchTriggerProps,
+  type FullSearchTriggerProps,
+  SearchTrigger,
+  FullSearchTrigger
+} from "./slots/search-trigger";
+import { type ThemeSwitchProps, ThemeSwitch } from "./slots/theme-switch";
 
 export function LinkItem({
   ref,
@@ -52,16 +50,20 @@ export function LinkItem({
 }
 
 export interface BaseSlots {
-  navTitle?: FC<ComponentProps<"a">>;
-  searchTrigger?: {
-    sm: FC<SearchTriggerProps>;
-    full: FC<FullSearchTriggerProps>;
-  };
-  languageSelect?: {
-    root: FC<LanguageSelectProps>;
-    text: FC<LanguageSelectTextProps>;
-  };
-  themeSwitch?: FC<ThemeSwitchProps>;
+  navTitle: FC<ComponentProps<"a">>;
+  themeSwitch: FC<ThemeSwitchProps> | false;
+  searchTrigger:
+    | {
+        sm: FC<SearchTriggerProps>;
+        full: FC<FullSearchTriggerProps>;
+      }
+    | false;
+  languageSelect:
+    | {
+        root: FC<LanguageSelectProps>;
+        text: FC<LanguageSelectTextProps>;
+      }
+    | false;
 }
 
 export interface BaseSlotsProps<
@@ -142,21 +144,20 @@ export function baseSlots({ useProps }: { useProps: () => BaseSlotsProps }) {
       return {
         baseSlots: {
           navTitle: slots.navTitle ?? InlineNavTitle,
-          themeSwitch: themeSwitchEnabled
-            ? (slots.themeSwitch ?? InlineThemeSwitch)
-            : undefined,
+          themeSwitch:
+            themeSwitchEnabled && (slots.themeSwitch ?? InlineThemeSwitch),
           languageSelect: i18n
             ? (slots.languageSelect ?? {
                 root: LanguageSelect,
                 text: LanguageSelectText
               })
-            : undefined,
-          searchTrigger: searchToggleEnabled
-            ? (slots.searchTrigger ?? {
-                sm: InlineSearchTrigger,
-                full: InlineSearchTriggerFull
-              })
-            : undefined
+            : false,
+          searchTrigger:
+            searchToggleEnabled &&
+            (slots.searchTrigger ?? {
+              sm: InlineSearchTrigger,
+              full: InlineSearchTriggerFull
+            })
         },
         baseProps: {
           nav,

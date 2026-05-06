@@ -2,7 +2,7 @@
 
 import { type HTMLAttributes, type ReactNode, useState } from "react";
 
-import { cn, cva } from "@rzl-zone/docs-ui/utils";
+import { cva } from "@rzl-zone/docs-ui/utils";
 
 import {
   FileIcon,
@@ -14,7 +14,9 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger
-} from "../ui/collapsible";
+} from "../../../_deprecated/src/components/ui/collapsible__";
+
+import { cn } from "@/lib/cn";
 
 const itemVariants = cva(
   "flex flex-row items-center gap-2 rounded-md px-2 py-0.75 text-sm hover:bg-fd-accent hover:text-fd-accent-foreground"

@@ -81,7 +81,7 @@ export function useShikiDynamic(
 /**
  * get highlighted results, should be used with React Suspense API.
  *
- * note: results are cached with (lang, code) as keys, if this is not the desired behaviour, pass a `deps` instead.
+ * note: results are cached with (lang, code) as keys, if this is not the desired behavior, pass a `deps` instead.
  */
 export function useShiki(
   code: string,

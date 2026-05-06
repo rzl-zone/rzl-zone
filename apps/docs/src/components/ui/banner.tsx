@@ -1,15 +1,11 @@
 "use client";
 
-import {
-  type HTMLAttributes,
-  useEffect,
-  useEffectEvent,
-  useState
-} from "react";
+import { type HTMLAttributes, useState } from "react";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
 import { X } from "@rzl-zone/docs-ui/components/icons/lucide";
 import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
+
+import { cn } from "@/lib/cn";
 
 type BannerVariant = "rainbow" | "normal";
 
@@ -63,16 +59,12 @@ export function Banner({
 
   reverseRainbow?: boolean;
 }) {
-  const [open, setOpen] = useState(true);
   const globalKey = id ? `nd-banner-${id}` : null;
+  const [open, setOpen] = useState<boolean>(() => {
+    if (typeof window === "undefined" || !globalKey) return true;
 
-  const changeSetOpen = useEffectEvent((valueOpen: boolean) =>
-    setOpen(valueOpen)
-  );
-
-  useEffect(() => {
-    if (globalKey) changeSetOpen(localStorage.getItem(globalKey) !== "true");
-  }, [globalKey]);
+    return localStorage.getItem(globalKey) !== "true";
+  });
 
   if (!open) return null;
 
@@ -129,7 +121,7 @@ export function Banner({
             buttonVariants({
               variant: "ghost",
               className:
-                "absolute end-2 top-1/2 -translate-y-1/2 text-fd-muted-foreground/50",
+                "absolute inset-e-2 top-1/2 -translate-y-1/2 text-fd-muted-foreground/50",
               size: "icon-sm"
             })
           )}

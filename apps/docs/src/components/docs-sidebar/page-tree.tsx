@@ -6,7 +6,7 @@ import { useTreeContext, useTreePath } from "fumadocs-ui/contexts/tree";
 
 import { createRequiredContext } from "@rzl-zone/core-react/context";
 
-import { isActive } from "@/lib/urls";
+import { isActive } from "@/utils/fumadocs";
 
 import type * as Base from "./base";
 
@@ -50,7 +50,7 @@ export function createPageTreeRenderer({
   }
 
   function PageTreeNode({ node }: { node: PageTree.Node }) {
-    const { Separator, Item, Folder, pathname } = RendererContext.use();
+    const { Separator, Item, Folder, pathname } = RendererContext.useSuspense();
 
     if (node.type === "separator") {
       if (Separator) return <Separator item={node} />;

@@ -1,27 +1,38 @@
-"use client";
-
 import type { ReactNode } from "react";
-import { AnimatePresence } from "framer-motion";
+import type { Framework } from "fumadocs-core/framework";
+
+import { NextProvider } from "fumadocs-core/framework/next";
+import { TreeContextProvider } from "fumadocs-ui/contexts/tree";
+
+// import { AnimatePresence } from "framer-motion";
+import { RzlThemeAppProvider } from "@rzl-zone/next-kit/themes/app";
 import { RzlNextAppProgressBar } from "@rzl-zone/next-kit/progress-bar/app";
 
-import { Toaster } from "@/components/ui/sonner";
-
-import { RootFdBaseProvider } from "./fumadocs/base";
-
-import { MainRzlFumadocsProvider } from "@/context/main-rzl-fumadocs";
-import { TreeContextProvider } from "fumadocs-ui/contexts/tree";
 import { source } from "@/lib/source";
-import RootProvider from "./fumadocs/root-provider";
+import { MainRzlFumadocsProvider } from "@/context/main-rzl-fumadocs";
+
+import { Toaster } from "@/components/ui/sonner";
+import { CustomNextLink } from "@/components/link";
+
+import { FdRootProvider } from "./fumadocs/fd-root-provider";
 
 export function GlobalProvider({ children }: { children: ReactNode }) {
   return (
     <MainRzlFumadocsProvider defaultPrefetch={"onHover"}>
-      <AnimatePresence mode="wait">
-        <RootFdBaseProvider search={{ enabled: false }}>
-          <TreeContextProvider tree={source.getPageTree()}>
-            <RootProvider>
-              <RzlNextAppProgressBar showForHashAnchor={false} />
+      <NextProvider Link={CustomNextLink as Framework["Link"]}>
+        <TreeContextProvider tree={source.getPageTree()}>
+          <FdRootProvider>
+            {/* <AnimatePresence mode="wait"> */}
+            <RzlThemeAppProvider
+              attribute={"class"}
+              defaultTheme="system"
+              metaColorSchemeValue={{
+                light: "#fafafa",
+                dark: "#0569ff26"
+              }}
+            >
               {children}
+              <RzlNextAppProgressBar showForHashAnchor={false} />
               <Toaster
                 position="top-center"
                 closeButton
@@ -31,10 +42,11 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
                 swipeDirections={["left", "right"]}
                 containerAriaLabel="Rzl Toaster"
               />
-            </RootProvider>
-          </TreeContextProvider>
-        </RootFdBaseProvider>
-      </AnimatePresence>
+            </RzlThemeAppProvider>
+            {/* </AnimatePresence> */}
+          </FdRootProvider>
+        </TreeContextProvider>
+      </NextProvider>
     </MainRzlFumadocsProvider>
   );
 }

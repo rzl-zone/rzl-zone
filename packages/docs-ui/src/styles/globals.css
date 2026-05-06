@@ -4,7 +4,7 @@
 /* @import "./shadcn.css"; */
 @import "./main-fd-custom.css";
 
-@source "../../../**/*.{ts,tsx,js,jsx,cjs,md,mdx}";
+/* @source "../../../*\*\/\*.{ts,tsx,js,jsx,cjs,md,mdx}"; */
 @source "../../../../apps/**/*.{ts,tsx,js,jsx,cjs,md,mdx}";
 
 @custom-variant dark (&:is(.dark *));

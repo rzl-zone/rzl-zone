@@ -1,21 +1,17 @@
+/* eslint-disable quotes */
 "use client";
 
 import { type ComponentProps, useEffect, useMemo, useState } from "react";
 
-import { usePathname } from "fumadocs-core/framework";
-
-import { cn } from "@rzl-zone/docs-ui/utils";
 import {
   CheckSquare,
   ChevronDown,
   Copy,
   ExternalLinkIcon,
+  Loader,
+  Smartphone,
   TextIcon
 } from "@rzl-zone/docs-ui/components/icons/lucide";
-import { Button } from "@rzl-zone/docs-ui/components/button";
-import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
-import { toast } from "@rzl-zone/docs-ui/components/sonner";
-import { Transition } from "@rzl-zone/docs-ui/components/headless-ui-react";
 import {
   TbBrandTelegram,
   TbBrandWhatsappFilled,
@@ -23,14 +19,25 @@ import {
 } from "react-icons/tb";
 import { FaRegCopy, FaShare } from "react-icons/fa";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from "@/components/ui/popover";
-import { env } from "@/utils/env";
-import { useCopyButtonFD } from "@/hooks/use-copy-button-fd";
+import { usePathname } from "fumadocs-core/framework";
+
+import { toast } from "@rzl-zone/docs-ui/components/sonner";
+import { Button } from "@rzl-zone/docs-ui/components/button";
+import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
+import { Transition } from "@rzl-zone/docs-ui/components/headless-ui-react";
+
 import { useEffectEvent } from "@rzl-zone/core-react/hooks";
+import { isError, isNonEmptyString } from "@rzl-zone/utils-js/predicates";
+
+import { cn } from "@/lib/cn";
+import {
+  assertValidShareUrl,
+  withShareUrlGuard
+} from "@/utils/validations/url-check";
+import { copyText } from "@/utils/clipboard/copyText";
+import { useCopyButton } from "@/hooks/use-copy-button";
+
+import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 
 const cache = new Map<string, Promise<string>>();
 
@@ -47,21 +54,26 @@ export function MarkdownCopyButton({
   markdownUrl: string;
 }) {
   const [isLoading, setLoading] = useState(false);
-  const [checked, onClick] = useCopyButtonFD({
-    onCopy: async () => {
-      const cached = cache.get(markdownUrl);
-      if (cached) return navigator.clipboard.writeText(await cached);
 
-      setLoading(true);
+  const [checked, onClick] = useCopyButton({
+    toastOptions: {
+      message: "Markdown code copied"
+    },
+    onCopy: async () => {
+      if (isLoading) return;
 
       try {
-        const promise = fetch(markdownUrl).then((res) => res.text());
-        cache.set(markdownUrl, promise);
-        await navigator.clipboard.write([
-          new ClipboardItem({
-            "text/plain": promise
-          })
-        ]);
+        let promise = cache.get(markdownUrl);
+
+        if (!promise) {
+          setLoading(true);
+          promise = fetch(markdownUrl).then((res) => res.text());
+          cache.set(markdownUrl, promise);
+        }
+
+        const text = await promise;
+
+        await copyText(text);
       } finally {
         setLoading(false);
       }
@@ -70,26 +82,30 @@ export function MarkdownCopyButton({
 
   return (
     <Button
-      disabled={isLoading}
-      onClick={onClick}
+      // disabled={isLoading}
+      onClick={(e) => {
+        if (isLoading) return e.preventDefault();
+
+        onClick(e);
+      }}
       {...props}
       className={cn(
+        "min-w-38",
         buttonVariants({
           variant: "ghost",
           size: "lg",
           className: cn(
-            "gap-2 font-bold [&_svg]:size-3.5 dark:[&_svg]:text-fd-muted-foreground",
-            "px-2 border-neutral-500! border"
+            "gap-1 font-bold [&_svg]:size-3 dark:[&_svg]:text-fd-muted-foreground",
+            "px-2 border-neutral-500! border",
+            props.className
           )
         }),
-        props.className
+        isLoading && "cursor-wait!"
       )}
     >
-      {/* {checked ? <Check /> : <Copy />} */}
-
-      <div className="relative size-3 min-w-3 min-h-3">
+      <div className="relative size-4 min-w-4 min-h-4">
         <Transition
-          show={!checked}
+          show={isLoading}
           enter="transition-all duration-300 ease-out"
           enterFrom="opacity-0 scale-75"
           enterTo="opacity-100 scale-100"
@@ -98,7 +114,22 @@ export function MarkdownCopyButton({
           leaveTo="opacity-0 scale-75"
         >
           <div className="absolute inset-0 flex items-center justify-center">
-            <FaRegCopy />
+            <Loader className="animate-spin size-4!" />
+            <span className="sr-only">Loading</span>
+          </div>
+        </Transition>
+
+        <Transition
+          show={!isLoading && !checked}
+          enter="transition-all duration-300 ease-out"
+          enterFrom="opacity-0 scale-75"
+          enterTo="opacity-100 scale-100"
+          leave="transition-all duration-300 ease-in"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-75"
+        >
+          <div className="absolute inset-0 flex items-center justify-center">
+            <FaRegCopy className="size-3.25!" />
             <span className="sr-only">Copy</span>
           </div>
         </Transition>
@@ -113,12 +144,17 @@ export function MarkdownCopyButton({
           leaveTo="opacity-0 scale-75"
         >
           <div className="absolute inset-0 flex items-center justify-center">
-            <CheckSquare />
+            <CheckSquare className="size-3.5!" />
             <span className="sr-only">Copied!</span>
           </div>
         </Transition>
       </div>
-      {props.children ?? "Copy Markdown"}
+      {props.children ??
+        (isLoading
+          ? "Get Markdown..."
+          : checked
+            ? "Markdown Copied"
+            : "Copy Markdown")}
     </Button>
   );
 }
@@ -134,23 +170,24 @@ export function ViewOptionsPopover({
   /**
    * A URL to the raw Markdown/MDX content of page
    */
-  markdownUrl: string;
+  markdownUrl?: string;
 
   /**
    * Source file URL on GitHub
    */
-  githubUrl: string;
+  githubUrl?: string;
 }) {
   const pathname = usePathname();
+
   const items = useMemo(() => {
     const pageUrl =
       typeof window === "undefined"
         ? pathname
-        : new URL(pathname, env.NEXT_PUBLIC_BASE_URL || window.location.origin);
+        : new URL(pathname, window.location.origin);
     const q = `Read ${pageUrl}, I want to ask questions about it.`;
 
     return [
-      {
+      githubUrl && {
         title: "Open in GitHub",
         href: githubUrl,
         icon: (
@@ -164,7 +201,7 @@ export function ViewOptionsPopover({
           </svg>
         )
       },
-      {
+      markdownUrl && {
         title: "View as Markdown",
         href: markdownUrl,
         icon: <TextIcon />
@@ -285,7 +322,7 @@ export function ViewOptionsPopover({
           text: q
         })}`
       }
-    ];
+    ].filter((v) => !!v);
   }, [githubUrl, markdownUrl, pathname]);
 
   return (
@@ -297,15 +334,28 @@ export function ViewOptionsPopover({
           "group",
           buttonVariants({
             variant: "ghost",
-            size: "lg"
-          }),
-          "gap-2 font-bold text-xs data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground",
-          " p-2 px-2 border-neutral-500! border",
-          props.className
+            size: "lg",
+            className: cn(
+              "gap-2 font-bold text-xs data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground",
+              "p-0 px-0",
+              props.className
+            )
+          })
         )}
       >
-        <Button>
-          {props.children ?? "Open"}
+        <Button
+          className={cn(
+            buttonVariants({
+              variant: "ghost",
+              size: "lg",
+              className: cn(
+                "gap-2 font-bold [&_svg]:size-3.5 dark:[&_svg]:text-fd-muted-foreground",
+                "px-2 border-neutral-500! border"
+              )
+            })
+          )}
+        >
+          {props.children ?? ""}
           <ChevronDown
             className={cn(
               "transition-transform duration-200 group-data-[state=open]:-rotate-180",
@@ -333,32 +383,104 @@ export function ViewOptionsPopover({
   );
 }
 
-export function SharePopover() {
+export function SharePopover({
+  className,
+  ...restProps
+}: ComponentProps<typeof PopoverTrigger>) {
   const [isOpen, setOpen] = useState(false);
 
   const [url, setUrl] = useState("");
-  const [text, setText] = useState("");
+  const [textTitle, setTextTitle] = useState("");
+  const [textDesc, setTextDesc] = useState<string | undefined | null>();
 
-  const setUrlTest = useEffectEvent(
-    ({ documentTitle, url }: { url: string; documentTitle: string }) => {
+  const setMetaData = useEffectEvent(
+    ({
+      url,
+      documentTitle,
+      documentDesc
+    }: {
+      url: string;
+      documentTitle: string;
+      documentDesc?: string | null;
+    }) => {
       setUrl(url);
-      setText(documentTitle);
+      setTextTitle(documentTitle);
+      setTextDesc(documentDesc);
     }
   );
 
   useEffect(() => {
-    setUrlTest({
+    setMetaData({
       url: window.location.href,
-      documentTitle: document.title
+      documentTitle: document.title,
+      documentDesc:
+        document
+          .querySelector('meta[name="description"]')
+          ?.getAttribute("content") ??
+        document
+          .querySelector('meta[property="og:description"]')
+          ?.getAttribute("content")
     });
   }, []);
 
+  const formatTextMeta = ({
+    documentTitle,
+    documentDesc
+  }: {
+    documentTitle: string;
+    documentDesc?: string | null;
+  }) => {
+    const title = documentTitle?.trim();
+    const desc = documentDesc?.trim();
+
+    if (!isNonEmptyString(title) && !isNonEmptyString(desc)) return "";
+
+    const lines: string[] = [];
+
+    if (isNonEmptyString(title)) {
+      const underlineLength = Math.max(3, title.length);
+      lines.push(title);
+      const len = Math.max(5, Math.round((underlineLength * 2) / 1.5));
+      lines.push("-".repeat(len));
+    }
+
+    if (isNonEmptyString(desc)) {
+      lines.push(`${desc}`);
+    }
+
+    return lines.join("\n");
+  };
+
   const handleNativeShare = async () => {
-    if ("share" in navigator) {
-      await navigator.share({
-        title: text,
-        url
+    if (!navigator.canShare) {
+      toast.error(`Your browser doesn't support the Web Share API.`, {
+        duration: 2500
       });
+      return setOpen(false);
+    }
+
+    if ("share" in navigator) {
+      try {
+        await navigator.share({
+          // url,
+          title: textTitle,
+          text:
+            formatTextMeta({
+              documentTitle: textTitle,
+              documentDesc: textDesc
+            }) +
+            "\n\n" +
+            url
+        });
+      } catch (error) {
+        toast.error(`Something went wrong, please try again.`, {
+          duration: 2500
+        });
+
+        if (isError(error)) console.error(error);
+      } finally {
+        setOpen(false);
+      }
     }
   };
 
@@ -369,7 +491,12 @@ export function SharePopover() {
           <TbBrandWhatsappFilled className="size-4 text-green-600" /> WhatsApp
         </div>
       ),
-      href: `https://wa.me/?text=${encodeURIComponent(`${text}\n\n${url}`)}`
+      href: `https://wa.me/?text=${encodeURIComponent(
+        `${formatTextMeta({
+          documentTitle: textTitle,
+          documentDesc: textDesc
+        })}\n\n${url}`
+      )}`
     },
     {
       title: (
@@ -378,7 +505,10 @@ export function SharePopover() {
         </div>
       ),
       href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-        `${text}\n\n${url}`
+        `${formatTextMeta({
+          documentTitle: textTitle,
+          documentDesc: textDesc
+        })}\n\n${url}`
       )}`
     },
     {
@@ -389,7 +519,12 @@ export function SharePopover() {
       ),
       href: `https://t.me/share/url?url=${encodeURIComponent(
         url
-      )}&text=${encodeURIComponent(`${text}\n\n${url}`)}`
+      )}&text=${encodeURIComponent(
+        `\n${formatTextMeta({
+          documentTitle: textTitle,
+          documentDesc: textDesc
+        })}`
+      )}`
     },
     {
       title: (
@@ -397,17 +532,48 @@ export function SharePopover() {
           <Copy className="size-4" /> Copy Link
         </div>
       ),
-      onClick: () => {
-        navigator.clipboard.writeText(url);
+      onClick: () =>
+        withShareUrlGuard(
+          async () => {
+            assertValidShareUrl(url);
 
-        toast.info("Link copied", {
-          duration: 1500
+            await copyText(url);
+
+            toast.info("Share Link copied", {
+              duration: 2000
+            });
+
+            setOpen(false);
+          },
+          {
+            onError() {
+              setOpen(false);
+            }
+          }
+        )
+    }
+  ];
+
+  const handleManualShare = (shareUrl: string) => {
+    withShareUrlGuard(
+      async () => {
+        assertValidShareUrl(shareUrl);
+
+        window.open(shareUrl, "_blank", "noopener,noreferrer");
+
+        toast.info("Share Link Opened", {
+          duration: 2000
         });
 
         setOpen(false);
+      },
+      {
+        onError() {
+          setOpen(false);
+        }
       }
-    }
-  ];
+    );
+  };
 
   return (
     <Popover
@@ -416,24 +582,22 @@ export function SharePopover() {
     >
       <PopoverTrigger
         asChild
+        {...restProps}
         onClick={(prev) => setOpen(!prev)}
         className={cn(
           "group",
           buttonVariants({
             variant: "ghost",
-            size: "lg"
-          }),
-          "gap-2 font-bold text-xs data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground",
-          " p-2 px-2 border-neutral-500! border"
+            size: "lg",
+            className: cn(
+              "gap-2 font-bold text-xs data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground",
+              " p-2 px-2 border-neutral-500! border",
+              className
+            )
+          })
         )}
       >
         <Button
-          onClick={(e) => {
-            if ("share" in navigator) {
-              e.preventDefault();
-              handleNativeShare();
-            }
-          }}
           className={cn(
             buttonVariants({
               variant: "ghost",
@@ -455,31 +619,58 @@ export function SharePopover() {
         </Button>
       </PopoverTrigger>
 
-      {!("share" in navigator) && (
-        <PopoverContent className="flex flex-col">
-          {items.map((item, i) =>
-            item.href ? (
-              <a
-                key={i}
-                href={item.href}
-                target="_blank"
-                rel="noreferrer"
-                className="p-2 text-sm rounded hover:bg-fd-accent"
-              >
-                {item.title}
-              </a>
-            ) : (
-              <button
-                key={i}
-                onClick={item.onClick}
-                className="p-2 text-left text-sm rounded hover:bg-fd-accent"
-              >
-                {item.title}
-              </button>
-            )
-          )}
-        </PopoverContent>
-      )}
+      <PopoverContent
+        side="bottom"
+        align="end"
+        className="flex flex-col justify-start"
+      >
+        {"share" in navigator ? (
+          <>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                handleNativeShare();
+              }}
+              className="p-2 text-left text-sm rounded hover:bg-fd-accent justify-start"
+            >
+              <div className="inline-flex gap-1.5">
+                <Smartphone className="size-4" /> Share via apps
+              </div>
+            </Button>
+
+            {items
+              .filter((item) => {
+                return (
+                  item.onClick !== undefined &&
+                  typeof item.onClick === "function"
+                );
+              })
+              .map((item, i) => {
+                return (
+                  <Button
+                    key={i}
+                    onClick={item.onClick}
+                    className="p-2 text-left text-sm rounded hover:bg-fd-accent justify-start"
+                  >
+                    {item.title}
+                  </Button>
+                );
+              })}
+          </>
+        ) : (
+          items.map((item, i) => (
+            <Button
+              key={i}
+              onClick={
+                item.onClick ? item.onClick : () => handleManualShare(item.href)
+              }
+              className="p-2 text-left text-sm rounded hover:bg-fd-accent justify-start"
+            >
+              {item.title}
+            </Button>
+          ))
+        )}
+      </PopoverContent>
     </Popover>
   );
 }

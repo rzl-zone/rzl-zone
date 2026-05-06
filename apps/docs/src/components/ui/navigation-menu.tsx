@@ -2,8 +2,9 @@
 
 import * as React from "react";
 
-import { cn } from "@rzl-zone/docs-ui/utils";
 import * as Primitive from "@rzl-zone/docs-ui/components/radix-ui-navigation-menu";
+
+import { cn } from "@/lib/cn";
 
 export type NavigationMenuContentProps = Primitive.NavigationMenuContentProps;
 export type NavigationMenuTriggerProps = Primitive.NavigationMenuTriggerProps;

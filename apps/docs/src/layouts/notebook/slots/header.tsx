@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Fragment,
   type HTMLAttributes,
@@ -13,26 +14,22 @@ import Link from "fumadocs-core/link";
 import { usePathname } from "fumadocs-core/framework";
 
 import {
-  LinkItem,
-  type LinkItemType,
-  type MenuItemType
-} from "@/layouts/shared";
-import { useNotebookLayout } from "@/layouts/notebook/client";
-import { type LayoutTab, isLayoutTabActive } from "@/layouts/shared";
-
-import { cn } from "@rzl-zone/docs-ui/utils";
-import {
   ChevronDown,
   Languages,
-  SidebarIcon
+  Sidebar as SidebarIcon
 } from "@rzl-zone/docs-ui/components/icons/lucide";
-import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
 
+import { cn } from "@/lib/cn";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent
 } from "@/components/ui/popover";
+import { buttonVariants } from "@/components/ui/button";
+
+import { useNotebookLayout } from "../client";
+import { type LayoutTab, isLayoutTabActive } from "../../shared";
+import { LinkItem, type LinkItemType, type MenuItemType } from "../../shared";
 
 export function Header(props: ComponentProps<"header">) {
   const {
@@ -58,24 +55,14 @@ export function Header(props: ComponentProps<"header">) {
         showLayoutTabs && "lg:layout:[--fd-header-height:--spacing(24)]",
         props.className
       )}
-      // className={cn(
-      //   "sticky col-[1/-1] flex flex-col top-(--fd-docs-row-1) z-10 backdrop-blur-sm transition-colors data-[transparent=false]:bg-fd-background/80 layout:[--fd-header-height:--spacing(14)]",
-      //   showLayoutTabs && "lg:layout:[--fd-header-height:--spacing(24)]",
-      //   props.className
-      // )}
     >
       <div
         data-header-body=""
         className="flex border-b px-4 gap-2 h-14 md:px-6"
-        // className={cn(
-        //   "grid border-b h-14 items-center"
-        //   // "grid-cols-[minmax(min-content,1fr)_var(--fd-sidebar-col)_minmax(0,calc(var(--fd-layout-width,160rem)-var(--fd-sidebar-col)-var(--fd-toc-width)))_var(--fd-toc-width)_minmax(min-content,1fr)]"
-        // )}
       >
         <div
           className={cn(
-            // "items-center",
-            "col-start-2 ",
+            "items-center",
             navMode === "top" && "flex flex-1",
             navMode === "auto" &&
               "hidden has-data-[collapsed=true]:md:flex max-md:flex"
@@ -85,10 +72,10 @@ export function Header(props: ComponentProps<"header">) {
             <slots.sidebar.collapseTrigger
               className={cn(
                 buttonVariants({
-                  variant: "ghost",
+                  color: "ghost",
                   size: "icon-sm"
                 }),
-                "data-[collapsed=false]:hidden max-md:hidden"
+                "-ms-1.5 text-fd-muted-foreground data-[collapsed=false]:hidden max-md:hidden"
               )}
             >
               <SidebarIcon />
@@ -104,7 +91,6 @@ export function Header(props: ComponentProps<"header">) {
           )}
           {nav?.children}
         </div>
-        {/* <div className="col-start-3 flex items-center"> */}
         {slots.searchTrigger && (
           <slots.searchTrigger.full
             hideIfDisabled
@@ -114,11 +100,7 @@ export function Header(props: ComponentProps<"header">) {
             )}
           />
         )}
-        {/* </div> */}
-        <div
-          className="flex flex-1 items-center justify-end md:gap-2"
-          // className="col-start-4 flex items-center justify-end md:gap-2"
-        >
+        <div className="flex flex-1 items-center justify-end md:gap-2">
           <div className="flex items-center gap-6 empty:hidden max-lg:hidden">
             {navItems
               .filter((item) => item.type !== "icon")
@@ -136,8 +118,8 @@ export function Header(props: ComponentProps<"header">) {
                 key={i}
                 item={item}
                 className={cn(
-                  buttonVariants({ size: "icon-sm", variant: "ghost" }),
-                  "max-lg:hidden"
+                  buttonVariants({ size: "icon-sm", color: "ghost" }),
+                  "text-fd-muted-foreground max-lg:hidden"
                 )}
                 aria-label={item.label}
               >
@@ -156,7 +138,7 @@ export function Header(props: ComponentProps<"header">) {
               <slots.sidebar.trigger
                 className={cn(
                   buttonVariants({
-                    variant: "ghost",
+                    color: "ghost",
                     size: "icon-sm",
                     className: "p-2 -me-1.5"
                   })
@@ -178,10 +160,10 @@ export function Header(props: ComponentProps<"header">) {
               <slots.sidebar.collapseTrigger
                 className={cn(
                   buttonVariants({
-                    variant: "ghost",
+                    color: "secondary",
                     size: "icon-sm"
                   }),
-                  "rounded-full border p-2 -me-1.5"
+                  "text-fd-muted-foreground rounded-full -me-1.5"
                 )}
               >
                 <SidebarIcon />

@@ -8,8 +8,9 @@ const frontmatterSchema = z.object({
   description: z.string().optional(),
   icon: z.string().optional(),
   full: z.boolean().optional(),
-  _openapi: z.looseObject({}).optional()
+  _openapi: z.record(z.string(), z.custom()).optional()
 });
+
 /** * Zod 4 default meta schema */
 const defaultMetaSchema = z.object({
   title: z.string().optional(),
@@ -37,10 +38,11 @@ export const createReactNodeSchema = (
   });
 
 export const pageSchema = frontmatterSchema.extend({
+  isMainRootPage: z.optional(z.boolean()),
   title: z.optional(z.string()),
   pageName: z.string({
     error: (e) =>
-      `\`pageName\` is required for naming file for linking or navigation, expected string, but received: ${e.input}.`
+      `Invalid "pageName": expected a string for file naming in navigation, but received ${e.input}.`
   }),
   pageNameAlias: z.optional(z.string()),
   lastModified: z.optional(z.union([z.date()])),
@@ -48,13 +50,13 @@ export const pageSchema = frontmatterSchema.extend({
   packageMeta: z.object({
     name: z.union([z.string(), z.null()], {
       error: (e) =>
-        `\`name\` is required for naming package, expected string or null, but received: ${e.input}.`
+        `Invalid "packageMeta.name": expected a string or null, but received ${e.input}.`
     }),
     version: z.optional(z.union([z.string(), z.null()])),
     keywords: z.optional(z.union([z.string(), z.array(z.string()), z.null()])),
     tag: z.union([z.string(), z.array(z.string()), z.null()], {
       error: (e) =>
-        `\`tag\` is required for searching, expected string, string array or null, but received: ${e.input}.`
+        `Invalid "packageMeta.tag": expected a string, string array, or null for search tagging, but received ${e.input}.`
     })
   }),
   pageData: z.optional(
@@ -74,13 +76,14 @@ export const metaSchema = defaultMetaSchema.extend({
   pageName: z.optional(
     z.string({
       error: (e) =>
-        `\`pageName\` is required for naming file for linking or navigation, expected string or undefined, but received: ${e.input}.`
+        `Invalid "pageName": expected a string (or leave it undefined) for file naming in navigation, but received ${e.input}.`
     })
   ),
+
   pageNameAlias: z.optional(
     z.string({
       error: (e) =>
-        `\`pageNameAlias\` is required for aliasing naming file for linking or navigation, expected string or undefined, but received: ${e.input}.`
+        `Invalid "pageNameAlias": expected a string (or leave it undefined) for alias naming in navigation, but received ${e.input}.`
     })
   )
 });

@@ -207,7 +207,8 @@ const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 ${sitemap}
 </urlset>`;
 
-const outputPath = path.join(__dirname, "../public/sitemap.xml");
+// const outputPath = path.join(__dirname, "../public/sitemap.xml");
+const outputPath = path.join(__dirname, "../src/app/sitemap.xml");
 ensureParentDir(outputPath);
 fs.writeFileSync(outputPath, sitemapXml);
 

@@ -1,6 +1,6 @@
 "use client";
 
-import {
+import React, {
   useCallback,
   useEffect,
   useMemo,
@@ -34,7 +34,7 @@ import { logErrorOnce } from "@rzl-zone/core/logging/once";
 
 import { useMainRzlFumadocs } from "@/context/main-rzl-fumadocs";
 
-export type FumaNextLinkType = Omit<
+export type CustomNextLinkType = Omit<
   ComponentPropsWithRef<typeof NextLink>,
   "prefetch"
 > & {
@@ -95,83 +95,7 @@ export type FumaNextLinkType = Omit<
 const isProd = isProdEnv();
 const prefetchedCache = new Set<string>();
 
-/** ----------------------------------------------------------
- * * ***Component: `FumaNextLink`.***
- * ----------------------------------------------------------
- * **Extended wrapper around Next.js
- *   **[`next/link`](https://nextjs.org/docs/api-reference/next/link)** component.**
- *
- * Provides enhanced control over prefetch behavior, safe navigation
- * handling, and documentation-oriented defaults for internal, hash-only,
- * and external links.
- *
- * ---
- *
- * ***✨ Features***
- *
- * - **Centralized default prefetch configuration**
- *   via `MainRzlFumadocsProvider`.
- * - **Explicit `"onHover"` prefetch mode**
- *   with manual throttling and request deduplication.
- * - **Safe handling of navigation edge cases**, including:
- *    - External URLs.
- *    - Hash-only (`#anchor`) links.
- * - **Optional GitHub-style slug generation**
- *   for hash anchors (useful for MDX / Markdown headings).
- *
- * ---
- *
- * ***🚀 Prefetch Behavior***
- *
- * This component supports all native Next.js prefetch modes:
- * `true`, `false`, `"auto"`, and introduces a custom **`"onHover"`** mode.
- *
- * - **Default behavior**
- *   follows Next.js semantics (viewport-based prefetching in production).
- *
- * - **When `prefetch="onHover"`:**
- *    - Viewport-based prefetching is **disabled**.
- *    - Prefetching is triggered **only on hover events**.
- *    - Prefetch requests are **throttled and deduplicated**
- *      to avoid redundant network calls.
- *    - Prefetching runs **only in production**,
- *      matching Next.js default behavior.
- *
- * > **Important:**
- * > User-provided `onMouseEnter` handlers are **always executed**,
- * > but **cannot cancel or override** the `"onHover"` prefetch logic.
- * > To change this behavior, the `prefetch` prop itself must be updated.
- *
- * ---
- *
- * ***🔗 Hash-only Navigation***
- *
- * - Hash-only links (e.g. `#section`) **do not trigger route navigation**.
- * - Scrolling is handled manually using scroll behavior settings
- *   provided by `MainRzlFumadocsProvider`.
- * - Optional automatic slug generation ensures consistent
- *   and predictable anchor IDs.
- *
- * ---
- *
- * ***🌍 External Links***
- *
- * - External URLs are automatically detected
- *   unless explicitly overridden via props.
- * - Opened in a new tab with safe defaults:
- *    - `target="_blank"`
- *    - `rel="noopener noreferrer"`
- *
- * ---
- *
- * ***📚 Intended Usage***
- *
- * Designed as a **drop-in replacement for `next/link`**
- * in documentation-heavy or navigation-dense applications,
- * where **explicit prefetch control** and **predictable navigation
- * semantics** are required.
- */
-export const FumaNextLink: FC<FumaNextLinkType> = ({
+const CustomNextLinkUnMemoize: FC<CustomNextLinkType> = ({
   href: rawHref,
   withAutoSlugger = true,
   prefetch: overridePrefetch,
@@ -183,7 +107,7 @@ export const FumaNextLink: FC<FumaNextLinkType> = ({
   defaultUrlOnInvalid = "https://github.com/rzl-zone",
   tabIndex = -1,
   ...props
-}: FumaNextLinkType) => {
+}) => {
   const router = useRouter();
   const pathname = usePathname();
   const { link, scrollBehavior } = useMainRzlFumadocs();
@@ -192,7 +116,7 @@ export const FumaNextLink: FC<FumaNextLinkType> = ({
   const resolvedHref = useMemo(() => {
     if (!isString(rawHref) && !isPlainObject(rawHref) && !isProd) {
       logErrorOnce(
-        `Component <FumaNextLink /> property \`href\` in page \`${pathname}\` is required must be as a string or UrlObject, but received type: \`${getPreciseType(
+        `Component <CustomNextLink /> property \`href\` in page \`${pathname}\` is required must be as a string or UrlObject, but received type: \`${getPreciseType(
           rawHref
         )}\`, with value: \`${safeStableStringify(rawHref, { keepUndefined: true })}\`.`
       );
@@ -200,7 +124,7 @@ export const FumaNextLink: FC<FumaNextLinkType> = ({
 
     if (isString(rawHref) && isEmptyString(rawHref) && !isProd) {
       logErrorOnce(
-        `Component <FumaNextLink /> property \`href\` \`${pathname}\` is required and cant be empty string if is as a string, but received value: \`${safeStableStringify(
+        `Component <CustomNextLink /> property \`href\` \`${pathname}\` is required and cant be empty string if is as a string, but received value: \`${safeStableStringify(
           rawHref,
           { keepUndefined: true }
         )}\`.`
@@ -208,7 +132,7 @@ export const FumaNextLink: FC<FumaNextLinkType> = ({
     } else if (isPlainObject(rawHref) && !isProd) {
       return formatWithValidation(rawHref, {
         currentPathname: pathname,
-        componentName: "FumaNextLink"
+        componentName: "CustomNextLink"
       });
     }
 
@@ -338,5 +262,83 @@ export const FumaNextLink: FC<FumaNextLinkType> = ({
     </NextLink>
   );
 };
+
+/** ----------------------------------------------------------
+ * * ***Component: `CustomNextLink`.***
+ * ----------------------------------------------------------
+ * **Extended wrapper around Next.js
+ *   **[`next/link`](https://nextjs.org/docs/api-reference/next/link)** component.**
+ *
+ * Provides enhanced control over prefetch behavior, safe navigation
+ * handling, and documentation-oriented defaults for internal, hash-only,
+ * and external links.
+ *
+ * ---
+ *
+ * ***✨ Features***
+ *
+ * - **Centralized default prefetch configuration**
+ *   via `MainRzlFumadocsProvider`.
+ * - **Explicit `"onHover"` prefetch mode**
+ *   with manual throttling and request deduplication.
+ * - **Safe handling of navigation edge cases**, including:
+ *    - External URLs.
+ *    - Hash-only (`#anchor`) links.
+ * - **Optional GitHub-style slug generation**
+ *   for hash anchors (useful for MDX / Markdown headings).
+ *
+ * ---
+ *
+ * ***🚀 Prefetch Behavior***
+ *
+ * This component supports all native Next.js prefetch modes:
+ * `true`, `false`, `"auto"`, and introduces a custom **`"onHover"`** mode.
+ *
+ * - **Default behavior**
+ *   follows Next.js semantics (viewport-based prefetching in production).
+ *
+ * - **When `prefetch="onHover"`:**
+ *    - Viewport-based prefetching is **disabled**.
+ *    - Prefetching is triggered **only on hover events**.
+ *    - Prefetch requests are **throttled and deduplicated**
+ *      to avoid redundant network calls.
+ *    - Prefetching runs **only in production**,
+ *      matching Next.js default behavior.
+ *
+ * > **Important:**
+ * > User-provided `onMouseEnter` handlers are **always executed**,
+ * > but **cannot cancel or override** the `"onHover"` prefetch logic.
+ * > To change this behavior, the `prefetch` prop itself must be updated.
+ *
+ * ---
+ *
+ * ***🔗 Hash-only Navigation***
+ *
+ * - Hash-only links (e.g. `#section`) **do not trigger route navigation**.
+ * - Scrolling is handled manually using scroll behavior settings
+ *   provided by `MainRzlFumadocsProvider`.
+ * - Optional automatic slug generation ensures consistent
+ *   and predictable anchor IDs.
+ *
+ * ---
+ *
+ * ***🌍 External Links***
+ *
+ * - External URLs are automatically detected
+ *   unless explicitly overridden via props.
+ * - Opened in a new tab with safe defaults:
+ *    - `target="_blank"`
+ *    - `rel="noopener noreferrer"`
+ *
+ * ---
+ *
+ * ***📚 Intended Usage***
+ *
+ * Designed as a **drop-in replacement for `next/link`**
+ * in documentation-heavy or navigation-dense applications,
+ * where **explicit prefetch control** and **predictable navigation
+ * semantics** are required.
+ */
+export const CustomNextLink = React.memo(CustomNextLinkUnMemoize);
 
 export { PackageLink } from "./package-link";

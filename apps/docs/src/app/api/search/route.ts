@@ -2,7 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 import { flexsearchFromSource } from "fumadocs-core/search/flexsearch";
 
 import { source } from "@/lib/source";
-import { cleanSpecialAttributeMdx } from "../../../../../../packages/fd-core/src/utils/clean-special-attr";
+
+type CleanSpecialAttributeMdx = {
+  cleanTagTocOnly?: boolean;
+};
+
+export const cleanSpecialAttributeMdx = (
+  val: string | undefined | null,
+  { cleanTagTocOnly = false }: CleanSpecialAttributeMdx = {}
+) => {
+  if (!val) return "";
+
+  if (cleanTagTocOnly) {
+    // return val.replace(/\[!toc\]/g, "");
+    return val.replace(/\[!toc\]|\b[\w-]+-toc\b/gi, "");
+  }
+  return val.replace(/\[!toc\]|\[#.*?\]/g, "");
+};
 
 export const GET = async (req: NextRequest) => {
   const url = new URL(req.url);
@@ -32,8 +48,8 @@ export const GET = async (req: NextRequest) => {
 };
 
 const base = flexsearchFromSource(source, {
-  buildIndex(page) {
-    const structured = page.data.structuredData;
+  async buildIndex(page) {
+    const { structuredData: structured } = page.data;
 
     return {
       title: cleanSpecialAttributeMdx(page.data.title).trim(),

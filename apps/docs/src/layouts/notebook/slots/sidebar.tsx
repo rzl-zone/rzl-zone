@@ -13,9 +13,7 @@ import {
 import Link from "fumadocs-core/link";
 import { usePathname } from "fumadocs-core/framework";
 
-import { mergeRefs } from "@rzl-zone/core-react/utils";
-
-import { cn, cva } from "@rzl-zone/docs-ui/utils";
+import { cva } from "@rzl-zone/docs-ui/utils";
 import {
   Check,
   ChevronsUpDown,
@@ -23,7 +21,16 @@ import {
   SidebarIcon,
   X
 } from "@rzl-zone/docs-ui/components/icons/lucide";
-import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
+
+import { cn } from "@/lib/cn";
+import { mergeRefs } from "@/lib/merge-refs";
+
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent
+} from "@/components/ui/popover";
+import { buttonVariants } from "@/components/ui/button";
 
 import {
   createPageTreeRenderer,
@@ -32,15 +39,9 @@ import {
 import * as Base from "@/components/docs-sidebar/base";
 import { createLinkItemRenderer } from "@/components/docs-sidebar/link-item";
 
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent
-} from "@/components/ui/popover";
-import { ScrollArea, ScrollViewport } from "@/components/ui/scroll-area";
-
-import { useNotebookLayout } from "@/layouts/notebook/client";
-import { isLayoutTabActive, LinkItem, type LayoutTab } from "@/layouts/shared";
+import { LinkItem } from "../../shared";
+import { useNotebookLayout } from "../client";
+import { isLayoutTabActive, type LayoutTab } from "../../shared";
 
 const itemVariants = cva(
   "relative flex flex-row items-center gap-2 rounded-lg p-2 text-start text-fd-muted-foreground wrap-anywhere [&_svg]:size-4 [&_svg]:shrink-0",
@@ -52,7 +53,7 @@ const itemVariants = cva(
           "transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none"
       },
       highlight: {
-        true: "data-[active=true]:before:content-[''] data-[active=true]:before:bg-fd-primary data-[active=true]:before:absolute data-[active=true]:before:w-px data-[active=true]:before:inset-y-2.5 data-[active=true]:before:start-2.5"
+        true: "data-[active=true]:before:content-[''] data-[active=true]:before:bg-fd-primary data-[active=true]:before:absolute data-[active=true]:before:w-px data-[active=true]:before:inset-y-2.5 data-[active=true]:before:inset-s-2.5"
       }
     }
   }
@@ -90,27 +91,6 @@ export function SidebarCollapseTrigger(props: ComponentProps<"button">) {
   return <Base.SidebarCollapseTrigger {...props} />;
 }
 
-function SidebarViewport(props: ComponentProps<typeof ScrollArea>) {
-  return (
-    <ScrollArea
-      {...props}
-      className={cn("min-h-0 flex-1", props.className)}
-    >
-      <ScrollViewport
-        className="p-4 overscroll-contain"
-        style={
-          {
-            maskImage:
-              "linear-gradient(to bottom, transparent, white 12px, white calc(100% - 12px), transparent)"
-          } as object
-        }
-      >
-        {props.children}
-      </ScrollViewport>
-    </ScrollArea>
-  );
-}
-
 function SidebarContent({
   ref: refProp,
   className,
@@ -137,7 +117,7 @@ function SidebarContent({
         >
           {collapsed && (
             <div
-              className="absolute start-0 inset-y-0 w-4"
+              className="absolute inset-s-0 inset-y-0 w-4"
               {...rest}
             />
           )}
@@ -147,7 +127,7 @@ function SidebarContent({
             data-collapsed={collapsed}
             data-hovered={collapsed && hovered}
             className={cn(
-              "absolute flex flex-col w-full start-0 inset-y-0 items-end text-sm duration-250 *:w-(--fd-sidebar-width)",
+              "absolute flex flex-col w-full inset-s-0 inset-y-0 items-end text-sm duration-250 *:w-(--fd-sidebar-width)",
               navMode === "auto" && "bg-fd-card border-e",
               collapsed && [
                 "inset-y-2 rounded-xl bg-fd-card transition-transform border w-(--fd-sidebar-width)",
@@ -182,7 +162,7 @@ function SidebarDrawer({
       <Base.SidebarDrawerOverlay className="fixed z-40 inset-0 backdrop-blur-xs data-[state=open]:animate-fd-fade-in data-[state=closed]:animate-fd-fade-out" />
       <Base.SidebarDrawerContent
         className={cn(
-          "fixed text-[0.9375rem] flex flex-col shadow-lg border-s end-0 inset-y-0 w-[85%] max-w-[380px] z-40 bg-fd-background data-[state=open]:animate-fd-sidebar-in data-[state=closed]:animate-fd-sidebar-out",
+          "fixed text-[0.9375rem] flex flex-col shadow-lg border-s inset-e-0 inset-y-0 w-[85%] max-w-95 z-40 bg-fd-background data-[state=open]:animate-fd-sidebar-in data-[state=closed]:animate-fd-sidebar-out",
           className
         )}
         {...props}
@@ -310,12 +290,12 @@ function SidebarFolderContent({
       className={cn(
         "relative",
         depth === 1 &&
-          "before:content-[''] before:absolute before:w-px before:inset-y-1 before:bg-fd-border before:start-2.5",
+          "before:content-[''] before:absolute before:w-px before:inset-y-1 before:bg-fd-border before:inset-s-2.5",
         className
       )}
       {...props}
     >
-      {children}
+      <div className="flex flex-col gap-0.5 pt-0.5">{children}</div>
     </Base.SidebarFolderContent>
   );
 }
@@ -373,14 +353,7 @@ export function Sidebar({
     if (typeof footer === "function") return createElement(footer, props);
 
     return (
-      <div
-        {...props}
-        className={cn(
-          "hidden flex-row text-fd-muted-foreground items-center border-t p-4 pt-2",
-          iconLinks.length > 0 && "max-lg:flex",
-          props.className
-        )}
-      >
+      <div {...props}>
         {props.children}
         {footer}
       </div>
@@ -388,18 +361,20 @@ export function Sidebar({
   }
 
   const viewport = (
-    <SidebarViewport>
-      {menuItems
-        .filter((item) => item.type !== "icon")
-        .map((item, i, arr) => (
-          <SidebarLinkItem
-            key={i}
-            item={item}
-            className={cn("lg:hidden", i === arr.length - 1 && "mb-4")}
-          />
-        ))}
-      <SidebarPageTree {...components} />
-    </SidebarViewport>
+    <Base.SidebarViewport>
+      <nav aria-label="Sidebar Navigation">
+        {menuItems
+          .filter((item) => item.type !== "icon")
+          .map((item, i, arr) => (
+            <SidebarLinkItem
+              key={i}
+              item={item}
+              className={cn("lg:hidden", i === arr.length - 1 && "mb-3")}
+            />
+          ))}
+        <SidebarPageTree {...components} />
+      </nav>
+    </Base.SidebarViewport>
   );
 
   return (
@@ -418,9 +393,9 @@ export function Sidebar({
                     <SidebarCollapseTrigger
                       className={cn(
                         buttonVariants({
-                          variant: "secondary",
+                          color: "ghost",
                           size: "icon-sm",
-                          className: "mt-px mb-auto"
+                          className: "mt-px mb-auto text-fd-muted-foreground"
                         })
                       )}
                     >
@@ -440,6 +415,10 @@ export function Sidebar({
         })}
         {viewport}
         {renderFooter({
+          className: cn(
+            "hidden flex-row text-fd-muted-foreground items-center border-t px-4 py-2.5",
+            iconLinks.length > 0 && "max-lg:flex"
+          ),
           children: iconLinks.map((item, i) => (
             <LinkItem
               key={i}
@@ -447,7 +426,7 @@ export function Sidebar({
               className={cn(
                 buttonVariants({
                   size: "icon-sm",
-                  variant: "ghost",
+                  color: "ghost",
                   className: "lg:hidden"
                 })
               )}
@@ -466,7 +445,7 @@ export function Sidebar({
                 className={cn(
                   buttonVariants({
                     size: "icon-sm",
-                    variant: "ghost",
+                    color: "ghost",
                     className: "ms-auto text-fd-muted-foreground"
                   })
                 )}
@@ -480,7 +459,7 @@ export function Sidebar({
         {viewport}
         {renderFooter({
           className: cn(
-            "hidden flex-row items-center justify-end",
+            "hidden flex-row text-fd-muted-foreground items-center border-t p-4 pt-2 justify-end",
             (slots.languageSelect || slots.themeSwitch) && "flex",
             iconLinks.length > 0 && "max-lg:flex"
           ),
@@ -493,7 +472,7 @@ export function Sidebar({
                   className={cn(
                     buttonVariants({
                       size: "icon-sm",
-                      variant: "ghost"
+                      color: "ghost"
                     }),
                     "text-fd-muted-foreground lg:hidden",
                     i === iconLinks.length - 1 && "me-auto"
@@ -517,7 +496,7 @@ export function Sidebar({
   );
 }
 
-export function SidebarTabsDropdown({
+function SidebarTabsDropdown({
   options,
   placeholder,
   ...props
@@ -526,7 +505,7 @@ export function SidebarTabsDropdown({
   options: LayoutTab[];
 } & ComponentProps<"button">) {
   const [open, setOpen] = useState(false);
-  const { closeOnRedirect: closeOnRedirectRef } = useSidebar();
+  const { closeOnRedirect } = useSidebar();
   const pathname = usePathname();
 
   const selected = useMemo(() => {
@@ -534,7 +513,8 @@ export function SidebarTabsDropdown({
   }, [options, pathname]);
 
   const onClick = () => {
-    closeOnRedirectRef.current = false;
+    // eslint-disable-next-line react-hooks/immutability
+    closeOnRedirect.current = false;
     setOpen(false);
   };
 

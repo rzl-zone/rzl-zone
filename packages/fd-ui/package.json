@@ -140,7 +140,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@fumadocs/base-ui": "^16.7.14",
+    "@fumadocs/base-ui": "16.8.7",
     "@rzl-zone/core": "workspace:*",
     "@rzl-zone/core-react": "workspace:*",
     "@rzl-zone/docs-ui": "workspace:*",
@@ -150,8 +150,8 @@
     "@rzl-zone/utils-js": "latest",
     "@types/hast": "^3.0.4",
     "@types/mdast": "^4.0.4",
-    "fumadocs-core": "^16.7.14",
-    "fumadocs-mdx": "14.2.13",
+    "fumadocs-core": "16.8.7",
+    "fumadocs-mdx": "14.3.2",
     "github-slugger": "^2.0.0",
     "hast-util-to-jsx-runtime": "^2.3.6",
     "react-medium-image-zoom": "^5.4.1",

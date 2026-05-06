@@ -1,21 +1,21 @@
-import { useMemo, type ComponentProps, type ReactNode } from "react";
+import { type FC, useMemo, type ComponentProps, type ReactNode } from "react";
 
-import type { I18nConfig } from "fumadocs-core/i18n";
 import * as PageTree from "fumadocs-core/page-tree";
+import type { I18nConfig } from "fumadocs-core/i18n";
 
-import type { BaseSlots } from "@/layouts/shared/client";
+import { isActive, isTabActive } from "@/utils/fumadocs";
+
+import type { BaseSlots } from "./client";
 import type {
   FullSearchTriggerProps,
   SearchTriggerProps
-} from "@/layouts/shared/slots/search-trigger";
-import type { ThemeSwitchProps } from "@/layouts/shared/slots/theme-switch";
-
-import { isActive, normalize } from "@/lib/urls";
+} from "./slots/search-trigger";
+import type { ThemeSwitchProps } from "./slots/theme-switch";
 
 export interface NavOptions {
   enabled?: boolean;
   children?: ReactNode;
-  title?: ReactNode | ((props: ComponentProps<"a">) => ReactNode);
+  title?: ReactNode | FC<ComponentProps<"a">>;
 
   /**
    * Redirect url of title
@@ -46,7 +46,7 @@ export interface BaseLayoutProps {
    * navigation config
    */
   nav?: NavOptions;
-  slots?: BaseSlots;
+  slots?: Partial<BaseSlots>;
   children?: ReactNode;
   themeSwitch?: ThemeSwitchOptions;
   searchToggle?: SearchToggleOptions;
@@ -61,9 +61,7 @@ interface SearchToggleOptions {
   enabled?: boolean;
   sm?: SearchTriggerProps;
   full?: FullSearchTriggerProps;
-  /**
-   * @deprecated use `slots.searchTrigger` instead
-   */
+  /** @deprecated use `slots.searchTrigger` instead */
   components?: {
     sm?: ReactNode;
     lg?: ReactNode;
@@ -72,9 +70,7 @@ interface SearchToggleOptions {
 
 interface ThemeSwitchOptions extends ThemeSwitchProps {
   enabled?: boolean;
-  /**
-   * @deprecated use `slots.themeSwitch` instead
-   */
+  /** @deprecated use `slots.themeSwitch` instead */
   component?: ReactNode;
 }
 
@@ -165,11 +161,7 @@ export function isLayoutTabActive(tab: LayoutTab, pathname: string) {
     );
   }
 
-  if (tab.urls) {
-    return tab.urls.has(normalize(pathname));
-  }
-
-  return isActive(tab.url, pathname, true);
+  return isTabActive(tab, pathname);
 }
 
 interface Filterable {

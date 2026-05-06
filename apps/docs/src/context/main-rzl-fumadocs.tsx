@@ -1,17 +1,20 @@
 "use client";
 
 import type { Prettify } from "@rzl-zone/ts-types-plus";
-import type { FumaNextLinkType } from "@/components/link";
+import type { CustomNextLinkType } from "@/components/link";
 import type { PageSchemaType } from "@/configs/source/schema";
 
-import { useState, type ReactNode, useEffect, useMemo } from "react";
+import { useState, type ReactNode, useEffect, useMemo, useRef } from "react";
+
+import { usePathname } from "next/navigation";
 
 import { createRequiredContext } from "@rzl-zone/core-react/context";
 import { type StandardBehaviorOptions } from "@rzl-zone/docs-ui/utils";
 
 import { Banner } from "@/components/ui/banner";
-import { usePathname } from "next/navigation";
 import { SOURCE_CONFIG } from "@/configs/source/package";
+import { useDevtoolsNodeTypeGuard } from "@/hooks/use-devtools-node-type-guard";
+import { useScrollTopOnRouteChange } from "@/hooks/use-scroll-top-on-route-change";
 
 export type PageMdxDataType = Prettify<
   PageSchemaType & {
@@ -21,8 +24,8 @@ export type PageMdxDataType = Prettify<
 
 type RzlFumadocsContext = {
   link: {
-    setPrefetch: (prefetch: FumaNextLinkType["prefetch"]) => void;
-  } & Pick<FumaNextLinkType, "prefetch">;
+    setPrefetch: (prefetch: CustomNextLinkType["prefetch"]) => void;
+  } & Pick<CustomNextLinkType, "prefetch">;
   scrollBehavior: {
     toTop: ScrollToOptions;
     toHash: ScrollToOptions;
@@ -92,7 +95,7 @@ type MainRzlFumadocsProviderProps = {
   /**
    * @default false
    */
-  defaultPrefetch?: FumaNextLinkType["prefetch"];
+  defaultPrefetch?: CustomNextLinkType["prefetch"];
   /**
    * @default false
    */
@@ -130,8 +133,11 @@ export const MainRzlFumadocsProvider = ({
   defaultDisableBodyScroll = false,
   scrollBehavior
 }: MainRzlFumadocsProviderProps) => {
+  useDevtoolsNodeTypeGuard();
+  useScrollTopOnRouteChange();
+
   const [prefetch, setPrefetch] =
-    useState<FumaNextLinkType["prefetch"]>(defaultPrefetch);
+    useState<CustomNextLinkType["prefetch"]>(defaultPrefetch);
   const [githubUrl, setGithubUrl] = useState<string | undefined | null>(
     undefined
   );
@@ -146,51 +152,55 @@ export const MainRzlFumadocsProvider = ({
     intoViewFromIfNeed = defaultScroll.intoViewFromIfNeed
   } = scrollBehavior || defaultScroll;
 
-  useEffect(() => {
-    const handlePseudoElementError = (event: ErrorEvent) => {
-      if (event.message?.includes("nodeType")) {
-        event.preventDefault();
-        console.warn(
-          "[SafeGuard] Ignored harmless 'nodeType' access error from pseudo-element click."
-        );
-      }
-    };
-
-    window.addEventListener("error", handlePseudoElementError);
-    return () => window.removeEventListener("error", handlePseudoElementError);
-  }, []);
+  const styleRef = useRef<HTMLStyleElement | null>(null);
 
   useEffect(() => {
-    let styleEl = document.getElementById("lock-body-scroll");
+    if (!disableBodyScroll) {
+      styleRef.current?.remove();
+      styleRef.current = null;
 
-    if (disableBodyScroll) {
-      if (!styleEl) {
-        styleEl = document.createElement("style");
-        styleEl.id = "lock-body-scroll";
-        styleEl.innerHTML = `
-        body {
-          overflow: hidden !important;
-          overscroll-behavior: contain;
-          position: relative !important;
-          margin: 0 !important;
-          padding-top: 0 !important;
-          padding-left: 0 !important;
-          padding-right: 0 !important;
-          margin-top: 0 !important;
-          margin-left: 0 !important;
-          margin-right: 0 !important;
-        }
-      `
-          .replace(/\s\s+/g, "")
-          .trim();
-        document.head.appendChild(styleEl);
-      }
-    } else {
-      styleEl?.remove();
+      return;
     }
 
+    const existingStyle = document.querySelector<HTMLStyleElement>(
+      // eslint-disable-next-line quotes
+      'style[data-scroll-lock="true"]'
+    );
+
+    if (existingStyle) {
+      styleRef.current = existingStyle;
+
+      return;
+    }
+
+    const styleEl = document.createElement("style");
+
+    styleEl.setAttribute("data-scroll-lock", "true");
+
+    styleEl.innerHTML = `
+      body {
+        overflow: hidden !important;
+        overscroll-behavior: contain;
+        position: relative !important;
+        margin: 0 !important;
+        padding-top: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-top: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+    `
+      .replace(/\s\s+/g, "")
+      .trim();
+
+    document.head.appendChild(styleEl);
+
+    styleRef.current = styleEl;
+
     return () => {
-      styleEl?.remove();
+      styleRef.current?.remove();
+      styleRef.current = null;
     };
   }, [disableBodyScroll]);
 
@@ -279,6 +289,7 @@ const RenderBanner = () => {
       {!!isDocsUnderConstruction && (
         <>
           <Banner
+            data-banner
             variant="rainbow"
             className="flex flex-col justify-center items-center gap-0"
           >

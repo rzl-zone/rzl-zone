@@ -2,11 +2,9 @@
 
 import {
   type ComponentProps,
-  createContext,
   type PointerEvent,
   type ReactNode,
   type RefObject,
-  use,
   useEffect,
   useMemo,
   useRef,
@@ -14,16 +12,21 @@ import {
 } from "react";
 
 import { usePathname } from "fumadocs-core/framework";
+import Link, { type LinkProps } from "fumadocs-core/link";
 
+import { createRequiredContext } from "@rzl-zone/core-react/context";
 import { useMediaQuery, useOnChange } from "@rzl-zone/core-react/hooks";
 
+import { scrollIntoView } from "@rzl-zone/docs-ui/utils";
 import {
   ChevronDown,
   ExternalLink
 } from "@rzl-zone/docs-ui/components/icons/lucide";
 import { Button } from "@rzl-zone/docs-ui/components/button";
-import { cn, scrollIntoView } from "@rzl-zone/docs-ui/utils";
 import { Presence } from "@rzl-zone/docs-ui/components/radix-ui-presence";
+
+import { cn } from "@/lib/cn";
+import { useMainRzlFumadocs } from "@/context/main-rzl-fumadocs";
 
 import {
   Collapsible,
@@ -32,8 +35,8 @@ import {
   CollapsibleTrigger,
   type CollapsibleTriggerProps
 } from "../ui/collapsible";
-import { FumaNextLink, type FumaNextLinkType } from "../link";
-import { useMainRzlFumadocs } from "@/context/main-rzl-fumadocs";
+
+import { ScrollArea, ScrollViewport } from "../ui/scroll-area";
 
 interface SidebarContext {
   open: boolean;
@@ -46,7 +49,7 @@ interface SidebarContext {
    */
   closeOnRedirect: RefObject<boolean>;
   defaultOpenLevel: number;
-  prefetch?: FumaNextLinkType["prefetch"];
+  prefetch?: boolean;
   mode: Mode;
 }
 
@@ -61,22 +64,24 @@ export interface SidebarProviderProps {
 
   /**
    * Prefetch links, default behavior depends on your React.js framework.
+   *
+   * @default undefined
    */
-  prefetch?: FumaNextLinkType["prefetch"];
+  prefetch?: boolean;
 
   children?: ReactNode;
 }
 
 type Mode = "drawer" | "full";
 
-const SidebarContext = createContext<SidebarContext | null>(null);
+const SidebarContext = createRequiredContext<SidebarContext>("SidebarContext");
 
-const FolderContext = createContext<{
+const FolderContext = createRequiredContext<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   depth: number;
   collapsible: boolean;
-} | null>(null);
+} | null>("FolderContext", null);
 
 export function SidebarProvider({
   defaultOpenLevel = 0,
@@ -97,7 +102,7 @@ export function SidebarProvider({
   });
 
   return (
-    <SidebarContext
+    <SidebarContext.Provider
       value={useMemo(
         () => ({
           open,
@@ -113,26 +118,21 @@ export function SidebarProvider({
       )}
     >
       {children}
-    </SidebarContext>
+    </SidebarContext.Provider>
   );
 }
 
-export function useSidebar(): SidebarContext {
-  const ctx = use(SidebarContext);
-  if (!ctx)
-    throw new Error(
-      "Missing SidebarContext, make sure you have wrapped the component in <DocsLayout /> and the context is available."
-    );
-
-  return ctx;
-}
+export const useSidebar = () =>
+  SidebarContext.useSuspense(
+    "Missing SidebarContext, make sure you have wrapped the component in <DocsLayout /> and the context is available..."
+  );
 
 export function useFolder() {
-  return use(FolderContext);
+  return FolderContext.useSuspense();
 }
 
 export function useFolderDepth() {
-  return use(FolderContext)?.depth ?? 0;
+  return useFolder()?.depth ?? 0;
 }
 
 export function SidebarContent({
@@ -195,6 +195,33 @@ export function SidebarContent({
   });
 }
 
+export function SidebarViewport({
+  area,
+  viewport,
+  children
+}: {
+  area?: ComponentProps<typeof ScrollArea>;
+  viewport?: ComponentProps<typeof ScrollViewport>;
+  children: ReactNode;
+}) {
+  return (
+    <ScrollArea
+      {...area}
+      className={cn("min-h-0 flex-1", area?.className)}
+    >
+      <ScrollViewport
+        {...viewport}
+        className={cn(
+          "*:flex! *:flex-col! *:gap-0.5! p-4 overscroll-contain mask-[linear-gradient(to_bottom,transparent,white_12px,white_calc(100%-12px),transparent)]",
+          viewport?.className
+        )}
+      >
+        {children}
+      </ScrollViewport>
+    </ScrollArea>
+  );
+}
+
 export function SidebarDrawerOverlay(props: ComponentProps<"div">) {
   const { open, setOpen, mode } = useSidebar();
 
@@ -217,6 +244,7 @@ export function SidebarDrawerContent({
 }: ComponentProps<"aside">) {
   const { bodyScroll } = useMainRzlFumadocs();
   const { setDisableBodyScroll } = bodyScroll;
+
   const { open, mode } = useSidebar();
   const state = open ? "open" : "closed";
 
@@ -229,22 +257,10 @@ export function SidebarDrawerContent({
       setDisableBodyScroll(false);
     }
 
-    return () => {};
+    return () => {
+      setDisableBodyScroll(false);
+    };
   }, [open, mode]);
-
-  // useEffect(() => {
-  //   const body = document.body;
-
-  //   if (open && mode === "drawer") {
-  //     body.dataset.mobileSidebar = "open";
-  //   } else {
-  //     delete body.dataset.mobileSidebar;
-  //   }
-
-  //   return () => {
-  //     delete body.dataset.mobileSidebar;
-  //   };
-  // }, [open, mode]);
 
   if (mode !== "drawer") return;
   return (
@@ -272,7 +288,7 @@ export function SidebarItem({
   active = false,
   children,
   ...props
-}: FumaNextLinkType & {
+}: LinkProps & {
   active?: boolean;
   icon?: ReactNode;
 }) {
@@ -282,7 +298,7 @@ export function SidebarItem({
   useAutoScroll(active, ref);
 
   return (
-    <FumaNextLink
+    <Link
       ref={ref}
       data-active={active}
       prefetch={prefetch}
@@ -290,7 +306,7 @@ export function SidebarItem({
     >
       {icon ?? (props.external ? <ExternalLink /> : null)}
       {children}
-    </FumaNextLink>
+    </Link>
   );
 }
 
@@ -324,14 +340,14 @@ export function SidebarFolder({
       disabled={!collapsible}
       {...props}
     >
-      <FolderContext
+      <FolderContext.Provider
         value={useMemo(
           () => ({ open, setOpen, depth, collapsible }),
           [collapsible, depth, open]
         )}
       >
         {children}
-      </FolderContext>
+      </FolderContext.Provider>
     </Collapsible>
   );
 }
@@ -340,7 +356,7 @@ export function SidebarFolderTrigger({
   children,
   ...props
 }: CollapsibleTriggerProps) {
-  const { open, collapsible } = use(FolderContext)!;
+  const { open, collapsible } = useFolder() || {};
 
   if (collapsible) {
     return (
@@ -364,17 +380,17 @@ export function SidebarFolderLink({
   children,
   active = false,
   ...props
-}: FumaNextLinkType & {
+}: LinkProps & {
   active?: boolean;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
-  const { open, setOpen, collapsible } = use(FolderContext)!;
+  const { open, setOpen, collapsible } = useFolder() || {};
   const { prefetch } = useSidebar();
 
   useAutoScroll(active, ref);
 
   return (
-    <FumaNextLink
+    <Link
       ref={ref}
       data-active={active}
       onClick={(e) => {
@@ -384,10 +400,10 @@ export function SidebarFolderLink({
           e.target instanceof Element &&
           e.target.matches("[data-icon], [data-icon] *")
         ) {
-          setOpen(!open);
+          setOpen?.(!open);
           e.preventDefault();
         } else {
-          setOpen(active ? !open : true);
+          setOpen?.(active ? !open : true);
         }
       }}
       prefetch={prefetch}
@@ -403,7 +419,7 @@ export function SidebarFolderLink({
           )}
         />
       )}
-    </FumaNextLink>
+    </Link>
   );
 }
 
@@ -418,13 +434,13 @@ export function SidebarTrigger({
   const { setOpen } = useSidebar();
 
   return (
-    <button
+    <Button
       aria-label="Open Sidebar"
       onClick={() => setOpen((prev) => !prev)}
       {...props}
     >
       {children}
-    </button>
+    </Button>
   );
 }
 

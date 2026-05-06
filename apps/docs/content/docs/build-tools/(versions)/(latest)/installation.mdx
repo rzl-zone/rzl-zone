@@ -57,116 +57,112 @@ press **`Ctrl+Space`** (**Windows/Linux**), **`⌘+Space`** (**macOS**), or your
 This works across modern TypeScript-supported editors (e.g., **`VSCode`**, **`WebStorm`**, **`Vim extensions`**, **`NeoVim LSP`**, **`Cursor`**) without requiring triple-slash references —
 the package is fully indexed automatically through your editor’s TypeScript language service.
 
-<Steps>
-  <Step>
-  #### **Install @rzl-zone/build-tools.**  
-        - *Make sure the package is installed, see [**Installation Guide**](#installation-guide).*
-  </Step>
+[step-start]
+  #### **Install `@rzl-zone/build-tools`.** [step]
+  Make sure the package is installed, see [**Installation Guide**](#installation-guide).
 
-  <Step>
-  #### **Create a types folder.**
-        - *Inside your project root, make a folder called `types`:*  
+  #### **Create a types folder.** [step]
+  - Inside your project root, make a folder called `types`:  
 
-          <Files>
-            <Folder name="project-root" className="*:font-semibold" defaultOpen>
-              <Folder name="src" defaultOpen disabled/>
-              <Folder name="types" defaultOpen className="[&>button]:text-fd-info [&>button]:hover:text-fd-info! [&>button]:after:content-['(+)'] [&>button]:after:text-fd-diff-add-symbol [&>button]:after:text-[.60rem] [&>button]:after:-ml-1">
-                <File
-                  name="index.d.ts"
-                  disabled
-                  icon={<BiLogoTypescript
-                    data-bg="override"
-                    className="text-fd-info bg-white rounded-xs outline-1 outline-fd-info size-3!"
-                  />}
-                  className="text-fd-info hover:text-fd-info after:content-['(+)'] after:text-fd-diff-add-symbol after:text-[.60rem] after:-ml-1"
-                />
-              </Folder>
-              <File
-                name={
-                  (<>
-                    <span>jsconfig.json</span> 
-                    <span className="italic font-light text-fd-muted-foreground">(for JavaScript projects)</span>
-                  </>)
-                } 
-                disabled 
-                icon={<GrDocumentConfig className="size-3 text-fd-warning/85"/>} 
-              />
-              <File name="tsconfig.json" disabled icon={<GrDocumentConfig className="size-3 text-fd-info/85"/>} />
-            </Folder>
-          </Files>
-  </Step>
+    <Files>
+      <Folder name="project-root" className="*:font-semibold" defaultOpen>
+        <Folder name="src" defaultOpen disabled/>
+        <Folder name="types" defaultOpen className="[&>button]:text-fd-info [&>button]:hover:text-fd-info! [&>button]:after:content-['(+)'] [&>button]:after:text-fd-diff-add-symbol [&>button]:after:text-[.60rem] [&>button]:after:-ml-1">
+          <File
+            name="index.d.ts"
+            disabled
+            icon={<BiLogoTypescript
+              data-bg="override"
+              className="text-fd-info bg-white rounded-xs outline-1 outline-fd-info size-3!"
+            />}
+            className="text-fd-info hover:text-fd-info after:content-['(+)'] after:text-fd-diff-add-symbol after:text-[.60rem] after:-ml-1"
+          />
+        </Folder>
+        <File
+          name={
+            (<>
+              <span>jsconfig.json</span> 
+              <span className="italic font-light text-fd-muted-foreground">(for JavaScript projects)</span>
+            </>)
+          } 
+          disabled 
+          icon={<GrDocumentConfig className="size-3 text-fd-warning/85"/>} 
+        />
+        <File name="tsconfig.json" disabled icon={<GrDocumentConfig className="size-3 text-fd-info/85"/>} />
+      </Folder>
+    </Files>
 
-  <Step>
-  #### **Add the global reference file.**
-        - *Add to `types/index.d.ts` with this content:*
+  #### **Add the global reference file.** [step]
+  - Add to `types/index.d.ts` with this content:  
 
-          ```ts title="types/index.d.ts" lineNumbers dtsIcon
-          /// <reference types="@rzl-zone/build-tools/.references" />
-          ```
+    ```ts title="types/index.d.ts" lineNumbers dtsIcon
+    /// <reference types="@rzl-zone/build-tools/.references" />
+    ```
 
-        - *This tells TypeScript to include the types from `@rzl-zone/build-tools` globally.*
-        - *You can add more references here if needed, for example:*
+  - *You can add more references here if needed, for example:*  
 
-          ```ts title="types/index.d.ts" lineNumbers dtsIcon
-          /// <reference types="@rzl-zone/build-tools/.references" />
-          
-          // Example more references (if needed):
-          /// <reference types="node" />
-          /// <reference types="react" />
-          ```
-  </Step>
+    ```ts title="types/index.d.ts" lineNumbers dtsIcon
+    /// <reference types="@rzl-zone/build-tools/.references" />
+    
+    // Example more references (if needed):
+    /// <reference types="node" />
+    /// <reference types="react" />
+    ```
 
-  <Step>
-  #### **Update tsconfig.json.**
-        - Make sure add `types` folder to `"include"`, so **TypeScript** automatically picks up your types folder:
+  <Callout type="info">
+    This tells TypeScript to include the types from `@rzl-zone/build-tools` globally. 
+  </Callout>
 
-          ```jsonc title="tsconfig.json" fileCodeIcon
-          {
-            "compilerOptions": {
-              "strict": true, // [!code ++]
-              // other your config...
-            },
-            "include": [
-              "src",
-              "types" // [!code ++]
-            ]
-            // other your config...
-          }
-          ```
- 
-        - The `types` folder comes first, so your references override or add to the default `@types` packages
-  </Step>
+  #### **Update `tsconfig.json`.** [step]
+  - Make sure add `types` folder to `"include"`, so **TypeScript** automatically picks up your types folder:
 
-  <Step>
-  #### **Update jsconfig.json (for JavaScript projects).**
-        - If you also work with JS, do the same:  
-        
-          ```jsonc title="jsconfig.json" fileCodeIcon
-          {
-            "compilerOptions": {
-              // Optional, enables type checking
-              "checkJs": true, // [!code ++]
-              // other your config...
-            },
-            "include": [
-              "src",
-              "types" // [!code ++]
-            ]
-            // other your config...
-          }
-          ```
-          
-          <Callout type="info" title="Tip"> 
-            For JS projects, consider adding `"checkJs": true`, for better IntelliSense.
-          </Callout>
-  </Step>
+    ```jsonc title="tsconfig.json" fileCodeIcon
+    {
+      "compilerOptions": {
+        "strict": true, // [!code ++]
+        // other your config...
+      },
+      "include": [
+        "src", 
+        "types" // [!code ++]
+        // other your config...
+      ]
+      // other your config...
+    }
+    ```
 
-  <Step>
-    #### **Restart your editor/IDE.**
-    - This forces your TypeScript language service to re-index the package.
-    - After restart, **all functions, types, and modules from `@rzl-zone/build-tools` will appear instantly in autocomplete**.
-  </Step>
-</Steps> 
+  <Callout type="warn">
+    The `types` folder comes first, so your references override or add to the default `@types` packages. 
+  </Callout>
+
+  #### **Update `jsconfig.json` (for JavaScript projects).** [step]
+  - If you also work with JS, do the same:  
+  
+    ```jsonc title="jsconfig.json" fileCodeIcon
+    {
+      "compilerOptions": {
+        // Optional, enables type checking
+        "checkJs": true, // [!code ++]
+        // other your config...
+      },
+      "include": [
+        "src",
+        "types" // [!code ++]
+        // other your config...
+      ]
+      // other your config...
+    }
+    ```
+    
+    <Callout type="info" title="Tip"> 
+      For JS projects, consider adding `"checkJs": true`, for better IntelliSense.
+    </Callout>
+
+  #### **Restart your editor/IDE.** [step]
+  - This forces your TypeScript language service to re-index the package.
+  - After restart, **all functions, types, and modules from `@rzl-zone/build-tools` will appear instantly in autocomplete**.
+
+[step-end] 
 
 <SeparatorSection />
 
@@ -192,4 +188,3 @@ If you encounter issues such as missing types, IntelliSense errors, or unexpecte
 <Callout type="info"> 
   **Build Tools** includes both ESM and CJS builds for maximum compatibility across modern tooling. 
 </Callout>
- 

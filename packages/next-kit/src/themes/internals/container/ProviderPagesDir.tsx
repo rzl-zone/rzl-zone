@@ -14,8 +14,11 @@ import {
 import { useRouter } from "next/router";
 
 import { isProdEnv } from "@rzl-zone/core/env/node";
+import { logWarnOnce } from "@rzl-zone/core/logging/once";
 import { minifyInnerHTMLScript } from "@rzl-zone/core/minifier/minify-script-inline";
+
 import { isReactNode } from "@rzl-zone/core-react/utils/react-node";
+
 import { assertIsPlainObject } from "@rzl-zone/utils-js/assertions";
 import { safeStableStringify } from "@rzl-zone/utils-js/conversions";
 import { isFunction, isNonEmptyString } from "@rzl-zone/utils-js/predicates";
@@ -51,7 +54,9 @@ export const ContainerPagesDirTheme = <EnablingSystem extends boolean = true>(
   const { children, ..._restProps } = props;
 
   if (!isReactNode(children)) {
-    throw new Error("Props children is required as ReactNode type!!!");
+    logWarnOnce(
+      "Props children at `RzlThemePagesProvider` is required as ReactNode type!!!"
+    );
   }
 
   const context = useContext(ThemeContext.Context);

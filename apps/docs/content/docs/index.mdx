@@ -1,18 +1,18 @@
 ---
-pageName: "Home"
+isMainRootPage: true
+pageName: "Welcome"
 lastUpdateData: 2026/03/30
 packageMeta:
   name: null
+  version: null
   tag: null
 metaSeoData:
-  title: Rzl Zone Docs
+  title: Rzl Zone Documentation
   description: Official documentation for Rzl Zone, providing detailed guides, utilities, and API references.
 ---
 
 import Image from "next/image";
-import ImgLogo from "@/images/rzl-logo.png";
-
-import { FumaNextLink } from "@/components/link";
+import ImgLogo from "@/images/rzl-logo.png"; 
 
 <div className="flex mb-0 flex-col items-stretch text-center">
   <Image
@@ -25,12 +25,12 @@ import { FumaNextLink } from "@/components/link";
   />
 
   <h1 className="font-extrabold underline font-poppins not-prose text-3xl text-fd-foreground -mt-5">
-    Rzl Zone
+    {"Rzl Zone"}
   </h1>
 </div>
 
 <div className="flex flex-row flex-wrap justify-center gap-1 py-0 mt-2 mb-3.5">
-  <FumaNextLink
+  <CustomNextLink
     className="not-prose"
     href="https://github.com/rzl-app"
     target="_blank"
@@ -42,9 +42,9 @@ import { FumaNextLink } from "@/components/link";
       src="https://img.shields.io/badge/Repo-%20Rzl%20APP%20on%20GitHub-36373d?logo=github&style=flat-rounded"
       alt="Rzl App GitHub Repository"
     />
-  </FumaNextLink>
+  </CustomNextLink>
 
-  <FumaNextLink
+  <CustomNextLink
     className="not-prose"
     href="https://github.com/rzl-zone/rzl-zone"
     target="_blank"
@@ -56,9 +56,9 @@ import { FumaNextLink } from "@/components/link";
       src="https://img.shields.io/badge/Repo-on%20GitHub-181717?logo=github&style=flat-rounded"
       alt="Rzl Zone GitHub Repository"
     />
-  </FumaNextLink>
+  </CustomNextLink>
 
-  <FumaNextLink
+  <CustomNextLink
     className="not-prose"
     href="https://github.com/rzl-zone"
     target="_blank"
@@ -70,21 +70,17 @@ import { FumaNextLink } from "@/components/link";
       src="https://img.shields.io/badge/Org-rzl--zone-24292e?logo=github"
       alt="Rzl Zone GitHub Organization"
     />
-  </FumaNextLink>
+  </CustomNextLink>
 </div>
 
-{/* as HR */}
-
-<div className="h-0.5 bg-fd-accent-foreground/20 rounded-2xl w-full" />
+<SeparatorSection className={"bg-fd-accent-foreground/30 my-0"} /> 
 
 <div className="flex flex-col items-center justify-center text-center mt-0">
+  ## What is Rzl Zone?
 
-## What is Rzl Zone?
+  **Rzl Zone** is a curated collection of open-source projects, utilities, and developer tools built to make modern web development faster, more reliable, and easier to maintain.
 
-**Rzl Zone** is a curated collection of open-source projects, utilities, and developer tools built to make modern web development faster, more reliable, and easier to maintain.
-
-This documentation hub serves as the central entry point for all Rzl Zone libraries, integrations, and developer guides.
-
+  This documentation hub serves as the central entry point for all Rzl Zone libraries, integrations, and developer guides.
 </div>
 
 <SeparatorSection />
@@ -93,7 +89,7 @@ This documentation hub serves as the central entry point for all Rzl Zone librar
 
 The Rzl Zone ecosystem is composed of modular, type-safe libraries and productivity tools—each designed with a strong focus on developer experience.
 
-#### _Examples include:_ [!toc] [#example-include]
+*Examples include:*
 
 1. **Utility Functions** – Lightweight JavaScript, TypeScript, and PHP helpers for common development tasks.
 2. **Framework Integrations** – Prebuilt tools and bindings for frameworks like [`Next.js`](https://nextjs.org), [`Laravel`](https://laravel.com), and more.
@@ -132,4 +128,3 @@ Rzl Zone thrives with the help of contributors. If you’d like to get involved:
 - 📚 Read through the guides in this documentation hub.
 
 Together, we’re building an ecosystem that’s **reliable, transparent, and useful** for developers everywhere.
- 
