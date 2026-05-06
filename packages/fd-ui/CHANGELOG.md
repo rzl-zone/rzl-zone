@@ -1,5 +1,13 @@
 # @workspace/fd-ui
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [77fa236]
+  - @rzl-zone/docs-ui@0.0.10
+  - @rzl-zone/next-kit@0.9.9
+
 ## 0.0.4
 
 ### Patch Changes
