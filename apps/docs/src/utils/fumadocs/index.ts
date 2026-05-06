@@ -14,7 +14,7 @@ export type { CachedDoc, CachedJsonLD };
 
 export async function getCachedDocs(): Promise<CachedDoc[]> {
   try {
-    const mod = await import("../../../_data/cache/docs-package");
+    const mod = await import("../../../data/cache/docs-package");
     const cacheDocsPackage = mod?.cacheDocsPackage as CachedDoc[];
 
     return isArray(cacheDocsPackage) ? cacheDocsPackage : [];
@@ -25,7 +25,7 @@ export async function getCachedDocs(): Promise<CachedDoc[]> {
 
 export async function getCachedJsonLD(): Promise<CachedJsonLD[]> {
   try {
-    const mod = await import("../../../_data/cache/jsonLD");
+    const mod = await import("../../../data/cache/jsonLD");
     const cacheJsonLDDocs = mod?.cacheJsonLD;
 
     return isArray(cacheJsonLDDocs) ? cacheJsonLDDocs : [];
