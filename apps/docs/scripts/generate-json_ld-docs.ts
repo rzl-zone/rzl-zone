@@ -5,9 +5,8 @@ import path from "path";
 import matter from "gray-matter";
 import z, { ZodError } from "zod";
 
-import { normalizePathname } from "@rzl-zone/utils-js/urls";
-
 import { ensureParentDir } from "@rzl-zone/core/node/fs";
+import { normalizePathname } from "@rzl-zone/utils-js/urls";
 
 import { env } from "@/utils/env";
 import { generatePageData } from "@/utils/meta-data";
@@ -15,7 +14,10 @@ import { pageSchema } from "@/configs/source/schema";
 import { SOURCE_CONFIG } from "@/configs/source/package";
 import type { CachedJsonLD } from "@/utils/fumadocs/types";
 
-const BASE_URL = env.NEXT_PUBLIC_BASE_URL;
+const BASE_URL =
+  env.NEXT_PUBLIC_APP_ENV !== "production"
+    ? env.NEXT_PUBLIC_BASE_URL_LOCAL
+    : env.NEXT_PUBLIC_BASE_URL;
 const DOCS_DATA = path.join(
   process.cwd(),
   normalizePathname(SOURCE_CONFIG.DOCS.DEFINE_DOCS.DIR).replace(/^\/+/, "")
@@ -91,7 +93,7 @@ function getAllDocsPages(dir: string, parentPath = ""): PageData[] {
             imageUrl: `${BASE_URL}${normalizePathname(
               urlOgImage +
                 normalizePathname(SOURCE_CONFIG.LOADER.OG.IMAGE_NAME, {
-                  ignoreDomainExtensions: [".png"]
+                  ignoreDomainExtensions: [".png", ".webp"]
                 })
             )}`
           },

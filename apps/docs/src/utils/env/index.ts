@@ -32,6 +32,13 @@ export const env = createEnv({
   },
   client: {
     // MAIN BASE APP
+    NEXT_PUBLIC_APP_ENV: z.enum([
+      "local",
+      "development",
+      "preview",
+      "production"
+    ]),
+    // MAIN BASE APP
     NEXT_PUBLIC_APP_NAME: z
       .string({
         error: "Is required value with valid type `string`."
@@ -152,7 +159,8 @@ export const env = createEnv({
     // })
   },
   experimental__runtimeEnv: {
-    // MAIN BASE APP
+    // MAIN BASE APP_CONFIG
+    NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
     NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
     NEXT_PUBLIC_APP_RELEASE: process.env.NEXT_PUBLIC_APP_RELEASE,
     NEXT_PUBLIC_APP_POWERED_BY: process.env.NEXT_PUBLIC_APP_POWERED_BY,

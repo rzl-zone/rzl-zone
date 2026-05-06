@@ -60,7 +60,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
         <DocsPage
           breadcrumb={{
             includeRoot: true,
-            includeSeparator: true,
+            includeSeparator: false,
             includePage: true
           }}
           toc={dataToc}
@@ -138,6 +138,8 @@ export async function generateMetadata(
     description: metaSeoData.description,
     openGraph: {
       images: {
+        width: 1200,
+        height: 630,
         url: getPageImage(page).url,
         alt: `${metaSeoData.title} | ${env.NEXT_PUBLIC_APP_NAME}`
       },
@@ -151,9 +153,9 @@ export async function generateMetadata(
       creator: "@rzlzone"
     },
     robots: {
+      // googleBot: { follow: true, index: true },
       index: true,
-      follow: true,
-      googleBot: { follow: true, index: true }
+      follow: true
     }
   };
 }

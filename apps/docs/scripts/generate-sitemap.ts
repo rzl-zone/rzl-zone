@@ -5,10 +5,9 @@ import matter from "gray-matter";
 import z, { ZodError } from "zod";
 import { fileURLToPath } from "url";
 
+import { ensureParentDir } from "@rzl-zone/core/node/fs";
 import { normalizePathname } from "@rzl-zone/utils-js/urls";
 import { isNonEmptyString } from "@rzl-zone/utils-js/predicates";
-
-import { ensureParentDir } from "@rzl-zone/core/node/fs";
 
 import { env } from "@/utils/env";
 import { pageSchema } from "@/configs/source/schema";
@@ -17,7 +16,10 @@ import { SOURCE_CONFIG } from "@/configs/source/package";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const BASE_URL = env.NEXT_PUBLIC_BASE_URL;
+const BASE_URL =
+  env.NEXT_PUBLIC_APP_ENV !== "production"
+    ? env.NEXT_PUBLIC_BASE_URL_LOCAL
+    : env.NEXT_PUBLIC_BASE_URL;
 const DOCS_DATA = path.join(
   __dirname,
   "..",

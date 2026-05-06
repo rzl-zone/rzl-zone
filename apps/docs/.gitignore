@@ -21,6 +21,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # others
+data/cache
+src/app/sitemap.xml
+
 .env*.local
 .vercel
 next-env.d.ts

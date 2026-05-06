@@ -3,7 +3,7 @@ export const SOURCE_CONFIG = {
     BASE_URL: "/docs",
     OG: {
       IMAGE_URL: "/og/docs",
-      IMAGE_NAME: "image.png"
+      IMAGE_NAME: "image.webp"
     }
   },
   DOCS: {

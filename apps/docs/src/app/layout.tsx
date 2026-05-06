@@ -5,8 +5,6 @@ import type { Metadata } from "next";
 import React from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { isDevEnv } from "@rzl-zone/next-kit/utils";
-
 import { env } from "@/utils/env";
 import { getCachedJsonLD } from "@/utils/fumadocs";
 
@@ -30,9 +28,10 @@ export const metadata: Metadata = {
     default: env.NEXT_PUBLIC_APP_NAME,
     template: `%s | ${env.NEXT_PUBLIC_APP_NAME}`
   },
-  metadataBase: isDevEnv()
-    ? env.NEXT_PUBLIC_BASE_URL_LOCAL
-    : env.NEXT_PUBLIC_BASE_URL
+  metadataBase:
+    env.NEXT_PUBLIC_APP_ENV !== "production"
+      ? env.NEXT_PUBLIC_BASE_URL_LOCAL
+      : env.NEXT_PUBLIC_BASE_URL
 };
 
 export default async function Layout({ children }: LayoutProps<"/">) {
