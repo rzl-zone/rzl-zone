@@ -46,7 +46,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from "../../../_deprecated/src/components/ui/popover__";
+} from "@/components/ui/popover";
 
 export type OptionSideBarNavToggle = Prettify<
   {

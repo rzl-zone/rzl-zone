@@ -14,7 +14,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger
-} from "../../../_deprecated/src/components/ui/collapsible__";
+} from "@/components/ui/collapsible";
 
 import { cn } from "@/lib/cn";
 
