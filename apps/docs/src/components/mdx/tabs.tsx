@@ -173,9 +173,9 @@ export function TabsContent({
   return (
     <Unstyled.TabsContent
       value={value}
-      forceMount
+      // forceMount
       className={cn(
-        "p-4 text-[15px] bg-fd-background outline-none prose-no-margin data-[state=inactive]:hidden [&>figure:only-child]:-m-4 [&>figure:only-child]:border-none [&>figure:only-child]:rounded-none",
+        "p-4 text-[15px] bg-fd-card outline-none prose-no-margin data-[state=inactive]:hidden [&>figure:only-child]:-m-4 [&>figure:only-child]:border-none [&>figure:only-child]:rounded-none",
         className
       )}
       {...props}

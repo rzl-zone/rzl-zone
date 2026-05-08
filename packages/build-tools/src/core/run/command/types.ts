@@ -62,7 +62,7 @@ export type BaseRunCommandOptions = {
   env?: NodeJS.ProcessEnv;
 
   /** ----------------------------------------------------------------
-   * * ***Disable execution inside a system shell.***
+   * * ***Control whether the command is executed inside a system shell.***
    * ----------------------------------------------------------------
    *
    * By default, commands are executed inside a system shell:
@@ -72,13 +72,18 @@ export type BaseRunCommandOptions = {
    * Set this option to `false` to bypass the shell and execute
    * the command directly.
    *
-   * This is useful for:
-   * - Strict argument handling.
-   * - Avoiding shell interpretation.
+   * - This is useful for:
+   *    - Strict argument handling.
+   *    - Avoiding shell interpretation.
+   *
+   *    - ⚠️ Note:
+   *        - Shell operators and advanced shell syntax (e.g. `&&`, `||`, `|`, `>`)
+   *          are **not supported**, regardless of this option.
+   *        - This utility always executes a single command with arguments.
    *
    * @default true (shell is enabled)
    */
-  shell?: false;
+  shell?: boolean;
 
   /** ----------------------------------------------------------------
    * * ***Abort signal for cancelling the spawned process.***

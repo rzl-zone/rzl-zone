@@ -41,85 +41,68 @@ No contribution is too small — every PR helps make the project better!
   All contributions are made through the main repository.
 </Callout>
 
-#### Follow these steps to set up your local development environment:
+### Follow these steps to set up your local development environment:
 
-<Steps>
-  <Step>
-    **Fork the repository**  
+[step-start]
 
-      *Click the **Fork** button on the main repository:*  
-      [*`https://github.com/rzl-zone/rzl-zone`*](https://github.com/rzl-zone/rzl-zone)  
-      This creates your own copy of the project under your GitHub account.
-  </Step>
+  #### **Fork the repository** [step]
+  *Click the **Fork** button on the main repository:*  
+  [*`https://github.com/rzl-zone/rzl-zone`*](https://github.com/rzl-zone/rzl-zone)  
+  This creates your own copy of the project under your GitHub account.
 
-  <Step>
-    **Clone your fork**
+  #### **Clone your fork** [step]
+  ```bash title="terminal"
+  # Clone your fork of the monorepo
+  git clone https://github.com/[YOUR-USERNAME]/rzl-zone.git
 
-      ```bash title="terminal"
-      # Clone your fork of the monorepo
-      git clone https://github.com/[YOUR-USERNAME]/rzl-zone.git
+  # Navigate into the repository
+  cd rzl-zone
 
-      # Navigate into the repository
-      cd rzl-zone
+  # Navigate to the build-tools package
+  cd packages/build-tools
+  ```
 
-      # Navigate to the build-tools package
-      cd packages/build-tools
-      ```
-  </Step>
-
-  <Step>
-    **Install dependencies**
-
-      ```bash title="terminal"
-      pnpm install
-      ```
-  </Step>
+  #### **Install dependencies** [step]
+  ```bash title="terminal"
+  pnpm install
+  ```
   
-  <Step>
-    **Create a new branch**
+  #### **Create a new branch** [step]
+  It’s best practice to work on a dedicated feature branch instead of the **`main` branch**.
 
-      It’s best practice to work on a dedicated feature branch instead of the **`main` branch**.
+  ```bash title="terminal"
+  git checkout -b feature/my-awesome-feature
+  ```
 
-      ```bash title="terminal"
-      git checkout -b feature/my-awesome-feature
-      ```
-  </Step>
+  #### **Make your changes, add tests script** [step]
+  *Make your updates related to build output handling, then run the test suite and build the package:*  
+
+  ```bash title="terminal"
+  npx vitest run
+  pnpm --filter @rzl-zone/build-tools build
+  ```
+
+  #### **Commit your changes** [step]
+  *Use clear and descriptive commit messages that follow the conventional commit style:*
+
+  ```bash title="terminal"
+  git add .
+  git commit -m "feat(build-tools): improve output structure"
+  ```
   
-  <Step>
-    **Make your changes, add tests script**  
-      *Make your updates related to build output handling, then run the test suite and build the package:*  
+  #### **Push to your fork** [step]
+  *Use clear and descriptive commit messages that follow the conventional commit style:*
 
-      ```bash title="terminal"
-      npx vitest run
-      pnpm --filter @rzl-zone/build-tools build
-      ```
-  </Step>
+  ```bash title="terminal"
+  git push origin feature/my-awesome-feature
+  ```
   
-  <Step>
-    **Commit your changes**  
-      *Use clear and descriptive commit messages that follow the conventional commit style:*
+  #### **Create a Pull Request (PR)** [step]
+  Go to your fork on GitHub, click Compare & pull request, and submit your **PR** to:  
+  [*`https://github.com/rzl-zone/rzl-zone`*](https://github.com/rzl-zone/rzl-zone)  
+  *Please ensure your branch is up-to-date with the latest **`main`** before submitting.*
 
-      ```bash title="terminal"
-      git add .
-      git commit -m "feat(build-tools): improve output structure"
-      ```
-  </Step>
-  
-  <Step>
-    **Push to your fork**
-
-      ```bash title="terminal"
-      git push origin feature/my-awesome-feature
-      ```
-  </Step>
-  
-  <Step>
-    **Create a Pull Request (PR)**  
-      Go to your fork on GitHub, click Compare & pull request, and submit your **PR** to:  
-      [*`https://github.com/rzl-zone/rzl-zone`*](https://github.com/rzl-zone/rzl-zone)  
-      *Please ensure your branch is up-to-date with the latest **`main`** before submitting.*
-  </Step>
-</Steps>
+[step-end]
 
 <SeparatorSection />
 

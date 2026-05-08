@@ -69,5 +69,17 @@ export const apiBuildTools = {
       category: "normalize",
       stability: "stable"
     }
+  },
+  run: {
+    runCommand: {
+      since: "v0.0.7",
+      category: "normalize",
+      stability: "stable"
+    },
+    runCommandCapture: {
+      since: "v0.0.7",
+      category: "normalize",
+      stability: "stable"
+    }
   }
 } satisfies Record<string, Record<string, ApiVersionInfoType>>;

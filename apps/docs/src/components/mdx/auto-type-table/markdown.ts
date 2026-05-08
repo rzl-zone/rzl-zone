@@ -31,6 +31,7 @@ export function markdownRenderer(options?: ShikiOptions): MarkdownRenderer {
       parseMetaString: undefined,
       ...options
     });
+
   return {
     async renderTypeToHast(type) {
       const nodes = await highlightHast(type, {

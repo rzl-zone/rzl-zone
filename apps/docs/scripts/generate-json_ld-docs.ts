@@ -136,6 +136,12 @@ const structuredData = docsPages.map((page) => {
 const outputPath = path.join(process.cwd(), "data/cache/jsonLD.ts");
 ensureParentDir(outputPath);
 
+structuredData.sort((a, b) => {
+  return a.url.localeCompare(b.url, undefined, {
+    numeric: true,
+    sensitivity: "base"
+  });
+});
 const tsContent = `/** ----------------------------------------------------
  * * ***DO NOT EDIT MANUALLY !!!***
  * ----------------------------------------------------

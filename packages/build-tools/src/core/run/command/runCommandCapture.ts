@@ -13,8 +13,12 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   CommandProcessError,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  isCommandProcessError
+  isCommandProcessError,
+  formatMessageColor,
+  stripInternalStack
 } from "./utils";
+import { isArray } from "@/_internal/utils/helper";
+import { EOL } from "@/utils/client";
 
 //? Utils ----------------------------------------------------------------
 function normalizeChunk(chunk: unknown): string {
@@ -116,6 +120,18 @@ export type RunCommandCaptureOptions = Omit<BaseRunCommandOptions, "stdio">;
  *     - Parsing results (JSON, text, etc.).
  *     - Testing and scripting utilities.
  *
+ * ----------------------------------------------------------------
+ * #### Limitations
+ *
+ * - Only a **single command** is supported.
+ * - Shell syntax is **NOT allowed**, including:
+ *    - `&&`, `||`
+ *    - `|`
+ *    - `>`, `<`
+ *    - command chaining or piping of any kind
+ *
+ * Commands must represent a single executable with arguments.
+ *
  * @param {string} command
  * The executable or command to run.
  *
@@ -137,33 +153,34 @@ export type RunCommandCaptureOptions = Omit<BaseRunCommandOptions, "stdio">;
  *
  * This function does NOT reject on non-zero exit codes.
  * - Instead, use:
- *    - `result.ok`.
- *    - `result.exitCode`.
+ *    - `result.ok`
+ *    - `result.exitCode`
  *
- * - However, the promise WILL reject for:
- *    - spawn errors.
- *    - abort signals.
- *    - timeouts.
- *    - termination by signal.
+ * The promise will reject in the following cases:
+ * - validation errors (invalid command or arguments)
+ * - spawn errors
+ * - abort signals
+ * - timeouts
+ * - termination by signal
  *
  * In those cases, the promise is rejected with a
  * {@link CommandProcessError | **`CommandProcessError`**}.
  *
  * - *Error metadata:*
- *     - `reason` ➔ `"timeout" | "abort" | "signal" | "non-zero exit code"`.
- *     - `exitCode` ➔ Exit code (if available).
- *     - `signal` ➔ Termination signal (if any).
- *     - `command` ➔ Executed command (plain string, no colors).
+ *     - `reason` ➔ `"timeout" | "abort" | "signal" | "validation"`
+ *     - `exitCode` ➔ Exit code (if available)
+ *     - `signal` ➔ Termination signal (if any)
+ *     - `command` ➔ Executed command (plain string, no colors)
  *
  * - *Type narrowing:*
- *     - Use `instanceof CommandProcessError` to safely access metadata.
- *     - Or use {@link isCommandProcessError | **`isCommandProcessError`**} as a type guard.
+ *     - Use `instanceof CommandProcessError` to safely access metadata
+ *     - Or use {@link isCommandProcessError | **`isCommandProcessError`**} as a type guard
  *
  * - *Notes:*
- *     - `"non-zero exit code"` is NOT treated as an error in this function.
- *     - Metadata is available programmatically (e.g. `err.reason`).
+ *     - Non-zero exit codes are NOT treated as errors
+ *     - Metadata is available programmatically (e.g. `err.reason`)
  *     - Metadata is also included in the formatted stack output
- *       for CLI readability.
+ *       for CLI readability
  *
  * @example
  * ```ts
@@ -187,6 +204,7 @@ export type RunCommandCaptureOptions = Omit<BaseRunCommandOptions, "stdio">;
  * }
  * ```
  * ----------------------------------------------------------------
+ *
  * @example
  * ```ts
  * const result = await runCommandCapture("node", ["--version"]);
@@ -216,28 +234,29 @@ export type RunCommandCaptureOptions = Omit<BaseRunCommandOptions, "stdio">;
  *
  * @remarks
  * - **Execution model:**
- *    - Uses {@link spawn | **`spawn`**} to avoid output size limits
- *      imposed by `exec`.
+ *     - Uses {@link spawn | **`spawn`**} to avoid output size limits
+ *       imposed by `exec`
  *
  * - **Output handling:**
- *    - Always uses `stdio: "pipe"` (cannot be overridden).
- *    - Output is buffered entirely in memory.
+ *     - Always uses `stdio: "pipe"` (cannot be overridden)
+ *     - Output is buffered entirely in memory
  *
  * - **Exit behavior:**
- *    - Does NOT reject on non-zero exit codes.
- *    - Use `result.ok` or `result.exitCode` to handle failures.
+ *     - Does NOT reject on non-zero exit codes
+ *     - Use `result.ok` or `result.exitCode` to handle failures
  *
  * - **Shell execution:**
- *    - Defaults to `shell: true`.
- *    - Same behavior and constraints as {@link runCommand | `runCommand`}.
+ *     - Defaults to `shell: true` for cross-platform compatibility
+ *     - However, shell operators and advanced shell syntax are NOT supported
+ *     - This utility always executes a single command only
  *
  * - **Abort & timeout:**
- *    - Abort signals and timeouts will terminate the process
- *      and reject the promise.
+ *     - Abort signals and timeouts will terminate the process
+ *       and reject the promise
  *
  * - **When NOT to use this utility:**
- *    - When output needs to be streamed in real-time
- *    - When handling very large outputs (risk of high memory usage)
+ *     - When output needs to be streamed in real-time
+ *     - When handling very large outputs (risk of high memory usage)
  *
  * ***In those cases, use {@link runCommand | `runCommand`}.***
  */
@@ -259,68 +278,86 @@ export function runCommandCapture(
   argsOrOptions: readonly string[] | RunCommandCaptureOptions = [],
   maybeOptions: RunCommandCaptureOptions = {}
 ): Promise<RunCommandCaptureResult> {
-  assertValidCommand(command);
-
-  let args: readonly string[];
-  let options: RunCommandCaptureOptions;
-
-  if (Array.isArray(argsOrOptions)) {
-    args = argsOrOptions;
-    options = maybeOptions;
-  } else {
-    args = [];
-    options = argsOrOptions as RunCommandCaptureOptions;
-  }
-
-  const {
-    shell = true,
-    signal,
-    timeout,
-    forceKill,
-    useColors = true,
-    argv0: _argv0,
-    ...restOption
-  } = options as RunCommandCaptureOptions & SpawnOptions;
-
   return new Promise((resolve, reject) => {
-    const { child, setupLifecycle } = spawnWithLifecycle(
-      command,
-      args,
-      {
-        ...restOption,
-        stdio: "pipe",
-        shell,
+    try {
+      let args: readonly string[];
+      let options: RunCommandCaptureOptions;
+      const isArgsArray = isArray(argsOrOptions);
+
+      if (isArgsArray) {
+        args = argsOrOptions;
+        options = maybeOptions;
+      } else {
+        args = [];
+        options = argsOrOptions;
+      }
+
+      assertValidCommand(command, {
+        apiType: "runCommandCapture",
+        useColors: options.useColors,
+        allowInline: !isArgsArray
+      });
+
+      const {
+        shell = true,
         signal,
         timeout,
         forceKill,
-        useColors
-      },
-      {
-        rejectOnNonZero: false
-      }
-    );
+        useColors = true,
+        argv0: _argv0,
+        ...restOption
+      } = options as RunCommandCaptureOptions & SpawnOptions;
 
-    let stdout = "";
-    let stderr = "";
+      const { child, setupLifecycle } = spawnWithLifecycle(
+        command,
+        args,
+        {
+          ...restOption,
+          stdio: "pipe",
+          shell,
+          signal,
+          timeout,
+          forceKill,
+          useColors
+        },
+        {
+          rejectOnNonZero: false
+        }
+      );
 
-    child.stdout?.on("data", (chunk: unknown) => {
-      stdout += normalizeChunk(chunk);
-    });
+      let stdout = "";
+      let stderr = "";
 
-    child.stderr?.on("data", (chunk: unknown) => {
-      stderr += normalizeChunk(chunk);
-    });
+      child.stdout?.on("data", (chunk: unknown) => {
+        stdout += normalizeChunk(chunk);
+      });
 
-    setupLifecycle({
-      onSuccess: (code) => {
-        resolve({
-          stdout: stdout.trimEnd(),
-          stderr: stderr.trimEnd(),
-          exitCode: code,
-          ok: code === 0
-        });
-      },
-      onError: reject
-    });
+      child.stderr?.on("data", (chunk: unknown) => {
+        stderr += normalizeChunk(chunk);
+      });
+
+      setupLifecycle({
+        onSuccess: (code) => {
+          resolve({
+            stdout: stdout.trimEnd(),
+            stderr: formatMessageColor(stderr.trimEnd(), useColors),
+            exitCode: code,
+            ok: code === 0
+          });
+        },
+        onError: reject
+      });
+    } catch (err) {
+      const e = err instanceof Error ? err : new Error(String(err));
+      const cleanedBase = stripInternalStack(
+        (new Error().stack?.split(EOL).slice(1) ?? []).filter(
+          (line) => !line.includes("runCommandCapture")
+        )
+      );
+      e.stack = [e.message, ...cleanedBase].join(EOL);
+
+      reject(e);
+      return;
+    }
   });
 }

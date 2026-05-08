@@ -11,8 +11,11 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   CommandProcessError,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  isCommandProcessError
+  isCommandProcessError,
+  stripInternalStack
 } from "./utils";
+import { isArray } from "@/_internal/utils/helper";
+import { EOL } from "@/utils/client";
 
 //? Types ----------------------------------------------------------------
 /** ----------------------------------------------------------------
@@ -45,6 +48,18 @@ export type RunCommandOptions = BaseRunCommandOptions;
  *     - CLI tooling.
  *     - Long-running tasks (bundlers, compilers, CSS processors).
  *
+ * ----------------------------------------------------------------
+ * #### Limitations
+ *
+ * - Only a **single command** is supported.
+ * - Shell syntax is **NOT allowed**, including:
+ *     - `&&`, `||`
+ *     - `|`
+ *     - `>`, `<`
+ *     - command chaining or piping of any kind
+ *
+ * Commands must represent a single executable with arguments.
+ *
  * @param {string} command
  * The executable or command to run.
  *
@@ -65,13 +80,13 @@ export type RunCommandOptions = BaseRunCommandOptions;
  * {@link CommandProcessError | **`CommandProcessError`**}.
  *
  * - *Error metadata:*
- *     - `reason` ➔ `"timeout" | "abort" | "signal" | "non-zero exit code"`.
+ *     - `reason` ➔ `"timeout" | "abort" | "signal" | "non-zero exit code" | "validation"`.
  *     - `exitCode` ➔ Exit code (if available).
  *     - `signal` ➔ Termination signal (if any).
  *     - `command` ➔ Executed command (plain string, no colors).
  *
  * - *Type narrowing:*
- *     - Use `instanceof CommandProcessError` to safely access metadata.
+ *     - Use ***instanceof {@link CommandProcessError | **`CommandProcessError`**}*** to safely access metadata.
  *     - Or use {@link isCommandProcessError | **`isCommandProcessError`**} as a type guard.
  *
  * - *Notes:*
@@ -102,6 +117,7 @@ export type RunCommandOptions = BaseRunCommandOptions;
  *   }
  * }
  * ```
+ *
  * ----------------------------------------------------------------
  *
  * @example
@@ -143,11 +159,10 @@ export type RunCommandOptions = BaseRunCommandOptions;
  *      - If `stdio` is overridden (e.g. `"pipe"`), output will NOT be auto-forwarded.
  *
  * - **Shell execution:**
- *      - Defaults to {@link RunCommandOptions.shell | **`shell: true`**}.
- *      - Required on Windows to resolve commands like `pnpm`, `npm`, `git`, etc.
- *      - When `shell: false`, the command must be:
- *         - An absolute path, or
- *         - A directly executable binary.
+ *      - Defaults to {@link RunCommandOptions.shell | **`shell: true`**}
+ *        for cross-platform compatibility (especially on Windows).
+ *      - However, shell operators and advanced shell syntax are **NOT supported**.
+ *      - This utility always executes a **single command only**.
  *
  * - **Abort handling:**
  *      - When `signal` is provided, the process will be terminated
@@ -167,9 +182,9 @@ export type RunCommandOptions = BaseRunCommandOptions;
  *
  * - **When NOT to use this utility:**
  *      - When you need to capture output programmatically.
- *      - When you need advanced shell features (`|`, `>`, `&&`).
+ *      - When you need advanced shell features (`|`, `>`, `&&`, piping, chaining).
  *
- * ***In those cases, consider using `exec` or a dedicated process runner.***
+ * ***In those cases, use `exec` or a dedicated shell runner instead.***
  */
 export function runCommand(
   command: string,
@@ -189,51 +204,69 @@ export function runCommand(
   argsOrOptions: readonly string[] | RunCommandOptions = [],
   maybeOptions: RunCommandOptions = {}
 ): Promise<ChildProcess> {
-  assertValidCommand(command);
-
-  let args: readonly string[];
-  let options: RunCommandOptions;
-
-  if (Array.isArray(argsOrOptions)) {
-    args = argsOrOptions;
-    options = maybeOptions;
-  } else {
-    args = [];
-    options = argsOrOptions as RunCommandOptions;
-  }
-
   return new Promise((resolve, reject) => {
-    const {
-      shell = true,
-      stdio = "inherit",
-      argv0: _argv0,
-      useColors = true,
-      ...restOption
-    } = options as RunCommandOptions & SpawnOptions;
+    try {
+      let args: readonly string[];
+      let options: RunCommandOptions;
+      const isArgsArray = isArray(argsOrOptions);
 
-    const { child, setupLifecycle, cmdStringPlain } = spawnWithLifecycle(
-      command,
-      args,
-      {
-        ...restOption,
-        stdio,
-        useColors,
-        shell
-      },
-      {
-        rejectOnNonZero: true
+      if (isArgsArray) {
+        args = argsOrOptions;
+        options = maybeOptions;
+      } else {
+        args = [];
+        options = argsOrOptions;
       }
-    );
 
-    setupLifecycle({
-      onSuccess: (code) => {
-        if (code === 0) {
-          resolve(child);
-        } else {
-          reject(new Error(`${cmdStringPlain} exited with code ${code}`));
+      assertValidCommand(command, {
+        apiType: "runCommand",
+        useColors: options.useColors,
+        allowInline: !isArgsArray
+      });
+
+      const {
+        shell = true,
+        stdio = "inherit",
+        argv0: _argv0,
+        useColors = true,
+        ...restOption
+      } = options as RunCommandOptions & SpawnOptions;
+
+      const { child, setupLifecycle, cmdStringPlain } = spawnWithLifecycle(
+        command,
+        args,
+        {
+          ...restOption,
+          stdio,
+          useColors,
+          shell
+        },
+        {
+          rejectOnNonZero: true
         }
-      },
-      onError: reject
-    });
+      );
+
+      setupLifecycle({
+        onSuccess: (code) => {
+          if (code === 0) {
+            resolve(child);
+          } else {
+            reject(new Error(`${cmdStringPlain} exited with code ${code}`));
+          }
+        },
+        onError: reject
+      });
+    } catch (err) {
+      const e = err instanceof Error ? err : new Error(String(err));
+      const cleanedBase = stripInternalStack(
+        (new Error().stack?.split(EOL).slice(1) ?? []).filter(
+          (line) => !line.includes("runCommand")
+        )
+      );
+      e.stack = [e.message, ...cleanedBase].join(EOL);
+
+      reject(e);
+      return;
+    }
   });
 }

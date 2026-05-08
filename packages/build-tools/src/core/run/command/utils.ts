@@ -1,4 +1,5 @@
 import "@rzl-zone/node-only";
+import { parse as parseShellQuote } from "shell-quote";
 
 import type { OverrideTypes } from "@/_internal/types/extra";
 import type { BaseRunCommandOptions } from "./types";
@@ -6,10 +7,7 @@ import type { BaseRunCommandOptions } from "./types";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { spawn, ChildProcess } from "node:child_process";
 
-import {
-  isNonEmptyString,
-  safeStableStringify
-} from "@/_internal/utils/helper";
+import { isString, safeStableStringify } from "@/_internal/utils/helper";
 
 import {
   EOL,
@@ -24,6 +22,11 @@ import { runCommand } from "./runCommand";
 import { runCommandCapture } from "./runCommandCapture";
 
 /** @internal Util for {@link runCommand | `runCommand`} and {@link runCommandCapture | `runCommandCapture`}. */
+export const formatMessageColor = (message: string, useColors = true) => {
+  return useColors ? picocolors.redBright(message) : message;
+};
+
+/** @internal Util for {@link runCommand | `runCommand`} and {@link runCommandCapture | `runCommandCapture`}. */
 export function formatCommand(
   command: string,
   args: readonly string[],
@@ -34,50 +37,70 @@ export function formatCommand(
     ? args.map((a) => safeStableStringify(a)).join(" ")
     : "";
 
-  if (useColors) {
-    const cmd = picocolors.cyanBright(command);
-    return hasArgs ? `${cmd} ${picocolors.gray(argsString)}` : cmd;
+  // No args: display command as-is (already normalized)
+  if (!hasArgs) {
+    return formatMessageColor(command, useColors);
   }
 
-  return hasArgs ? `${command} ${argsString}` : command;
+  if (useColors) {
+    return `${picocolors.cyanBright(command)} ${picocolors.gray(argsString)}`;
+  }
+
+  return `${command} ${argsString}`;
 }
 
 /** @internal Util for {@link runCommand | `runCommand`} and {@link runCommandCapture | `runCommandCapture`}. */
 export function assertValidCommand(
   command: unknown,
-  { useColors = true }: Pick<BaseRunCommandOptions, "useColors"> = {}
+  options: Pick<BaseRunCommandOptions, "useColors"> & {
+    apiType: "runCommandCapture" | "runCommand";
+    allowInline?: boolean;
+  }
 ): asserts command is string {
-  if (typeof command !== "string") {
+  const { useColors = true, allowInline = false, apiType } = options || {};
+  if (!isString(command)) {
     const errorMsg = `Invalid command: expected a string, received ${safeStableStringify(command)}`;
-    throw new TypeError(useColors ? picocolors.redBright(errorMsg) : errorMsg);
+    throw new TypeError(formatMessageColor(errorMsg, useColors));
   }
 
   const trimmed = command.trim();
 
   if (trimmed.length === 0) {
     const errorMsg = "Invalid command: command cannot be empty";
-    throw new Error(useColors ? picocolors.redBright(errorMsg) : errorMsg);
+    throw new Error(formatMessageColor(errorMsg, useColors));
   }
 
-  const hasSpace = trimmed.includes(" ");
-  const hasQuotes = /['"`]/.test(trimmed);
-  const hasShellOps = /[|&;<>(){}$]/.test(trimmed);
+  const hasSpace = /\s/.test(trimmed);
+  // const hasQuotes = /['"`]/.test(trimmed);
 
-  if (hasSpace || hasQuotes || hasShellOps) {
+  if (hasShellSyntax(trimmed)) {
+    const errorMsg = joinLinesLoose(
+      `Invalid command: "${trimmed}"`,
+      "Shell operators are not supported in this context (e.g. &&, ||, |, >).",
+      "This utility only supports a single command with arguments."
+    );
+    throw new Error(formatMessageColor(errorMsg, useColors));
+  }
+
+  if (!allowInline && hasSpace) {
     const [cmd, ...rest] = trimmed.split(/\s+/);
+
+    if (!cmd) {
+      throw new Error("Invalid command: unable to resolve executable.");
+    }
 
     const errorMsg = joinLinesLoose(
       `Invalid command: "${trimmed}"`,
-      "Do not pass a full shell command.",
-      `Use arguments instead: runCommand("${cmd}", ${safeStableStringify(rest)})`
+      "Do not include arguments in the command when passing them separately.",
+      `Use: ${apiType}("${cmd}", ${safeStableStringify(rest)})`
     );
 
-    throw new Error(useColors ? picocolors.redBright(errorMsg) : errorMsg);
+    throw new Error(formatMessageColor(errorMsg, useColors));
   }
 }
 
 /** @internal Util for local {@link createProcessError | `createProcessError`}. */
-function stripInternalStack(lines: string[]) {
+export function stripInternalStack(lines: string[]) {
   const blacklist = [
     "at new Promise (<anonymous>)",
     "Timeout.",
@@ -86,8 +109,10 @@ function stripInternalStack(lines: string[]) {
     "createProcessError",
     "formatError",
     "spawnWithLifecycle",
+    "assertValidCommand",
     "setupLifecycle",
-    "node:internal"
+    "node:internal",
+    "node:internal/process/promises"
   ];
 
   return lines.filter((line) => {
@@ -146,11 +171,6 @@ function createProcessError(
     ...(cleanedBase.length ? [...cleanedBase] : [])
   ].join(EOL);
 
-  // error.reason = reason;
-  // error.exitCode = exitCode;
-  // error.signal = signal;
-  // error.command = command;
-
   Object.defineProperties(error, {
     reason: { value: reason, enumerable: false },
     exitCode: { value: exitCode, enumerable: false },
@@ -169,6 +189,13 @@ function createProcessError(
 
   return error;
 }
+
+type Reason =
+  | "timeout"
+  | "abort"
+  | "signal"
+  | "non-zero exit code"
+  | "validation";
 
 /** ----------------------------------------------------------------
  * * ***Represents a command execution failure.***
@@ -244,7 +271,7 @@ function createProcessError(
  *   output when logged via `console.error`.
  */
 export class CommandProcessError extends Error {
-  reason: "timeout" | "abort" | "signal" | "non-zero exit code";
+  reason: Reason;
   exitCode?: number;
   signal?: NodeJS.Signals | null;
   command: string;
@@ -304,6 +331,64 @@ export function isCommandProcessError(
   return err instanceof CommandProcessError;
 }
 
+function hasShellSyntax(str: string) {
+  return /(\|\||&&|[|&;<>\n])/.test(str);
+  // return /(\|\||&&|[|&;<>(){}$`\n])/.test(str);
+}
+
+/** @internal Util for local {@link spawnWithLifecycle | `spawnWithLifecycle`}. */
+function resolveCommand(
+  input: string,
+  useColors = true
+): {
+  command: string;
+  args: string[];
+} {
+  const tokens = parseShellQuote(input);
+
+  const normalized: string[] = [];
+
+  for (const t of tokens) {
+    if (typeof t === "string") {
+      normalized.push(t);
+      continue;
+    }
+
+    if ("comment" in t) {
+      continue;
+    }
+
+    if ("pattern" in t) {
+      normalized.push(t.pattern);
+      continue;
+    }
+
+    if ("op" in t) {
+      throw new Error(
+        formatMessageColor("Unsupported shell operator detected.", useColors)
+      );
+    }
+
+    throw new Error(formatMessageColor("Unknown token in command.", useColors));
+  }
+
+  if (normalized.length === 0) {
+    throw new Error(
+      formatMessageColor("Invalid command: empty after parsing.", useColors)
+    );
+  }
+
+  const [cmd, ...args] = normalized;
+
+  if (!cmd) {
+    throw new Error(
+      formatMessageColor("Invalid command: empty after parsing.", useColors)
+    );
+  }
+
+  return { command: cmd, args };
+}
+
 /** @internal Util for {@link runCommand | `runCommand`} and {@link runCommandCapture | `runCommandCapture`}. */
 export function spawnWithLifecycle(
   command: string,
@@ -315,7 +400,7 @@ export function spawnWithLifecycle(
        *
        * @default false
        */
-      shell: boolean;
+      shell?: boolean;
     }
   >,
   config?: {
@@ -336,21 +421,80 @@ export function spawnWithLifecycle(
      * ```
      */
     formatError?: (
-      /** The error message. */
+      /**
+       * The error message.
+       */
       message: string,
-      /** Additional metadata about the failure. */
+      /**
+       * Additional metadata about the failure.
+       */
       meta: {
-        /** Reason for failure. */
+        /** ----------------------------------------------------------------
+         * * ***Reason for process failure.***
+         * ----------------------------------------------------------------
+         *
+         * Indicates why the process failed.
+         *
+         * Possible values:
+         * - `"timeout"` ➔ The process exceeded the configured timeout.
+         * - `"abort"` ➔ The process was aborted via an `AbortSignal`.
+         * - `"signal"` ➔ The process was terminated by an OS signal.
+         * - `"non-zero exit code"` ➔ The process exited with a non-zero code.
+         */
         reason: CommandProcessError["reason"];
-        /** Exit code if available. */
+
+        /** ----------------------------------------------------------------
+         * * ***Process exit code (if available).***
+         * ----------------------------------------------------------------
+         *
+         * Only present when the process exits normally.
+         *
+         * - `0` ➔ success (unless rejected manually)
+         * - non-zero ➔ failure (when `rejectOnNonZero` is enabled)
+         */
         exitCode?: number;
-        /** Termination signal if any. */
+
+        /** ----------------------------------------------------------------
+         * * ***Termination signal (if any).***
+         * ----------------------------------------------------------------
+         *
+         * Present when the process is killed by a signal
+         * (e.g. `"SIGTERM"`, `"SIGKILL"`).
+         */
         signal?: NodeJS.Signals | null;
-        /** Executed command (plain, no colors). */
+
+        /** ----------------------------------------------------------------
+         * * ***Command string (plain, no colors).***
+         * ----------------------------------------------------------------
+         *
+         * The resolved executable used to start the process.
+         *
+         * - Always represents the base command (e.g. `"npm"`)
+         * - Arguments are provided separately via `args`
+         *
+         * Inline commands (e.g. `"npm run build"`) are automatically parsed
+         * and normalized into `command` and `args`.
+         */
         command: string;
 
+        /** ----------------------------------------------------------------
+         * * ***Command arguments.***
+         * ----------------------------------------------------------------
+         *
+         * Arguments passed to the command.
+         *
+         * - Always contains the resolved arguments (e.g. `["run", "build"]`)
+         * - Inline command strings are automatically parsed into this array
+         */
         args: readonly string[];
-        /** Whether colors are enabled. */
+
+        /** ----------------------------------------------------------------
+         * * ***Whether colored output is enabled.***
+         * ----------------------------------------------------------------
+         *
+         * Controls whether ANSI color formatting should be applied
+         * when constructing error messages.
+         */
         useColors: boolean;
       }
     ) => Error;
@@ -370,42 +514,50 @@ export function spawnWithLifecycle(
     timeout,
     forceKill,
     signal: abortSignal,
+    shell = false,
     ...restOption
   } = options;
 
-  const baseStack = new Error().stack;
+  let cmd = command;
+  let finalArgs = [...args];
 
-  const cmdString = formatCommand(command, args, { useColors });
-  const cmdStringPlain = formatCommand(command, args, { useColors: false });
+  const isInline = finalArgs.length === 0 && /\s/.test(cmd);
+
+  const baseStack = new Error().stack;
 
   const formatError =
     config?.formatError ??
     ((msg, meta) => {
       const metaCommand = meta.command.trim();
-      const argsString =
-        meta.args.length > 0
-          ? meta.args.map((a) => safeStableStringify(a).trim()).join(" ")
-          : "";
+      const hasArgs = meta.args.length > 0;
+
+      const argsString = hasArgs
+        ? meta.args.map((a) => safeStableStringify(a).trim()).join(" ")
+        : "";
+
+      const commandString = hasArgs
+        ? `${metaCommand} ${argsString}`
+        : metaCommand;
 
       if (meta.useColors) {
         const cmd = picocolors.magentaBright(metaCommand);
-        const args = argsString ? picocolors.yellowBright(argsString) : "";
+        const args = hasArgs ? picocolors.yellowBright(argsString) : "";
 
         return createProcessError(
           `${cmd}${args ? " " + args : ""} ${picocolors.redBright(msg)}`,
           {
             ...meta,
-            command: `${metaCommand} ${argsString}`
+            command: commandString
           },
           baseStack
         );
       }
 
       return createProcessError(
-        `${metaCommand}${isNonEmptyString(argsString) ? " " + argsString : ""} ${msg}`,
+        `${commandString} ${msg}`,
         {
           ...meta,
-          command: `${metaCommand} ${argsString}`
+          command: commandString
         },
         baseStack
       );
@@ -413,7 +565,29 @@ export function spawnWithLifecycle(
 
   const rejectOnNonZero = config?.rejectOnNonZero ?? false;
 
-  const child = spawn(command, [...args], restOption);
+  if (isInline) {
+    const resolved = resolveCommand(cmd, useColors);
+    cmd = resolved.command;
+    finalArgs = resolved.args;
+  }
+
+  for (const arg of finalArgs) {
+    if (hasShellSyntax(arg)) {
+      throw new Error(
+        formatMessageColor(
+          `Invalid argument: "${arg}" contains unsupported shell syntax`,
+          useColors
+        )
+      );
+    }
+  }
+
+  const cmdString = formatCommand(cmd, finalArgs, { useColors });
+  const cmdStringPlain = formatCommand(cmd, finalArgs, {
+    useColors: false
+  });
+
+  const child = spawn(cmd, finalArgs, { shell, ...restOption });
 
   let finished = false;
 
@@ -605,8 +779,8 @@ export function spawnWithLifecycle(
               fail(
                 formatError(`timed out after ${timeout}ms`, {
                   reason: "timeout",
-                  command,
-                  args,
+                  command: cmd,
+                  args: finalArgs,
                   useColors
                 })
               );
@@ -639,8 +813,8 @@ export function spawnWithLifecycle(
         fail(
           formatError("aborted by signal", {
             reason: "abort",
-            command,
-            args,
+            command: cmd,
+            args: finalArgs,
             useColors
           })
         );
@@ -663,8 +837,8 @@ export function spawnWithLifecycle(
               reason: "signal",
               signal,
               exitCode: code ?? undefined,
-              command,
-              args,
+              command: cmd,
+              args: finalArgs,
               useColors
             })
           );
@@ -678,8 +852,8 @@ export function spawnWithLifecycle(
             formatError(`exited with code ${exitCode}`, {
               reason: "non-zero exit code",
               exitCode,
-              command,
-              args,
+              command: cmd,
+              args: finalArgs,
               useColors
             })
           );

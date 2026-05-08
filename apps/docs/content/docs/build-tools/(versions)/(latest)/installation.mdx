@@ -40,12 +40,30 @@ npm i @rzl-zone/build-tools@latest --save-dev
 
 After installing, test the package with a quick import:
 
-```ts
-import { getPackageJson } from "@rzl-zone/build-tools";
+<Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
+  <Tab id="ESM" value="ESM">
+    ```ts
+    import { getPackageJson } from "@rzl-zone/build-tools";
 
-const pkg = await getPackageJson();
-console.log(pkg.name, pkg.version); 
-```
+    const pkg = await getPackageJson();
+    console.log(pkg.name, pkg.version); 
+    ```
+  </Tab>
+  <Tab id="CJS" value="CJS">
+    ```ts
+    const { getPackageJson } = require("@rzl-zone/build-tools");
+
+    (async () => {
+      const pkg = await getPackageJson();
+      console.log(pkg.name, pkg.version);
+    })();
+    ```
+    
+    <Callout type="warn" title="Note">
+      CommonJS does not support top-level `await`, so an async wrapper is required.
+    </Callout>
+  </Tab>
+</Tabs> 
 
 <SeparatorSection />
 
@@ -58,6 +76,7 @@ This works across modern TypeScript-supported editors (e.g., **`VSCode`**, **`We
 the package is fully indexed automatically through your editor’s TypeScript language service.
 
 [step-start]
+
   #### **Install `@rzl-zone/build-tools`.** [step]
   Make sure the package is installed, see [**Installation Guide**](#installation-guide).
 

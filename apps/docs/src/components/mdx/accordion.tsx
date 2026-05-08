@@ -36,12 +36,17 @@ import {
 } from "../ui/accordion";
 
 export function Accordions({
-  type = "single",
+  type = "multiple",
   ref,
   className,
   defaultValue,
   ...props
-}: ComponentProps<typeof Root>) {
+}: Omit<ComponentProps<typeof Root>, "type"> & {
+  /**
+   * @default "multiple"
+   */
+  type?: "single" | "multiple";
+}) {
   const rootRef = useRef<HTMLDivElement>(null);
   const composedRef = mergeRefs(ref, rootRef);
   const [value, setValue] = useState<string | string[]>(() =>

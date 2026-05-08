@@ -1,0 +1,374 @@
+---
+pageName: runCommand
+pageNameAlias: "Run: runCommand"
+lastUpdateData: 2026/04/28
+packageMeta:
+  name: "Build Tools"
+  version: "latest"
+  tag: [build-tools]
+pageData:
+  title: "API: runCommand"
+  description: "Execute shell commands using spawn with real-time output streaming and robust error handling."
+metaSeoData:
+  title: "API: runCommand"
+  description: "Learn how to use runCommand to execute CLI processes with streaming output, timeout handling, and structured errors."
+---
+
+import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
+
+## Overview
+
+`runCommand` is a utility for executing shell commands using `child_process.spawn` with real-time output streaming.
+
+It is designed for CLI workflows and long-running processes where output should be displayed immediately.
+
+---
+
+### Key behavior
+
+- **Flexible argument overloads**
+  - Supports multiple call signatures.
+  - The second parameter can be either `args` or `options`.
+
+- **Streams output in real-time**
+  - Uses `stdio: "inherit"` by default.
+  - No buffering — output goes directly to the parent process.
+
+- **Promise-based execution**
+  - Resolves only when the process exits with code `0`.
+  - Rejects on failure conditions.
+
+- **Robust error handling**
+  - Provides structured error metadata via `CommandProcessError`.
+
+- **Optimized for CLI usage**
+  - Suitable for build steps, dev servers, and tooling.
+
+---
+
+### Why use this?
+
+- Execute CLI commands without buffering issues.
+- Handle long-running processes safely.
+- Use flexible call signatures (args, options, or both).
+- Get structured error information.
+- Simplify scripting for build pipelines.
+
+<SeparatorSection />
+
+## Importing
+
+<Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
+  <Tab id="ESM" value="ESM">
+    ```ts
+    import { runCommand } from "@rzl-zone/build-tools";
+    ```
+  </Tab>
+  <Tab id="CJS" value="CJS">
+    ```ts
+    const { runCommand } = require("@rzl-zone/build-tools");
+    ```
+  </Tab>
+</Tabs> 
+
+<SeparatorSection />
+
+## Syntax
+
+<Tabs groupId="tabsSelect::language" defaultValue="TS" className="mt-1.5" persist>
+  <TabsList>
+    <TabsTrigger value="TS">
+      <BiLogoTypescript />
+      TypeScript
+    </TabsTrigger>
+    <TabsTrigger value="JS">
+      <BiLogoJavascript />
+      JavaScript
+    </TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="TS">
+    ```ts
+    // Overload 1
+    runCommand(
+      command: string,
+      args: readonly string[]
+    ): Promise<ChildProcess>;
+
+    // Overload 2
+    runCommand(
+      command: string,
+      options: RunCommandOptions
+    ): Promise<ChildProcess>;
+
+    // Overload 3
+    runCommand(
+      command: string,
+      args: readonly string[],
+      options: RunCommandOptions
+    ): Promise<ChildProcess>;
+    ```
+  </TabsContent>
+
+  <TabsContent value="JS">
+    ```js
+    runCommand(command, args?)
+    runCommand(command, options?)
+    runCommand(command, args?, options?)
+    ```
+  </TabsContent>
+</Tabs>
+
+<SeparatorSection />
+
+## Parameters (Overload 1)
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/run/props.ts" name="RunCommandOverload1" />
+## Parameters (Overload 2) 
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/run/props.ts" name="RunCommandOverload2" />
+## Parameters (Overload 3) 
+<AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/run/props.ts" name="RunCommandOverload3" />
+
+<SeparatorSection />
+
+### Parameter
+
+<section data-options="docs">
+  #### `command`
+  <div className="ml-4">
+    - **Description:**  
+      The executable or command to run.
+
+      - Can be a **single executable** (e.g. `"npm"`, `"node"`)
+      - May include **inline arguments** when `options` is used as the second parameter
+
+    - **Required:** <em><CheckIcon /></em>
+
+    - **Type:**  
+      *`string`*
+
+    - **Default:**  
+      *`-`*
+
+    - Example:
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // executable only
+      runCommand("node");
+
+      runCommand("npm");
+
+      // with args (recommended)
+      runCommand("npm", ["run", "build"]);
+
+      // inline args (when using options)
+      runCommand("npm run build", { timeout: 5000 });
+      ```
+    
+    <Callout type="info" title={<strong>Command usage</strong>}>
+      - When using `args`, the command should be a **single executable**
+      - When using `options` as the second parameter, arguments may be provided **inline**
+
+      ```ts
+      // preferred (structured args)
+      runCommand("npm", ["run", "build"])
+
+      // inline args (only when args is not used)
+      runCommand("npm run build", { timeout: 5000 })
+      ```
+    </Callout>
+  </div>
+
+  #### `args`
+  <div className="ml-4">
+    - **Description:**  
+      Arguments passed to the command.
+
+    - **Required:** <em><CheckIcon /></em>
+
+    - **Type:**  
+      *`readonly string[]`*
+
+    - **Default:**  
+      *`-`*
+
+    - Example:
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // ["run", "build"]
+
+      runCommand("npm", ["run", "build"]);
+      ```
+
+    <Callout type="info" title={<strong>Overload behavior</strong>}>
+      - The second parameter is determined by its type:
+        - If it is an **array (`string[]`)** → treated as `args`
+        - Otherwise → treated as `options`
+
+        - This enables flexible usage:
+          - `runCommand(command, args)`
+          - `runCommand(command, options)`
+          - `runCommand(command, args, options)`
+
+      - If `options` is passed as the second parameter:
+        - `args` will default to an empty array
+        - Any command arguments must be provided **inline in the `command` string**
+      
+        
+        - example: 
+          ```ts
+          // args as array
+          runCommand("npm", ["run", "build"])
+
+          // options only (args must be inline)
+          runCommand("npm run build", { timeout: 5000 })
+
+          // args + options
+          runCommand("npm", ["run", "build"], { timeout: 5000 })
+          ```
+    </Callout>
+  </div>
+</section>
+
+<SeparatorSection />
+
+### `options`
+
+Optional configuration object that defines how the utility function should behave 
+in various scenarios, allowing customization and greater control at runtime.
+
+---
+
+<section data-options="docs">
+  #### `logLevel` [#log-level]
+  <div className="ml-4">
+    - **Description:**  
+      Controls how detailed the logger output should be during execution.
+
+      <Callout type="info" title={<strong>Supported values</strong>}> 
+        - `silent` ➔ no output.
+        - `error` ➔ errors only.
+        - `info` ➔ standard logs (default).
+        - `debug` ➔ verbose logs.
+      </Callout> 
+
+      <Callout type="warning" title={<strong>Notes</strong>}> 
+        - Invalid values are automatically reset to default.
+        - All levels include error output except `silent`.
+      </Callout> 
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*
+
+    - **Default:**  
+      *`"info"`*
+
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Minimal output (errors only)
+      await runCommand("dist/**/*.js", {
+        // [!code ++]
+        logLevel: "error"
+      });
+
+      // Debug mode (verbose logs)
+      await runCommand("dist/**/*.js", {
+        // [!code ++]
+        logLevel: "debug"
+      });
+
+      // Silent mode (no logs)
+      await runCommand("dist/**/*.js", {
+        // [!code ++]
+        logLevel: "silent"
+      });
+      ```
+  </div>
+
+  ---
+  
+  #### `patternOptions` [#pattern-options]
+  <div className="ml-4">
+    - **Description:**  
+      Controls how input file patterns are matched.
+      
+      <Callout type="info">
+        Used to filter or adjust which files are included during processing.  
+        Useful for ignoring files, handling hidden files, or tweaking matching behavior.
+      </Callout> 
+
+      <Callout type="info" title={<strong>Behavior</strong>}> 
+        - Affects which files are selected.
+        - Can exclude unwanted files (e.g. test files).
+        - Falls back to default configuration when invalid type or not provided.
+      </Callout> 
+
+    - **Required:** <em><XIcon /></em>
+
+    - **Type:**  
+      *`object`*  
+
+    - **Default:**  
+      ```ts fileCodeIcon disableCopy
+      {
+        absolute: false,
+        baseNameMatch: false,
+        caseSensitiveMatch: true,
+        concurrency: os.cpus().length,
+        dot: true,
+        followSymbolicLinks: true,
+        globstar: true,
+        ignore: [],
+        markDirectories: false,
+        objectMode: false,
+        onlyDirectories: false,
+        onlyFiles: true,
+        unique: true,
+        throwErrorOnBrokenSymbolicLink: false
+      }
+      ```
+
+    - **Example:**  
+      ```ts title="TypeScript/JavaScript" fileCodeIcon
+      // Ignore source maps
+      await runCommand("dist/**/*.{js,cjs}", {
+        patternOptions: {
+          // [!code ++]
+          ignore: ["**/*.map"]
+        }
+      });
+
+      // Case-insensitive matching
+      await runCommand("dist/**/*.{js,cjs}", {
+        patternOptions: {
+          // [!code ++]
+          caseSensitiveMatch: false
+        }
+      });
+
+      // Disallowing patterns to match entries that begin with a period (.).
+      await runCommand("dist/**/*.{js,cjs}", {
+        patternOptions: {
+          // [!code ++]
+          dot: false
+        }
+      });
+      ```
+  </div>
+</section>
+
+<SeparatorSection />
+
+## Returns
+
+Returns a `Promise<void>`.  
+The function performs asynchronous file processing and does not return any value.
+
+<SeparatorSection />
+
+## Version information
+
+<ApiVersionInfoComp packageName='build-tools' categoryApi='run' nameApi='runCommand' />
+
+<SeparatorSection />
+
+<MadeBy /> 

@@ -8,9 +8,9 @@ import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import {
   type ParameterNode,
   type TypeNode,
-  TypeTable
+  TypeTable,
+  type TypeTableMainOptions
 } from "@/components/mdx/type-table";
-// import { getMDXComponents } from "@/components/mdx/mdx";
 
 import {
   type BaseTypeTableProps,
@@ -23,7 +23,7 @@ import { markdownRenderer, type ShikiOptions } from "../markdown";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 
 export interface AutoTypeTableProps
-  extends BaseTypeTableProps, ComponentProps<"div"> {
+  extends BaseTypeTableProps, TypeTableMainOptions, ComponentProps<"div"> {
   generator: Generator;
 
   /** Shiki configuration when using default `renderMarkdown` & `renderType` */
@@ -34,7 +34,7 @@ export interface AutoTypeTableProps
   renderType?: (type: string) => Promise<ReactNode>;
 }
 
-async function AutoTypeTableInternal({
+const AutoTypeTableInternal: React.FC<AutoTypeTableProps> = async ({
   generator,
   options,
   renderType,
@@ -43,8 +43,9 @@ async function AutoTypeTableInternal({
   name,
   path,
   type,
+  updateHashInHistory,
   ...props
-}: AutoTypeTableProps) {
+}) => {
   if (!renderType || !renderMarkdown) {
     const renderer = markdownRenderer(shiki);
     renderType ??= async (v) => toJsx(await renderer.renderTypeToHast(v));
@@ -94,17 +95,16 @@ async function AutoTypeTableInternal({
     return (
       <TypeTable
         key={item.name}
-        id={`type-table-${item.id}`}
-        type={Object.fromEntries(await Promise.all(entries))}
         {...props}
+        updateHashInHistory={updateHashInHistory}
+        id={updateHashInHistory ? `type-table-${item.id}` : undefined}
+        type={Object.fromEntries(await Promise.all(entries))}
       />
     );
   });
-}
+};
 
-export const AutoTypeTable = AutoTypeTableInternal;
-
-// const { AutoTypeTable: _, ...customDefaultMdxComponents } = getMDXComponents();
+export const AutoTypeTable = React.memo(AutoTypeTableInternal);
 
 function toJsx(hast: Nodes) {
   return toJsxRuntime(hast, {

@@ -71,6 +71,31 @@ export interface TypeNode {
 
 const fieldVariants = cva("text-fd-muted-foreground not-prose pe-2");
 
+export type TypeTableMainOptions = {
+  /**
+   * @default "Prop"
+   */
+  textParam?: string;
+  /**
+   * @default "Type"
+   */
+  textType?: string;
+
+  /** Determines whether multiple items can be open at the same time.
+   *
+   * - If `true` (default): multiple sections can be expanded simultaneously.
+   * - If `false`: only one section stays open at a time.
+   *
+   * @default true
+   */
+  allowMultiple?: boolean;
+
+  /**
+   * @default false
+   */
+  updateHashInHistory?: boolean;
+};
+
 export function TypeTable({
   id,
   type,
@@ -78,27 +103,12 @@ export function TypeTable({
   textParam = "Prop",
   textType = "Type",
   allowMultiple = true,
+  updateHashInHistory = false,
   ...props
-}: { type: Record<string, TypeNode> } & ComponentProps<"div"> & {
-    /**
-     * @default "Prop"
-     */
-    textParam?: string;
-    /**
-     * @default "Type"
-     */
-    textType?: string;
-
-    /**
-     * Determines whether multiple items can be open at the same time.
-     *
-     * - If `true` (default): multiple sections can be expanded simultaneously.
-     * - If `false`: only one section stays open at a time.
-     *
-     * @default true
-     */
-    allowMultiple?: boolean;
-  }) {
+}: {
+  type: Record<string, TypeNode>;
+} & ComponentProps<"div"> &
+  TypeTableMainOptions) {
   /** Tracks which item keys are currently open. */
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
@@ -124,7 +134,7 @@ export function TypeTable({
   };
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || !updateHashInHistory) return;
 
     const hash = window.location.hash;
     if (!hash) return;
@@ -140,7 +150,7 @@ export function TypeTable({
   }, [id, type]);
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || !updateHashInHistory) return;
 
     const active = openKeys[0];
     if (!active) return;
@@ -295,23 +305,21 @@ function Item({
           <div className="text-sm prose col-span-full prose-no-margin empty:hidden">
             {description}
           </div>
+
           <>
             <p className={cn(fieldVariants())}>Required</p>
             <p className={cn("my-auto not-prose")}>
               {required ? <IconIsOptional /> : <IconIsNonOptional />}
             </p>
-
-            {/* <p className={cn(fieldVariants())}>Optional</p>
-            <p className={cn("my-auto not-prose")}>
-              {!required ? <IconIsOptional /> : <IconIsNonOptional />}
-            </p> */}
           </>
+
           {typeDescription && (
             <>
               <p className={cn(fieldVariants())}>Type</p>
               <p className="my-auto not-prose">{typeDescription}</p>
             </>
           )}
+
           {defaultValue && (
             <>
               <p className={cn(fieldVariants())}>Default</p>
@@ -323,6 +331,7 @@ function Item({
               </p>
             </>
           )}
+
           {parameters.length > 0 && (
             <>
               <p className={cn(fieldVariants())}>Parameters</p>
@@ -348,6 +357,7 @@ function Item({
               </div>
             </>
           )}
+
           {returns && (
             <>
               <p className={cn(fieldVariants())}>Returns</p>

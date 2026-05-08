@@ -122,11 +122,13 @@
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.4",
     "picocolors": "^1.1.1",
-    "semver": "^7.7.4"
+    "semver": "^7.7.4",
+    "shell-quote": "^1.8.3"
   },
   "devDependencies": {
     "@types/babel__traverse": "^7.28.0",
     "@types/fs-extra": "^11.0.4",
+    "@types/shell-quote": "^1.7.5",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9.39.2",
