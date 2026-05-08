@@ -1,5 +1,14 @@
 # @rzl-zone/build-tools
 
+## 0.0.11
+
+### Patch Changes
+
+- 5bbb93c: Improve error handling and stack trace clarity in `runCommand` and `runCommandCapture`.
+  - Prevent unhandled promise rejections in certain async flows
+  - Normalize validation and process errors into a consistent async pattern
+  - Clean internal frames from stack traces for better developer experience
+
 ## 0.0.10
 
 ### Patch Changes
