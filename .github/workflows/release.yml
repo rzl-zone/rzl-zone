@@ -3,8 +3,9 @@ name: Release
 on:
   push:
     branches:
-      - main
+      - dev
       - beta
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -48,19 +49,15 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Release Stable (main)
-        if: github.ref == 'refs/heads/main'
-        id: changesets-main
+      - name: Version Packages (dev)
+        if: github.ref == 'refs/heads/dev'
+        id: changesets-dev
         uses: changesets/action@v1
         with:
           commitMode: github-api
           version: pnpm run version
-          publish: pnpm run release
-          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Release Beta (beta)
         if: github.ref == 'refs/heads/beta'
@@ -70,6 +67,20 @@ jobs:
           commitMode: github-api
           version: pnpm run version
           publish: pnpm run release:beta
+          createGithubReleases: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Release Stable (main)
+        if: github.ref == 'refs/heads/main'
+        id: changesets-main
+        uses: changesets/action@v1
+        with:
+          commitMode: github-api
+          version: pnpm run version
+          publish: pnpm run release
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
