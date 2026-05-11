@@ -1,5 +1,11 @@
 # @rzl-zone/click-feedback
 
+## 0.0.9
+
+### Patch Changes
+
+- c1831ce: Fix `rollup.config.mjs` configuration and correct `"use client"` directive placement in `src/index.tsx`.
+
 ## 0.0.8
 
 ### Patch Changes

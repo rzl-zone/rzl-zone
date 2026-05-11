@@ -1,5 +1,12 @@
 # @rzl-zone/docs-ui
 
+## 0.0.11
+
+### Patch Changes
+
+- Updated dependencies [c1831ce]
+  - @rzl-zone/click-feedback@0.0.9
+
 ## 0.0.10
 
 ### Patch Changes
