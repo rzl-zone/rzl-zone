@@ -1,4 +1,3 @@
-// import { use } from "react";
 import { normalizePathname } from "@rzl-zone/utils-js/urls";
 
 import { SOURCE_CONFIG } from "@/configs/source/package";
@@ -13,7 +12,6 @@ import { getCachedDocs } from "@/utils/fumadocs";
 import { getGroupedVersions } from "@/utils/packages/docs";
 
 const SidebarBannerToggle = async () => {
-  // const dataPackage = use(getCachedDocs());
   const dataPackage = await getCachedDocs();
 
   return (

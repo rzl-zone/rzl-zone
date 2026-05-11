@@ -26,8 +26,7 @@ export interface TabsProps extends Omit<
    */
   items?: string[];
 
-  /**
-   * Shortcut for `defaultValue` when `items` is provided.
+  /** Shortcut for `defaultValue` when `items` is provided.
    *
    * @defaultValue 0
    */
@@ -186,8 +185,7 @@ export function TabsContent({
   );
 }
 
-/**
- * Inspired by Headless UI.
+/** Inspired by Headless UI.
  *
  * Return the index of children, this is made possible by registering the order of render from children using React context.
  * This is supposed by work with pre-rendering & pure client-side rendering.

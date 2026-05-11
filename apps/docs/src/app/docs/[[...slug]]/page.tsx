@@ -38,10 +38,6 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
 
   const { body: MdxComponent, toc: dataToc, lastModified } = page.data;
 
-  // if (!dataToc.some((item) => item.url === "#page-top")) {
-  //   dataToc.unshift({ depth: 1, url: "#page-top", title: "Page Top" });
-  // }
-
   const { pageData } = generatePageData(page.data);
 
   return (
@@ -103,7 +99,6 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
             <DocsBody>
               <MdxComponent
                 components={getMDXComponents({
-                  // this allows you to link to other pages with relative file paths
                   a: createRelativeLink(source, page)
                 })}
               />

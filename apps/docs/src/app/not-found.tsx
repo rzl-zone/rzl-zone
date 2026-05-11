@@ -68,11 +68,6 @@ const NotFound = () => {
             aria-label={SOURCE_CONFIG.LOADER.BASE_URL}
           >
             <button
-              // className={cn("font-semibold uppercase")}
-              // size={"medium"}
-              // variant="linkBlue"
-              // asChild
-              // withoutType
               className={cn(
                 buttonVariants({
                   variant: "linkBlue",

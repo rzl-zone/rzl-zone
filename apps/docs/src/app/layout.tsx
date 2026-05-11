@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import React from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { env } from "@/utils/env";
+import { APP_CONFIG } from "@/constants/app";
 import { getCachedJsonLD } from "@/utils/fumadocs";
 
 import JsonLD from "@/components/seo/JsonLD";
@@ -14,24 +14,19 @@ import { GlobalProvider } from "@/providers/GlobalProvider";
 const geist = Geist({
   variable: "--font-sans",
   subsets: ["latin"]
-  // weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"]
 });
 
 const mono = Geist_Mono({
   variable: "--font-mono",
   subsets: ["latin"]
-  // weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"]
 });
 
 export const metadata: Metadata = {
   title: {
-    default: env.NEXT_PUBLIC_APP_NAME,
-    template: `%s | ${env.NEXT_PUBLIC_APP_NAME}`
+    default: APP_CONFIG.APP_NAME,
+    template: `%s | ${APP_CONFIG.APP_NAME}`
   },
-  metadataBase:
-    env.NEXT_PUBLIC_APP_ENV !== "production"
-      ? env.NEXT_PUBLIC_BASE_URL_LOCAL
-      : env.NEXT_PUBLIC_BASE_URL
+  metadataBase: APP_CONFIG.URL.BASE_URL_APP_BY_ENVIRONMENT
 };
 
 export default async function Layout({ children }: LayoutProps<"/">) {

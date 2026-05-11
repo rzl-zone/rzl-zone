@@ -61,8 +61,7 @@ type Transformer = (
 ) => void;
 
 export interface GenerateOptions {
-  /**
-   * Allow fields with `@internal` tag
+  /** Allow fields with `@internal` tag
    *
    * @defaultValue false
    */
@@ -79,8 +78,7 @@ export interface GenerateOptions {
 export type Generator = ReturnType<typeof createGenerator>;
 
 export interface GeneratorOptions extends TypescriptConfig {
-  /**
-   * cache results, note that some options are not marked as dependency.
+  /** cache results, note that some options are not marked as dependency.
    *
    * @defaultValue false
    */

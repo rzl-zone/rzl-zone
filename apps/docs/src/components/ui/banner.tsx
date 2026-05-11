@@ -19,10 +19,6 @@ export function Banner({
     "rgb(248, 153, 19)",
     "rgb(255, 187, 0)",
     "rgb(255, 0, 0)"
-    // "rgba(0,149,255,0.56)",
-    // "rgba(231,77,255,0.77)",
-    // "rgba(255,0,0,0.73)",
-    // "rgba(131,255,166,0.66)"
   ],
   reverseRainbow,
   ...props
@@ -37,8 +33,7 @@ export function Banner({
    */
   variant?: BannerVariant;
 
-  /**
-   * For rainbow variant only, customize the colors
+  /** For rainbow variant only, customize the colors
    *
    * @default
    * [
@@ -50,8 +45,7 @@ export function Banner({
    */
   rainbowColors?: string[];
 
-  /**
-   * Change Fumadocs layout styles
+  /** Change Fumadocs layout styles
    *
    * @default true
    */
@@ -160,10 +154,6 @@ function flow({
             ]
               .map((color, i) => `${color} ${(i * 50) / colors.length}%`)
               .join(", ")})`,
-            // backdropFilter: "blur(124px)",
-            // WebkitBackdropFilter: "blur(124px)",
-            // opacity: 0.7,
-            // filter: "blur(24px) saturate(1)",
             backgroundSize: "200% 100%"
           } as object
         }

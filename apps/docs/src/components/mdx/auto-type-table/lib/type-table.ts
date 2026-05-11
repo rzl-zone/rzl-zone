@@ -14,8 +14,7 @@ export interface BaseTypeTableProps {
    */
   name?: string;
 
-  /**
-   * Set the type to generate from.
+  /** Set the type to generate from.
    *
    * When used with `name`, it generates the type with `name` as export name.
    *

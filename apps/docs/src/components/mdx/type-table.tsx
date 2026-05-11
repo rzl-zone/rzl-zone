@@ -234,16 +234,10 @@ function Item({
   const handleChange = (isOpen: boolean) => {
     onOpenChange(keyElement, isOpen);
   };
-  // useEffect(() => {
-  //   const hash = window.location.hash;
-  //   if (!id || !hash) return;
-  //   if (`#${id}` === hash) effectEventOpenState(true);
-  // }, [id]);
 
   return (
     <Collapsible
       id={id}
-      // open={openKeys.includes(keyElement)}
       open={
         allowMultiple
           ? openKeys.includes(keyElement)
@@ -257,27 +251,12 @@ function Item({
           : "border-transparent not-last:mb-0.5",
         "scroll-m-37 xl:scroll-m-26"
       )}
-      // open={open}
-      // onOpenChange={(v) => {
-      //   if (v && id) {
-      //     window.history.replaceState(null, "", `#${id}`);
-      //   }
-      //   setOpen(v);
-      // }}
-      // className={cn(
-      //   "rounded-xl border overflow-hidden scroll-m-20 transition-all",
-      //   openKeys.includes(keyElement)
-      //     ? "shadow-sm bg-fd-background not-last:mb-2"
-      //     : "border-transparent"
-      // )}
     >
       <CollapsibleTrigger
         className={cn(
           "relative flex flex-row items-center w-full group text-start px-3 py-2 not-prose hover:bg-fd-accent dark:hover:bg-fd-accent/75",
-          // "bg-fd-muted dark:bg-fd-foreground/10",
           "bg-fd-secondary"
         )}
-        // className="relative flex flex-row items-center w-full group text-start px-3 py-2 not-prose hover:bg-fd-accent"
       >
         <code
           className={cn(
@@ -323,7 +302,6 @@ function Item({
           {defaultValue && (
             <>
               <p className={cn(fieldVariants())}>Default</p>
-              {/* <p className="my-auto not-prose">{defaultValue}</p> */}
               <p className={cn("my-auto not-prose")}>
                 {isString(defaultValue)
                   ? normalizeSpaces(defaultValue)

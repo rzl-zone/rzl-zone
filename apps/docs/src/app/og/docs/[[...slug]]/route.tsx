@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextResponse } from "next/server";
 import { ImageResponse } from "@takumi-rs/image-response";
-// import { generate as DefaultImage } from "fumadocs-ui/og/takumi";
 
 import { env } from "@/utils/env";
 import { generatePageData } from "@/utils/meta-data";
@@ -74,7 +73,6 @@ function OgLayout({
           style={{
             fontSize: 45,
             fontWeight: 900,
-            // color: "#db5c0c",
             // outline
             textShadow: `
                 8px 8px 12px rgba(0,0,0,1),
@@ -84,9 +82,6 @@ function OgLayout({
                 0 0 16px rgba(11, 39, 64, 0.8),
                 0 0 30px rgba(7, 21, 32, 0.6)
               `
-            // textDecoration: "underline",
-            // textTransform: "uppercase",
-            // textDecorationStyle: "initial"
           }}
         >
           {orgName ?? env.NEXT_PUBLIC_APP_NAME}
@@ -100,7 +95,6 @@ function OgLayout({
           fontSize: 60,
           fontWeight: 700,
           textAlign: "center",
-          // color: "#f3f2f2",
           // outline
           textShadow: `
                 2px 2px 8px rgba(0,0,0,1),
@@ -183,7 +177,6 @@ export async function GET(
     <OgLayout
       title={metaSeoData.title}
       disableOrgName={page.url === SOURCE_CONFIG.LOADER.BASE_URL}
-      // orgName={page.url === SOURCE_CONFIG.LOADER.BASE_URL ? "" : page.url}
       description={metaSeoData.description}
     />,
     {

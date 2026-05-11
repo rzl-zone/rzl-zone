@@ -173,8 +173,7 @@ export interface TypeTableProps extends BaseTypeTableProps {
   cwd?: true;
 }
 
-/**
- * Compile `auto-type-table` into Fumadocs UI compatible TypeTable
+/** Compile `auto-type-table` into Fumadocs UI compatible TypeTable
  *
  * MDX is required to use this plugin.
  */

@@ -175,7 +175,7 @@ const CustomNextLinkUnMemoize: FC<CustomNextLinkType> = ({
 
             timerRef.current = setTimeout(() => {
               router.prefetch(finalHref);
-            }, 300);
+            }, 50);
           }
         } catch {
           if (timerRef.current) {

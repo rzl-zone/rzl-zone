@@ -50,7 +50,6 @@ import {
 
 export type OptionSideBarNavToggle = Prettify<
   {
-    // isPackageSelector?: boolean;
     disableNavIfToPath?: string | string[] | Set<string>;
     props?: ComponentProps<"button">;
   } & SidebarTab
@@ -94,7 +93,6 @@ function currentSelectedPackage({
         .slice(prefix.length)
         .replace(/^\/+/, "")
         .split("/");
-      // const MAJOR_X_REGEX = /^\d+\.x$/;
       const MAJOR_X_REGEX = /^v?\d+(?:\.x)?$/;
 
       if (

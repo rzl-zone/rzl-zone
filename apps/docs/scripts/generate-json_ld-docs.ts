@@ -3,105 +3,137 @@ import "dotenv/config";
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import z, { ZodError } from "zod";
+import { prettifyError, treeifyError, ZodError } from "zod";
 
+import { joinLines } from "@rzl-zone/build-tools/utils";
 import { ensureParentDir } from "@rzl-zone/core/node/fs";
 import { normalizePathname } from "@rzl-zone/utils-js/urls";
+import { safeStableStringify } from "@rzl-zone/utils-js/conversions";
 
-import { env } from "@/utils/env";
 import { generatePageData } from "@/utils/meta-data";
 import { pageSchema } from "@/configs/source/schema";
 import { SOURCE_CONFIG } from "@/configs/source/package";
+import { getAppNameByEnvironment, getBaseUrlByEnvironment } from "@/utils/env";
+
 import type { CachedJsonLD } from "@/utils/fumadocs/types";
 
-const BASE_URL =
-  env.NEXT_PUBLIC_APP_ENV !== "production"
-    ? env.NEXT_PUBLIC_BASE_URL_LOCAL
-    : env.NEXT_PUBLIC_BASE_URL;
-const DOCS_DATA = path.join(
-  process.cwd(),
-  normalizePathname(SOURCE_CONFIG.DOCS.DEFINE_DOCS.DIR).replace(/^\/+/, "")
-);
+/** Base application URL resolved from the current environment.
+ *
+ * Used for generating absolute canonical and Open Graph URLs.
+ *
+ * @internal
+ */
+const APP_BASE_URL = getBaseUrlByEnvironment();
 
-type PageData = {
+/** Application display name resolved from the current environment.
+ *
+ * Used for generated `JSON-LD` metadata titles.
+ *
+ * @internal
+ */
+const APP_NAME = getAppNameByEnvironment();
+
+/** Cached docs page metadata used for `JSON-LD` generation.
+ *
+ * @internal
+ */
+type DocsPageMetadata = {
+  /**
+   * Absolute canonical page URL.
+   */
   url: string;
-  og: { imageUrl: string };
-  pageData: ReturnType<typeof generatePageData>;
+  /**
+   * Open Graph image metadata.
+   */
+  og: {
+    /**
+     * Absolute Open Graph image URL.
+     */
+    imageUrl: string;
+  };
+  /**
+   * Generated metadata payload from frontmatter.
+   */
+  metadata: ReturnType<typeof generatePageData>;
 };
 
-/** Recursively collect all docs pages
- * - Skips hidden files/folders (starts with '.')
- * - Skips App Router group folders (starts with '(') in URL
- * - Converts `index.mdx` to root of folder
- * - Parses frontmatter for title & description
+/** Recursively collect all documentation pages from the docs source directory.
+ *
+ * Features:
+ * - Skips hidden files and folders prefixed with `.`
+ * - Ignores App Router group folders wrapped in `()`
+ * - Resolves `index.mdx` as the parent route
+ * - Parses frontmatter metadata using `gray-matter`
+ * - Validates frontmatter schema using Zod
+ * - Generates canonical URLs and Open Graph image URLs
+ *
+ * @param directoryPath - Absolute directory path to scan.
+ * @param parentPath - Current relative route path during recursion.
+ *
+ * @returns Array of normalized docs page metadata.
+ *
+ * @internal
  */
-function getAllDocsPages(dir: string, parentPath = ""): PageData[] {
-  const pages: PageData[] = [];
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
+function collectDocsPages(
+  directoryPath: string,
+  parentPath = ""
+): DocsPageMetadata[] {
+  const collectedPages: DocsPageMetadata[] = [];
+  const entries = fs.readdirSync(directoryPath, { withFileTypes: true });
 
   for (const entry of entries) {
-    if (entry.name.startsWith(".")) continue; // skip hidden
+    if (entry.name.startsWith(".")) continue;
 
-    const fullPath = path.join(dir, entry.name);
+    const entryPath = path.join(directoryPath, entry.name);
 
     if (entry.isDirectory()) {
       const isGroup = /^\(.*\)$/.test(entry.name);
-      const newParentPath = isGroup
+      const nextParentPath = isGroup
         ? parentPath
         : parentPath
           ? `${parentPath}/${entry.name}`
           : entry.name;
 
-      pages.push(...getAllDocsPages(fullPath, newParentPath));
-    } else if (entry.isFile() && entry.name.endsWith(".mdx")) {
-      const fileName = entry.name.replace(".mdx", "");
-      const urlPath =
+      collectedPages.push(...collectDocsPages(entryPath, nextParentPath));
+    } else if (entry.isFile() && path.extname(entry.name) === ".mdx") {
+      const fileName = path.basename(entry.name, ".mdx");
+
+      const routePathname =
         fileName === "index"
           ? parentPath
-            ? `/${SOURCE_CONFIG.LOADER.BASE_URL}/${parentPath}`
-            : `/${SOURCE_CONFIG.LOADER.BASE_URL}`
-          : parentPath
-            ? `/${SOURCE_CONFIG.LOADER.BASE_URL}/${parentPath}/${fileName}`
-            : `/${SOURCE_CONFIG.LOADER.BASE_URL}/${fileName}`;
+          : normalizePathname(`${parentPath}/${fileName}`);
 
-      const urlOgImage =
-        fileName === "index"
-          ? parentPath
-            ? `/${SOURCE_CONFIG.LOADER.OG.IMAGE_URL}/${parentPath}`
-            : `/${SOURCE_CONFIG.LOADER.OG.IMAGE_URL}`
-          : parentPath
-            ? `/${SOURCE_CONFIG.LOADER.OG.IMAGE_URL}/${parentPath}/${fileName}`
-            : `/${SOURCE_CONFIG.LOADER.OG.IMAGE_URL}/${fileName}`;
+      const canonicalPathname = normalizePathname(
+        `/${SOURCE_CONFIG.LOADER.BASE_URL}/${routePathname}`
+      );
 
-      // Parse frontmatter with gray-matter
-      const content = fs.readFileSync(fullPath, "utf-8");
-      const { data: rawData } = matter(content);
+      const openGraphPathname = normalizePathname(
+        `/${SOURCE_CONFIG.LOADER.OG.IMAGE_URL}/${routePathname}`
+      );
+
+      const fileContent = fs.readFileSync(entryPath, "utf-8");
+      const { data: rawData } = matter(fileContent);
+
       try {
-        const data = pageSchema.safeParse(rawData);
-        if (!data.success) {
-          throw new Error(z.prettifyError(data.error));
+        const parsedFrontmatter = pageSchema.safeParse(rawData);
+        if (!parsedFrontmatter.success) {
+          throw new Error(prettifyError(parsedFrontmatter.error));
         }
 
-        // const title = data.title || toPascalCaseSpace(fileName);
-        // const description = data.metaSeoData?.description || title;
+        const metadata = generatePageData(parsedFrontmatter.data);
 
-        const pageData = generatePageData(data.data);
-
-        pages.push({
-          url: `${BASE_URL}${normalizePathname(urlPath)}`,
+        collectedPages.push({
+          url: `${APP_BASE_URL}${canonicalPathname}`,
           og: {
-            imageUrl: `${BASE_URL}${normalizePathname(
-              urlOgImage +
-                normalizePathname(SOURCE_CONFIG.LOADER.OG.IMAGE_NAME, {
-                  ignoreDomainExtensions: [".png", ".webp"]
-                })
+            imageUrl: `${APP_BASE_URL}${normalizePathname(
+              openGraphPathname + "/" + SOURCE_CONFIG.LOADER.OG.IMAGE_NAME
             )}`
           },
-          pageData
+          metadata
         });
       } catch (error) {
         if (error instanceof ZodError) {
-          console.error(z.treeifyError(error).errors);
+          console.error(treeifyError(error).errors);
         } else {
           console.error(error);
         }
@@ -109,46 +141,85 @@ function getAllDocsPages(dir: string, parentPath = ""): PageData[] {
     }
   }
 
-  return pages;
+  return collectedPages;
 }
 
-const docsPages = getAllDocsPages(DOCS_DATA);
+/** Normalized filesystem path to the docs content source directory.
+ *
+ * Leading slashes are removed to ensure compatibility with `path.join`.
+ *
+ * @internal
+ */
+const docsContentPath = normalizePathname(
+  SOURCE_CONFIG.DOCS.DEFINE_DOCS.DIR
+).replace(/^\/+/, "");
 
-// Generate JSON-LD structured data
-const structuredData = docsPages.map((page) => {
+/** Collected and normalized documentation pages.
+ *
+ * Used as the source for `JSON-LD` structured data generation.
+ *
+ * @internal
+ */
+const collectedDocsPages = collectDocsPages(
+  path.join(process.cwd(), docsContentPath)
+);
+
+/** Generate structured `JSON-LD` metadata for documentation pages.
+ *
+ * Uses the `TechArticle` schema type from Schema.org.
+ *
+ * @internal
+ */
+const structuredData = collectedDocsPages.map((page) => {
   return {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    headline: `${page.pageData.metaSeoData.title} | ${env.NEXT_PUBLIC_APP_NAME}`,
-    description: page.pageData.metaSeoData.description,
+    headline: `${page.metadata.metaSeoData.title} | ${APP_NAME}`,
+    description: page.metadata.metaSeoData.description,
     url: page.url,
     image: page.og.imageUrl,
     publisher: {
       "@type": "Organization",
       name: "Rzl Zone",
-      url: BASE_URL
+      url: APP_BASE_URL
     }
-    // datePublished: new Date().toISOString(),
-    // dateModified: new Date().toISOString()
   } satisfies CachedJsonLD;
 });
 
-const outputPath = path.join(process.cwd(), "data/cache/jsonLD.ts");
-ensureParentDir(outputPath);
-
+/** Sort structured data entries by canonical URL.
+ *
+ * Uses locale-aware numeric sorting for stable output generation.
+ *
+ * @internal
+ */
 structuredData.sort((a, b) => {
   return a.url.localeCompare(b.url, undefined, {
     numeric: true,
     sensitivity: "base"
   });
 });
-const tsContent = `/** ----------------------------------------------------
- * * ***DO NOT EDIT MANUALLY !!!***
- * ----------------------------------------------------
- * ***Auto-generated by \`generate-json_ld-docs.ts\` or \`pnpm run generate:json_ld-docs\`.***
+
+/** Generated TypeScript cache file content.
+ *
+ * Includes a generated file banner and serialized `JSON-LD` payload.
+ *
+ * @internal
  */
-export const cacheJsonLD = ${JSON.stringify(structuredData, null, 2)};
-`;
+const tsContent = joinLines(
+  "/** ----------------------------------------------------",
+  "* * ***DO NOT EDIT MANUALLY !!!***",
+  "* ----------------------------------------------------",
+  "* ***Auto-generated by `generate-json_ld-docs.ts` or `pnpm run generate:json_ld-docs`.***",
+  "*/",
+  `export const cacheJsonLD = ${safeStableStringify(structuredData, { sortArray: true, pretty: true })};`
+);
+
+/** Output file path for the generated `JSON-LD` cache.
+ *
+ * @internal
+ */
+const outputPath = path.join(process.cwd(), "data/cache/jsonLD.ts");
+ensureParentDir(outputPath);
 
 fs.writeFileSync(outputPath, tsContent);
 

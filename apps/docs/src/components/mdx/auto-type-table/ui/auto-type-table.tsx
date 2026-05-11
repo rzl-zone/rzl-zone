@@ -26,7 +26,9 @@ export interface AutoTypeTableProps
   extends BaseTypeTableProps, TypeTableMainOptions, ComponentProps<"div"> {
   generator: Generator;
 
-  /** Shiki configuration when using default `renderMarkdown` & `renderType` */
+  /**
+   *  Shiki configuration when using default `renderMarkdown` & `renderType`
+   */
   shiki?: ShikiOptions;
   options?: GenerateTypeTableOptions;
 

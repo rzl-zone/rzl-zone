@@ -14,9 +14,9 @@ export const cleanSpecialAttributeMdx = (
   if (!val) return "";
 
   if (cleanTagTocOnly) {
-    // return val.replace(/\[!toc\]/g, "");
     return val.replace(/\[!toc\]|\b[\w-]+-toc\b/gi, "");
   }
+
   return val.replace(/\[!toc\]|\[#.*?\]/g, "");
 };
 

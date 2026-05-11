@@ -27,14 +27,8 @@ const normalizeUrl = (url: string) => {
   }
 
   return url;
-  // // kalau sudah absolute → replace domain
-  // if (url.startsWith("http")) {
-  //   return url.replace(/^https?:\/\/[^/]+/, BASE_URL);
-  // }
-
-  // // kalau relative → gabung
-  // return `${BASE_URL.replace(/\/$/, "")}${url}`;
 };
+
 const searchServer = createSearchServer();
 
 async function createSearchServer() {
@@ -76,15 +70,9 @@ async function chunkedAll<O>(promises: Promise<O>[]): Promise<O[]> {
 }
 
 const openrouter = createOpenRouter({
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
   apiKey: process.env.OPENROUTER_API_KEY
 });
-
-// const systemPrompt = [
-//   "You are an AI assistant for a documentation site.",
-//   "Use the `search` tool to retrieve relevant docs context before answering when needed.",
-//   "The `search` tool returns raw JSON results from documentation. Use those results to ground your answer and cite sources as markdown links using the document `url` field when available.",
-//   "If you cannot find the answer in search results, say you do not know and suggest a better search query."
-// ].join("\n");
 
 const systemPrompt = [
   "You are a documentation assistant.",
@@ -119,6 +107,7 @@ export async function POST(req: Request) {
     const result = streamText({
       model: openrouter.chat(
         // process.env.OPENROUTER_MODEL ?? "anthropic/claude-3.5-sonnet"
+        // eslint-disable-next-line turbo/no-undeclared-env-vars
         process.env.OPENROUTER_MODEL ?? "openai/gpt-4o-mini"
       ),
       maxOutputTokens: 16,
@@ -147,8 +136,6 @@ export async function POST(req: Request) {
       onError: (error) => {
         const err = error as ErrorResStream["error"];
         const msg = err?.responseBody;
-
-        // console.debug({ msg });
 
         if (msg?.includes("This request requires more credits")) {
           return `Something when wrong, code:"${INTERNAL_CODE.ERROR.AI.SEARCH.ERROR.CREDIT_API.code}"`;

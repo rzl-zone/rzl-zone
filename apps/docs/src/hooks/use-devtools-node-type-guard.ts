@@ -8,8 +8,6 @@ import {
 } from "@rzl-zone/utils-js/predicates";
 import { useEffect } from "react";
 
-// type ConsoleErrorArgs = Parameters<typeof console.error>;
-
 function isNodeTypeError(input: unknown): input is string {
   return (
     isNonEmptyString(input) &&

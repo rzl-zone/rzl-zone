@@ -211,7 +211,6 @@ function CopyButton({ id }: { id: string }) {
       url.hash = id;
 
       return void (await copyText(url.toString()));
-      // return navigator.clipboard.writeText(url.toString());
     }
   });
 

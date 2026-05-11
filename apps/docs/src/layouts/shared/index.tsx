@@ -17,14 +17,13 @@ export interface NavOptions {
   children?: ReactNode;
   title?: ReactNode | FC<ComponentProps<"a">>;
 
-  /**
-   * Redirect url of title
+  /** Redirect url of title
+   *
    * @defaultValue '/'
    */
   url?: string;
 
-  /**
-   * Use transparent background
+  /** Use transparent background
    *
    * @defaultValue none
    */
@@ -165,8 +164,7 @@ export function isLayoutTabActive(tab: LayoutTab, pathname: string) {
 }
 
 interface Filterable {
-  /**
-   * Restrict where the item is displayed
+  /** Restrict where the item is displayed
    *
    * @defaultValue 'all'
    */
@@ -175,8 +173,7 @@ interface Filterable {
 
 interface WithHref {
   url: string;
-  /**
-   * When the item is marked as active
+  /** When the item is marked as active
    *
    * @defaultValue 'url'
    */

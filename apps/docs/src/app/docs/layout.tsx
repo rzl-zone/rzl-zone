@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 import { source } from "@/lib/source";
 import { baseOptions } from "@/lib/layout.shared";
 
@@ -8,7 +6,7 @@ import { DocsLayout } from "@/layouts/notebook";
 import SidebarBannerToggle from "@/components/toggle/sidebar-banner";
 import { SOURCE_CONFIG } from "@/configs/source/package";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({ children }: LayoutProps<"/docs">) {
   const { nav, ...base } = baseOptions();
 
   return (

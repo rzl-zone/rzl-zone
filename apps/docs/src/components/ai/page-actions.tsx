@@ -82,7 +82,6 @@ export function MarkdownCopyButton({
 
   return (
     <Button
-      // disabled={isLoading}
       onClick={(e) => {
         if (isLoading) return e.preventDefault();
 

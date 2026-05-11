@@ -13,4 +13,4 @@ export const INTERNAL_CODE = {
       }
     }
   }
-};
+} as const;

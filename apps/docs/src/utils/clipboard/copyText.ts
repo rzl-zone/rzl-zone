@@ -79,7 +79,7 @@ export async function copyText(
   let attempts = 0;
 
   const log = (...args: unknown[]) => {
-    if (options.debug) console.log("[copyText]", ...args);
+    if (options.debug) console.log("[copyText]: ", ...args);
   };
 
   const withTimeout = <T>(promise: Promise<T>) => {
@@ -97,7 +97,7 @@ export async function copyText(
       attempts++;
       try {
         await withTimeout(navigator.clipboard.writeText(text));
-        log("clipboard success", { attempts });
+        log("Clipboard success", { attempts });
 
         return {
           status: "success",
@@ -108,7 +108,7 @@ export async function copyText(
           timestamp
         };
       } catch (error: unknown) {
-        log("clipboard attempt failed", error);
+        log("Clipboard attempt failed", error);
 
         if (error instanceof Error && error?.message === "timeout") {
           return {
@@ -125,9 +125,9 @@ export async function copyText(
       }
     }
 
-    log("clipboard exhausted → fallback");
+    log("Clipboard exhausted → fallback");
   } else {
-    log("no clipboard API");
+    log("No clipboard API");
   }
 
   // === FALLBACK ===
@@ -148,11 +148,11 @@ export async function copyText(
       };
     }
   } catch (error) {
-    log("fallback error", error);
+    log("Fallback error", error);
   }
 
   // === LAST RESORT: MANUAL SELECT ===
-  log("fallback failed → manual select");
+  log("Fallback failed → manual select");
 
   manualSelect(text);
 

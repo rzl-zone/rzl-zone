@@ -16,14 +16,17 @@ export async function redirectLatestVersion(slug: string[] | undefined) {
       const isValidVersion =
         maybeVersion && matched.versions.includes(maybeVersion);
       const restSlug = rest.length > 0 ? "/" + [...rest].join("/") : "";
+
       // "/docs/<package-name>/@latest/..." ➔ redirect to real version
       if (encodeMaybeVersion === "@latest") {
         redirect(`/docs/${pkgName}/${restSlug}`);
       }
+
       // "/docs/<package-name>/requirements" ➔ add latest add mid
       if (!encodeMaybeVersion && rest.length > 0) {
         redirect(`/docs/${pkgName}/${restSlug}`);
       }
+
       // "/docs/<package-name>/<invalid>" or with rest slug ➔ also redirect to latest
       if (
         encodeMaybeVersion &&

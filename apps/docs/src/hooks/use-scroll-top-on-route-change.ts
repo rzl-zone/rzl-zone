@@ -5,21 +5,21 @@ import { usePathname } from "next/navigation";
 import { isNonEmptyString } from "@rzl-zone/utils-js/predicates";
 
 type Options = {
-  /**
-   * Scroll behavior when navigating.
+  /** Scroll behavior when navigating.
+   *
    * @default "auto"
    */
   behavior?: ScrollBehavior;
 
-  /**
-   * If true, prevents scrolling when URL contains a hash (#anchor).
+  /** If true, prevents scrolling when URL contains a hash (#anchor).
+   *
    * @default true
    */
   skipHash?: boolean;
 
-  /**
-   * Custom pathname override.
-   * If not provided, will use Next.js usePathname().
+  /** Custom pathname override.
+   *
+   * If not provided, will use Next.js `usePathname()`.
    */
   pathname?: string;
 };

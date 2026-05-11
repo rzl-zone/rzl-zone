@@ -7,8 +7,7 @@ interface TypeSimplifierContext {
 }
 
 export interface TypeSimplifierOptions {
-  /**
-   * whether the simplified names should be preferred over the type names.
+  /** whether the simplified names should be preferred over the type names.
    *
    * Default: always prefer simplified ones.
    */

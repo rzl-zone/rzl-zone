@@ -8,6 +8,11 @@ type AppConfig = {
    */
   URL: {
     /**
+     * * ***Base URL of the app by environment.***
+     */
+    BASE_URL_APP_BY_ENVIRONMENT: string;
+
+    /**
      * * ***Base URL of the app.***
      */
     BASE_URL_APP: string;
@@ -72,6 +77,16 @@ type AppConfig = {
      */
     SIDEBAR_DASHBOARD_STATE: string;
   };
+
+  /**
+   * * ***Environment APP.***
+   */
+  ENV: {
+    /**
+     * * ***Production Environment APP by `NEXT_PUBLIC_APP_ENV`.***
+     */
+    IS_PROD: boolean;
+  };
 };
 
 /** ---------------------------------------------
@@ -83,6 +98,11 @@ type AppConfig = {
 export const APP_CONFIG: AppConfig = {
   /** The URL settings for the application. */
   URL: {
+    // Base URL of the app by environment
+    BASE_URL_APP_BY_ENVIRONMENT:
+      env.NEXT_PUBLIC_APP_ENV !== "production"
+        ? env.NEXT_PUBLIC_BASE_URL_LOCAL
+        : env.NEXT_PUBLIC_BASE_URL,
     // Base URL of the app
     BASE_URL_APP: getBaseUrl(),
     // Base URL of the backend API
@@ -123,7 +143,12 @@ export const APP_CONFIG: AppConfig = {
     COOKIES: "x-server-action-invoked", // Cookie header to indicate server action
     HEADER: "x-server-action-invoked" // General header for server action
   },
+
   COOKIES: {
     SIDEBAR_DASHBOARD_STATE: "__rzl-sidebar_state-open"
+  },
+
+  ENV: {
+    IS_PROD: env.NEXT_PUBLIC_APP_ENV === "production"
   }
 };

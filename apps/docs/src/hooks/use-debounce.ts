@@ -56,6 +56,6 @@ export function useDebounce<T>(value: T, delayMs = 1000): T {
     };
   }, [value, delayMs]);
 
-  // 👇 bypass state kalau no debounce
+  // bypass state if no debounce
   return delayMs <= 0 ? value : debouncedValue;
 }

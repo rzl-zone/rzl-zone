@@ -224,3 +224,13 @@ export const env = createEnv({
     );
   }
 });
+
+export const getBaseUrlByEnvironment = () => {
+  return env.NEXT_PUBLIC_APP_ENV !== "production"
+    ? env.NEXT_PUBLIC_BASE_URL_LOCAL
+    : env.NEXT_PUBLIC_BASE_URL;
+};
+
+export const getAppNameByEnvironment = () => {
+  return env.NEXT_PUBLIC_APP_NAME;
+};

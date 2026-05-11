@@ -122,7 +122,6 @@ export function AISearchInputActions() {
         )}
         onClick={() => {
           setMessages([]);
-          // clearError();
         }}
       >
         Clear Chat
@@ -263,26 +262,17 @@ function List(props: Omit<ComponentProps<"div">, "dir">) {
 }
 
 function Input(props: ComponentProps<"textarea">) {
-  // const ref = useRef<HTMLDivElement>(null);
   const shared = cn("col-start-1 row-start-1", props.className);
 
   return (
-    <>
-      <textarea
-        id="nd-ai-input"
-        {...props}
-        className={cn(
-          "resize-none bg-transparent placeholder:text-fd-muted-foreground focus-visible:outline-none",
-          shared
-        )}
-      />
-      {/* <div
-        ref={ref}
-        className={cn(shared, "break-all invisible")}
-      >
-        {`${props.value?.toString() ?? ""}\n`}
-      </div> */}
-    </>
+    <textarea
+      id="nd-ai-input"
+      {...props}
+      className={cn(
+        "resize-none bg-transparent placeholder:text-fd-muted-foreground focus-visible:outline-none",
+        shared
+      )}
+    />
   );
 }
 

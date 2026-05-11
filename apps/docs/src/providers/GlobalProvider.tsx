@@ -4,7 +4,6 @@ import type { Framework } from "fumadocs-core/framework";
 import { NextProvider } from "fumadocs-core/framework/next";
 import { TreeContextProvider } from "fumadocs-ui/contexts/tree";
 
-// import { AnimatePresence } from "framer-motion";
 import { RzlThemeAppProvider } from "@rzl-zone/next-kit/themes/app";
 import { RzlNextAppProgressBar } from "@rzl-zone/next-kit/progress-bar/app";
 
@@ -22,7 +21,6 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
       <NextProvider Link={CustomNextLink as Framework["Link"]}>
         <TreeContextProvider tree={source.getPageTree()}>
           <FdRootProvider>
-            {/* <AnimatePresence mode="wait"> */}
             <RzlThemeAppProvider
               attribute={"class"}
               defaultTheme="system"
@@ -43,7 +41,6 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
                 containerAriaLabel="Rzl Toaster"
               />
             </RzlThemeAppProvider>
-            {/* </AnimatePresence> */}
           </FdRootProvider>
         </TreeContextProvider>
       </NextProvider>

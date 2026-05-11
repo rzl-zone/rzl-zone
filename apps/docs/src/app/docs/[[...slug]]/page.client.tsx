@@ -27,6 +27,7 @@ export const PageDocsClient = ({
   const onNavigate = useEffectEvent((pageMdxData: PageMdxDataType) => {
     startTransition(() => {
       pageMdx.setPageMdxData(pageMdxData);
+
       if (isNonEmptyString(githubUrlRepo)) {
         github.setGithubUrl(githubUrlRepo);
       } else {

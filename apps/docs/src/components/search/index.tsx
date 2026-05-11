@@ -174,19 +174,11 @@ export default function CustomSearchDialog(props: SharedProps) {
                     )}
                   >
                     <p className="font-medium mb-0.5">{item?.label}</p>
-                    {/* <p className="text-xs opacity-70">{item?.description}</p> */}
                   </button>
                 );
               })}
             </PopoverContent>
           </Popover>
-          {/* <a
-            href="https://orama.com"
-            rel="noreferrer noopener"
-            className="text-xs text-nowrap text-fd-muted-foreground"
-          >
-            Powered by Orama
-          </a> */}
         </SearchDialogFooter>
       </SearchDialogContent>
     </SearchDialog>

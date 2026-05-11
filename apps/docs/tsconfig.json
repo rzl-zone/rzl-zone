@@ -45,6 +45,7 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
+    ".next",
     "_deprecated",
     "node_modules"
   ]

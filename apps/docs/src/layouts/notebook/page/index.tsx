@@ -41,8 +41,7 @@ import { Breadcrumb, type BreadcrumbProps } from "./slots/breadcrumb";
 
 export interface DocsPageProps extends ComponentProps<"article"> {
   toc?: TOCItemType[];
-  /**
-   * Extend the page to fill all available space
+  /** Extend the page to fill all available space
    *
    * @defaultValue false
    */

@@ -4,11 +4,12 @@ import { lucideIconsPlugin } from "fumadocs-core/source/lucide-icons";
 
 import { normalizePathname } from "@rzl-zone/utils-js/urls";
 
-import type { MetaSchemaType } from "@/configs/source/schema";
-
 import { SOURCE_CONFIG } from "@/configs/source/package";
+
 import { env } from "@/utils/env";
 import { gitConfig } from "./layout.shared";
+
+import type { MetaSchemaType } from "@/configs/source/schema";
 
 const { LOADER } = SOURCE_CONFIG;
 

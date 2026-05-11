@@ -11,13 +11,6 @@ const JsonLD = ({ jsonLdData }: { jsonLdData?: CachedJsonLD[] }) => {
 
   if (!isArray(jsonLdData)) return null;
 
-  // const jsonLd = jsonLdData.find((item) => {
-  //   const url = isNonEmptyString(item.url)
-  //     ? new URL(item.url, "http://localhost")
-  //     : undefined;
-  //   return url?.pathname.endsWith(pathname);
-  // });
-
   const map = new Map(
     jsonLdData.map((item) => {
       if (!isNonEmptyString(item.url)) return [null, null];
