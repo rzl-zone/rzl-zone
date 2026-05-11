@@ -1,9 +1,9 @@
-"use client";
-
-import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
+import { useCallback, useEffect, useRef, useState } from "react";
+
 import styles from "./main.module.css";
+
 const interactiveElementSelector = "a, button" as const;
 
 /** ----------------------------------------------------------------

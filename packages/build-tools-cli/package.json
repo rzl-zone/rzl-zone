@@ -58,7 +58,7 @@
   },
   "scripts": {
     "check-types:package": "tsc --noEmit",
-    "build": "tsdown --config-loader unrun",
+    "build": "tsdown",
     "dev:package-build-tools-cli": "tsdown --watch \"./src/**/*\" --config-loader unrun"
   },
   "dependencies": {
@@ -70,7 +70,7 @@
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9.39.2",
-    "tsdown": "0.21.8",
+    "tsdown": "0.22.0",
     "typescript": "^6.0.2"
   }
 }

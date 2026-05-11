@@ -52,9 +52,18 @@ function onSuccessPlugin() {
         logLevel: "error"
       });
 
-      await copyFileToDest([
-        { source: "./dist/index.d.ts", target: ".", fileName: "index.d.cts" }
-      ]);
+      await copyFileToDest(
+        [
+          {
+            source: "./dist/index.d.ts",
+            target: ".",
+            fileName: "index.d.cts"
+          }
+        ],
+        {
+          logLevel: "error"
+        }
+      );
 
       await injectBanner(["dist/**"], [await generatePackageBanner()], {
         logLevel: "error"
@@ -118,8 +127,10 @@ export default defineConfig([
         warning?.code === "MODULE_LEVEL_DIRECTIVE" &&
         warning?.message?.includes?.("use client")
       ) {
-        return; // Silent
+        // return; // Silent
+        // keep warn log as-is
       }
+
       warn(warning);
     },
     external: ["react", "react-dom"],

@@ -79,7 +79,7 @@
     "@types/node": "^18.18.0",
     "del-cli": "^7.0.0",
     "eslint": "^9.39.2",
-    "tsdown": "0.21.8",
+    "tsdown": "0.22.0",
     "typescript": "^6.0.2"
   },
   "peerDependencies": {
