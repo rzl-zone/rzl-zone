@@ -116,9 +116,9 @@ pnpm add @rzl-zone/utils-js@latest
 
 ---
 
-<h2 id="nextjs-support">🧬 <strong>Next.js Support (Deprecated)</strong></h2>
+<h2 id="nextjs-support">🧬 <strong>Next.js Support</strong></h2>
 
-> ⚠️ Starting from version `3.13.0`, Next.js-specific utilities in `@rzl-zone/utils-js` have been deprecated and migrated into the dedicated package <a href="https://www.npmjs.com/package/@rzl-zone/next-kit" target="_blank" rel="nofollow noreferrer noopener"><code>@rzl-zone/next-kit</code></a>.
+> ⚠️ Starting from version `3.13.0`, the following Next.js entry points were removed from `@rzl-zone/utils-js` and migrated into the dedicated package <a href="https://www.npmjs.com/package/@rzl-zone/next-kit" target="_blank" rel="nofollow noreferrer noopener"><code>@rzl-zone/next-kit</code></a>.
 >
 > Migrated entry points:
 >
@@ -176,9 +176,9 @@ pnpm add @rzl-zone/utils-js@latest
   > ⚠️ **Note:**  
   > When using the library via CDN in the browser:  
   >
-  > - Always include first the \<script\> tag before your own scripts when using the CDN version.
+  > - Always include first the `<script/>` tag before your own scripts when using the CDN version.
   > - Some Node.js-specific utilities may **not** be available, e.g.:  
-  >   - Category utils of `tailwind`, `next`, `next/server`.  
+  >   - Category utils of `tailwind`.  
   >   - Server-only features (like Next.js helpers) will **not** be available.  
   > - The global object provided is `RzlUtilsJs`.  
   > - The CDN bundle is **~370KB+ minified**, for production, consider using bundlers or npm packages for smaller size and tree-shaking.
