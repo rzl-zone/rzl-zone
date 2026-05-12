@@ -1,5 +1,14 @@
 # @rzl-zone/next-kit
 
+## 0.10.0-beta.3
+
+### Patch Changes
+
+- Updated dependencies [9f0627e]
+  - @rzl-zone/utils-js@3.13.0-beta.3
+  - @rzl-zone/core@0.0.10-beta.3
+  - @rzl-zone/core-react@0.0.10-beta.3
+
 ## 0.10.0-beta.2
 
 ### Minor Changes

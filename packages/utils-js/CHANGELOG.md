@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.13.0-beta.3
+
+### Patch Changes
+
+- 9f0627e: Update `README` migration notes for NextJS utilities
+
 ## 3.13.0-beta.2
 
 ### Minor Changes
