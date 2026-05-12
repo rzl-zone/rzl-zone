@@ -3,30 +3,14 @@
   "compilerOptions": {
     "target": "es2020",
     "incremental": false,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "~/*": [
-        "./*"
-      ],
-      "collections/*": [
-        "./.source/*"
-      ],
-      "@/.source": [
-        "./.source/index.ts"
-      ],
-      "@/docs-content/*": [
-        "./content/docs/*"
-      ],
-      "@/fumadocs/*": [
-        "./src/fumadocs/*"
-      ],
+      "@/*": ["./src/*"],
+      "~/*": ["./*"],
+      "collections/*": ["./.source/*"],
+      "@/.source": ["./.source/index.ts"],
+      "@/docs-content/*": ["./content/docs/*"],
+      "@/fumadocs/*": ["./src/fumadocs/*"]
     },
     "plugins": [
       {
@@ -44,9 +28,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    ".next",
-    "_deprecated",
-    "node_modules"
-  ]
+  "exclude": [".next", "_deprecated", "node_modules"]
 }

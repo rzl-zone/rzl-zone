@@ -45,6 +45,7 @@
     "error.js",
     "README.md",
     "LICENSE.md",
+    "LICENSE",
     "!**/*.test.*"
   ],
   "exports": {

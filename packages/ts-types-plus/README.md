@@ -91,19 +91,19 @@
 
 <h2 id="installation">⚙️ <strong>Installation</strong></h2>
 
-#### _With NPM_
+#### *With NPM*
 
 ```bash
 npm install @rzl-zone/ts-types-plus@latest
 ```
 
-#### _With Yarn_
+#### *With Yarn*
 
 ```bash
 yarn add @rzl-zone/ts-types-plus@latest
 ```
 
-#### _With PNPM_
+#### *With PNPM*
 
 ```bash
 pnpm add @rzl-zone/ts-types-plus@latest
@@ -146,18 +146,12 @@ import type {} from /* … */ "@rzl-zone/ts-types-plus";
   </strong>
 </h3>
 
-#### Make TypeScript & VSCode automatically provide autocomplete for `@rzl-zone/ts-types-plus` without needing triple-slash references in every file, follow steps:
+Improve TypeScript editor import suggestions for `@rzl-zone/ts-types-plus`, so all functions, types, and modules appear instantly when triggering autocomplete — press `Ctrl+Space` (**Windows/Linux**), `⌘+Space` (**macOS**), or your editor’s autocomplete shortcut.
+
+This works across modern TypeScript-supported editors (e.g., `VSCode`, `WebStorm`, `Vim extensions`, `NeoVim LSP`, `Cursor`) without requiring triple-slash references — the package is fully indexed automatically through your editor’s TypeScript language service, follow steps:
 
 - 1️⃣ **Install @rzl-zone/ts-types-plus.**
-  - Make sure the package is installed:
-
-    ```bash
-    npm install @rzl-zone/ts-types-plus@latest
-    # or
-    yarn add @rzl-zone/ts-types-plus@latest
-    # or
-    pnpm add @rzl-zone/ts-types-plus@latest
-    ```
+  - Make sure the package is installed, see [**Installation Guide**](#installation).
 
 - 2️⃣ **Create a types folder.**
   - Inside your project root, make a folder called `types`:
@@ -178,35 +172,30 @@ import type {} from /* … */ "@rzl-zone/ts-types-plus";
     /// <reference types="@rzl-zone/ts-types-plus" />
     ```
 
-    - This tells TypeScript to include the types from `@rzl-zone/ts-types-plus` globally.
-    - You can add more references here if needed, for example:
+  - You can add more references here if needed, for example:
 
-      ```ts
-      /// <reference types="@rzl-zone/ts-types-plus" />
+    ```ts
+    /// <reference types="@rzl-zone/ts-types-plus" />
 
-      // eg more references (if needed):
-      /// <reference types="node" />
-      /// <reference types="react" />
-      ```
+    // eg more references (if needed):
+    /// <reference types="node" />
+    /// <reference types="react" />
+    ```
 
 - 4️⃣ **Update tsconfig.json.**
-  - Make sure not to override "types" (or leave it empty) so TypeScript automatically picks up your types folder:
+  - Make sure add `types` folder to `"include"`, so **TypeScript** automatically picks up your types folder:
 
     ```jsonc
     // tsconfig.json
     {
       "compilerOptions": {
         "strict": true,
-        "typeRoots": ["./types", "./node_modules/@types"]
         // other your config...
       },
       "include": ["src", "types"]
       // other your config...
     }
     ```
-
-    - `typeRoots` tells TS where to look for global type definitions.
-    - The `types` folder comes first, so your references override or add to the default `@types` packages.
 
 - 5️⃣ **Update jsconfig.json (for JavaScript projects).**
   - If you also work with JS, do the same:
@@ -216,7 +205,6 @@ import type {} from /* … */ "@rzl-zone/ts-types-plus";
     {
       "compilerOptions": {
         "checkJs": true, // Optional, enables type checking
-        "typeRoots": ["./types", "./node_modules/@types"]
         // other your config...
       },
       "include": ["src", "types"]
@@ -224,9 +212,11 @@ import type {} from /* … */ "@rzl-zone/ts-types-plus";
     }
     ```
 
-    > ℹ️ **_Tip:_** _For JS projects, consider adding `"checkJs": true` for better IntelliSense._
+    > ℹ️ ***Tip:*** *For JS projects, consider adding `"checkJs": true` for better IntelliSense.*
 
-#### **Now, all types from `@rzl-zone/ts-types-plus` are globally available, and you don’t need `"types": ["@rzl-zone/ts-types-plus"]` in tsconfig.json.**
+- 6️⃣ **Restart your editor/IDE.**
+  - This forces your TypeScript language service to re-index the package.
+  - After restart, **all functions, types, and modules from `@rzl-zone/ts-types-plus` will appear instantly in autocomplete**.
 
 ---
 
@@ -252,13 +242,13 @@ type MyType = OmitStrict<OtherType, "omittingProps">;
 <h2 id="sponsor-this-package">❤️ <strong>Sponsor this package</strong></h2>
 
 **Help support development:**  
-**_[👉 Become a sponsor](https://github.com/sponsors/rzl-app)._**
+***[👉 Become a sponsor](https://github.com/sponsors/rzl-app).***
 
 ---
 
 <h2 id="changelog">📝 <strong>Changelog</strong></h2>
 
-**See [CHANGELOG](https://github.com/rzl-zone/rzl-zone/blob/main/CHANGELOG.md).**
+**See [CHANGELOG](https://github.com/rzl-zone/rzl-zone/blob/main/packages/ts-types-plus/CHANGELOG.md).**
 
 ---
 
@@ -284,12 +274,12 @@ type MyType = OmitStrict<OtherType, "omittingProps">;
 <h2 id="license">📜 <strong>License</strong></h2>
 
 **The MIT License (MIT).**  
-_Please see **[License File](https://github.com/rzl-zone/rzl-zone/blob/main/LICENSE)** for more information._
+*Please see **[License File](https://github.com/rzl-zone/rzl-zone/blob/main/LICENSE)** for more information.*
 
 ---
 
-<h2>✅ <strong>Enjoy using <code>@rzl-zone/ts-types-plus</code>?</strong></h2>
-
-_Star the monorepo [⭐](https://github.com/rzl-zone/rzl-zone) and share it with other JavaScript developers!_
+✅ **Enjoy using `@rzl-zone/ts-types-plus`?**  
+*Star the monorepo [⭐](https://github.com/rzl-zone/rzl-zone) and share it with other JavaScript developers!*  
+📦 Explore other packages under [`@rzl-zone`](https://github.com/rzl-zone/rzl-zone)
 
 ---

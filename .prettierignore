@@ -23,6 +23,7 @@ tests/output/
 .git-blame-ignore-revs
 .github/
 .changeset/
+**/.rollup-tmp/**/*.json
 
 # Lock files
 pnpm-lock.yaml
@@ -39,6 +40,14 @@ yarn.lock
 apps/docs/**/*.md
 apps/docs/**/*.mdx
 
-README.md
-./README.md
-/README.md
+# Docs .source
+apps/docs/.source/**/*
+apps/docs/.source/**/*
+
+# Docs data/cache
+apps/docs/data/cache/**/*
+apps/docs/data/cache/**/*
+
+# Ignore md(x) files
+*.md
+*.mdx

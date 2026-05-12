@@ -10,17 +10,9 @@
     "rootDir": "./src",
     "outDir": "dist",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "src",
-    "types",
-  ],
-  "exclude": [
-    "_deprecated",
-    "node_modules"
-  ]
+  "include": ["src", "types"],
+  "exclude": ["_deprecated", "node_modules"]
 }

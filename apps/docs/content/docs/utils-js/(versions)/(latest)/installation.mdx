@@ -100,14 +100,14 @@ the package is fully indexed automatically through your editor’s TypeScript la
         - *Add to `types/index.d.ts` with this content:*
 
           ```ts title="types/index.d.ts" lineNumbers dtsIcon
-          /// <reference types="@rzl-zone/utils-js" />
+          /// <reference types="@rzl-zone/utils-js/.references" />
           ```
 
         - *This tells TypeScript to include the types from `@rzl-zone/utils-js` globally.*
         - *You can add more references here if needed, for example:*
 
           ```ts title="types/index.d.ts" lineNumbers dtsIcon
-          /// <reference types="@rzl-zone/utils-js" />
+          /// <reference types="@rzl-zone/utils-js/.references" />
           
           // Example more references (if needed):
           /// <reference types="node" />

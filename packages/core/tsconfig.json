@@ -5,24 +5,11 @@
     "module": "esnext",
     "declarationMap": false,
     "moduleResolution": "bundler",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "types",
-    "*.config.ts",
-    "./src/**/*"
-  ],
-  "exclude": [
-    "_deprecated",
-    "node_modules"
-  ]
+  "include": ["types", "*.config.ts", "./src/**/*"],
+  "exclude": ["_deprecated", "node_modules"]
 }

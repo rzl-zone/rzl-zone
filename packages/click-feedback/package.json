@@ -52,6 +52,7 @@
     "dist",
     "README.md",
     "LICENSE.md",
+    "LICENSE",
     "!**/*.test.*"
   ],
   "exports": {

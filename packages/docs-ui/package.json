@@ -30,6 +30,7 @@
     "dist",
     "README.md",
     "LICENSE.md",
+    "LICENSE",
     "!**/*.test.*"
   ],
   "exports": {
@@ -91,7 +92,7 @@
     "@rzl-zone/core": "workspace:*",
     "@rzl-zone/core-react": "workspace:*",
     "@rzl-zone/next-kit": "workspace:*",
-    "@rzl-zone/utils-js": "latest",
+    "@rzl-zone/utils-js": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "lucide-react": "^1.8.0",
     "scroll-into-view-if-needed": "^3.1.0",
@@ -102,7 +103,7 @@
   "devDependencies": {
     "@rzl-zone/build-tools": "workspace:*",
     "@tailwindcss/cli": "^4.2.2",
-    "@tailwindcss/postcss": "^4.2.2",
+    "@tailwindcss/postcss": "^4.3.0",
     "@turbo/gen": "^2.9.6",
     "@types/node": "^20.19.27",
     "@types/react": "^19.2.14",
@@ -114,9 +115,9 @@
     "postcss-load-config": "^6.0.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "tailwindcss": "^4.2.2",
+    "tailwindcss": "^4.3.0",
     "tsdown": "0.22.0",
-    "typescript": "^6.0.2"
+    "typescript": "6.0.3"
   },
   "peerDependencies": {
     "react": "^19",

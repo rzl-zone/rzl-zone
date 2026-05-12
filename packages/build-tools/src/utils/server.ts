@@ -47,6 +47,12 @@ export const fsExtra: typeof _fsExtra = _fsExtra;
 export const fastGlob: typeof _fastGlob = _fastGlob;
 
 export {
+  BUILD_LOGGER,
+  sourceOf,
+  sourceOfIsDeepStrictEqual
+} from "@/_internal/utils/logger-builder";
+
+export {
   defaultPatternOptions,
   type PatternConfig,
   type PatternOptions

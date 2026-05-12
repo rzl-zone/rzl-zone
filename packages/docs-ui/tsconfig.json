@@ -5,28 +5,12 @@
     "module": "esnext",
     "declarationMap": false,
     "moduleResolution": "bundler",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "paths": {
-      "@rzl-zone/docs-ui/*": [
-        "./src/*"
-      ],
-      "@/*": [
-        "./src/*"
-      ]
+      "@rzl-zone/docs-ui/*": ["./src/*"],
+      "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "types",
-    "**/*.ts",
-    "**/*.tsx",
-    "./src/**/*"
-  ],
-  "exclude": [
-    "_deprecated",
-    "node_modules"
-  ]
+  "include": ["types", "**/*.ts", "**/*.tsx", "./src/**/*"],
+  "exclude": ["_deprecated", "node_modules"]
 }
