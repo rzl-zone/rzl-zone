@@ -4,7 +4,7 @@
   </a>
 </div>
 
-<h1 align="center"><strong>Utils JS</strong></h1>
+<h1 align="center"><strong>Utils-JS</strong></h1>
 
 <p align="center">
   <i>
@@ -50,7 +50,6 @@
 - 💻 [Requirements](#requirements)
 - ⚙️ [Installation](#installation)
 - ✨ [Features](#features)
-- 🧬 [NextJS Support](#nextjs-support)
 - 💎 [Detailed Features](#detailed-features)
   - [Full Documentation](#detailed-features--full-documentation)
   - [CDN Usage](#detailed-features--cdn-usage)
@@ -68,13 +67,10 @@
 <h2 id="requirements">💻 <strong>Requirements</strong></h2>
 
 - **Node.js `≥18.18.0`**  
-  This package leverages modern JavaScript & TypeScript features that require Node.js version 18.18.0 if not using Next.js, and for Next.js it must follow the official minimum Node.js version requirement depending on the version you use.  
-  - 🔗 See official Next.js documentation:
-      <a href="https://nextjs.org/docs/getting-started/installation#system-requirements" target="_blank" rel="nofollow noreferrer noopener"><i><strong>NextJS System Requirements</strong></i></a>.
+  This package leverages modern JavaScript & TypeScript features that require Node.js version 18.18.0.
 
 - **Works with:**
-  - ✅ Node.js (18.18.0+) - ***Without NextJS***.
-  - ✅ Node.js (20.9.0, or higher depending on NextJS version) - ***With NextJS***.
+  - ✅ Node.js (18.18.0+).
   - ✅ Modern browsers (via **ESM-compatible** bundlers such as [`Webpack`](https://webpack.js.org/), [`Turbopack`](https://vercel.com/blog/turbopack), [`Rollup`](https://rollupjs.org/), [`esbuild`](https://esbuild.github.io/), and higher-level tools like [`Vite`](https://vite.dev/), [`tsup`](https://tsup.egoist.dev/), and [`tsdown`](https://tsdown.dev/)).
 
 - **TypeScript Build Info:**
@@ -117,29 +113,17 @@ pnpm add @rzl-zone/utils-js@latest
 - ⚡ Small, tree-shakable & fast.
 - 📦 Works in **Node.js** & modern browsers.
 - ❤️ Simple API, easy to extend.
-- 🧬 **Next.js support**: helpers for dynamic routes, building URLs, reading env, extracting client IP.
 
 ---
 
-<h2 id="nextjs-support">🧬 <strong>Next.js Support</strong></h2>
+<h2 id="nextjs-support">🧬 <strong>Next.js Support (Deprecated)</strong></h2>
 
-**This package also provides utilities specially built for Next.js environments, neatly separated into their own entry points:**
-
-- <h4 id="nextjs-support--globals"><strong><code>@rzl-zone/utils-js/next</code></strong></h4>  
-  Helpers for building URLs, generating dynamic routes, reading environment variables, etc.
-
-  ✅ Safe to use in both Next.js pages & API routes.
-
-  [**Read More Docs**](https://github.com/rzl-zone/rzl-zone/blob/main/packages/utils-js/docs/next-js/global.md#docs-sub-main--title)
-
-  ---
-
-- <h4 id="nextjs-support--server-only"><strong><code>@rzl-zone/utils-js/next/server</code></strong></h4>  
-  Utilities meant to run in Next.js server-only contexts (like middleware or server actions) for tasks such as extracting real client IPs.  
-  
-  > ⚠️ Will throw Error if used outside a ***Next.js* server environment**.
-
-  [**Read More Docs**](https://github.com/rzl-zone/rzl-zone/blob/main/packages/utils-js/docs/next-js/server-only.md#docs-sub-main--title)
+> ⚠️ Starting from version `3.13.0`, Next.js-specific utilities in `@rzl-zone/utils-js` have been deprecated and migrated into the dedicated package <a href="https://www.npmjs.com/package/@rzl-zone/next-kit" target="_blank" rel="nofollow noreferrer noopener"><code>@rzl-zone/next-kit</code></a>.
+>
+> Migrated entry points:
+>
+> - `@rzl-zone/utils-js/next` → `@rzl-zone/next-kit/utils`
+> - `@rzl-zone/utils-js/next/server` → `@rzl-zone/next-kit/utils/server`
 
 ---
 
@@ -160,8 +144,6 @@ pnpm add @rzl-zone/utils-js@latest
   import { /* … */ } from "@rzl-zone/utils-js/events";
   import { /* … */ } from "@rzl-zone/utils-js/formatters";
   import { /* … */ } from "@rzl-zone/utils-js/generators";
-  import { /* … */ } from "@rzl-zone/utils-js/next";
-  import { /* … */ } from "@rzl-zone/utils-js/next/server";
   import { /* … */ } from "@rzl-zone/utils-js/operations";
   import { /* … */ } from "@rzl-zone/utils-js/parsers";
   import { /* … */ } from "@rzl-zone/utils-js/predicates";
@@ -171,9 +153,7 @@ pnpm add @rzl-zone/utils-js@latest
   import { /* … */ } from "@rzl-zone/utils-js/urls"; 
   ```
 
-#### Place your cursor inside `{ }` or right after the package path `@rzl-zone/utils-js/<put-cursor-here>`, then press Ctrl+Space (Windows/Linux) or Cmd+Space (macOS), or use your editor’s autocomplete shortcut, to see all available functions and types with full TSDoc hints.
-
-  > ***⚠️ Note:*** Starting from version `3.4.0+`, the extra TypeScript types (e.g., `OmitStrict`, `PartialOnly`, etc), have been removed from the package, to use them, you now need to install **[`@rzl-zone/ts-types-plus`](https://www.npmjs.com/package/@rzl-zone/ts-types-plus)** separately.
+#### Place your cursor inside `{ }` or right after the package path `@rzl-zone/utils-js/<put-cursor-here>`, then press Ctrl+Space (Windows/Linux) or Cmd+Space (macOS), or use your editor’s autocomplete shortcut, to see all available functions and types with full TSDoc hints. 
 
   ---
   

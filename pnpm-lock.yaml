@@ -580,7 +580,7 @@ importers:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       tailwind-merge:
-        specifier: ^3.5.0
+        specifier: ^3
         version: 3.6.0
       tw-animate-css:
         specifier: ^1.4.0
@@ -777,6 +777,9 @@ importers:
       '@rzl-zone/core-react':
         specifier: workspace:*
         version: link:../core-react
+      '@rzl-zone/node-only':
+        specifier: workspace:*
+        version: link:../node-only
       '@rzl-zone/ts-types-plus':
         specifier: workspace:*
         version: link:../ts-types-plus
@@ -928,11 +931,11 @@ importers:
         specifier: ^1.13.1
         version: 1.13.1
       tailwind-merge-v3:
-        specifier: npm:tailwind-merge@2.6.0
-        version: tailwind-merge@2.6.0
+        specifier: npm:tailwind-merge@^2
+        version: tailwind-merge@2.6.1
       tailwind-merge-v4:
-        specifier: npm:tailwind-merge@3.3.1
-        version: tailwind-merge@3.3.1
+        specifier: npm:tailwind-merge@^3
+        version: tailwind-merge@3.6.0
     devDependencies:
       '@eslint/js':
         specifier: ^10
@@ -967,9 +970,6 @@ importers:
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
-      next:
-        specifier: ^15.5.9
-        version: 15.5.18(@opentelemetry/api@1.9.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.99.0)
       tailwindcss:
         specifier: ^4.3.0
         version: 4.3.0
@@ -6101,8 +6101,8 @@ packages:
     resolution: {integrity: sha512-pyFS63ptit/P5WqUkt+UUfe+4oevH+bFeIiPPdfb0pFeYEu/1ELnJu5l+5EcTKYL5M7zaAa7S8ddywgXypqKCw==}
     engines: {node: '>= 0.4'}
 
-  node-releases@2.0.38:
-    resolution: {integrity: sha512-3qT/88Y3FbH/Kx4szpQQ4HzUbVrHPKTLVpVocKiLfoYvw9XSGOX2FmD2d6DrXbVYyAQTF2HeF6My8jmzx7/CRw==}
+  node-releases@2.0.44:
+    resolution: {integrity: sha512-5WUyunoPMsvvEhS8AxHtRzP+oA8UCkJ7YRxatWKjngndhDGLiqEVAQKWjFAiAiuL8zMRGzGSJxFnLetoa43qGQ==}
 
   normalize-url@6.1.0:
     resolution: {integrity: sha512-DlL+XwOy3NxAQ8xuC0okPgK46iuVNAK01YN7RueYBqqFeGsBjV9XmCAzAdgt+667bCl5kPh9EqKKDwnaPG1I7A==}
@@ -7225,11 +7225,8 @@ packages:
     resolution: {integrity: sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==}
     engines: {node: '>=20'}
 
-  tailwind-merge@2.6.0:
-    resolution: {integrity: sha512-P+Vu1qXfzediirmHOC3xKGAYeZtPcV9g76X+xg2FD4tYgR71ewMA35Y3sCz3zhiN/dwefRpJX0yBcgwi1fXNQA==}
-
-  tailwind-merge@3.3.1:
-    resolution: {integrity: sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g==}
+  tailwind-merge@2.6.1:
+    resolution: {integrity: sha512-Oo6tHdpZsGpkKG88HJ8RR1rg/RdnEkQEfMoEk2x1XRI3F1AxeU+ijRXpiVUF4UbLfcxxRGw6TbUINKYdWVsQTQ==}
 
   tailwind-merge@3.6.0:
     resolution: {integrity: sha512-uxL7qAVQriqRQPAyK3pj66VqskWqoZ37PW94jwOTwNfq/z9oyu1V+eqrZqtR2+fCiXdYOZe/Modt8GtvqNzu+w==}
@@ -10634,7 +10631,7 @@ snapshots:
       baseline-browser-mapping: 2.10.29
       caniuse-lite: 1.0.30001792
       electron-to-chromium: 1.5.353
-      node-releases: 2.0.38
+      node-releases: 2.0.44
       update-browserslist-db: 1.2.3(browserslist@4.28.2)
 
   buffer-from@1.1.2: {}
@@ -13278,31 +13275,6 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  next@15.5.18(@opentelemetry/api@1.9.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.99.0):
-    dependencies:
-      '@next/env': 15.5.18
-      '@swc/helpers': 0.5.15
-      caniuse-lite: 1.0.30001792
-      postcss: 8.4.31
-      react: 19.2.6
-      react-dom: 19.2.6(react@19.2.6)
-      styled-jsx: 5.1.6(react@19.2.6)
-    optionalDependencies:
-      '@next/swc-darwin-arm64': 15.5.18
-      '@next/swc-darwin-x64': 15.5.18
-      '@next/swc-linux-arm64-gnu': 15.5.18
-      '@next/swc-linux-arm64-musl': 15.5.18
-      '@next/swc-linux-x64-gnu': 15.5.18
-      '@next/swc-linux-x64-musl': 15.5.18
-      '@next/swc-win32-arm64-msvc': 15.5.18
-      '@next/swc-win32-x64-msvc': 15.5.18
-      '@opentelemetry/api': 1.9.0
-      sass: 1.99.0
-      sharp: 0.34.5
-    transitivePeerDependencies:
-      - '@babel/core'
-      - babel-plugin-macros
-
   next@16.2.6(@opentelemetry/api@1.9.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.99.0):
     dependencies:
       '@next/env': 16.2.6
@@ -13338,7 +13310,7 @@ snapshots:
       object.entries: 1.1.9
       semver: 6.3.1
 
-  node-releases@2.0.38: {}
+  node-releases@2.0.44: {}
 
   normalize-url@6.1.0: {}
 
@@ -14669,9 +14641,7 @@ snapshots:
 
   tagged-tag@1.0.0: {}
 
-  tailwind-merge@2.6.0: {}
-
-  tailwind-merge@3.3.1: {}
+  tailwind-merge@2.6.1: {}
 
   tailwind-merge@3.6.0: {}
 

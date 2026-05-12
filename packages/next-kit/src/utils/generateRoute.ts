@@ -1,29 +1,36 @@
 import type { IsAny } from "@rzl-zone/ts-types-plus";
 
-import { isNil } from "@/predicates/is/isNil";
-import { isString } from "@/predicates/is/isString";
-import { isEmptyString } from "@/predicates/is/isEmptyString";
-import { isNonEmptyArray } from "@/predicates/is/isNonEmptyArray";
-import { getPreciseType } from "@/predicates/type/getPreciseType";
-import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
-import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
-import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
+import { assertIsPlainObject } from "@rzl-zone/utils-js/assertions";
+import { safeStableStringify } from "@rzl-zone/utils-js/conversions";
+import {
+  getPreciseType,
+  isEmptyString,
+  isNil,
+  isNonEmptyArray,
+  isNonEmptyString,
+  isString
+} from "@rzl-zone/utils-js/predicates";
 
-/** ---------------------------------------------------------
+/** ---------------------------------------------------------------------
  * * ***Extracts dynamic route parameters from a given route string.***
- * ---------------------------------------------------------
+ * ----------------------------------------------------------------------
+ *
  * **This utility type recursively searches for dynamic segments within a route,
  * extracting each parameter and constructing an object where each key represents
  * a dynamic segment and its value is of type `string`.**
  * - ***⚠️ Warning:***
  *    - ***This types only support when using ***[`NextJS`](https://nextjs.org/)***.***
+ *
  * @template T - The route string containing potential dynamic segments.
+ *
  * @example
  * ```ts
  * type Params1 = ExtractRouteParams<"/user/[id]">;
  * // ➔ { id: string }
+ *
  * type Params2 = ExtractRouteParams<"/post/[slug]/comment/[commentId]">;
  * // ➔ { slug: string; commentId: string }
+ *
  * type Params3 = ExtractRouteParams<"/dashboard">;
  * // ➔ {} (no dynamic parameters)
  * ```

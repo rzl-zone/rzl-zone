@@ -1,10 +1,115 @@
-import type { ClassValues } from "./cx";
+import { twMerge as twMergeV3 } from "tailwind-merge-v3";
+import { twMerge as twMergeV4 } from "tailwind-merge-v4";
 
-import { cx } from "./cx";
+import { cx, type ClassValues } from "./cx";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { customCnV3, customCnV4 } from "./customCn";
 import { twMergeDefaultV3 } from "../tw-merge/v3/twMergeDefault";
 import { twMergeDefaultV4 } from "../tw-merge/v4/twMergeDefault";
+
+/** -------------------------------------------------------------------
+ * * ***Combines and merges class utility values into a single normalized
+ * string with `Tailwind CSS v3` conflict resolution.***
+ * --------------------------------------------------------------------
+ *
+ * This utility composes {@link cx | `cx`} and {@link twMergeV3 | `twMerge`} version **2** for ***`tailwind version 3`***:
+ *
+ * - `cx` handles flexible class inputs (like `clsx`)
+ * - `twMerge` resolves Tailwind CSS utility conflicts
+ *
+ * This provides a complete solution for conditional class composition
+ * with deterministic Tailwind merging.
+ *
+ * - **Behavior:**
+ *    - Accepts strings, numbers, arrays, and objects
+ *    - Supports deeply nested class structures
+ *    - Ignores falsy values (`false`, `null`, `undefined`, `""`, `0`)
+ *    - Includes object keys with truthy values (including inherited keys)
+ *    - Unwraps boxed primitives (`new String()`, etc.)
+ *    - Resolves Tailwind utility conflicts deterministically
+ *    - Keeps the last conflicting class based on input order
+ *    - Produces a clean, space-normalized class string
+ *
+ * This utility is a drop-in replacement for `clsx` or `classnames`
+ * with built-in Tailwind conflict resolution.
+ *
+ * @param values - A list of mixed class values including strings,
+ * numbers, arrays, objects, and conditional expressions.
+ *
+ * @returns A merged and normalized CSS class string.
+ *
+ * @example
+ * ```ts
+ * cn(
+ *   "p-2",
+ *   isActive && "bg-blue-500",
+ *   ["text-sm", { "font-bold": isBold }],
+ *   null,
+ *   0
+ * );
+ * // => "p-2 bg-blue-500 text-sm font-bold"
+ * ```
+ *
+ * @example
+ * ```ts
+ * cn("p-2 p-4", { "text-sm": true, "text-lg": true });
+ * // => "p-4 text-lg"
+ * ```
+ */
+export const cnVer3 = (...values: ClassValues): string =>
+  twMergeV3(cx(...values));
+
+/** -------------------------------------------------------------------
+ * * ***Combines and merges class utility values into a single normalized
+ * string with `Tailwind CSS v4` conflict resolution.***
+ * --------------------------------------------------------------------
+ *
+ * This utility composes {@link cx | `cx`} and {@link twMergeV4 | `twMerge`} version **3** for ***`tailwind version 4`***:
+ *
+ * - `cx` handles flexible class inputs (like `clsx`)
+ * - `twMerge` resolves Tailwind CSS utility conflicts
+ *
+ * This provides a complete solution for conditional class composition
+ * with deterministic Tailwind merging.
+ *
+ * - **Behavior:**
+ *    - Accepts strings, numbers, arrays, and objects
+ *    - Supports deeply nested class structures
+ *    - Ignores falsy values (`false`, `null`, `undefined`, `""`, `0`)
+ *    - Includes object keys with truthy values (including inherited keys)
+ *    - Unwraps boxed primitives (`new String()`, etc.)
+ *    - Resolves Tailwind utility conflicts deterministically
+ *    - Keeps the last conflicting class based on input order
+ *    - Produces a clean, space-normalized class string
+ *
+ * This utility is a drop-in replacement for `clsx` or `classnames`
+ * with built-in Tailwind conflict resolution.
+ *
+ * @param values - A list of mixed class values including strings,
+ * numbers, arrays, objects, and conditional expressions.
+ *
+ * @returns A merged and normalized CSS class string.
+ *
+ * @example
+ * ```ts
+ * cn(
+ *   "p-2",
+ *   isActive && "bg-blue-500",
+ *   ["text-sm", { "font-bold": isBold }],
+ *   null,
+ *   0
+ * );
+ * // => "p-2 bg-blue-500 text-sm font-bold"
+ * ```
+ *
+ * @example
+ * ```ts
+ * cn("p-2 p-4", { "text-sm": true, "text-lg": true });
+ * // => "p-4 text-lg"
+ * ```
+ */
+export const cnVer4 = (...values: ClassValues): string =>
+  twMergeV4(cx(...values));
 
 const defaultTwMergeV3 = twMergeDefaultV3();
 const defaultTwMergeV4 = twMergeDefaultV4();
@@ -12,18 +117,24 @@ const defaultTwMergeV4 = twMergeDefaultV4();
 /** -------------------------------------------------------------
  * * ***Default `cnV3` utility (Tailwind v3).***
  * -------------------------------------------------------------
+ *
  * **Combines class-name values and then deduplicates/resolves
  * conflicts using {@link twMergeDefaultV3 | `twMergeDefaultV3`}
  * with **Tailwind v3 default config only**.**
  * - ✅ **Use this when:**
- *    - Your project uses **Tailwind v3**.
- *    - You need a simple `cn` that works out of the box without a custom config.
+ *       - Your project uses **Tailwind v3**.
+ *       - You need a simple `cn` that works out of the box without a custom config.
  * - ⚡ **Need custom rules?**
- *    - Create a project-wide helper using
- *      {@link twMergeDefaultV3 | `twMergeDefaultV3`} +
- *      {@link customCnV3 | `customCnV3`} (see Example 2).
+ *       - Create a project-wide helper using
+ *         {@link twMergeDefaultV3 | `twMergeDefaultV3`} +
+ *         {@link customCnV3 | `customCnV3`} (see Example 2).
+ *
+ * @deprecated ***Still supported, but significantly slower during hydration because it uses extended runtime merge logic, prefer {@link cnVer3 | `cnVer3`} for
+ * better performance, this utility may be removed in a future release.***
+ *
  * @param {ClassValues} classes - Class values (`string`, `array`, `object`, `etc`).
  * @returns {string} Merged Tailwind class string.
+ *
  * @example
  * #### Example 1: ✅ Default usage (Tailwind v3).
  * ```ts
@@ -71,16 +182,21 @@ export const cnV3 = (...classes: ClassValues): string => {
 /** -------------------------------------------------------------
  * * ***Default `cnV4` utility (Tailwind v4).***
  * -------------------------------------------------------------
+ *
  * **Combines class-name values and then deduplicates/resolves
  * conflicts using {@link twMergeDefaultV4 | `twMergeDefaultV4`}
  * with **Tailwind v4 default config only**.**
  * - ✅ **Use this when:**
- *    - Your project uses **Tailwind v4**.
- *    - You need a simple `cn` that works out of the box without a custom config.
+ *       - Your project uses **Tailwind v4**.
+ *       - You need a simple `cn` that works out of the box without a custom config.
  * - ⚡ **Need custom rules?**
- *    - Create a project-wide helper using
- *      {@link twMergeDefaultV4 | `twMergeDefaultV4`} +
- *      {@link customCnV4 | `customCnV4`} (see Example 2).
+ *       - Create a project-wide helper using
+ *         {@link twMergeDefaultV4 | `twMergeDefaultV4`} +
+ *         {@link customCnV4 | `customCnV4`} (see Example 2).
+ *
+ * @deprecated ***Still supported, but significantly slower during hydration because it uses extended runtime merge logic, prefer {@link cnVer4 | `cnVer4`} for
+ * better performance, this utility may be removed in a future release.***
+ *
  * @param {ClassValues} classes - Class values (`string`, `array`, `object`, `etc`).
  * @returns {string} Merged Tailwind class string.
  * @example

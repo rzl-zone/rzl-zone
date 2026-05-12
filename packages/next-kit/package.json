@@ -186,6 +186,16 @@
         "default": "./dist/utils/index.cjs"
       }
     },
+    "./utils/server": {
+      "import": {
+        "types": "./dist/utils/server/index.d.ts",
+        "default": "./dist/utils/server/index.js"
+      },
+      "require": {
+        "types": "./dist/utils/server/index.d.cts",
+        "default": "./dist/utils/server/index.cjs"
+      }
+    },
     "./types": {
       "import": {
         "types": "./dist/types/index.d.ts"
@@ -207,6 +217,7 @@
     "@edge-runtime/cookies": "^6.0.0",
     "@rzl-zone/core": "workspace:*",
     "@rzl-zone/core-react": "workspace:*",
+    "@rzl-zone/node-only": "workspace:*",
     "@rzl-zone/ts-types-plus": "workspace:*",
     "@rzl-zone/utils-js": "workspace:*",
     "deepmerge": "^4.3.1",

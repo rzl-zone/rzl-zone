@@ -1,29 +1,32 @@
-import { getBeApiUrl } from "@/next";
-import { normalizePathname } from "@/urls/pathname/normalizePathname";
-
-import { isNil } from "@/predicates/is/isNil";
-import { isError } from "@/predicates/is/isError";
-import { isString } from "@/predicates/is/isString";
-import { isUndefined } from "@/predicates/is/isUndefined";
-import { isPlainObject } from "@/predicates/is/isPlainObject";
-import { getPreciseType } from "@/predicates/type/getPreciseType";
-import { assertIsString } from "@/assertions/strings/assertIsString";
-import { assertIsBoolean } from "@/assertions/booleans/assertIsBoolean";
+import { assertIsBoolean, assertIsString } from "@rzl-zone/utils-js/assertions";
+import {
+  getPreciseType,
+  isError,
+  isNil,
+  isPlainObject,
+  isString,
+  isUndefined
+} from "@rzl-zone/utils-js/predicates";
+import { normalizePathname } from "@rzl-zone/utils-js/urls";
+import { getBeApiUrl } from "./getBeApiUrl";
 
 type OptionsCreateBeApiUrl = {
   /** * The prefix pathname api url, e.g:`"http://localhost.com/your-target-prefix-entri-point-api-is-here"`, default: `"/api"`.
    *
-   * @default "/api" */
+   * @default "/api"
+   */
   prefix?: string;
   /** * Option to getting `prefix` and `pathname` of api url only `(removing origin base api url)`, default: `true`.
    *
-   * @default true */
+   * @default true
+   */
   withOrigin?: boolean;
 };
 
-/** ---------------------------------
+/** ---------------------------------------------------
  * * ***Utility for NextJS: `createBeApiUrl`.***
- * ---------------------------------
+ * ---------------------------------------------------
+ *
  * **Constructs a backend API URL by appending a given pathname to the base API URL.**
  * - **ℹ️ Note:**
  *    - This function builds on top of `getBeApiUrl()`.
@@ -36,30 +39,41 @@ type OptionsCreateBeApiUrl = {
  *    - Normalizes paths to avoid duplicate slashes.
  * - ***⚠️ Warning:***
  *    - ***This function only support when using ***[`NextJS`](https://nextjs.org/)***.***
+ *
  * @param {string|null|undefined} pathname - The API endpoint path (e.g., `/users` or `/v1/posts`), defaultValue: `""`.
  * @param {OptionsCreateBeApiUrl} [options] - Configuration options.
  * @param {OptionsCreateBeApiUrl["prefix"]} [options.prefix="/api"] - The prefix for the API path (default is `"/api"`).
  * @param {OptionsCreateBeApiUrl["withOrigin"]} [options.withOrigin=true] - Whether to include the full base URL or return only the API path.
+ *
  * @returns {string} The formatted API URL.
+ *
  * @throws **{@link TypeError | `TypeError`}** if `withOrigin` is not a boolean.
  * @throws **{@link TypeError | `TypeError`}** if `prefix` and `pathname` is not a string.
  * @throws **{@link Error | `Error`}** if constructing the API URL fails due to an invalid base URL.
+ *
  * @example
- * createBeApiUrl("/users")
+ * createBeApiUrl("/users");
  * // ➔ "http://localhost:8000/api/users"
- * createBeApiUrl("/api/users")
+ *
+ * createBeApiUrl("/api/users");
  * // ➔ "http://localhost:8000/api/users"
- * createBeApiUrl("/v1", { prefix: "/v1" })
+ *
+ * createBeApiUrl("/v1", { prefix: "/v1" });
  * // ➔ "http://localhost:8000/v1"
- * createBeApiUrl("/v1/users")
+ *
+ * createBeApiUrl("/v1/users");
  * // ➔ "http://localhost:8000/api/v1/users"
- * createBeApiUrl("/v1/users", { prefix: "/v1" })
+ *
+ * createBeApiUrl("/v1/users", { prefix: "/v1" });
  * // ➔ "http://localhost:8000/v1/users"
- * createBeApiUrl("/users", { withOrigin: false })
+ *
+ * createBeApiUrl("/users", { withOrigin: false });
  * // ➔ "/api/users"
- * createBeApiUrl(null, { withOrigin: false })
+ *
+ * createBeApiUrl(null, { withOrigin: false });
  * // ➔ "/api"
- * createBeApiUrl(undefined, { withOrigin: false })
+ *
+ * createBeApiUrl(undefined, { withOrigin: false });
  * // ➔ "/api"
  */
 export const createBeApiUrl = (

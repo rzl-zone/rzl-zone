@@ -13,7 +13,13 @@
       "@root-app/*": ["./*"]
     }
   },
-  "include": ["src", "scripts", "tests", "internal-global.d.ts"],
+  "include": [
+    "src",
+    "scripts",
+    "tests",
+    "internal-global.d.ts",
+    "_deprecated/src/next"
+  ],
   "exclude": [
     "node_modules",
     "**/node_modules/next/dist/next-devtools/**",

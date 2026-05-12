@@ -114,26 +114,6 @@
         "default": "./dist/generators/index.cjs"
       }
     },
-    "./next": {
-      "import": {
-        "types": "./dist/next/index.d.ts",
-        "default": "./dist/next/index.js"
-      },
-      "require": {
-        "types": "./dist/next/index.d.cts",
-        "default": "./dist/next/index.cjs"
-      }
-    },
-    "./next/server": {
-      "import": {
-        "types": "./dist/next/server/index.d.ts",
-        "default": "./dist/next/server/index.js"
-      },
-      "require": {
-        "types": "./dist/next/server/index.d.cts",
-        "default": "./dist/next/server/index.cjs"
-      }
-    },
     "./operations": {
       "import": {
         "types": "./dist/operations/index.d.ts",
@@ -221,8 +201,8 @@
     "@rzl-zone/ts-types-plus": "workspace:*",
     "date-fns": "^4.1.0",
     "libphonenumber-js": "^1.13.1",
-    "tailwind-merge-v3": "npm:tailwind-merge@2.6.0",
-    "tailwind-merge-v4": "npm:tailwind-merge@3.3.1"
+    "tailwind-merge-v3": "npm:tailwind-merge@^2",
+    "tailwind-merge-v4": "npm:tailwind-merge@^3"
   },
   "devDependencies": {
     "@eslint/js": "^10",
@@ -236,7 +216,6 @@
     "eslint": "^10",
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
-    "next": "^15.5.9",
     "tailwindcss": "^4.3.0",
     "tsdown": "0.22.0",
     "tsx": "^4.21.0",

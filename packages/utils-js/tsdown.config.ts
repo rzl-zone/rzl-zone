@@ -42,8 +42,6 @@ export default resolveDefaultConfig(() => {
       entry: [
         "src/index.ts",
         "src/*/index.{ts,tsx}",
-        "src/next/index.ts",
-        "src/next/server/index.ts",
 
         "!src/browser.ts",
         "!src/types/private",

@@ -5,12 +5,16 @@ import { extendTailwindMerge, getDefaultConfig } from "tailwind-merge-v4";
 import { isPlainObject } from "@/predicates/is/isPlainObject";
 import { validatorPropsTwMerge } from "../_private/validate-props";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { customCnVer4 } from "../../class-names/customCn";
+
 // Get default Tailwind merge configuration
 const defaultConfig = getDefaultConfig();
 
 /** -------------------------------------------------------------
  * * ***Customized Tailwind class merger Version 4 with extended rules.***
  * -------------------------------------------------------------
+ *
  * **Wraps ***`extendTailwindMerge` from tailwind-merge-v4*** with Tailwind’s default
  * config (_*`getDefaultConfig()` from tailwind-merge-v4*_) to create a **project-ready `twMerge`**.**
  * - 🔑 **When to use it?**
@@ -19,6 +23,11 @@ const defaultConfig = getDefaultConfig();
  *    - Respect your own **`tailwind.config.ts`** (colors, spacing, fontSize, etc).
  *    - Override or fine-tune **merge behavior**.
  *    - Create a **project-wide `cn` helper** that replaces raw `twMerge`.
+ *
+ * @deprecated ***Still supported for advanced Tailwind merge customization, but significantly slower than native `twMerge` during SSR and hydration because merge rules are extended at runtime, prefer `twMerge` + {@link customCnVer4 | `customCnVer4`} for better performance, this utility may be removed in a future release.***
+ *
+ * @deprecated ***Slower than the default `twMerge`, but still safe to use when custom merge behavior is needed.***
+ *
  * @param {OptionsMergeTwClsV4} [options={}]
  *  ***Merge options:***
  *    - `config` – Your Tailwind config (from `tailwind.config.ts`).
@@ -27,8 +36,10 @@ const defaultConfig = getDefaultConfig();
  *    - `override` – Fully replace rules.
  *    - `cacheSize` – Parsed class cache size.
  *    - `experimentalParseClassName` – Custom classname parser.
+ *
  * @returns {TwMergeDefaultFnV4}
  * Customized Tailwind class merge function version 4 (same signature as `twMerge`).
+ *
  * @example
  * #### Example 1: ***Default behavior (same as tailwind-merge).***
  * ```ts

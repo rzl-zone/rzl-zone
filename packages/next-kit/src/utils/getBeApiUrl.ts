@@ -1,35 +1,41 @@
-import { formatEnvPort } from "@/urls/utils/formatEnvPort";
-import { hasOwnProp } from "@/predicates/has/hasOwnProp";
-import { isPlainObject } from "@/predicates/is/isPlainObject";
-import { removeSpaces } from "@/strings/sanitizations/removeSpaces";
-import { assertIsString } from "@/assertions/strings/assertIsString";
+import { assertIsString } from "@rzl-zone/utils-js/assertions";
+import { hasOwnProp, isPlainObject } from "@rzl-zone/utils-js/predicates";
+import { removeSpaces } from "@rzl-zone/utils-js/strings";
+import { formatEnvPort } from "@rzl-zone/utils-js/urls";
 
 type OptionsGetBeApiUrl = {
   /** * ***The Suffix origin base api url, e.g:`http://localhost.com/api`, default: `"/"`.***
    *
-   * @default "/" */
+   * @default "/"
+   */
   suffix?: string;
 };
 
 /** ---------------------------------------------------
  * * ***Utility for NextJS: `getBeApiUrl`.***
  * ---------------------------------------------------
+ *
  * **This function determines the backend API base URL from the `NEXT_PUBLIC_BACKEND_API_URL` environment variable (retrieves the base API URL of the backend).**
  * - **Behavior:**
  *    - If the variable is not set, it defaults to `"http://localhost:8000"`.
  *    - It also allows adding an optional suffix to the returned URL.
  * - ***⚠️ Warning:***
  *    - ***This function only support when using ***[`NextJS`](https://nextjs.org/)***.***
+ *
  * @description
  * This function determines the backend API base URL from the `NEXT_PUBLIC_BACKEND_API_URL` environment variable.
  * - If `NEXT_PUBLIC_BACKEND_API_URL` is not set, it defaults to `"http://localhost:8000"`.
  * - If `NEXT_PUBLIC_BACKEND_API_URL` does **not** contain a port, it appends one from `NEXT_PUBLIC_PORT_BE` if available.
  * - Supports appending optional suffix (like `"/api"`).
+ *
  * @param {OptionsGetBeApiUrl|undefined} options - Configuration options.
  * @param {OptionsGetBeApiUrl["suffix"]} [options.suffix="/"] - The suffix to append to the base API URL.
+ *
  * @returns {string} The formatted backend API base URL.
+ *
  * @throws **{@link TypeError | `TypeError`}** if `suffix` is not a `string`.
  * @throws **{@link Error | `Error`}** if `NEXT_PUBLIC_BACKEND_API_URL` is invalid.
+ *
  * @example
  * // With NEXT_PUBLIC_BACKEND_API_URL set at `*.env` file
  * NEXT_PUBLIC_BACKEND_API_URL = "https://api.example.com";

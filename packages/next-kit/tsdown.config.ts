@@ -38,6 +38,8 @@ export default resolveDefaultConfig(() => {
 
       // utils
       "src/utils/index.ts",
+      // utils/server
+      "src/utils/server/index.ts",
 
       // types
       "src/types/index.ts",
@@ -66,7 +68,8 @@ export default resolveDefaultConfig(() => {
           "dist/hoc/*.d.ts",
           "dist/progress-bar/*.d.ts",
           "dist/themes/*.d.ts",
-          "dist/utils/index.d.ts"
+          "dist/utils/index.d.ts",
+          "dist/utils/server/index.d.ts"
         ],
         {
           logLevel: "error"
@@ -78,7 +81,8 @@ export default resolveDefaultConfig(() => {
           "dist/hoc/*.d.cts",
           "dist/progress-bar/*.d.cts",
           "dist/themes/*.d.cts",
-          "dist/utils/index.d.cts"
+          "dist/utils/index.d.cts",
+          "dist/utils/server/index.d.cts"
         ],
         {
           logLevel: "error",

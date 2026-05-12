@@ -2,21 +2,26 @@ import "@rzl-zone/node-only";
 
 import { NextRequest } from "next/server";
 
-import { isFunction } from "@/predicates/is/isFunction";
-import { assertIsBoolean } from "@/assertions/booleans/assertIsBoolean";
+import { assertIsBoolean } from "@rzl-zone/utils-js/assertions";
+import { isFunction } from "@rzl-zone/utils-js/predicates";
 
-/** ---------------------------------
+/** ------------------------------------------------------------------
  * * ***Utility for NextJS Server: `getClientIpOrUrl`.***
- * ---------------------------------
+ * -------------------------------------------------------------------
+ *
  * **Retrieves the real client IP address and constructs the full URL using headers like `x-forwarded-for`, `x-forwarded-proto`, and `x-forwarded-port`.**
  * - **ℹ️ Note:**
  *    - Only supported in **Next.js** environments (specifically in `server-only` contexts).
  *    - Should be used in **middleware**, **route-handler** or **server actions** that have access to ***[`NextRequest - NextJS`](https://nextjs.org/docs/app/api-reference/functions/next-request)***.
+ *
  * @param {NextRequest} request - The incoming ***`NextJS`*** request object, must be instanceof `NextRequest` from `next/server`.
  * @param {boolean|undefined} [includeFullUrl=true] - Whether to return the full URL (`protocol`, `IP`, and `port` like `protocol://ip:port`) or just the IP address, defaultValue: `true`.
+ *
  * @returns {string} The extracted client IP address or the full constructed URL.
+ *
  * @throws **{@link Error | `Error`}** if the function is used outside a Next.js server environment.
  * @throws **{@link TypeError | `TypeError`}** if the arguments do not match the expected types.
+ *
  * @example
  * // Basic usage in Next.js middleware
  * import { NextRequest } from "next/server";

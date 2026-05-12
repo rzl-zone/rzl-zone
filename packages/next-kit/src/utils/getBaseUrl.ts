@@ -1,5 +1,5 @@
-import { formatEnvPort } from "@/urls/utils/formatEnvPort";
-import { removeSpaces } from "@/strings/sanitizations/removeSpaces";
+import { removeSpaces } from "@rzl-zone/utils-js/strings";
+import { formatEnvPort } from "@rzl-zone/utils-js/urls";
 
 /** ---------------------------------------------------
  * * ***Utility for NextJS: `getBaseUrl`.***
@@ -10,10 +10,14 @@ import { removeSpaces } from "@/strings/sanitizations/removeSpaces";
  *    - If `NEXT_PUBLIC_BASE_URL` is not set, it defaults to `"http://localhost:3000"`.
  *    - If `NEXT_PUBLIC_BASE_URL` does **not** contain a port, it appends one from `NEXT_PUBLIC_PORT_FE` if available.
  *    - Ensures the final URL is valid and normalized (no trailing slashes).
+ *
  * - ***⚠️ Warning:***
  *    - ***This function only support when using ***[`NextJS`](https://nextjs.org/)***.***
+ *
  * @returns {string} The resolved base URL of the application.
+ *
  * @throws **{@link Error | `Error`}** if the constructed URL is invalid or malformed.
+ *
  * @example
  * // With environment variable set at `*.env` file
  * NEXT_PUBLIC_BASE_URL = "https://example.com";
