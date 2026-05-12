@@ -1,5 +1,14 @@
 # @workspace/nextjs
 
+## 0.0.5-beta.0
+
+### Patch Changes
+
+- Updated dependencies [c29c9c2]
+  - @rzl-zone/core@0.0.10-beta.0
+  - @rzl-zone/core-react@0.0.10-beta.0
+  - @rzl-zone/utils-js@3.12.1-beta.0
+
 ## 0.0.4
 
 ### Patch Changes
