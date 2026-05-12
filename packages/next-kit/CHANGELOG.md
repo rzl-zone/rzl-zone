@@ -1,5 +1,18 @@
 # @rzl-zone/next-kit
 
+## 0.10.0-beta.2
+
+### Minor Changes
+
+- cb2bfb1: migrate Next.js utilities into `@rzl-zone/next-kit` and add optimized Tailwind merge APIs to `@rzl-zone/utils-js`
+
+### Patch Changes
+
+- Updated dependencies [cb2bfb1]
+  - @rzl-zone/utils-js@3.13.0-beta.2
+  - @rzl-zone/core@0.0.10-beta.2
+  - @rzl-zone/core-react@0.0.10-beta.2
+
 ## 0.9.10-beta.1
 
 ### Patch Changes
