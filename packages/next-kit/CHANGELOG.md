@@ -1,5 +1,16 @@
 # @rzl-zone/next-kit
 
+## 0.9.10-beta.1
+
+### Patch Changes
+
+- 3a85092: Improve `README` documentation and adjust internal `noUncheckedIndexedAccess` handling logic at `@rzl-zone/utils-js`
+- Updated dependencies [3a85092]
+  - @rzl-zone/ts-types-plus@0.1.6-beta.1
+  - @rzl-zone/utils-js@3.12.1-beta.1
+  - @rzl-zone/core@0.0.10-beta.1
+  - @rzl-zone/core-react@0.0.10-beta.1
+
 ## 0.9.10-beta.0
 
 ### Patch Changes

@@ -21,6 +21,7 @@
     "@rzl-zone/utils-js": "3.12.0"
   },
   "changesets": [
-    "happy-carpets-stick"
+    "happy-carpets-stick",
+    "khaki-plants-wish"
   ]
 }
