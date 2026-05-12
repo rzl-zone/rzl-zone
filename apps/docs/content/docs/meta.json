@@ -1,9 +1,3 @@
 {
-  "pages": [
-    "!index",
-    "---Main Docs---",
-    "index",
-    "---Packages---",
-    "..."
-  ]
+  "pages": ["!index", "---Main Docs---", "index", "---Packages---", "..."]
 }

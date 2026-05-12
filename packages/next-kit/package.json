@@ -53,6 +53,7 @@
     "dist",
     "README.md",
     "LICENSE.md",
+    "LICENSE",
     "!**/*.test.*"
   ],
   "exports": {
@@ -207,7 +208,7 @@
     "@rzl-zone/core": "workspace:*",
     "@rzl-zone/core-react": "workspace:*",
     "@rzl-zone/ts-types-plus": "workspace:*",
-    "@rzl-zone/utils-js": "latest",
+    "@rzl-zone/utils-js": "workspace:*",
     "deepmerge": "^4.3.1",
     "p-safe": "^1.1.0",
     "validate-color": "^2.2.4"
@@ -225,7 +226,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tsdown": "0.22.0",
-    "typescript": "^6.0.2"
+    "typescript": "6.0.3"
   },
   "peerDependencies": {
     "next": "15 || 16",

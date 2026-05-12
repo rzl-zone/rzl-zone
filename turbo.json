@@ -7,69 +7,44 @@
     "NODE_ENV",
     "npm_config_ignore_scripts",
     "npm_config_user_agent",
-    "npm_package_name",
+    "npm_package_name"
   ],
   "concurrency": "12",
   "tasks": {
     "build": {
-      "env": [
-        "MODE"
-      ],
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env*"
-      ],
-      "outputs": [
-        "dist/**",
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "env": ["MODE"],
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "lint": {
-      "dependsOn": [
-        "^lint"
-      ]
+      "dependsOn": ["^lint"]
     },
     "check-types:package": {
-      "dependsOn": [
-        "^check-types:package"
-      ]
+      "dependsOn": ["^check-types:package"]
     },
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": [
-        "MODE"
-      ]
+      "env": ["MODE"]
     },
     "dev:docs": {
       "cache": false,
       "persistent": true,
-      "env": [
-        "MODE"
-      ],
-      "with": [
-        "watch:docs"
-      ]
+      "env": ["MODE"],
+      "with": ["watch:docs"]
     },
     "dev:packages": {
       "cache": false,
       "persistent": true,
-      "env": [
-        "MODE"
-      ]
+      "env": ["MODE"]
     },
     "watch:docs": {
       "cache": false,
       "persistent": true
     },
     "build:start": {
-      "dependsOn": [
-        "build"
-      ]
+      "dependsOn": ["build"]
     },
     "start": {
       "cache": true,

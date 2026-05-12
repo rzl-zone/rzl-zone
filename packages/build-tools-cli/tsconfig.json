@@ -7,18 +7,9 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "types",
-    "*.config.ts",
-    "./src/**/*"
-  ],
-  "exclude": [
-    "_deprecated",
-    "node_modules"
-  ]
+  "include": ["types", "*.config.ts", "./src/**/*"],
+  "exclude": ["_deprecated", "node_modules"]
 }

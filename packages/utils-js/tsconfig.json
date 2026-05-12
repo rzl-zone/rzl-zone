@@ -1,0 +1,22 @@
+{
+  "extends": "@workspace/typescript-config/base.json",
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "declarationMap": false,
+    "outDir": "dist",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "src/*": ["./src/*"],
+      "@root-app/*": ["./*"]
+    }
+  },
+  "include": ["src", "scripts", "tests", "internal-global.d.ts"],
+  "exclude": [
+    "node_modules",
+    "**/node_modules/next/dist/next-devtools/**",
+    "**/node_modules/next/dist/server/lib/**"
+  ]
+}

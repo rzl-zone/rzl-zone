@@ -47,7 +47,7 @@
 
 ---
 
-> ⚠️ **_This is a BETA Version release._**  
+> ⚠️ ***This is a BETA Version release.***  
 > APIs, naming, or file structures may still change before v1.0.0.
 
 ---
@@ -65,19 +65,19 @@
 
 <h2 id="installation">⚙️ <strong>Installation</strong></h2>
 
-#### _With NPM_
+#### *With NPM*
 
 ```bash
 npm install @rzl-zone/next-kit
 ```
 
-#### _With Yarn_
+#### *With Yarn*
 
 ```bash
 yarn add @rzl-zone/next-kit
 ```
 
-#### _With PNPM_
+#### *With PNPM*
 
 ```bash
 pnpm add @rzl-zone/next-kit
@@ -148,18 +148,12 @@ To enable the built-in progress bar styling, import the default CSS, this import
   </strong>
 </h3>
 
-#### Make TypeScript & VSCode automatically provide autocomplete for `@rzl-zone/next-kit` without needing triple-slash references in every file, follow steps:
+Improve TypeScript editor import suggestions for `@rzl-zone/next-kit`, so all functions, types, and modules appear instantly when triggering autocomplete — press `Ctrl+Space` (**Windows/Linux**), `⌘+Space` (**macOS**), or your editor’s autocomplete shortcut.
+
+This works across modern TypeScript-supported editors (e.g., `VSCode`, `WebStorm`, `Vim extensions`, `NeoVim LSP`, `Cursor`) without requiring triple-slash references — the package is fully indexed automatically through your editor’s TypeScript language service, follow steps:
 
 - 1️⃣ **Install @rzl-zone/next-kit.**
-  - Make sure the package is installed:
-
-    ```bash
-    npm install @rzl-zone/next-kit@latest
-    # or
-    yarn add @rzl-zone/next-kit@latest
-    # or
-    pnpm add @rzl-zone/next-kit@latest
-    ```
+  - Make sure the package is installed, see [**Installation Guide**](#installation).
 
 - 2️⃣ **Create a types folder.**
   - Inside your project root, make a folder called `types`:
@@ -177,38 +171,33 @@ To enable the built-in progress bar styling, import the default CSS, this import
   - Create `types/index.d.ts` with this content:
 
     ```ts
-    /// <reference types="@rzl-zone/next-kit" />
+    /// <reference types="@rzl-zone/next-kit/.references" />
     ```
 
-    - This tells TypeScript to include the types from `@rzl-zone/next-kit` globally.
-    - You can add more references here if needed, for example:
+  - You can add more references here if needed, for example:
 
-      ```ts
-      /// <reference types="@rzl-zone/next-kit" />
+    ```ts
+    /// <reference types="@rzl-zone/next-kit/.references" />
 
-      // eg more references (if needed):
-      /// <reference types="node" />
-      /// <reference types="react" />
-      ```
+    // eg more references (if needed):
+    /// <reference types="node" />
+    /// <reference types="react" />
+    ```
 
 - 4️⃣ **Update tsconfig.json.**
-  - Make sure not to override "types" (or leave it empty) so TypeScript automatically picks up your types folder:
+  - Make sure add `types` folder to `"include"`, so **TypeScript** automatically picks up your types folder:
 
     ```jsonc
     // tsconfig.json
     {
       "compilerOptions": {
         "strict": true,
-        "typeRoots": ["./types", "./node_modules/@types"]
         // other your config...
       },
       "include": ["src", "types"]
       // other your config...
     }
     ```
-
-    - `typeRoots` tells TS where to look for global type definitions.
-    - The `types` folder comes first, so your references override or add to the default `@types` packages.
 
 - 5️⃣ **Update jsconfig.json (for JavaScript projects).**
   - If you also work with JS, do the same:
@@ -218,7 +207,6 @@ To enable the built-in progress bar styling, import the default CSS, this import
     {
       "compilerOptions": {
         "checkJs": true, // Optional, enables type checking
-        "typeRoots": ["./types", "./node_modules/@types"]
         // other your config...
       },
       "include": ["src", "types"]
@@ -226,9 +214,11 @@ To enable the built-in progress bar styling, import the default CSS, this import
     }
     ```
 
-    > ℹ️ **_Tip:_** _For JS projects, consider adding `"checkJs": true` for better IntelliSense._
+    > ℹ️ ***Tip:*** *For JS projects, consider adding `"checkJs": true` for better IntelliSense.*
 
-#### **Now, all types from `@rzl-zone/next-kit` are globally available, and you don’t need `"types": ["@rzl-zone/next-kit"]` in tsconfig.json.**
+- 6️⃣ **Restart your editor/IDE.**
+  - This forces your TypeScript language service to re-index the package.
+  - After restart, **all functions, types, and modules from `@rzl-zone/next-kit` will appear instantly in autocomplete**.
 
 ---
 
@@ -247,7 +237,7 @@ All core utilities are written in **TypeScript** with strong generics and inferr
 
 <h2 id="changelog">📝 <strong>Changelog</strong></h2>
 
-**See [CHANGELOG](https://github.com/rzl-zone/rzl-zone/blob/main/CHANGELOG.md).**
+**See [CHANGELOG](https://github.com/rzl-zone/rzl-zone/blob/main/packages/next-kit/CHANGELOG.md).**
 
 ---
 
@@ -282,12 +272,12 @@ All core utilities are written in **TypeScript** with strong generics and inferr
 <h2 id="license">📜 <strong>License</strong></h2>
 
 **The MIT License (MIT).**  
-_Please see **[License File](https://github.com/rzl-zone/rzl-zone/blob/main/LICENSE)** for more information._
+*Please see **[License File](https://github.com/rzl-zone/rzl-zone/blob/main/LICENSE)** for more information.*
 
 ---
 
 ✅ **Enjoy using `@rzl-zone/next-kit`?**  
-_Star the monorepo [⭐](https://github.com/rzl-zone/rzl-zone) and share it with other JavaScript developers!_  
+*Star the monorepo [⭐](https://github.com/rzl-zone/rzl-zone) and share it with other JavaScript developers!*  
 📦 Explore other packages under [`@rzl-zone`](https://github.com/rzl-zone/rzl-zone)
 
 ---

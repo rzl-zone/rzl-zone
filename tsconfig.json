@@ -17,9 +17,5 @@
     "skipLibCheck": true,
     "strict": true
   },
-  "exclude": [
-    "_deprecated",
-    "node_modules",
-    "**/ts-types-plus"
-  ]
+  "exclude": ["_deprecated", "node_modules", "**/ts-types-plus"]
 }

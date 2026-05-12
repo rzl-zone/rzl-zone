@@ -44,6 +44,7 @@
     "dist",
     "README.md",
     "LICENSE.md",
+    "LICENSE",
     "!**/*.test.*"
   ],
   "bin": {
@@ -71,6 +72,6 @@
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9.39.2",
     "tsdown": "0.22.0",
-    "typescript": "^6.0.2"
+    "typescript": "6.0.3"
   }
 }

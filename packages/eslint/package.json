@@ -37,6 +37,7 @@
     "dist",
     "README.md",
     "LICENSE.md",
+    "LICENSE",
     "!**/*.test.*"
   ],
   "exports": {
@@ -67,7 +68,7 @@
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "tsdown": "0.22.0",
-    "typescript": "^6.0.2"
+    "typescript": "6.0.3"
   },
   "peerDependencies": {
     "eslint": "^9 || ^10"

@@ -178,7 +178,7 @@ export const sourceOfIsDeepStrictEqual = <T>(
  * It is designed for **human-readable output**, not structured logging
  * or machine parsing.
  */
-export const BUILD_LOGGER = {
+export const BUILD_LOGGER: LoggerBuilder = {
   /** -------------------------------------------------------------------
    * * ***Determines whether an option value comes from the default configuration
    * or has been explicitly overridden by the user.***
@@ -706,6 +706,26 @@ export const BUILD_LOGGER = {
       )}`
     );
   }
+};
+
+type LoggerBuilder = {
+  SOURCE_OF: typeof sourceOf;
+  OPTIONS(
+    label: string,
+    value: unknown,
+    source: ReturnType<typeof sourceOf> | AnyString,
+    isRequired?: boolean
+  ): void;
+  SECTION(title: string, options?: LoggerBuilderSection): void;
+  NEW_LINE(value?: string): void;
+  ON_STARTING: (options: LoggerBuilderOnStarting) => void;
+  ON_FINISH: (options: LoggerBuilderOnFinish) => void;
+  ON_SKIPPING: (options: LoggerBuilderOnSkipping) => void;
+  ON_ERROR: (options: LoggerBuilderOnError) => void;
+  ON_PROCESS: (options: LoggerBuilderOnProcess) => void;
+  ON_PROCESS_COPY: (options: LoggerBuilderOnProcessCopy) => void;
+  ON_PROCESS_COPY_ERROR: (options: LoggerBuilderOnProcessCopyError) => void;
+  ON_PROCESS_REFERENCING: (options: LoggerBuilderOnProcessReferencing) => void;
 };
 
 type LoggerBuilderSection = {
