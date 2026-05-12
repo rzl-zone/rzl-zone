@@ -1,5 +1,11 @@
 # @rzl-zone/click-feedback
 
+## 0.0.10
+
+### Patch Changes
+
+- c29c9c2: Integrate `@rzl-zone/utils-js` into the monorepo, update workspace dependencies, upgrade tooling versions, and improve package documentation.
+
 ## 0.0.10-beta.0
 
 ### Patch Changes
