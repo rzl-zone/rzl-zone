@@ -1,4 +1,4 @@
-import { getBaseUrl, getBeApiUrl } from "@rzl-zone/utils-js/next";
+import { getBaseUrl, getBeApiUrl } from "@rzl-zone/next-kit/utils";
 
 import { env } from "@/utils/env";
 

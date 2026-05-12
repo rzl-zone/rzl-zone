@@ -28,16 +28,50 @@ This project follows [**Semantic Versioning**](https://semver.org/) to maintain 
 
 ---
 
+### Version 0.0.12 [#0.0.12]
+Release date: (2026-05-12).
+
+<Accordions>
+  <Accordion title="Changes" titleAsCode scrollToId id="0.0.12-changes">
+    **Added new public exports**.
+
+    - Added `BUILD_LOGGER`, `sourceOf`, and `sourceOfIsDeepStrictEqual` to `@rzl-zone/build-tools/utils/server`.
+  </Accordion>
+
+  <Accordion title="Maintenance" titleAsCode scrollToId id="0.0.12-maintenance">
+    **Updated internal dependencies**.
+
+    - Updated `@rzl-zone/node-only` to version `0.0.10` with monorepo integration for `@rzl-zone/utils-js`, refreshed workspace dependencies, tooling upgrades, and documentation improvements.
+  </Accordion>
+</Accordions>
+
+---
+
+### Version 0.0.11 [#0.0.11]
+Release date: (2026-05-08).
+
+<Accordions>
+  <Accordion title="Bug Fixes" titleAsCode scrollToId id="0.0.11-bug-fixes">
+    **Improve error handling and stack trace clarity in `runCommand` and `runCommandCapture`**.
+
+    - Prevent unhandled promise rejections in certain async flows
+    - Normalize validation and process errors into a consistent async pattern
+    - Clean internal frames from stack traces for better developer experience
+  </Accordion> 
+</Accordions>
+
+---
+
 ### Version 0.0.10 [#0.0.10]
 Release date: (2026-04-30).
 
 <Accordions>
   <Accordion title="Documentation" titleAsCode scrollToId id="0.0.10-documentation">
-    - Refine and improve TSDoc comments.
+    **Refine and improve TSDoc comments**.
   </Accordion>
   
   <Accordion title="Maintenance" titleAsCode scrollToId id="0.0.10-maintenance">
-    - Updated internal dependencies.
+    **Updated internal dependencies**.
   </Accordion>
 </Accordions>
 
@@ -48,7 +82,7 @@ Release date: (2026-04-28).
 
 <Accordions>
   <Accordion title="Maintenance" titleAsCode scrollToId id="0.0.9-maintenance">
-    - Updated internal dependencies. 
+    **Updated internal dependencies**. 
   </Accordion> 
 </Accordions>
 
@@ -59,11 +93,11 @@ Release date: (2026-04-27).
 
 <Accordions>
   <Accordion title="Documentation" titleAsCode scrollToId id="0.0.8-documentation">
-    - Improve `generatePackageBanner` documentation wording.
+    **Improve `generatePackageBanner` documentation wording**.
   </Accordion>
   
   <Accordion title="Bug Fixes" titleAsCode scrollToId id="0.0.8-bug-fixes">
-    - Refine error handling in `generatePackageBanner`.
+    **Refine error handling in `generatePackageBanner`**.
   </Accordion>
 </Accordions>
 

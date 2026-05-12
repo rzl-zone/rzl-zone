@@ -112,20 +112,29 @@ It is designed for CLI workflows and long-running processes where output should 
 
   <TabsContent value="JS">
     ```js
-    runCommand(command, args?)
-    runCommand(command, options?)
-    runCommand(command, args?, options?)
+    // Overload 1
+    runCommand(command, args);
+
+    // Overload 2
+    runCommand(command, options);
+
+    // Overload 3
+    runCommand(command, args, options?);
     ```
   </TabsContent>
 </Tabs>
 
 <SeparatorSection />
 
-## Parameters (Overload 1)
+## Parameters 
+
+#### Overload 1
 <AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/run/props.ts" name="RunCommandOverload1" />
-## Parameters (Overload 2) 
+
+#### Overload 2 
 <AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/run/props.ts" name="RunCommandOverload2" />
-## Parameters (Overload 3) 
+
+#### Overload 3 
 <AutoTypeTable path="./content/docs/build-tools/(versions)/(latest)/(api)/run/props.ts" name="RunCommandOverload3" />
 
 <SeparatorSection />
@@ -210,7 +219,6 @@ It is designed for CLI workflows and long-running processes where output should 
       - If `options` is passed as the second parameter:
         - `args` will default to an empty array
         - Any command arguments must be provided **inline in the `command` string**
-      
         
         - example: 
           ```ts
@@ -225,134 +233,410 @@ It is designed for CLI workflows and long-running processes where output should 
           ```
     </Callout>
   </div>
-</section>
-
-<SeparatorSection />
-
-### `options`
-
-Optional configuration object that defines how the utility function should behave 
-in various scenarios, allowing customization and greater control at runtime.
-
----
-
-<section data-options="docs">
-  #### `logLevel` [#log-level]
-  <div className="ml-4">
-    - **Description:**  
-      Controls how detailed the logger output should be during execution.
-
-      <Callout type="info" title={<strong>Supported values</strong>}> 
-        - `silent` ➔ no output.
-        - `error` ➔ errors only.
-        - `info` ➔ standard logs (default).
-        - `debug` ➔ verbose logs.
-      </Callout> 
-
-      <Callout type="warning" title={<strong>Notes</strong>}> 
-        - Invalid values are automatically reset to default.
-        - All levels include error output except `silent`.
-      </Callout> 
-
-    - **Required:** <em><XIcon /></em>
-
-    - **Type:**  
-      *`"error"`* | *`"silent"`* | *`"info"`* | *`"debug"`*
-
-    - **Default:**  
-      *`"info"`*
-
-    - **Example:**  
-      ```ts title="TypeScript/JavaScript" fileCodeIcon
-      // Minimal output (errors only)
-      await runCommand("dist/**/*.js", {
-        // [!code ++]
-        logLevel: "error"
-      });
-
-      // Debug mode (verbose logs)
-      await runCommand("dist/**/*.js", {
-        // [!code ++]
-        logLevel: "debug"
-      });
-
-      // Silent mode (no logs)
-      await runCommand("dist/**/*.js", {
-        // [!code ++]
-        logLevel: "silent"
-      });
-      ```
-  </div>
-
-  ---
   
-  #### `patternOptions` [#pattern-options]
+  #### `options`
   <div className="ml-4">
     - **Description:**  
-      Controls how input file patterns are matched.
-      
-      <Callout type="info">
-        Used to filter or adjust which files are included during processing.  
-        Useful for ignoring files, handling hidden files, or tweaking matching behavior.
-      </Callout> 
-
-      <Callout type="info" title={<strong>Behavior</strong>}> 
-        - Affects which files are selected.
-        - Can exclude unwanted files (e.g. test files).
-        - Falls back to default configuration when invalid type or not provided.
-      </Callout> 
+      Optional configuration object that defines how the utility function should behave 
+      in various scenarios, allowing customization and greater control at runtime.
 
     - **Required:** <em><XIcon /></em>
 
     - **Type:**  
-      *`object`*  
+      *`object | undefined`*
 
     - **Default:**  
-      ```ts fileCodeIcon disableCopy
-      {
-        absolute: false,
-        baseNameMatch: false,
-        caseSensitiveMatch: true,
-        concurrency: os.cpus().length,
-        dot: true,
-        followSymbolicLinks: true,
-        globstar: true,
-        ignore: [],
-        markDirectories: false,
-        objectMode: false,
-        onlyDirectories: false,
-        onlyFiles: true,
-        unique: true,
-        throwErrorOnBrokenSymbolicLink: false
-      }
-      ```
+      *`{ stdio: "inherit"; cwd: process.cwd(); env: process.env; shell: true; signal: undefined; timeout: undefined; forceKill: false; useColors: true }`*
 
-    - **Example:**  
-      ```ts title="TypeScript/JavaScript" fileCodeIcon
-      // Ignore source maps
-      await runCommand("dist/**/*.{js,cjs}", {
-        patternOptions: {
-          // [!code ++]
-          ignore: ["**/*.map"]
-        }
-      });
+    - **Properties:**
 
-      // Case-insensitive matching
-      await runCommand("dist/**/*.{js,cjs}", {
-        patternOptions: {
-          // [!code ++]
-          caseSensitiveMatch: false
-        }
-      });
+      <section data-options="docs">
+        ##### `stdio` [#options-stdio]
+        <div className="ml-4">
+          - **Description:**  
+            **Standard input/output configuration for the spawned process.**
 
-      // Disallowing patterns to match entries that begin with a period (.).
-      await runCommand("dist/**/*.{js,cjs}", {
-        patternOptions: {
-          // [!code ++]
-          dot: false
-        }
-      });
-      ```
+            *Controls how `stdin`, `stdout`, and `stderr` are handled.*
+
+            <Callout type="info" title={<strong>Behavior</strong>}> 
+              - *Can be set to:*
+                  - `"pipe"` – create a pipe between parent and child.
+                  - `"inherit"` – inherit the parent process streams.
+                  - `"overlapped"` – use overlapped I/O (Windows only).
+                  - `"ignore"` – discard the stream.
+
+              - *An array form may be used to configure each stream individually:*
+                  - Index `0` ➔ `stdin`.
+                  - Index `1` ➔ `stdout`.
+                  - Index `2` ➔ `stderr`.
+                  - Index `3` ➔ additional custom stream (optional).
+            </Callout> 
+
+            <Callout type="warning" title={<strong>Notes</strong>}> 
+              If passed as an array, the first element is used for `stdin`, the second for
+              `stdout`, and the third for `stderr`.
+            </Callout> 
+
+          - **Required:** <em><XIcon /></em>
+
+          - **Type:**  
+            *`"overlapped"` | `"pipe"` | `"ignore"` | `"inherit"` | `(number | "overlapped" | "pipe" | "ignore" | "inherit" | "ipc" | Stream | null | undefined)[]`*
+
+          - **Default:**  
+            *`"inherit"`*
+
+          - **Example:**  
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            runCommand("pnpm", ["dev"], {
+              stdio: "overlapped"
+            });
+            ```
+        </div>
+
+        ---
+        
+        ##### `cwd` [#options-cwd]
+        <div className="ml-4">
+          - **Description:**  
+            **Working directory for the spawned process.**
+
+            - Determines the directory where the command will be executed.
+
+            <Callout type="info" title={<strong>Behavior</strong>}> 
+              - Affects relative file paths used by the command.
+              - Useful for monorepos, workspace scripts, or nested project execution.
+              - Supports both filesystem paths and `file:` URLs.
+              - Defaults to the parent process working directory.
+            </Callout> 
+
+            <Callout type="warning" title={<strong>Notes</strong>}> 
+              - Relative paths inside the executed command are resolved from this directory.
+              - If the directory does not exist, the process will fail to start.
+            </Callout> 
+
+          - **Required:** <em><XIcon /></em>
+
+          - **Type:**  
+            *`string` | `URL`*
+
+          - **Default:**  
+            *`process.cwd()`*
+
+          - **Example:**  
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("pnpm", ["build"], {
+              cwd: "./packages/utils"
+            });
+            ```
+
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("npm", ["run", "dev"], {
+              cwd: new URL("../app", import.meta.url)
+            });
+            ```
+        </div>
+        
+        ---
+
+        ##### `env` [#options-env]
+        <div className="ml-4">
+          - **Description:**  
+            **Environment variables passed to the spawned process.**
+
+            - Allows overriding or extending the default process environment.
+
+            <Callout type="info" title={<strong>Behavior</strong>}> 
+              - Passed directly to `child_process.spawn`.
+              - Controls environment variables available inside the child process.
+              - Useful for build flags, CI variables, API tokens, and runtime configuration.
+              - Defaults to the parent process environment.
+            </Callout> 
+
+            <Callout type="warning" title={<strong>Notes</strong>}> 
+              - Providing a custom object replaces the default environment unless merged manually.
+              - Missing important variables (such as `PATH`) may prevent commands from running correctly.
+            </Callout> 
+
+          - **Required:** <em><XIcon /></em>
+
+          - **Type:**  
+            *`NodeJS.ProcessEnv`*
+
+          - **Default:**  
+            *`process.env`*
+
+          - **Example:**  
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("npm", ["run", "build"], {
+              env: {
+                ...process.env,
+                NODE_ENV: "production"
+              }
+            });
+            ```
+
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("node", ["script.js"], {
+              env: {
+                ...process.env,
+                API_URL: "https://example.com"
+              }
+            });
+            ```
+        </div>
+
+        ---
+
+        ##### `shell` [#options-shell]
+        <div className="ml-4">
+          - **Description:**  
+            **Controls whether the command is executed inside a system shell.**
+
+            - By default, commands are executed using the platform shell:
+              - `sh` on Unix-based systems.
+              - `cmd.exe` on Windows.
+
+            <Callout type="info" title={<strong>Behavior</strong>}> 
+              - `true`
+                - Executes the command through the system shell.
+                - Improves cross-platform compatibility.
+                - Useful for common CLI commands on Windows.
+
+              - `false`
+                - Executes the command directly without a shell.
+                - Avoids shell interpretation.
+                - Useful for strict argument handling and security-sensitive execution.
+            </Callout> 
+
+            <Callout type="warning" title={<strong>Limitations</strong>}> 
+              - Shell operators and advanced shell syntax are NOT supported:
+                - `&&`
+                - `||`
+                - `|`
+                - `>`
+                - `<`
+                - command chaining
+                - piping
+
+              - This utility always executes a single command with arguments only.
+            </Callout> 
+
+          - **Required:** <em><XIcon /></em>
+
+          - **Type:**  
+            *`boolean`*
+
+          - **Default:**  
+            *`true`*
+
+          - **Example:**  
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("npm", ["run", "build"], {
+              shell: true
+            });
+            ```
+
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("node", ["script.js"], {
+              shell: false
+            });
+            ```
+        </div>
+
+        ---
+
+        ##### `signal` [#options-signal]
+        <div className="ml-4">
+          - **Description:**  
+            **Abort signal used to cancel the spawned process.**
+
+            - When the signal is aborted, the child process will be terminated using `SIGTERM`.
+
+            <Callout type="info" title={<strong>Behavior</strong>}> 
+              - Supports cancellation using `AbortController`.
+              - If the signal is aborted:
+                - the child process is terminated.
+                - the returned promise is rejected.
+              - If the signal is already aborted before execution:
+                - the command will not start.
+            </Callout> 
+
+            <Callout type="warning" title={<strong>Notes</strong>}> 
+              - The rejection reason is exposed through `CommandProcessError`.
+              - The error reason will be `"abort"`.
+              - Process termination depends on operating system signal handling behavior.
+            </Callout> 
+
+          - **Required:** <em><XIcon /></em>
+
+          - **Type:**  
+            *`AbortSignal`*
+
+          - **Default:**  
+            *`undefined`*
+
+          - **Example:**  
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            const controller = new AbortController();
+
+            runCommand("pnpm", ["dev"], {
+              signal: controller.signal
+            });
+
+            controller.abort();
+            ```
+
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            const controller = new AbortController();
+
+            setTimeout(() => {
+              controller.abort();
+            }, 3000);
+
+            await runCommand("node", ["server.js"], {
+              signal: controller.signal
+            });
+            ```
+        </div>
+
+        ---
+
+        ##### `timeout` [#options-timeout]
+        <div className="ml-4">
+          - **Description:**  
+            **Maximum execution time before the spawned process is forcefully terminated.**
+
+            - Useful for preventing hanging processes and enforcing execution limits in automation workflows.
+
+            <Callout type="info" title={<strong>Behavior</strong>}> 
+              - Timeout duration is measured in milliseconds.
+              - When the timeout is reached:
+                - the child process is terminated using `SIGTERM`.
+                - the returned promise is rejected.
+              - Helps prevent indefinitely running processes.
+            </Callout> 
+
+            <Callout type="warning" title={<strong>Notes</strong>}> 
+              - `undefined`
+                - disables timeout handling.
+
+              - `0`
+                - causes immediate termination.
+
+              - Timeout failures are exposed through `CommandProcessError`.
+              - The error reason will be `"timeout"`.
+            </Callout> 
+
+          - **Required:** <em><XIcon /></em>
+
+          - **Type:**  
+            *`number`*
+
+          - **Default:**  
+            *`undefined`*
+
+          - **Example:**  
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("npm", ["run", "build"], {
+              timeout: 5000
+            });
+            ```
+
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("node", ["server.js"], {
+              timeout: 30000
+            });
+            ```
+        </div>
+
+        ---
+
+        ##### `forceKill` [#options-force-kill]
+        <div className="ml-4">
+          - **Description:**  
+            **Forcefully terminates the spawned process tree on Windows.**
+
+            - When enabled, process termination uses `taskkill /f /t` to ensure all child processes are also terminated.
+
+            <Callout type="info" title={<strong>Behavior</strong>}> 
+              - Windows only.
+              - Kills the entire process tree instead of only the parent process.
+              - Helps prevent orphaned or zombie child processes.
+              - Useful for dev servers, watchers, and long-running tasks.
+            </Callout> 
+
+            <Callout type="warning" title={<strong>Notes</strong>}> 
+              - Uses forceful termination.
+              - Child processes may not have time to gracefully shut down.
+              - Ignored on non-Windows platforms.
+            </Callout> 
+
+          - **Required:** <em><XIcon /></em>
+
+          - **Type:**  
+            *`boolean`*
+
+          - **Default:**  
+            *`false`*
+
+          - **Example:**  
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("pnpm", ["dev"], {
+              forceKill: true
+            });
+            ```
+
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("node", ["watch.js"], {
+              timeout: 5000,
+              forceKill: true
+            });
+            ```
+        </div>
+
+        ---
+
+        ##### `useColors` [#options-use-colors]
+        <div className="ml-4">
+          - **Description:**  
+            **Enables colored formatting for logs and error messages.**
+
+            - Improves readability for CLI output and developer-facing tooling.
+
+            <Callout type="info" title={<strong>Behavior</strong>}> 
+              - Adds color formatting to command logs.
+              - Highlights command strings in formatted errors.
+              - Improves terminal readability during development.
+            </Callout> 
+
+            <Callout type="warning" title={<strong>Notes</strong>}> 
+              - Only affects formatted output.
+              - Does not modify the actual executed command.
+              - Disable when generating plain-text logs or snapshot testing output.
+            </Callout> 
+
+          - **Required:** <em><XIcon /></em>
+
+          - **Type:**  
+            *`boolean`*
+
+          - **Default:**  
+            *`true`*
+
+          - **Example:**  
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("npm", ["run", "build"], {
+              useColors: true
+            });
+            ```
+
+            ```ts title="TypeScript/JavaScript" fileCodeIcon
+            await runCommand("pnpm", ["test"], {
+              useColors: false
+            });
+            ```
+        </div>
+      </section>
   </div>
 </section>
 
@@ -360,8 +644,178 @@ in various scenarios, allowing customization and greater control at runtime.
 
 ## Returns
 
-Returns a `Promise<void>`.  
-The function performs asynchronous file processing and does not return any value.
+Resolves with the spawned `ChildProcess` instance after the process exits successfully (`exit code 0`).
+
+```ts title="TypeScript/JavaScript" fileCodeIcon
+const child = await runCommand("node", ["script.js"]);
+
+console.log(child.pid);
+```
+
+<SeparatorSection />
+
+## Error handling
+
+When the process fails, the promise is rejected with `CommandProcessError`.
+
+### Error metadata
+
+- `reason`
+  - `"timeout"`
+  - `"abort"`
+  - `"signal"`
+  - `"non-zero exit code"`
+  - `"validation"`
+
+- `exitCode`
+  - Exit code when available.
+
+- `signal`
+  - Process termination signal when available.
+
+- `command`
+  - Executed command as plain text.
+
+---
+
+### Type narrowing
+
+```ts title="TypeScript/JavaScript" fileCodeIcon
+try {
+  await runCommand("pnpm", ["build"]);
+} catch (err) {
+  if (err instanceof CommandProcessError) {
+    if (err.reason === "non-zero exit code") {
+      console.error(err.exitCode);
+    }
+  }
+}
+```
+
+```ts title="TypeScript/JavaScript" fileCodeIcon
+try {
+  await runCommand("pnpm", ["build"]);
+} catch (err) {
+  if (isCommandProcessError(err)) {
+    console.error(err.reason);
+  }
+}
+```
+
+<SeparatorSection />
+
+## Limitations
+
+- Only a single command is supported.
+
+- Shell syntax is NOT supported:
+  - `&&`
+  - `||`
+  - `|`
+  - `>`
+  - `<`
+  - command chaining
+  - piping
+
+Commands must represent a single executable with arguments.
+
+```ts title="TypeScript/JavaScript" fileCodeIcon
+// valid
+await runCommand("npm", ["run", "build"]);
+
+// invalid
+await runCommand("npm run build && npm test");
+```
+
+<SeparatorSection />
+
+## Notes
+
+### Execution model
+
+Uses `spawn` instead of `exec` to avoid output buffering and support long-running processes.
+
+---
+
+### Output handling
+
+- Defaults to `stdio: "inherit"`.
+- Output is streamed directly to the parent process.
+- No internal buffering is performed.
+
+<div className="mt-2.5">
+  If `stdio` is overridden (for example `"pipe"`), output will not be automatically forwarded.
+</div>
+
+---
+
+### Shell execution
+
+Defaults to `shell: true` for cross-platform compatibility, especially on Windows.
+
+However, advanced shell syntax is intentionally unsupported.
+
+---
+
+### Abort handling
+
+When `signal` is provided, the process is terminated with `SIGTERM` when aborted.
+
+```ts title="TypeScript/JavaScript" fileCodeIcon
+const controller = new AbortController();
+
+runCommand("pnpm", ["dev"], {
+  signal: controller.signal
+});
+
+controller.abort();
+```
+
+---
+
+### Timeout handling
+
+When `timeout` is provided, the process will be terminated after the specified duration.
+
+- `undefined`
+  - no timeout
+
+- `0`
+  - immediate termination
+
+```ts title="TypeScript/JavaScript" fileCodeIcon
+await runCommand("npm", ["run", "build"], {
+  timeout: 5000
+});
+```
+
+---
+
+### Common errors
+
+#### `ENOENT`
+
+Command was not found.
+
+Possible causes:
+
+- Command is not installed.
+- Command is not available in `PATH`.
+- `shell: false` with non-absolute executable path.
+
+---
+
+### When NOT to use this utility
+
+Do not use `runCommand` when:
+
+- You need to capture stdout/stderr programmatically.
+- You need advanced shell features:
+  - piping
+  - redirects
+  - chaining
+
+Use `exec` or a dedicated shell runner instead.
 
 <SeparatorSection />
 

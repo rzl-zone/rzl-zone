@@ -286,13 +286,15 @@ const extraItemPaddingLeft = 0;
 function getItemOffset(depth: number): number {
   if (depth <= 2) return 10 + extraItemPaddingLeft;
   if (depth === 3) return 16 + extraItemPaddingLeft;
-  return 24 + extraItemPaddingLeft;
+  if (depth === 4) return 23 + extraItemPaddingLeft;
+  return 29 + extraItemPaddingLeft;
 }
 
 function getLineOffset(depth: number): number {
   if (depth <= 2) return 1;
   if (depth === 3) return 8;
-  return 15;
+  if (depth === 4) return 15;
+  return 22;
 }
 
 export function TOCItem({
