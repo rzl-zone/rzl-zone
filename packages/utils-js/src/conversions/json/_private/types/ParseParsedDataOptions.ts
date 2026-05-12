@@ -9,7 +9,7 @@ import type { safeJsonParse } from "../../safeJsonParse";
  * * ***Options for cleaning and transforming parsed JSON data.***
  * --------------------------------------------------
  *
- * @private Type Options Validation for Function: {@link cleanParsedData | `cleanParsedData`}, {@link parseCustomDate | `parseCustomDate`} and {@link safeJsonParse | `safeJsonParse`}.
+ * Type Options Validation for Function: {@link cleanParsedData | `cleanParsedData`}, {@link parseCustomDate | `parseCustomDate`} and {@link safeJsonParse | `safeJsonParse`}.
  */
 export type ParseParsedDataOptions = {
   /** --------------------------------------------------

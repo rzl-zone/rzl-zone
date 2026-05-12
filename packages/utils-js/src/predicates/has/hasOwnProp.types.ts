@@ -16,32 +16,46 @@ import type { hasOwnProp } from "./hasOwnProp";
 
 // ------------------- HELPER TYPES -------------------
 
-/** Restrict array indices to a fixed numeric range (1–25). */
+/**
+ * Restrict array indices to a fixed numeric range (1–25).
+ */
 type ArrayIndex = NumberRangeUnion<1, 25>;
 
-/** Remove `undefined` from a type. */
+/**
+ * Remove `undefined` from a type.
+ */
 type NonUndef<T> = T extends undefined ? never : T;
 
-/** Remove `null` from a type. */
+/**
+ * Remove `null` from a type.
+ */
 type NonNull<T> = T extends null ? never : T;
 
-/** Convert optional boolean for "discard undefined" to actual boolean. */
+/**
+ * Convert optional boolean for "discard undefined" to actual boolean.
+ */
 type EffectiveDiscardUndefined<O extends boolean | undefined> =
   O extends boolean ? O : true;
 
-/** Convert optional boolean for "discard null" to actual boolean. */
+/**
+ * Convert optional boolean for "discard null" to actual boolean.
+ */
 type EffectiveDiscardNull<O extends boolean | undefined> = O extends boolean
   ? O
   : false;
 
-/** Unwrap array type. */
+/**
+ * Unwrap array type.
+ */
 type UnwrapArray<T> = T extends (infer U)[]
   ? U
   : T extends readonly (infer U)[]
     ? U
     : T;
 
-/** Force symbol key to be deep required. */
+/**
+ * Force symbol key to be deep required.
+ */
 type IsOptionalKey<T, K extends keyof T> =
   Record<never, never> extends Pick<T, K> ? true : false;
 
@@ -102,7 +116,9 @@ type ApplyLastRulesHasOwnProp<
     ? NonNull<V>
     : V | Extract<V, undefined>; // <- keep undefined if not discarded
 
-/** Force an array index N to type U. */
+/**
+ * Force an array index N to type U.
+ */
 type RefineArrayAtIndex<
   T extends readonly unknown[],
   N extends number,
@@ -224,6 +240,7 @@ type NarrowByPathHasOwnProp<
 
 /** * ***Expand an array/string/function into a nested type according
  * to a dot/bracket path.***
+ *
  * @private ***types for {@link hasOwnProp}.***
  */
 export type SmartDetectStringHasOwnProp<
@@ -242,7 +259,9 @@ export type SmartDetectStringHasOwnProp<
         : AnyString | undefined | null;
 // : Prettify<DotToNestedSpecialSmartDetect<Key>, { recursive: true }>;
 
-/** @private ***types for {@link hasOwnProp}.*** */
+/**
+ * ***types for {@link hasOwnProp}.***
+ */
 export type SmartDetectArrayFuncHasOwnProp<
   Obj extends unknown[] | AnyFunction,
   Key extends PropertyKey
@@ -275,7 +294,8 @@ export type SmartDetectUnknownKeyHasOwnProp<
         { recursive: true }
       >;
 
-/** Convert dot/bracket path string to nested object type with leaf value.
+/**
+ * Convert dot/bracket path string to nested object type with leaf value.
  * Path not found in object key ➔ return unknown.
  */
 type DotToNestedSpecialSmartDetect<Path extends PropertyKey, Value = unknown> =
@@ -292,6 +312,7 @@ type DotToNestedSpecialSmartDetect<Path extends PropertyKey, Value = unknown> =
 // ------------------- GUARDED RESULT -------------------
 
 /** * ***Guarded wrapper for `NarrowByPathHasOwnProp` with `Prettify`.***
+ *
  * @private ***types for {@link hasOwnProp}.***
  */
 export type GuardedHasOwnProp<
@@ -314,6 +335,7 @@ export type GuardedHasOwnProp<
 
 /** * ***Make a specific symbol key deeply required in an object symbols.***
  * **Used internally to enforce stronger type narrowing.**
+ *
  * @private ***types for {@link hasOwnProp}.***
  */
 export type DeepRequiredSymbolHasOwnProp<
@@ -366,6 +388,7 @@ export type NumericKeyHasOwnPropMapped<
 // ------------------- OPTIONS -------------------
 
 /** * ***Options to control `hasOwnProp` behavior.***
+ *
  * @private ***types options for {@link hasOwnProp}.***
  */
 export type HasOwnPropOptions<

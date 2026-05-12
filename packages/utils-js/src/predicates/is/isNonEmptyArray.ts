@@ -19,9 +19,6 @@ import type { ArrayFallback } from "@/_private/types.arrays";
  */
 export function isNonEmptyArray(value: []): value is [];
 export function isNonEmptyArray<T>(value: T): value is ArrayFallback<T>;
-// export function isNonEmptyArray<T extends unknown[]>(
-//   value: T
-// ): value is NonNullable<Extract<T, unknown[]>>;
 export function isNonEmptyArray(value: unknown): value is unknown[];
 export function isNonEmptyArray(value: unknown): boolean {
   return Array.isArray(value) && value.length > 0;

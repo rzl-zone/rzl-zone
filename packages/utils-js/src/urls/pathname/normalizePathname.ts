@@ -27,13 +27,13 @@ type UnKeepNullableOptions = {
    *
    * Must be a **`non-empty string`**, defaultValue: `"/"`.
    *
-   * @defaultValue `"/"`.
+   * @default "/"
    */
   defaultPath?: string;
 
   /** * ***Whether to preserve `null` or `undefined`, defaultValue: `false`.***
    *
-   * @defaultValue `false`.
+   * @default false
    */
   keepNullable?: false;
 };
@@ -47,7 +47,7 @@ type KeepNullableOptions = {
    * `pathname` is empty-string or invalid, even this `true`)**,
    * defaultValue: `"/"`.***
    *
-   * @defaultValue `"/"`.
+   * @default "/"
    */
   defaultPath?: string;
 
@@ -57,6 +57,8 @@ type KeepNullableOptions = {
    *      - Keep returning `defaultPath` if `pathname` is empty-string, even this `true`.
    *
    * **Must be `true` in this type.**
+   *
+   * @default false
    */
   keepNullable?: true;
 };
@@ -66,7 +68,7 @@ type MainNormalizePathnameOptions = {
    * * ***Preserve trailing slash at the end of the normalized pathname, defaultValue: `false`.***
    * --------------------------------------------------------
    *
-   * @defaultValue `false`
+   * @default `false`
    */
   keepTrailingSlash?: boolean;
 
@@ -86,7 +88,7 @@ type MainNormalizePathnameOptions = {
    * - Only the **first path segment** is affected. Any subsequent occurrences of `"localhost"`
    *   will remain intact.
    *
-   * @defaultValue `false`
+   * @default false
    */
   localhostDomain?: boolean;
 
@@ -155,7 +157,7 @@ type MainNormalizePathnameOptions = {
    * - Prevents false-positive domain stripping for filenames that look like domains.
    * - Throws **TypeError** if invalid type or invalid string is provided.
    *
-   * @defaultValue `undefined` (feature inactive if not provided)
+   * @default undefined (feature inactive if not provided)
    */
   ignoreDomainExtensions?: Set<string> | string[];
 };
@@ -458,9 +460,6 @@ export function normalizePathname(
     _pathName = "/" + _pathName.replace(/^\/+/, "").replace(/\/{2,}/g, "/");
 
     // Trailing slash
-    // if (keepTrailingSlash && _pathName !== "/") {
-    // _pathName += "/"
-    // } else
     if (!keepTrailingSlash && _pathName !== "/") {
       _pathName = _pathName.replace(/\/+$/, "");
     }
@@ -479,7 +478,9 @@ export function normalizePathname(
 
 // --- Internal Helper Utils ----
 
-/** @internal */
+/**
+ * @internal
+ */
 const decodeUnicodeSequences = (str: string): string => {
   return str.replace(/(?:%(?:[0-9A-F]{2})){2,}/gi, (match) => {
     try {
@@ -493,7 +494,10 @@ const decodeUnicodeSequences = (str: string): string => {
     }
   });
 };
-/** @internal */
+
+/**
+ * @internal
+ */
 const stripLeadingDomain = (
   path: string,
   options: OverrideTypes<
@@ -530,7 +534,7 @@ const stripLeadingDomain = (
   // take first segment
   const segments = currentPath.split("/");
   const firstPart = segments[0];
-  const domainPart = firstPart.split(":")[0];
+  const domainPart = firstPart?.split(":")[0];
 
   const isDomain = isValidDomain(domainPart, {
     subdomain: true,
@@ -546,7 +550,7 @@ const stripLeadingDomain = (
   let hasIgnoredExtension = false;
   if (ignoreDomainExtensions) {
     for (const ext of ignoreDomainExtensions) {
-      if (firstPart.endsWith(ext)) {
+      if (firstPart?.endsWith(ext)) {
         hasIgnoredExtension = true;
         break;
       }
@@ -559,12 +563,18 @@ const stripLeadingDomain = (
 
   return ensureLeadingSlash(segments.join("/"));
 };
-/** @internal */
+
+/**
+ * @internal
+ */
 const ensureLeadingSlash = (path: string): string => {
   if (!path.startsWith("/")) path = "/" + path;
   return path;
 };
-/** @internal */
+
+/**
+ * @internal
+ */
 const throwError = (error: unknown): never => {
   // Handle any errors that occur during processing
   const err = isError(error)

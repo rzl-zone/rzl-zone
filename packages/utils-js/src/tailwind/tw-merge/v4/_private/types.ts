@@ -4,10 +4,14 @@ import type { ClassNameValue, ConfigExtension } from "tailwind-merge-v4";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { twMergeDefaultV3 } from "../../v3/twMergeDefault";
 
-/** Tailwind Merge config extension type */
+/**
+ * Tailwind Merge config extension type
+ */
 type TwMergeConfigExt = ConfigExtension<string, string>;
 
-/** * ***Extra options for customized Tailwind class merge.***  */
+/**
+ * * ***Extra options for customized Tailwind class merge.***
+ */
 type OptionsConfigMergeTwCn = {
   /** ----------------------------------------------------------
    * * ***Optional Tailwind CSS configuration object.***
@@ -102,9 +106,13 @@ type OptionsConfigMergeTwCn = {
   prefix?: string;
 };
 
-/** * ***Options type for Tailwind Merge v4 wrapper.*** */
+/**
+ * * ***Options type for Tailwind Merge v4 wrapper.***
+ */
 export type OptionsMergeTwClsV4 = Omit<TwMergeConfigExt, "prefix"> &
   OptionsConfigMergeTwCn;
 
-/** * ***Tailwind Merge function Version 4 signature (same as twMerge).*** */
+/**
+ * * ***Tailwind Merge function Version 4 signature (same as twMerge).***
+ */
 export type TwMergeDefaultFnV4 = (...classLists: ClassNameValue[]) => string;

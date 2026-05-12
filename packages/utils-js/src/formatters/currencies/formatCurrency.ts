@@ -18,7 +18,10 @@ import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
 import { parseCurrencyString } from "@/conversions/currency/parsing";
 import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
 
-/** @private ***Util helper for {@link formatCurrency}.*** */
+/** ***Util helper for {@link formatCurrency}.***
+ *
+ * @internal
+ */
 const formatIndianNumber = ({
   numStr,
   separator

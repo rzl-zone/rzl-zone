@@ -125,7 +125,7 @@ export const isDeepEqual = (a: unknown, b: unknown): boolean => {
       let found = false;
       for (let i = 0; i < bEntries.length; i++) {
         if (matched.has(i)) continue;
-        const [bKey, bVal] = bEntries[i];
+        const [bKey, bVal] = bEntries[i] ?? [];
         if (isDeepEqual(aKey, bKey) && isDeepEqual(aVal, bVal)) {
           matched.add(i);
           found = true;

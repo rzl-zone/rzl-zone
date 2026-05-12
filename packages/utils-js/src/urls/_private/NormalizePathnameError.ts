@@ -2,9 +2,12 @@ import { isFunction } from "@/predicates/is/isFunction";
 
 /** ---------------------------------
  * * ***Custom Error for Pathname Normalization Failures***
- * --------------------------------- */
+ * ---------------------------------
+ */
 export class NormalizePathnameError extends Error {
-  /** * ***The original error that triggered this normalization failure.***
+  /** ---------------------------------
+   * * ***The original error that triggered this normalization failure.***
+   * ---------------------------------
    *
    * **Always available for backward compatibility.**
    */
@@ -26,7 +29,10 @@ export class NormalizePathnameError extends Error {
     }
   }
 
-  /** * ***Safe JSON representation for logging or IPC.*** */
+  /** ---------------------------------
+   * * ***Safe JSON representation for logging or IPC.***
+   * ---------------------------------
+   */
   toJSON() {
     return {
       name: this.name,

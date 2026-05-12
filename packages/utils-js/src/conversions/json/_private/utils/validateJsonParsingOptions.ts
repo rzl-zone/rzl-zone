@@ -20,7 +20,10 @@ import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
 
 type ValidatedParsedDataOptions = Prettify<Required<ParseParsedDataOptions>>;
 
-/** * ***Private Helper for Options Validation Function: {@link cleanParsedData | `cleanParsedData`}, {@link parseCustomDate | `parseCustomDate`} and {@link safeJsonParse | `safeJsonParse`}.*** */
+/** * ***Private Helper for Options Validation Function: {@link cleanParsedData | `cleanParsedData`}, {@link parseCustomDate | `parseCustomDate`} and {@link safeJsonParse | `safeJsonParse`}.***
+ *
+ * @internal
+ */
 export const validateJsonParsingOptions = (
   optionsValue: ParseParsedDataOptions = {}
 ): ValidatedParsedDataOptions => {

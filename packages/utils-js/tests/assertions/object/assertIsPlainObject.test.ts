@@ -73,7 +73,7 @@ describe("assertIsPlainObject - respect to errorType options", () => {
     ] as const;
 
     errorTypes.forEach((type) => {
-      expect(() => assertIsPlainObject(val, { errorType: type })).toThrowError(
+      expect(() => assertIsPlainObject(val, { errorType: type })).toThrow(
         new globalThis[type](
           `Parameter input (\`value\`) must be of type \`plain-object\`, but received: \`${getPreciseType(
             val
@@ -88,7 +88,7 @@ describe("assertIsPlainObject - respect to errorType options", () => {
     expect(() =>
       // @ts-expect-error: testing invalid errorType
       assertIsPlainObject(val, { errorType: "SomeUnknownError" })
-    ).toThrowError(TypeError);
+    ).toThrow(TypeError);
     expect(() =>
       // @ts-expect-error: testing invalid errorType
       assertIsPlainObject(val, { errorType: "SomeUnknownError" })

@@ -2,7 +2,10 @@
 import type { censorEmail } from "../censorEmail";
 import { isUndefined } from "@/predicates/is/isUndefined";
 
-/** @private ***Util helper for {@link censorEmail}.*** */
+/** ***Util helper for {@link censorEmail}.***
+ *
+ * @internal
+ */
 export const hashSeedGenerate = (mode: "random" | "fixed", email: string) => {
   const generateSeed = () => {
     let hash = 0;
@@ -25,7 +28,7 @@ export const hashSeedGenerate = (mode: "random" | "fixed", email: string) => {
  * @param {number} maxPercentage - Maximum percentage of characters to censor.
  * @returns {string} - Censored string.
  *
- * @private ***Util helper for {@link censorEmail}.***
+ * @internal ***Util helper for {@link censorEmail}.***
  */
 export const _censor = (
   str: string,

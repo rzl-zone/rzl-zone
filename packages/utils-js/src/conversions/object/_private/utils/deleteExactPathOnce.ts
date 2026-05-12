@@ -3,7 +3,10 @@ import { isPlainObject } from "@/predicates/is/isPlainObject";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { removeObjectPaths } from "../../removeObjectPaths";
 
-/** @private ***Util helper for {@link removeObjectPaths | `removeObjectPaths`}.*** */
+/** ***Util helper for {@link removeObjectPaths | `removeObjectPaths`}.***
+ *
+ * @internal
+ */
 export const deleteExactPathOnce = <T extends Record<string, unknown>>(
   obj: T,
   path: string[]
@@ -12,9 +15,9 @@ export const deleteExactPathOnce = <T extends Record<string, unknown>>(
 
   const [currentKey, ...rest] = path;
 
-  if (rest.length === 0) {
-    if (isPlainObject(obj)) delete obj[currentKey];
-  } else if (isPlainObject(obj[currentKey])) {
+  if (rest.length === 0 && currentKey && isPlainObject(obj)) {
+    delete obj[currentKey];
+  } else if (currentKey && isPlainObject(obj[currentKey])) {
     deleteExactPathOnce(obj[currentKey], rest);
   }
 

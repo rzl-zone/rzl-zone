@@ -160,9 +160,6 @@ export function generateRoute<T>(
     "#",
     "=",
     "/",
-    // "`",
-    // " ",
-    // ".",
     "'",
     // eslint-disable-next-line quotes
     '"',

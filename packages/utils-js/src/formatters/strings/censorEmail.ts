@@ -77,10 +77,13 @@ export const censorEmail = (
   if (!emailRegex.test(email)) return "";
 
   const [local, domain] = email.split("@");
-  const domainParts = domain.split("."); // Handle multi-level domain (e.g., example.co.uk)
-  if (domainParts.length < 2) return ""; // Invalid domain structure
+  const domainParts = domain?.split("."); // Handle multi-level domain (e.g., example.co.uk)
+  if (!local || !domainParts || domainParts.length < 2) return ""; // Invalid domain structure
 
   const [domainName, ...tldParts] = domainParts;
+
+  if (!domainName) return "";
+
   const tld = tldParts.join(".");
 
   const hashSeed = hashSeedGenerate(mode, email);

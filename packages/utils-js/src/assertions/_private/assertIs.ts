@@ -214,7 +214,6 @@ type ParamsResolveErrorMessageAssertions<T> = {
  *    ```ts
  *       "Parameter input (`value`) must be of type `<validType>`, but received: `<currentType>`."
  *    ```
- * @private
  * @template T - The type of the value being checked.
  * @param {ParamsResolveErrorMessageAssertions<T>} params - Parameters object.
  * @param {ParamsResolveErrorMessageAssertions<T>["value"]} params.value - The value being asserted.
@@ -249,6 +248,8 @@ type ParamsResolveErrorMessageAssertions<T> = {
  * });
  * // ➔ "Parameter input (`value`) must be of type `boolean`, but received: `number`."
  * ```
+ *
+ * @internal
  */
 export function resolveErrorMessageAssertions<T>(
   params: ParamsResolveErrorMessageAssertions<T>

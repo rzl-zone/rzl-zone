@@ -8,7 +8,7 @@
 
 <p align="center">
   <i>
-    A lightweight, modern collection of TypeScript types and interfaces for Node.js & browser projects (via bundlers like <a href="https://webpack.js.org"><code>Webpack</code></a>, <a href="https://vercel.com/blog/turbopack"><code>Turbopack</code></a>, or <a href="https://vite.dev/"><code>Vite</code></a>).
+    A lightweight, modern collection of TypeScript types and interfaces for Node.js & browser projects (via bundlers like <a href="https://webpack.js.org/"><code>Webpack</code></a>, <a href="https://vercel.com/blog/turbopack/"><code>Turbopack</code></a>, <a href="https://rollupjs.org/"><code>Rollup</code></a>, <a href="https://esbuild.github.io/"><code>esbuild</code></a>, and higher-level tools like <a href="https://vite.dev/"><code>Vite</code></a>, <a href="https://tsup.egoist.dev/"><code>tsup</code></a> and <a href="https://tsdown.dev/"><code>tsdown</code></a>).
   </i><br/>
   <i>Provides reusable types to enhance type safety and improve code maintainability.</i><br/>
   <strong><i>Built with ❤️ by <a href="https://github.com/rzl-zone" target="_blank" rel="nofollow noreferrer noopener">@rzl-zone</a>.</i></strong>
@@ -73,7 +73,7 @@
 - **Minimum supported environments \***(recommended)**\*:**
   - ✅ Node.js (18.18.0+).
   - ✅ TypeScript (5.9.0+).
-  - ✅ Modern browsers (via bundlers like [`Webpack`](https://webpack.js.org), [`Turbopack`](https://vercel.com/blog/turbopack), or [`Vite`](https://vite.dev)).
+  - ✅ Modern browsers (via **ESM-compatible** bundlers such as [`Webpack`](https://webpack.js.org/), [`Turbopack`](https://vercel.com/blog/turbopack), [`Rollup`](https://rollupjs.org/), [`esbuild`](https://esbuild.github.io/), and higher-level tools like [`Vite`](https://vite.dev/), [`tsup`](https://tsup.egoist.dev/), and [`tsdown`](https://tsdown.dev/)).
 
 - **Recommended minimum `tsconfig` settings for full TypeScript support:**
   - `"strict": true`

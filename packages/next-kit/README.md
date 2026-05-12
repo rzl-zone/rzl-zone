@@ -68,19 +68,19 @@
 #### *With NPM*
 
 ```bash
-npm install @rzl-zone/next-kit
+npm install @rzl-zone/next-kit@latest
 ```
 
 #### *With Yarn*
 
 ```bash
-yarn add @rzl-zone/next-kit
+yarn add @rzl-zone/next-kit@latest
 ```
 
 #### *With PNPM*
 
 ```bash
-pnpm add @rzl-zone/next-kit
+pnpm add @rzl-zone/next-kit@latest
 ```
 
 ---
@@ -231,7 +231,7 @@ All core utilities are written in **TypeScript** with strong generics and inferr
 <h2 id="sponsor-this-package">❤️ <strong>Sponsor this package</strong></h2>
 
 **Help support development:**  
-**\*[👉 **Become a sponsor**](https://github.com/sponsors/rzl-app).\***
+***[👉 **Become a sponsor**](https://github.com/sponsors/rzl-app).***
 
 ---
 

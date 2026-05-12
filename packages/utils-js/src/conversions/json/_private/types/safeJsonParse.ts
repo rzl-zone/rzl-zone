@@ -9,10 +9,14 @@ type NonJsonParsableType = Omit<
 
 type Contains<T, U> = [Extract<T, U>] extends [never] ? false : true;
 
-/** @private ***The value type for the overload function {@link safeJsonParse | `safeJsonParse`}.*** */
+/**
+ * ***The value type for the overload function {@link safeJsonParse | `safeJsonParse`}.***
+ */
 export type UnknownValue = { undefined: true };
 
-/** @private ***The narrows type result for {@link safeJsonParse | `safeJsonParse`}.*** */
+/**
+ * ***The narrows type result for {@link safeJsonParse | `safeJsonParse`}.***
+ */
 export type SafeJsonParseResult<TData, T> =
   IfNotExtends<T, NonJsonParsableType> extends true
     ? T extends never

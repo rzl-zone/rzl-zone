@@ -143,14 +143,6 @@ export function assertIsArray<T>(
   value: T,
   options?: OptionsAssertIs
 ): asserts value is ArrayFallback<T>;
-// export function assertIsArray<T extends unknown[]>(
-//   value: T,
-//   options?: OptionsAssertIs
-// ): asserts value is Extract<T, unknown[]>;
-// export function assertIsArray<T extends readonly unknown[]>(
-//   value: T,
-//   options?: OptionsAssertIs
-// ): asserts value is Extract<T, readonly unknown[]>;
 export function assertIsArray(
   value: unknown,
   options?: OptionsAssertIs

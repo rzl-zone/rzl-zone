@@ -315,17 +315,6 @@ export const extractFileName = (
       payload = payload?.split?.("?")[0]?.split("#")[0]; // strip query/hash
       return payload?.trim() || null;
     }
-
-    // switch (scheme) {
-    //   case "tel":
-    //     return rest.trim() || null;
-    //   case "data": {
-    //     const commaIndex = rest.indexOf(",");
-    //     return commaIndex !== -1 ? rest.slice(commaIndex + 1).trim() || null : null;
-    //   }
-    //   default:
-    //     break;
-    // }
   }
 
   if (/^[a-z][a-z\d+\-.]*:\/{3,}/i.test(pathname)) {
@@ -406,5 +395,4 @@ export const extractFileName = (
   }
 
   return filename || null;
-  // return filename.includes(".") ? filename : null;
 };

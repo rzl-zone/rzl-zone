@@ -32,12 +32,14 @@ export const getInitialsName = (name: string | null | undefined): string => {
   const nameParts = name.split(" ");
 
   if (nameParts.length > 1) {
+    if (!(nameParts[0] && nameParts[1] && nameParts[1][0])) return "";
+
     // First letter of first and second words
-    return nameParts[0][0] + nameParts[1][0].toUpperCase();
+    return (nameParts[0][0] + nameParts[1][0]).toUpperCase();
   }
 
   return name.length > 1
     ? name.substring(0, 2).toUpperCase()
     : // First two letters for single-word names
-      name[0].toUpperCase();
+      (name[0]?.toUpperCase() ?? "");
 };

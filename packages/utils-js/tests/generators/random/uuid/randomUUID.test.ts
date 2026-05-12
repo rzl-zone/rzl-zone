@@ -18,25 +18,25 @@ const envStressCount = Number(
 
 // Utility helpers for restoring globals
 const savedGlobals: {
-  crypto?: any;
+  crypto?: Crypto;
   DateNow?: () => number;
 } = {};
 
 beforeEach(() => {
   // snapshot current
-  savedGlobals.crypto = (globalThis as any).crypto;
+  savedGlobals.crypto = globalThis.crypto;
   savedGlobals.DateNow = Date.now;
 });
 
 afterEach(() => {
   // restore
   try {
-    (globalThis as any).crypto = savedGlobals.crypto;
+    if (savedGlobals.crypto) globalThis.crypto = savedGlobals.crypto;
   } catch {
     // skip
   }
   try {
-    Date.now = savedGlobals.DateNow!;
+    if (savedGlobals.DateNow) Date.now = savedGlobals.DateNow;
   } catch {
     // skip
   }
@@ -143,9 +143,11 @@ describe("randomUUID (monotonic v7 strict mode)", () => {
     { timeout: 120_000 },
     () => {
       const ids: string[] = [];
+
       for (let i = 0; i < limitLoopTestMinimum; i++) {
         ids.push(randomUUID({ version: "v7", monotonic: true }));
       }
+
       const sorted = [...ids].sort();
       expect(ids).toEqual(sorted);
     }
@@ -158,6 +160,7 @@ describe("randomUUID (monotonic v7 strict mode)", () => {
       // Mock Date.now to return same ms for multiple calls
       const fixed = Date.now();
       let calls = 0;
+
       Date.now = () => {
         calls++;
         // return the same ms for first 10 calls, then advance
@@ -166,6 +169,7 @@ describe("randomUUID (monotonic v7 strict mode)", () => {
 
       // generate many ids, forcing repeated ms buckets
       const ids: string[] = [];
+
       for (let i = 0; i < limitLoopTestMinimum; i++) {
         ids.push(randomUUID({ version: "v7", monotonic: true }));
       }
@@ -178,15 +182,19 @@ describe("randomUUID (monotonic v7 strict mode)", () => {
     }
   );
 
-  it("should throw RangeError on monotonic overflow (theoretical test)", () => {
+  it("should throw RangeError on monotonic overflow (theoretical test)", async () => {
     // Simulate overflow by setting lastRand to all 0xff and same timestamp
     // Set state via internal mutation (not ideal but for test we can access via any)
     // This test assumes module-scoped state variable name `monotonicState` exists
     // If not accessible, just skip this test.
     try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const internal = require("@/generators/random/uuid/randomUUID") as any;
-      if (!internal || !internal.__test_expose_monotonic) {
+      const internal = await import("@/generators/random/uuid/randomUUID");
+
+      if (
+        !internal ||
+        !(internal as { __test_expose_monotonic?: unknown })
+          .__test_expose_monotonic
+      ) {
         // cannot access internals, skip gracefully
         // a valid library wouldn't expose internal state in prod file; in that case this test is a no-op
         expect(true).toBe(true);
@@ -208,6 +216,7 @@ describe("randomUUID (monotonic v7 stress test)", () => {
         limitLoopTestMinimum,
         Math.min(limitLoopTestMaximum, envStressCount)
       );
+
       const ids: string[] = [];
 
       for (let i = 0; i < count; i++) {
@@ -230,6 +239,7 @@ describe("randomUUID (monotonic v7 stress test)", () => {
     () => {
       // simulate browser-like crypto
       const originalCrypto = globalThis.crypto;
+
       try {
         vi.stubGlobal("crypto", {
           getRandomValues: (arr: Uint8Array) => {
@@ -240,7 +250,9 @@ describe("randomUUID (monotonic v7 stress test)", () => {
         });
 
         const count = limitLoopTestMinimum;
+
         const ids: string[] = [];
+
         for (let i = 0; i < count; i++) {
           ids.push(randomUUID({ version: "v7", monotonic: true }));
         }
@@ -263,16 +275,19 @@ describe("randomUUID (monotonic v7 stress test)", () => {
     { timeout: 120_000 },
     () => {
       const originalCrypto = globalThis.crypto;
+
       try {
         vi.stubGlobal("crypto", undefined);
 
         const count = limitLoopTestMinimum;
         const ids: string[] = [];
+
         for (let i = 0; i < count; i++) {
           ids.push(randomUUID({ version: "v7", monotonic: true }));
         }
 
         const sorted = [...ids].sort();
+
         expect(ids).toEqual(sorted);
         expect(new Set(ids).size).toBe(count);
       } finally {

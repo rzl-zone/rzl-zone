@@ -49,7 +49,7 @@ describe("assertIsNumber - respect to errorType options", () => {
     ] as const;
 
     errorTypes.forEach((type) => {
-      expect(() => assertIsNumber(val, { errorType: type })).toThrowError(
+      expect(() => assertIsNumber(val, { errorType: type })).toThrow(
         new globalThis[type](
           `Parameter input (\`value\`) must be of type \`number\`, but received: \`${getPreciseType(
             val
@@ -61,10 +61,10 @@ describe("assertIsNumber - respect to errorType options", () => {
 
   it("falls back to TypeError if invalid errorType is provided", () => {
     const val = "not a number" as unknown;
-    // @ts-expect-error: testing invalid errorType
     expect(() =>
+      // @ts-expect-error: testing invalid errorType
       assertIsNumber(val, { errorType: "SomeUnknownError" })
-    ).toThrowError(TypeError);
+    ).toThrow(TypeError);
     expect(() =>
       // @ts-expect-error: testing invalid errorType
       assertIsNumber(val, { errorType: "SomeUnknownError" })

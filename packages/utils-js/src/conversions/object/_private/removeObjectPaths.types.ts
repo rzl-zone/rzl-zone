@@ -53,7 +53,9 @@ type ChangeNeverArrayToArrayDeep<T> = T extends never[]
       ? { [K in keyof T]: ChangeNeverArrayToArrayDeep<T[K]> }
       : T;
 
-/** @private ***Types options for {@link removeObjectPaths | `removeObjectPaths`}.*** */
+/**
+ * ***Types options for {@link removeObjectPaths | `removeObjectPaths`}.***
+ */
 export type ConfigRemoveObjectPaths<T> = {
   /** ------------------------------------------------------------------------
    * * ***The dot-notation path to the property that should be removed.
@@ -110,7 +112,9 @@ export type ConfigRemoveObjectPaths<T> = {
   deep?: boolean;
 };
 
-/** @private ***Narrows types result for {@link removeObjectPaths | `removeObjectPaths`}.*** */
+/**
+ * ***Narrows types result for {@link removeObjectPaths | `removeObjectPaths`}.***
+ */
 export type ResultRemoveObjectPaths<
   T,
   K extends readonly ConfigRemoveObjectPaths<T>[]

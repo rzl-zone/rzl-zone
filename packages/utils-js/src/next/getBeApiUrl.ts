@@ -64,7 +64,7 @@ export const getBeApiUrl = (options: OptionsGetBeApiUrl = {}): string => {
 
     if (rawBaseUrl) {
       rawBaseUrl = removeSpaces(rawBaseUrl);
-      // const hasPort = /:\/\/[^/]+:\d+/.test(rawBaseUrl);
+
       const urlObj = new URL(rawBaseUrl);
       const hasPort = !!urlObj.port;
 

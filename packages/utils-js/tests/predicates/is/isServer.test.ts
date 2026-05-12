@@ -13,8 +13,8 @@ describe("isServer", () => {
     const originalWindow = globalThis.window;
     const originalDocument = globalThis.document;
 
-    globalThis.window = {} as any;
-    globalThis.document = {} as any;
+    globalThis.window = {} as Window & typeof globalThis;
+    globalThis.document = {} as Document;
 
     expect(isServer()).toBe(false);
 

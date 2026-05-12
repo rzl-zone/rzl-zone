@@ -122,7 +122,7 @@ export const omitKeysDeep = <I extends Record<string, unknown>>(
 
     const [current, ...rest] = pathParts;
 
-    if (isEmptyArray(rest)) {
+    if (isEmptyArray(rest) && current) {
       if (isArray(obj)) {
         // Support numeric index
         const index = parseInt(current);
@@ -133,8 +133,8 @@ export const omitKeysDeep = <I extends Record<string, unknown>>(
         delete obj[current];
       }
     } else {
-      const next = obj[current];
-      if (isObjectOrArray(next)) {
+      const next = current ? obj[current] : undefined;
+      if (isObjectOrArray(next) && current) {
         obj[current] = omitAtPath(next, rest);
       }
     }

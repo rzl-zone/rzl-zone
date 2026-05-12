@@ -159,12 +159,15 @@ export function chunkString(
     // as the words themselves are shorter than or equal to the limiter.
     let processedWord = "";
     let charCountInWord = 0;
-    for (let j = 0; j < word.length; j++) {
-      processedWord += word[j];
-      charCountInWord++;
-      if (charCountInWord === limiter && j < word.length - 1) {
-        processedWord += separator;
-        charCountInWord = 0;
+
+    if (word) {
+      for (let j = 0; j < word.length; j++) {
+        processedWord += word[j];
+        charCountInWord++;
+        if (charCountInWord === limiter && j < word.length - 1) {
+          processedWord += separator;
+          charCountInWord = 0;
+        }
       }
     }
 

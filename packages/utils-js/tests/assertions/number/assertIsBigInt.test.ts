@@ -21,9 +21,9 @@ describe("assertIsBigInt", () => {
   });
 
   it("should use custom string error message", () => {
-    expect(() =>
-      assertIsBigInt(42, { message: "Must be a bigint!" })
-    ).toThrowError("Must be a bigint!");
+    expect(() => assertIsBigInt(42, { message: "Must be a bigint!" })).toThrow(
+      "Must be a bigint!"
+    );
   });
 
   it("should use custom function error message", () => {
@@ -32,7 +32,7 @@ describe("assertIsBigInt", () => {
         message: (type) =>
           `Expected ${type.validType} but got (${type.currentType}).`
       })
-    ).toThrowError(/Expected bigint but got \(number\)/);
+    ).toThrow(/Expected bigint but got \(number\)/);
   });
 
   it("should respect formatCase option", () => {
@@ -42,7 +42,7 @@ describe("assertIsBigInt", () => {
           `Expected ${type.validType} but got (${type.currentType}).`,
         formatCase: "toKebabCase"
       })
-    ).toThrowError("Expected bigint but got (number).");
+    ).toThrow("Expected bigint but got (number).");
   });
 });
 
@@ -60,7 +60,7 @@ describe("assertIsBigInt - respect to errorType options", () => {
     ] as const;
 
     errorTypes.forEach((type) => {
-      expect(() => assertIsBigInt(val, { errorType: type })).toThrowError(
+      expect(() => assertIsBigInt(val, { errorType: type })).toThrow(
         new globalThis[type](
           `Parameter input (\`value\`) must be of type \`bigint\`, but received: \`${getPreciseType(
             val
@@ -72,10 +72,10 @@ describe("assertIsBigInt - respect to errorType options", () => {
 
   it("falls back to TypeError if invalid errorType is provided", () => {
     const val = 123 as unknown;
-    // @ts-expect-error: testing invalid errorType
     expect(() =>
+      // @ts-expect-error: testing invalid errorType
       assertIsBigInt(val, { errorType: "SomeUnknownError" })
-    ).toThrowError(TypeError);
+    ).toThrow(TypeError);
     expect(() =>
       // @ts-expect-error: testing invalid errorType
       assertIsBigInt(val, { errorType: "SomeUnknownError" })

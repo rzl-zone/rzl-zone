@@ -391,7 +391,8 @@ type _ProcessChild<
  * * Public type: Deeply converts numbers/strings to `number | undefined`,
  * * applies empty object/array removal, preserves special types.
  * ----------------------------------------------------------
- * @private ***Narrows types result for {@link toNumberDeep | `toNumberDeep`}.***
+ *
+ * **Narrows types result for {@link toNumberDeep | `toNumberDeep`}.***
  */
 export type ConvertedDeepNumber<
   T,
@@ -409,7 +410,9 @@ export type ConvertedDeepNumber<
       RemoveEmptyArrays
     >;
 
-/** @private ***Types options for {@link toNumberDeep | `toNumberDeep`}.*** */
+/**
+ * ***Types options for {@link toNumberDeep | `toNumberDeep`}.***
+ */
 export type ToNumberDeepOptions<
   RemoveEmptyObjects extends boolean = false,
   RemoveEmptyArrays extends boolean = false

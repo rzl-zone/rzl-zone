@@ -218,13 +218,40 @@ function generateUUIDv4(): string {
   // If crypto.getRandomValues available, use it for 16 bytes
   if (hasCryptoGetRandomValues()) {
     const rnd = crypto.getRandomValues(new Uint8Array(16));
+
+    if (
+      !rnd[0] ||
+      !rnd[1] ||
+      !rnd[2] ||
+      !rnd[3] ||
+      !rnd[4] ||
+      !rnd[5] ||
+      !rnd[6] ||
+      !rnd[7] ||
+      !rnd[8] ||
+      !rnd[9] ||
+      !rnd[10] ||
+      !rnd[11] ||
+      !rnd[12] ||
+      !rnd[13] ||
+      !rnd[14] ||
+      !rnd[15]
+    ) {
+      return "";
+    }
+
+    const byteToHex0 = byteToHex[rnd[0]];
+    const byteToHex1 = byteToHex[rnd[1]];
+
+    if (!byteToHex0 || !byteToHex1) return "";
+
     // Per RFC 4122: set version and variant
-    rnd[6] = (rnd[6] & 0x0f) | 0x40; // version 4
-    rnd[8] = (rnd[8] & 0x3f) | 0x80; // variant 10xx
+    rnd[6] = (rnd[6]! & 0x0f) | 0x40; // version 4
+    rnd[8] = (rnd[8]! & 0x3f) | 0x80; // variant 10xx
 
     return (
-      byteToHex[rnd[0]] +
-      byteToHex[rnd[1]] +
+      byteToHex0 +
+      byteToHex1 +
       byteToHex[rnd[2]] +
       byteToHex[rnd[3]] +
       "-" +
@@ -278,7 +305,9 @@ function incrementUint8ArrayBigEndian(arr: Uint8Array): boolean {
       arr[i] = 0x00;
       continue;
     }
-    arr[i] = (arr[i] + 1) & 0xff;
+
+    arr[i] = (arr[i]! + 1) & 0xff;
+
     return false; // no overflow
   }
   // overflowed (wrapped to zero)
@@ -319,14 +348,15 @@ function generateUUIDv7({
     }
   }
 
+  // if (!rand[0] || !rand[2]) return "";
   // If not monotonic, rand remains randomly generated above.
 
   // Now set version & variant bits into proper positions.
   // For v7 layout we used: timestamp (48 bits) + rand[0..9] (80 bits)
   // We must set version nibble into high nibble of rand[0] (time_hi_and_version)
   // and set variant bits into rand[2]'s high bits (clock_seq_hi_and_reserved)
-  rand[0] = (rand[0] & 0x0f) | 0x70; // version 7 (0x7 << 4)
-  rand[2] = (rand[2] & 0x3f) | 0x80; // variant 10xx
+  rand[0] = rand[0] ? (rand[0] & 0x0f) | 0x70 : 0; // version 7 (0x7 << 4)
+  rand[2] = rand[2] ? (rand[2] & 0x3f) | 0x80 : 0; // variant 10xx
 
   const randHex = Array.from(rand, (b) => byteToHex[b]).join("");
 

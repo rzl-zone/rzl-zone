@@ -18,7 +18,9 @@ import type { Nilable } from "@rzl-zone/ts-types-plus";
  *    - A readonly array of strings (`readonly string[]`)
  *    - `null` or `undefined`
  * @template T - A string or array of strings.
- * @private ***types input for {@link toCamelCase}, {@link toPascalCaseSpace}, {@link toPascalCase}, {@link toLowerCase}, {@link toKebabCase}, {@link toSnakeCase}, {@link toDotCase} and {@link slugify}.***
+ *
+ *
+ * @note ***Types input for {@link toCamelCase}, {@link toPascalCaseSpace}, {@link toPascalCase}, {@link toLowerCase}, {@link toKebabCase}, {@link toSnakeCase}, {@link toDotCase} and {@link slugify}.***
  */
 export type StringLike = Nilable<string | string[] | ReadonlyArray<string>>;
 
@@ -31,7 +33,9 @@ export type StringLike = Nilable<string | string[] | ReadonlyArray<string>>;
  *    - A readonly array of strings (`readonly string[]`)
  *    - A `Set<string>`
  *    - A `ReadonlySet<string>`
- * @private ***types options for {@link toCamelCase}, {@link toPascalCaseSpace}, {@link toPascalCase}, {@link toLowerCase}, {@link toKebabCase}, {@link toSnakeCase}, {@link toDotCase} and {@link slugify}.***
+ *
+ *
+ * @note ***Types options for {@link toCamelCase}, {@link toPascalCaseSpace}, {@link toPascalCase}, {@link toLowerCase}, {@link toKebabCase}, {@link toSnakeCase}, {@link toDotCase} and {@link slugify}.***
  */
 export type StringCollection =
   | string

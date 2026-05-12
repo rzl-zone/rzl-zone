@@ -9,7 +9,10 @@ import {
   type CountryCode
 } from "libphonenumber-js/max";
 
-/** @private ***Util constants `country code for special leading zero rule` for {@link formatPhoneNumber}.*** */
+/** ***Util constants `country code for special leading zero rule` for {@link formatPhoneNumber}.***
+ *
+ * @internal
+ */
 export const trunkZeroCountries: Record<string, string> = {
   "7": "Russia, Kazakhstan",
   "20": "Egypt",
@@ -69,7 +72,10 @@ export const trunkZeroCountries: Record<string, string> = {
   "379": "Vatican",
   "971": "UAE"
 };
-/** @private ***Util helper for {@link formatPhoneNumber}.*** */
+/** ***Util helper for {@link formatPhoneNumber}.***
+ *
+ * @internal
+ */
 export const isValidPhoneE164 = (value: unknown) => {
   if (!isNonEmptyString(value)) return false;
   return (
@@ -77,7 +83,10 @@ export const isValidPhoneE164 = (value: unknown) => {
   );
 };
 
-/** @private ***Util parsing `phone-number` for {@link formatPhoneNumber}.*** */
+/** ***Util parsing `phone-number` for {@link formatPhoneNumber}.***
+ *
+ * @internal
+ */
 export const parsingAsYouType = (
   value: string,
   defaultCountry?: CountryCode
@@ -99,7 +108,10 @@ type ValidParseAsYouType = Prettify<
   }
 >;
 
-/** @private ***Util validation parsing `phone-number` when using `AsYouType` for {@link formatPhoneNumber}.*** */
+/** ***Util validation parsing `phone-number` when using `AsYouType` for {@link formatPhoneNumber}.***
+ *
+ * @internal
+ */
 export const isValidParseAsYouType = (
   parsedAsYouType?: AsYouType
 ): parsedAsYouType is ValidParseAsYouType => {

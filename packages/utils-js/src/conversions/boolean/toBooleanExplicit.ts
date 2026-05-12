@@ -25,7 +25,7 @@ type ToBooleanExplicitOptions = {
   includeIndeterminate?: boolean;
 };
 
-/** ---------------------------------
+/** --------------------------------------------
  * * ***Utility: `toBooleanExplicit`.***
  * ---------------------------------------------
  * **Converts a value into a strict boolean.**

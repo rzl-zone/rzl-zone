@@ -1,6 +1,7 @@
 /** ----------------------------------------------------------
  * * ***Converts a union type into an intersection type.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
+ *
  * @template U - The union type to be converted.
  */
 export type UnionToIntersectionStrict<U> = (
@@ -11,7 +12,8 @@ export type UnionToIntersectionStrict<U> = (
 
 /** ----------------------------------------------------------
  * * ***Converts a union type into a tuple type.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
+ *
  * @template T - The union type to be converted.
  */
 export type UnionToTupleStrict<T> =

@@ -136,13 +136,5 @@ export const createBeApiUrl = (
         { cause: err }
       );
     }
-
-    // if (isError(err)) {
-    //   throw err;
-    // } else
-    //   throw new Error(
-    //     "Failed to generate backend API URL in `createBeApiUrl()`, Error: " +
-    //       new Error(String(err)).message.trim()
-    //   );
   }
 };

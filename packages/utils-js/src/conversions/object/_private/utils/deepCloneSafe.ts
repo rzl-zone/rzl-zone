@@ -3,7 +3,10 @@ import { isFunction } from "@/predicates/is/isFunction";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { removeObjectPaths } from "../../removeObjectPaths";
 
-/** @private ***Util helper for {@link removeObjectPaths | `removeObjectPaths`}.*** */
+/** ***Util helper for {@link removeObjectPaths | `removeObjectPaths`}.***
+ *
+ * @internal
+ */
 export const deepCloneSafe = <U>(obj: U): U => {
   try {
     if (isFunction(structuredClone)) {

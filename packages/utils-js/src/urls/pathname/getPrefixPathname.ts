@@ -1,3 +1,5 @@
+import { joinLines, EOL } from "@rzl-zone/build-tools/utils";
+
 import { isNull } from "@/predicates/is/isNull";
 import { isArray } from "@/predicates/is/isArray";
 import { isString } from "@/predicates/is/isString";
@@ -204,7 +206,10 @@ export const getPrefixPathname = (
   }
   if (isNonEmptyArray(errors)) {
     throw new TypeError(
-      `Invalid parameter(s) in \`getPrefixPathname\` function:\n- ${errors.join("\n- ")}`
+      joinLines(
+        "Invalid parameter(s) in `getPrefixPathname` function:",
+        `- ${errors.join(`${EOL}- `)}`
+      )
     );
   }
 
@@ -254,7 +259,7 @@ export const getPrefixPathname = (
 
     // If all results are the same, return just the first one
     if (uniqueResult.length === 1) {
-      return uniqueResult[0];
+      return uniqueResult[0] ?? null;
     }
 
     return uniqueResult;

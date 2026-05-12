@@ -1,14 +1,3 @@
-// /** @deprecated bugs */
-// export type IsArrayResult<T> = IsUnknown<T> extends true
-//   ? unknown[] & T
-//   : IsNever<T> extends true
-//   ? []
-//   : IsReadonlyArray<T> extends true
-//   ? T
-//   : IsArray<T> extends true
-//   ? T
-//   : unknown[];
-
 import type { ArrayFallback } from "@/_private/types.arrays";
 
 /** ----------------------------------------------------------
@@ -38,7 +27,6 @@ import type { ArrayFallback } from "@/_private/types.arrays";
  */
 export function isArray(value: []): value is [];
 export function isArray<T>(value: T): value is ArrayFallback<T>;
-// export function isArray<T>(value: T): value is IsNever<Extract<T, unknown[]>> extends true ? unknown[]: Extract<T, unknown[]>;
 export function isArray(value: unknown): value is unknown[];
 export function isArray(value: unknown): boolean {
   return Array.isArray(value);

@@ -61,7 +61,7 @@ export const capitalizeFirst = (
   if (trim) string = string.trim();
 
   return (
-    string[0].toUpperCase() +
+    (string[0] ? string[0].toUpperCase() : "") +
     (lowerCaseNextRest ? string.slice(1).toLowerCase() : string.slice(1))
   );
 };

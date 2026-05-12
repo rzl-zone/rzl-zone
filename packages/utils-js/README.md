@@ -4,13 +4,13 @@
   </a>
 </div>
 
-<h1 align="center"><strong>UtilsJS</strong></h1>
+<h1 align="center"><strong>Utils JS</strong></h1>
 
 <p align="center">
   <i>
-    A lightweight, modern TypeScript utility library for Node.js & browser (via bundlers like <a href="https://webpack.js.org"><code>Webpack</code></a>, <a href="https://vercel.com/blog/turbopack"><code>Turbopack</code></a>, or <a href="https://vite.dev/"><code>Vite</code></a>).
+    A lightweight, modern TypeScript utility library for Node.js & browser (via bundlers like <a href="https://webpack.js.org/"><code>Webpack</code></a>, <a href="https://vercel.com/blog/turbopack/"><code>Turbopack</code></a>, <a href="https://rollupjs.org/"><code>Rollup</code></a>, <a href="https://esbuild.github.io/"><code>esbuild</code></a>, and higher-level tools like <a href="https://vite.dev/"><code>Vite</code></a>, <a href="https://tsup.egoist.dev/"><code>tsup</code></a> and <a href="https://tsdown.dev/"><code>tsdown</code></a>).
   </i><br/>
-  <i>Provides reusable helpers to simplify your JavaScript or TypeScript projects.</i><br/>
+  <i>It provides reusable helpers to simplify everyday JavaScript and TypeScript tasks projects.</i><br/>
   <strong><i>Built with ❤️ by <a href="https://github.com/rzl-zone" target="_blank" rel="nofollow noreferrer noopener">@rzl-zone</a>.</i></strong>
 </p>
 
@@ -75,7 +75,7 @@
 - **Works with:**
   - ✅ Node.js (18.18.0+) - ***Without NextJS***.
   - ✅ Node.js (20.9.0, or higher depending on NextJS version) - ***With NextJS***.
-  - ✅ Modern browsers (via bundlers like [`Webpack`](https://webpack.js.org), [`Turbopack`](https://vercel.com/blog/turbopack), or [`Vite`](https://vite.dev)).
+  - ✅ Modern browsers (via **ESM-compatible** bundlers such as [`Webpack`](https://webpack.js.org/), [`Turbopack`](https://vercel.com/blog/turbopack), [`Rollup`](https://rollupjs.org/), [`esbuild`](https://esbuild.github.io/), and higher-level tools like [`Vite`](https://vite.dev/), [`tsup`](https://tsup.egoist.dev/), and [`tsdown`](https://tsdown.dev/)).
 
 - **TypeScript Build Info:**
   - Target: `ES2022`.
@@ -130,7 +130,7 @@ pnpm add @rzl-zone/utils-js@latest
 
   ✅ Safe to use in both Next.js pages & API routes.
 
-  [**Read More Docs**](/docs/next-js/global.md#docs-sub-main--title)
+  [**Read More Docs**](https://github.com/rzl-zone/rzl-zone/blob/main/packages/utils-js/docs/next-js/global.md#docs-sub-main--title)
 
   ---
 
@@ -139,7 +139,7 @@ pnpm add @rzl-zone/utils-js@latest
   
   > ⚠️ Will throw Error if used outside a ***Next.js* server environment**.
 
-  [**Read More Docs**](/docs/next-js/server-only.md#docs-sub-main--title)
+  [**Read More Docs**](https://github.com/rzl-zone/rzl-zone/blob/main/packages/utils-js/docs/next-js/server-only.md#docs-sub-main--title)
 
 ---
 
@@ -201,7 +201,7 @@ pnpm add @rzl-zone/utils-js@latest
   >   - Category utils of `tailwind`, `next`, `next/server`.  
   >   - Server-only features (like Next.js helpers) will **not** be available.  
   > - The global object provided is `RzlUtilsJs`.  
-  > - The CDN bundle is **~350KB minified**, for production, consider using bundlers or npm packages for smaller size and tree-shaking.
+  > - The CDN bundle is **~370KB+ minified**, for production, consider using bundlers or npm packages for smaller size and tree-shaking.
 
 ---
 

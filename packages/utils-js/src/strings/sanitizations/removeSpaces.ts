@@ -4,7 +4,8 @@ import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 type RemoveSpacesOptions = {
   /** If `true`, only trims the string, defaultValue: `false`.
    *
-   * @default false */
+   * @default false
+   */
   trimOnly?: boolean;
 };
 

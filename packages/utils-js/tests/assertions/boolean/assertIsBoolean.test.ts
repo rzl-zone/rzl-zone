@@ -99,7 +99,7 @@ describe("assertIsBoolean - respect to errorType options", () => {
     ] as const;
 
     errorTypes.forEach((type) => {
-      expect(() => assertIsBoolean(val, { errorType: type })).toThrowError(
+      expect(() => assertIsBoolean(val, { errorType: type })).toThrow(
         new globalThis[type](
           `Parameter input (\`value\`) must be of type \`boolean\`, but received: \`${getPreciseType(
             val
@@ -111,10 +111,10 @@ describe("assertIsBoolean - respect to errorType options", () => {
 
   it("falls back to TypeError if invalid errorType is provided", () => {
     const val = 42;
-    // @ts-expect-error: testing invalid errorType
     expect(() =>
+      // @ts-expect-error: testing invalid errorType
       assertIsBoolean(val, { errorType: "SomeUnknownError" })
-    ).toThrowError(TypeError);
+    ).toThrow(TypeError);
     expect(() =>
       // @ts-expect-error: testing invalid errorType
       assertIsBoolean(val, { errorType: "SomeUnknownError" })

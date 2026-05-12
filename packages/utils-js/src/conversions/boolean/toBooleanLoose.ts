@@ -5,7 +5,7 @@ import { isNumber } from "@/predicates/is/isNumber";
 import { isBoolean } from "@/predicates/is/isBoolean";
 import { isEmptyString } from "@/predicates/is/isEmptyString";
 
-/** ---------------------------------
+/** --------------------------------------------
  * * ***Utility: `toBooleanLoose`.***
  * ---------------------------------------------
  * **Converts a given value into a boolean (loose).**

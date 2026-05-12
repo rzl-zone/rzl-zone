@@ -319,8 +319,8 @@ describe("extractFileName - Type & Platform Edge Cases", () => {
 
     for (const v of invalidBools) {
       expect(() =>
-        // @ts-expect-error testing invalid domainAware type
         extractFileName("resume.com", {
+          // @ts-expect-error testing invalid domainAware type
           domainAware: v,
           domainName: "example.com"
         })

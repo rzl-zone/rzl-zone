@@ -53,7 +53,9 @@ export const parseCustomDate = (
   const dateParts = dateString.split(/[-/]/).map(Number);
   if (dateParts.length !== 3 || dateParts.some(isNaN)) return null;
 
-  let day: number, month: number, year: number;
+  let day: number | undefined,
+    month: number | undefined,
+    year: number | undefined;
 
   if (format === "DD/MM/YYYY") {
     [day, month, year] = dateParts;
@@ -63,10 +65,11 @@ export const parseCustomDate = (
     return null;
   }
 
-  month -= 1;
-  const date = new Date(year, month, day);
+  if (month) month -= 1;
+  const date = year && month && day ? new Date(year, month, day) : undefined;
 
   if (
+    !date ||
     date.getFullYear() !== year ||
     date.getMonth() !== month ||
     date.getDate() !== day

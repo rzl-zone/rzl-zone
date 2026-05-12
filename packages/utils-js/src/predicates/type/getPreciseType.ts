@@ -155,7 +155,10 @@ export type AcronymsList = (typeof PreciseType)["acronymsList"];
  * getPreciseType(new URLSearchParams, { formatCase: "toPascalCase", useAcronyms: true });
  * // ➔ "URLSearchParams"
  */
-export const getPreciseType = (() => {
+export const getPreciseType: (
+  value: unknown,
+  options?: GetPreciseTypeOptions
+) => string = (() => {
   const cache = new Map<string, PreciseType>();
   const MAX_CACHE_SIZE = 25;
 
@@ -193,28 +196,28 @@ export const getPreciseType = (() => {
       return ClassPrecise.converter(
         PreciseType.castableTable[
           PreciseType.normalizeKeyForCase("bigint constructor")
-        ]
+        ] ?? "bigint constructor"
       );
     }
     if (isNumberObject(value) || value === Number) {
       return ClassPrecise.converter(
         PreciseType.castableTable[
           PreciseType.normalizeKeyForCase("number constructor")
-        ]
+        ] ?? "number constructor"
       );
     }
     if (isStringObject(value) || value === String) {
       return ClassPrecise.converter(
         PreciseType.castableTable[
           PreciseType.normalizeKeyForCase("string constructor")
-        ]
+        ] ?? "string constructor"
       );
     }
     if (isBooleanObject(value) || value === Boolean) {
       return ClassPrecise.converter(
         PreciseType.castableTable[
           PreciseType.normalizeKeyForCase("boolean constructor")
-        ]
+        ] ?? "boolean constructor"
       );
     }
 
@@ -294,7 +297,7 @@ export const getPreciseType = (() => {
       return ClassPrecise.converter(
         PreciseType.castableTable[
           PreciseType.normalizeKeyForCase("iterator result")
-        ]
+        ] ?? "iterator result"
       );
     }
 

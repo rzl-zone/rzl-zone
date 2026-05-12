@@ -668,9 +668,13 @@ export class PreciseType {
     )
   );
 
-  /** @internal */
+  /**
+   * @internal
+   */
   private formatCase: GetPreciseTypeOptions["formatCase"] = "toKebabCase";
-  /** @internal */
+  /**
+   * @internal
+   */
   private useAcronyms: GetPreciseTypeOptions["useAcronyms"] = false;
 
   constructor(params?: GetPreciseTypeOptions) {
@@ -678,7 +682,9 @@ export class PreciseType {
     this.useAcronyms = params?.useAcronyms;
   }
 
-  /** @internal */
+  /**
+   * @internal
+   */
   private determineOptions(options?: GetPreciseTypeOptions) {
     return {
       formatCase: options?.formatCase || this.formatCase,
@@ -689,7 +695,10 @@ export class PreciseType {
   // ------------------------
   // Helpers for DOM detection
   // ------------------------
-  /** @internal */
+
+  /**
+   * @internal
+   */
   private getHtmlElementType(
     value: unknown,
     options?: GetPreciseTypeOptions
@@ -823,7 +832,10 @@ export class PreciseType {
 
     return this.converter(displayName, { formatCase, useAcronyms });
   }
-  /** @internal */
+
+  /**
+   * @internal
+   */
   private getCommentNodeType(
     value: unknown,
     options?: GetPreciseTypeOptions
@@ -840,7 +852,10 @@ export class PreciseType {
     }
     return null;
   }
-  /** @internal */
+
+  /**
+   * @internal
+   */
   private getTextNodeType(
     value: unknown,
     options?: GetPreciseTypeOptions
@@ -857,7 +872,10 @@ export class PreciseType {
     }
     return null;
   }
-  /** @internal */
+
+  /**
+   * @internal
+   */
   private getOtherNodeType(
     value: unknown,
     options?: GetPreciseTypeOptions
@@ -1119,8 +1137,6 @@ export class PreciseType {
    */
   public converter(input: string, options?: GetPreciseTypeOptions): string {
     const { formatCase, useAcronyms } = this.determineOptions(options);
-    // const formatCase = options?.formatCase || this.formatCase;
-    // const useAcronyms = options?.useAcronyms ?? this.useAcronyms;
 
     const ignoreWord = useAcronyms ? PreciseType.ACRONYMS : [];
 
@@ -1176,8 +1192,7 @@ export class PreciseType {
   public static normalizeKeyForCase(
     k: keyof typeof this.fixesRaw | AnyString
   ): string {
-    // eslint-disable-next-line no-useless-escape
-    return k.replace(/[\s_\-\.]+/g, "").toLowerCase();
+    return k.replace(/[\s_\-.]+/g, "").toLowerCase();
   }
 
   /** ----------------------------------------------------------
@@ -1195,7 +1210,7 @@ export class PreciseType {
    *
    * @readonly
    */
-  static get castableTable() {
+  static get castableTable(): typeof PreciseType.FIXES_CASTABLE_TABLE {
     return PreciseType.FIXES_CASTABLE_TABLE;
   }
 
@@ -1218,7 +1233,7 @@ export class PreciseType {
    *
    * @readonly
    */
-  static get specialType() {
+  static get specialType(): typeof this.SPECIAL_TYPE {
     return this.SPECIAL_TYPE;
   }
 
@@ -1250,7 +1265,7 @@ export class PreciseType {
    *
    * @readonly
    */
-  static get fixesRaw() {
+  static get fixesRaw(): typeof this.FIXES_RAW {
     return this.FIXES_RAW;
   }
 
@@ -1275,7 +1290,7 @@ export class PreciseType {
    *
    * @readonly
    */
-  static get acronymsList() {
+  static get acronymsList(): typeof this.ACRONYMS {
     return this.ACRONYMS;
   }
 }

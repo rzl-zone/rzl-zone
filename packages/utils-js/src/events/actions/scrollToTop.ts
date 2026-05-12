@@ -4,7 +4,9 @@ import { isServer } from "@/predicates/is/isServer";
 import { isPlainObject } from "@/predicates/is/isPlainObject";
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
-/** @private ***Types options for {@link scrollToTop | `scrollToTop`}.*** */
+/**
+ * ***Types options for {@link scrollToTop | `scrollToTop`}.***
+ */
 type ScrollToTopOptions = {
   /** ----------------------------------------------------------
    * * ***Scroll animation type.***

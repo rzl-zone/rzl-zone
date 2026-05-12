@@ -15,7 +15,9 @@ import { isArray } from "@/predicates/is/isArray";
 import { isNonEmptyArray } from "@/predicates/is/isNonEmptyArray";
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
-/** @private ***Util helper for {@link toCamelCase}, {@link toPascalCaseSpace}, {@link toPascalCase}, {@link toLowerCase}, {@link toKebabCase}, {@link toSnakeCase}, {@link toDotCase} and {@link slugify}.*** */
+/**
+ * @internal ***Util helper for {@link toCamelCase}, {@link toPascalCaseSpace}, {@link toPascalCase}, {@link toLowerCase}, {@link toKebabCase}, {@link toSnakeCase}, {@link toDotCase} and {@link slugify}.***
+ */
 export const validateCaseInputWordsCase = (
   input: NonNullable<StringLike>
 ): string[] => {
@@ -33,7 +35,9 @@ export const validateCaseInputWordsCase = (
   return result.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
 };
 
-/** @private ***Util helper for {@link toCamelCase}, {@link toPascalCaseSpace}, {@link toPascalCase}, {@link toLowerCase}, {@link toKebabCase}, {@link toSnakeCase}, {@link toDotCase} and {@link slugify}.*** */
+/**
+ * @internal ***Util helper for {@link toCamelCase}, {@link toPascalCaseSpace}, {@link toPascalCase}, {@link toLowerCase}, {@link toKebabCase}, {@link toSnakeCase}, {@link toDotCase} and {@link slugify}.***
+ */
 export const validateCaseIgnoreWordsCase = (
   ignoreWord?: StringCollection
 ): Set<string> => {

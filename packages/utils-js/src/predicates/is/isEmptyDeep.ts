@@ -53,12 +53,6 @@ export const isEmptyDeep = (value: unknown): boolean => {
   if (isObjectOrArray(value)) {
     const keys = Object.keys(value);
     const symbols = Object.getOwnPropertySymbols(value);
-    // return (
-    //   [...keys, ...symbols].length === 0 ||
-    //   [...keys, ...symbols].every((key) =>
-    //     isObject(value) && isString(key) ? isEmptyDeep(value[key]) : key
-    //   )
-    // );
 
     if (keys.length === 0 && symbols.length === 0) return true;
 

@@ -9,49 +9,66 @@
 import { getPreciseType } from "@/predicates/type/getPreciseType";
 import { assertIsString } from "@/assertions/strings/assertIsString";
 
-/** Constant `maxInt` for validate. */
+/**
+ * Constant `maxInt` for validate.
+ */
 const maxInt = 2147483647;
 
-/** Bootstring parameters for `Punycode-UtilsJS`. */
+/**
+ * Bootstring parameters for `Punycode-UtilsJS`.
+ */
 const base = 36,
   tMin = 1,
   tMax = 26,
   skew = 38,
   damp = 700;
 
-/** Initial bias and code point. */
+/**
+ * Initial bias and code point.
+ */
 const initialBias = 72,
   initialN = 128,
   delimiter = "-";
 
-/** Regular expressions used internally.
+/**
+ * Regular expressions used internally.
  * Matches `Punycode-UtilsJS` prefix.
  */
 const regexPunycode = /^xn--/;
-/** Regular expressions used internally.
+/**
+ * Regular expressions used internally.
  * Matches non-ASCII chars.
  */
 const regexNonASCII = /[^\0-\x7F]/;
-/** Regular expressions used internally.
+/**
+ * Regular expressions used internally.
  * Matches domain label separators.
  */
 const regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g;
 
-/** Error messages used internally */
+/**
+ * Error messages used internally.
+ */
 const errors: Record<string, string> = {
   overflow: "Overflow: input needs wider integers to process",
   "not-basic": "Illegal input >= 0x80 (not a basic code point)",
   "invalid-input": "Invalid input"
 };
 
-/** Aliases of `Math.floor`. */
+/**
+ * Aliases of `Math.floor`.
+ */
 const floor = Math.floor;
-/** Aliases of `String.fromCharCode`. */
+/** 
+ * Aliases of `String.fromCharCode`.
+
+*/
 const stringFromCharCode = String.fromCharCode;
 
 /** ---------------------------------------------------------
  * * ***Throws a RangeError with a predefined error message.***
  * ---------------------------------------------------------
+ *
  * @param type - Key of the error type to throw.
  */
 function error(type: keyof typeof errors): never {
@@ -61,6 +78,7 @@ function error(type: keyof typeof errors): never {
 /** ---------------------------------------------------------
  * * ***Maps an array using a callback function.***
  * ---------------------------------------------------------
+ *
  * @param array - Array to transform.
  * @param fn - Function to apply to each element.
  * @returns Transformed array.
@@ -68,13 +86,18 @@ function error(type: keyof typeof errors): never {
 function map<T, U>(array: T[], fn: (v: T) => U): U[] {
   const result: U[] = [];
   let length = array.length;
-  while (length--) result[length] = fn(array[length]);
+  while (length--) {
+    if (array[length]) {
+      result[length] = fn(array[length]!);
+    }
+  }
   return result;
 }
 
 /** ---------------------------------------------------------
  * * ***Maps a domain name using a callback on each label.***
  * ---------------------------------------------------------
+ *
  * Handles email-like domains (local@domain).
  * @param domain - Domain string to process.
  * @param fn - Function applied to each domain label.
@@ -85,7 +108,7 @@ function mapDomain(domain: string, fn: (v: string) => string): string {
   let result = "";
   if (parts.length > 1) {
     result = parts[0] + "@";
-    domain = parts[1];
+    if (parts[1]) domain = parts[1];
   }
   domain = domain.replace(regexSeparators, "\x2E");
   const labels = domain.split(".");
@@ -95,6 +118,7 @@ function mapDomain(domain: string, fn: (v: string) => string): string {
 /** ---------------------------------------------------------
  * * ***Converts a UCS-2 encoded string to an array of Unicode code points.***
  * ---------------------------------------------------------
+ *
  * @param input - String to decode.
  * @returns Array of Unicode code points.
  */
@@ -125,6 +149,7 @@ function ucs2decode(input: string): number[] {
 /** ---------------------------------------------------------
  * * ***Encodes an array of Unicode code points to a string.***
  * ---------------------------------------------------------
+ *
  * @param points - Array of Unicode code points.
  * @returns Encoded string.
  */
@@ -146,6 +171,7 @@ const ucs2encode = (points: number[]): string => {
 /** ---------------------------------------------------------
  * * ***Converts a basic code point to its digit value for `Punycode-UtilsJS`.***
  * ---------------------------------------------------------
+ *
  * @param codePoint - Unicode code point.
  * @returns Digit value.
  */
@@ -159,6 +185,7 @@ function basicToDigit(codePoint: number): number {
 /** ---------------------------------------------------------
  * * ***Converts a digit to a basic code point for `Punycode-UtilsJS`.***
  * ---------------------------------------------------------
+ *
  * @param digit - Numeric value.
  * @param flag - Bias flag (0 or 1).
  * @returns Code point.
@@ -170,6 +197,7 @@ function digitToBasic(digit: number, flag: number): number {
 /** ---------------------------------------------------------
  * * ***Bias adaptation function for `Punycode-UtilsJS` encoding/decoding.***
  * ---------------------------------------------------------
+ *
  * @param delta - Delta value.
  * @param numPoints - Number of code points.
  * @param firstTime - Indicates first adaptation.
@@ -189,6 +217,7 @@ function adapt(delta: number, numPoints: number, firstTime: boolean): number {
 /** ---------------------------------------------------------
  * * ***Decodes a `Punycode-UtilsJS` string to Unicode.***
  * ---------------------------------------------------------
+ *
  * @param input - `Punycode-UtilsJS` string.
  * @returns Decoded Unicode string.
  */
@@ -240,6 +269,7 @@ function decode(input: string): string {
 /** ---------------------------------------------------------
  * * ***Encodes a Unicode string to `Punycode-UtilsJS`.***
  * ---------------------------------------------------------
+ *
  * @param input - Unicode string.
  * @returns `Punycode-UtilsJS` string.
  */
@@ -303,6 +333,7 @@ function encode(input: string): string {
 /** ---------------------------------------------------------
  * * ***Converts `Punycode-UtilsJS` to Unicode for domain names.***
  * ---------------------------------------------------------
+ *
  * @param input - Domain or label.
  * @returns Unicode string.
  */
@@ -320,6 +351,7 @@ function toUnicode(input: string): string {
 /** ---------------------------------------------------------
  * * ***Converts Unicode to ASCII (`Punycode-UtilsJS`) for domain names.***
  * ---------------------------------------------------------
+ *
  * @param input - Domain or label.
  * @returns ASCII string.
  */
@@ -437,5 +469,7 @@ const punycodeUtilsJS: PunycodeUtilsJS = {
   toUnicode: toUnicode
 };
 
-/** Export individual functions */
+/**
+ * Export individual functions.
+ */
 export { punycodeUtilsJS };

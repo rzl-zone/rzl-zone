@@ -71,7 +71,7 @@ describe("findDuplicates", () => {
   it("should handle mixed types properly", () => {
     const result = findDuplicates([1, "1", true, false, true, "1", 1]);
     expect(result).toEqual(expect.arrayContaining([true, "1", 1]));
-    expect(result.length).toBe(3); // pastikan totalnya tepat
+    expect(result.length).toBe(3); // ensure exactly total
   });
 
   it("should handle mixed types properly with controlled order", () => {

@@ -90,7 +90,8 @@ export const formatNumber = (
 
   // Split into integer and decimal parts
   let integerPart = stringValue;
-  let decimalPart = "";
+  let decimalPart: string | undefined;
+
   if (actualDecimal) {
     const parts = stringValue.split(actualDecimal);
     integerPart = parts.slice(0, -1).join(actualDecimal); // merge if more than one

@@ -6,7 +6,10 @@ import { isObjectOrArray } from "@/predicates/is/isObjectOrArray";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { removeObjectPaths } from "../../removeObjectPaths";
 
-/** @private ***Util helper for {@link removeObjectPaths | `removeObjectPaths`}.*** */
+/** ***Util helper for {@link removeObjectPaths | `removeObjectPaths`}.***
+ *
+ * @internal
+ */
 export const deleteNestedKey = <T extends Record<string, unknown> | unknown[]>(
   obj: T,
   path: string[]
@@ -20,9 +23,13 @@ export const deleteNestedKey = <T extends Record<string, unknown> | unknown[]>(
       // recursive pass same path
       if (isObjectOrArray(item)) deleteNestedKey(item, path);
     }
-  } else if (isEmptyArray(rest)) {
-    if (isPlainObject(obj)) delete obj[currentKey];
-  } else if (isPlainObject(obj) && isObjectOrArray(obj[currentKey])) {
+  } else if (isEmptyArray(rest) && isPlainObject(obj) && currentKey) {
+    delete obj[currentKey];
+  } else if (
+    isPlainObject(obj) &&
+    currentKey &&
+    isObjectOrArray(obj[currentKey])
+  ) {
     deleteNestedKey(obj[currentKey], rest);
   }
 

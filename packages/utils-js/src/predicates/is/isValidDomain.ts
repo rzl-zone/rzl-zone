@@ -1,3 +1,5 @@
+import { joinLines, EOL } from "@rzl-zone/build-tools/utils";
+
 import { punycodeUtilsJS } from "@/urls/utils/punyCode";
 import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
 import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
@@ -181,21 +183,26 @@ export function isValidDomain(
 
   if (invalid.length) {
     const msg = invalid
-      .map(
-        ([key, value], i) =>
-          `   ${i + 1}. option: "${key}"\n` +
-          "      expected: boolean\n" +
+      .map(([key, value], i) => {
+        return joinLines(
+          `   ${i + 1}. option: "${key}"`,
+          "      expected: boolean",
           `      received: ${getPreciseType(value)} (${safeStableStringify(
             value,
             {
               keepUndefined: true
             }
           )})`
-      )
-      .join("\n");
+        );
+      })
+      .join(EOL);
 
     throw new TypeError(
-      `\n> Invalid options detected in second parameter of \`isValidDomain\`:\n${msg}`
+      joinLines(
+        "",
+        "> Invalid options detected in second parameter of `isValidDomain`:",
+        msg
+      )
     );
   }
   // -----------------

@@ -8,7 +8,7 @@ import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
 /** -------------------------------------------------
  * * ***Utility: `toBooleanContentDeep`.***
- * ---------------------------------------------
+ * --------------------------------------------------
  * **This function does a deep inspection to determine if the input
  * contains any meaningful / non-empty value.**
  * @description

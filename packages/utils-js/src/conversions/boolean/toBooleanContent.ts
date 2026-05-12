@@ -7,7 +7,7 @@ import { isBoolean } from "@/predicates/is/isBoolean";
 import { isNonEmptyValue } from "@/predicates/is/isNonEmptyValue";
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
-/** ---------------------------------
+/** --------------------------------------------
  * * ***Utility: `toBooleanContent`.***
  * ---------------------------------------------
  * **Converts a given value into a boolean (***strict***).**

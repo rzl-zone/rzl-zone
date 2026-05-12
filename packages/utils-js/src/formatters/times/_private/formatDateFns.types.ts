@@ -1,20 +1,15 @@
 import type { FormatOptions, Locale } from "date-fns";
 import type { AnyString, OmitStrict, Prettify } from "@rzl-zone/ts-types-plus";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { formatDateFns } from "../formatDateFns";
-
 /** ----------------------------------------------------------------------
  * * ***Options for formatting dates with `date-fns/format`.***
  * ----------------------------------------------------------------------
  *
  * Extends the base **{@link FormatOptions | *`FormatOptions`*}** (without **`locale`**) with extra options
  * for handling output formatting, localization, and parsing non-standard inputs.
- *
- * @private ***types for {@link formatDateFns}.***
  */
 export type FormatDateFnsOptions = Prettify<
-  OmitStrict<FormatOptions, "locale", true, false> & {
+  OmitStrict<FormatOptions, "locale", { recursive: false }> & {
     /** ------------------------------------------------------------
      * * ***Output format string passed to `date-fns/format`.***
      * ------------------------------------------------------------

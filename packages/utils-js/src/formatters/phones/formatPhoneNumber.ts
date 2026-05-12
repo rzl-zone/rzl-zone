@@ -736,8 +736,10 @@ export function formatPhoneNumber(
   if (outputFormat === "INTERNATIONAL") {
     // Split to: ["+49", "1512", "3456789"]
     const [cc, ...rest] = intlNumb.split(" ");
-    const countryCode = prependPlusCountryCode ? cc : cc.replace(/^\++/, "");
+    const countryCode = prependPlusCountryCode ? cc : cc?.replace(/^\++/, "");
     const restWithSeparator = rest.join(separator);
+
+    if (!countryCode) return restWithSeparator;
 
     if (
       isNonEmptyString(openingNumberCountry) &&

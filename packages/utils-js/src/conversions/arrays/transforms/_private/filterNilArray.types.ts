@@ -19,13 +19,13 @@ type ElementOf<A extends readonly unknown[]> = A extends readonly (infer U)[]
  * ----------------------------------------------------------
  *
  * for a tuple/array A by using the element type (without null|undefined).
- *
  */
 export type FilterNilArrayFromTuple<A extends readonly unknown[]> =
   FilterNilArray<ExcludeNil<ElementOf<A>>>;
 
 /** ----------------------------------------------------------
- * ***Preserve `mutability`: if A is mutable (extends unknown[]), keep B; otherwise make B readonly***. */
+ * ***Preserve `mutability`: if A is mutable (extends unknown[]), keep B; otherwise make B readonly***.
+ */
 export type PreserveMutability<
   A extends readonly unknown[],
   B

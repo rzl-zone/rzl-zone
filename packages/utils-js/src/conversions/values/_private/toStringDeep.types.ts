@@ -405,7 +405,7 @@ type HasArrayDeep<T> = T extends unknown[]
  * * Public type: Deeply converts numbers/strings to `string`,
  * * applies empty object/array removal, preserves special types.
  * ----------------------------------------------------------
- * @private ***Narrows types result for {@link toStringDeep | `toStringDeep`}.***
+ * ***Narrows types result for {@link toStringDeep | `toStringDeep`}.***
  */
 export type ConvertedDeepString<
   T,
@@ -425,7 +425,9 @@ export type ConvertedDeepString<
       RemoveEmptyArrays
     >;
 
-/** @private ***Types options for {@link toStringDeep | `toStringDeep`}.*** */
+/**
+ * ***Types options for {@link toStringDeep | `toStringDeep`}.***
+ */
 export type ToStringDeepOptions<
   RemoveEmptyObjects extends boolean = false,
   RemoveEmptyArrays extends boolean = false

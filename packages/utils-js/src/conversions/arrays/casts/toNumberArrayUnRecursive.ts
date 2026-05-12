@@ -24,7 +24,7 @@ import { filterNilArray } from "../transforms/filterNilArray";
  *    - Other values ➔ coerced into `undefined`.
  *    - Invalid values can be **removed** (`removeInvalidValueNumber: true`) or **kept** (`false`).
  * - **ℹ️ Note:**
- *    - _For recursive / nested arrays, use ***`toNumberDeep` utility function*** instead._
+ *    - *For recursive / nested arrays, use ***`toNumberDeep` utility function*** instead.*
  * @template T - Element type of the input array.
  * @template R - Whether invalid values should be removed (`true`) or kept (`false`).
  * @param {Array<T> | readonly T[] | null | undefined} [array] - The array to convert, returns `undefined` if not an array.

@@ -2,7 +2,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { safeJsonParse } from "../../safeJsonParse";
 
-/** * ***Util Helper for {@link safeJsonParse | `safeJsonParse`}.***  */
+/** * ***Util Helper for {@link safeJsonParse | `safeJsonParse`}.***
+ *
+ * @internal
+ */
 export function fixSingleQuotesEscapeBackslash(input: string): string {
   const validEscapes = new Set(["\\", '"', "/", "b", "f", "n", "r", "t", "u"]);
 

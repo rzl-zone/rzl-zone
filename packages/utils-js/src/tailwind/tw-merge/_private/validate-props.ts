@@ -13,8 +13,14 @@ import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
 export type TailwindConfig = TwConfig;
 
+/**
+ * @internal
+ */
 type TwMergeConfigExt = ConfigExtension<string, string>;
 
+/**
+ * @internal
+ */
 type ValidatorTwMergeReturn = {
   config: TwConfig;
   override: TwMergeConfigExt["override"];
@@ -36,6 +42,9 @@ type ValidatorTwMergeReturn = {
   >;
 };
 
+/**
+ * @internal
+ */
 export const validatorPropsTwMerge = (
   options: OptionsMergeTwClsV4
 ): ValidatorTwMergeReturn => {
