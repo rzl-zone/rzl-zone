@@ -1,5 +1,13 @@
 # @rzl-zone/build-tools
 
+## 0.0.12-beta.0
+
+### Patch Changes
+
+- c29c9c2: Integrate `@rzl-zone/utils-js` into the monorepo, update workspace dependencies, upgrade tooling versions, and improve package documentation.
+- Updated dependencies [c29c9c2]
+  - @rzl-zone/node-only@0.0.10-beta.0
+
 ## 0.0.11
 
 ### Patch Changes
