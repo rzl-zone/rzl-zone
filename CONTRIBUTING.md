@@ -1,12 +1,13 @@
 # 🙌 Contributing to **@rzl-zone**
 
 Hi there! 🎉  
-Thanks for considering contributing to **@rzl-zone** packages.  
+Thanks for considering contributing to **@rzl-zone** packages.
+
 This repository is a **monorepo** containing multiple tools such as:
 
-- `@rzl-zone/next-kit`.
-- `@rzl-zone/utils-js`.
-- `@rzl-zone/ts-types-plus`.
+- `@rzl-zone/next-kit`
+- `@rzl-zone/utils-js`
+- `@rzl-zone/ts-types-plus`
 - and more.
 
 ---
@@ -15,114 +16,150 @@ This repository is a **monorepo** containing multiple tools such as:
 
 We welcome all contributions, including:
 
-- 🐛 Bug reports.
-- ✨ Feature requests.
-- 📝 Improving documentation.
-- 🛠 Code improvements or new utility functions.
+- 🐛 Bug reports
+- ✨ Feature requests
+- 📝 Documentation improvements
+- 🛠 Code improvements or new utility functions
 
 ---
 
-## 🚀 Getting started.
+## 🚀 Getting started
 
-1. **Fork the repository**
+1. Fork the repository
 
-    Click on the `Fork` button at the top right of this repo page.  
+    Click the [`Fork`](https://github.com/rzl-zone/rzl-zone/tree/dev) button at the top right of this repository page.
 
-2. **Clone your fork**
+2. Clone your fork
 
     ```bash
     git clone https://github.com/YOUR-USERNAME/rzl-zone.git
     cd rzl-zone
     ```
 
-3. **Install dependencies**  
+3. Install dependencies
 
     ```bash
     pnpm install
     ```
 
-4. **Choose a package to work on**
+4. Sync with the latest `dev` branch
+
+    ```bash
+    git checkout dev
+    git pull origin dev
+    ```
+
+5. Create a new branch
+
+    ```bash
+    git checkout -b feature/my-awesome-feature
+    ```
+
+6. Choose a package to work on
 
     ```txt
     packages/
       ├─ next-kit
       ├─ utils-js
       ├─ ts-types-plus
-
     ```
 
-    **Example:**
+    Example:
 
     ```bash
-    cd packages/next-kit
+    cd packages/utils-js
     ```
 
-5. **Run dev mode (filtered)**
+7. Run development mode
 
-    **From the repo root:**
+    From the repository root:
 
     ```bash
-    pnpm -F @rzl-zone/next-kit dev
+    pnpm -F @rzl-zone/utils-js dev
     ```
 
-    **or with Turbo:**
+    Or with Turbo:
 
     ```bash
-    pnpm turbo run dev --filter=@rzl-zone/next-kit
+    pnpm turbo run dev --filter=@rzl-zone/utils-js
     ```
 
-6. **Create a new branch**
+8. Make your changes
+
+    - Add tests if applicable
+    - Follow existing patterns & conventions
+    - Keep code clean and focused
+
+9. Build & test your code
 
     ```bash
-    git checkout -b feature/my-awesome-feature
+    pnpm -F @rzl-zone/utils-js build
     ```
 
-7. **Make your changes, add tests if needed.**
-
-    - Add tests if applicable.
-    - Follow existing patterns & conventions.
-  
-8. **Build & test your code**
-
-    ```bash
-    pnpm -F @rzl-zone/next-kit build
-    ```
-
-9. **Commit your changes**
+10. Commit your changes
 
     ```bash
     git add .
-    git commit -m "feat(next-kit): add awesome feature"
+    git commit -m "feat(utils-js): add awesome feature"
     ```
 
-10. **Push & open a Pull Request**
+11. Push & open a Pull Request
 
     ```bash
     git push origin feature/my-awesome-feature
     ```
 
-    **Then open a PR on GitHub 🎉**
+    Then open a Pull Request on GitHub 🎉
 
 ---
 
-## ✨ Code style.
+## 🌿 Branching strategy
 
-- Use TypeScript.
-- Follow existing folder & file structure.
-- Keep functions small & focused.
-- Write meaningful, scoped commit messages.
+Please create your Pull Request against the `dev` branch.
+
+When opening a PR on GitHub, make sure:
+
+- `base:` is `dev`
+- `compare:` is your feature branch
+
+Branch flow:
+
+```txt
+feature/* → dev → beta → main
+```
 
 ---
 
-## ✅ Before you submit.
+## ✨ Code style
 
-- Ensure the build passes.
-- No TypeScript or lint errors.
-- PR targets the correct change.
+- Use TypeScript
+- Follow the existing folder & file structure
+- Keep functions small & focused
+- Write meaningful scoped commit messages
+
+Example:
+
+```bash
+feat(next-kit): add auth middleware helper
+fix(utils-js): resolve deep merge issue
+docs(ts-types-plus): improve README examples
+```
 
 ---
 
-## ❤️ Thank you.
+## ✅ Before you submit
+
+Make sure:
+
+- The build passes
+- No TypeScript errors
+- No lint errors
+- Your branch is up to date with `dev`
+- Your PR targets the correct branch
+
+---
+
+## ❤️ Thank you
 
 We appreciate your contribution.  
 Whether it's a tiny typo fix or a new utility function — you're awesome! ✨  
