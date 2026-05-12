@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.13.0-beta.2
+
+### Minor Changes
+
+- cb2bfb1: migrate Next.js utilities into `@rzl-zone/next-kit` and add optimized Tailwind merge APIs to `@rzl-zone/utils-js`
+
 ## 3.12.1-beta.1
 
 ### Patch Changes
