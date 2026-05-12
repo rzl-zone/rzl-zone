@@ -1,5 +1,12 @@
 # @rzl-zone/ts-types-plus
 
+## 0.1.6
+
+### Patch Changes
+
+- c29c9c2: Integrate `@rzl-zone/utils-js` into the monorepo, update workspace dependencies, upgrade tooling versions, and improve package documentation.
+- 3a85092: Improve `README` documentation and adjust internal `noUncheckedIndexedAccess` handling logic at `@rzl-zone/utils-js`
+
 ## 0.1.6-beta.1
 
 ### Patch Changes
