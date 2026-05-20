@@ -1,18 +1,18 @@
 # @rzl-zone/core
 
-## 0.0.11
+## 0.0.11 (2026-05-20)
 
 ### Patch Changes
 
 - @rzl-zone/utils-js@3.13.1
 
-## 0.0.11-beta.0
+## 0.0.11-beta.0 (2026-05-20)
 
 ### Patch Changes
 
 - @rzl-zone/utils-js@3.13.1-beta.0
 
-## 0.0.10
+## 0.0.10 (2026-05-12)
 
 ### Patch Changes
 
@@ -24,28 +24,28 @@
   - @rzl-zone/node-only@0.0.10
   - @rzl-zone/utils-js@3.13.0
 
-## 0.0.10-beta.3
+## 0.0.10-beta.3 (2026-05-12)
 
 ### Patch Changes
 
 - Updated dependencies [9f0627e]
   - @rzl-zone/utils-js@3.13.0-beta.3
 
-## 0.0.10-beta.2
+## 0.0.10-beta.2 (2026-05-12)
 
 ### Patch Changes
 
 - Updated dependencies [cb2bfb1]
   - @rzl-zone/utils-js@3.13.0-beta.2
 
-## 0.0.10-beta.1
+## 0.0.10-beta.1 (2026-05-12)
 
 ### Patch Changes
 
 - Updated dependencies [3a85092]
   - @rzl-zone/utils-js@3.12.1-beta.1
 
-## 0.0.10-beta.0
+## 0.0.10-beta.0 (2026-05-12)
 
 ### Patch Changes
 
@@ -54,7 +54,7 @@
   - @rzl-zone/node-only@0.0.10-beta.0
   - @rzl-zone/utils-js@3.12.1-beta.0
 
-## 0.0.9
+## 0.0.9 (2026-04-30)
 
 ### Patch Changes
 
@@ -62,7 +62,7 @@
 - Updated dependencies [9a5c803]
   - @rzl-zone/node-only@0.0.9
 
-## 0.0.8
+## 0.0.8 (2026-04-28)
 
 ### Patch Changes
 
@@ -70,7 +70,7 @@
 - Updated dependencies [e3c093f]
   - @rzl-zone/node-only@0.0.8
 
-## 0.0.7
+## 0.0.7 (2026-04-25)
 
 ### Patch Changes
 

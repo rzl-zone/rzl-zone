@@ -1,6 +1,6 @@
 # @rzl-zone/build-tools
 
-## 0.0.12
+## 0.0.12 (2026-05-12)
 
 ### Patch Changes
 
@@ -8,7 +8,7 @@
 - Updated dependencies [c29c9c2]
   - @rzl-zone/node-only@0.0.10
 
-## 0.0.12-beta.0
+## 0.0.12-beta.0 (2026-05-12)
 
 ### Patch Changes
 
@@ -16,7 +16,7 @@
 - Updated dependencies [c29c9c2]
   - @rzl-zone/node-only@0.0.10-beta.0
 
-## 0.0.11
+## 0.0.11 (2026-05-08)
 
 ### Patch Changes
 
@@ -25,7 +25,7 @@
   - Normalize validation and process errors into a consistent async pattern
   - Clean internal frames from stack traces for better developer experience
 
-## 0.0.10
+## 0.0.10 (2026-04-30)
 
 ### Patch Changes
 
@@ -33,7 +33,7 @@
 - Updated dependencies [9a5c803]
   - @rzl-zone/node-only@0.0.9
 
-## 0.0.9
+## 0.0.9 (2026-04-28)
 
 ### Patch Changes
 
@@ -41,13 +41,13 @@
 - Updated dependencies [e3c093f]
   - @rzl-zone/node-only@0.0.8
 
-## 0.0.8
+## 0.0.8 (2026-04-27)
 
 ### Patch Changes
 
 - e9110f0: Improve docs wording and refine `generatePackageBanner` error handling.
 
-## 0.0.7
+## 0.0.7 (2026-04-25)
 
 ### Patch Changes
 

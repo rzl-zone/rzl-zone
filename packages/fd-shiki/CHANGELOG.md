@@ -1,6 +1,6 @@
 # @workspace/fd-shiki
 
-## 0.0.6
+## 0.0.6 (2026-05-20)
 
 ### Patch Changes
 
@@ -10,7 +10,7 @@
   - @rzl-zone/core@0.0.11
   - @rzl-zone/core-react@0.0.11
 
-## 0.0.6-beta.0
+## 0.0.6-beta.0 (2026-05-20)
 
 ### Patch Changes
 
@@ -20,7 +20,7 @@
   - @rzl-zone/core@0.0.11-beta.0
   - @rzl-zone/core-react@0.0.11-beta.0
 
-## 0.0.5
+## 0.0.5 (2026-05-12)
 
 ### Patch Changes
 
@@ -34,7 +34,7 @@
   - @rzl-zone/ts-types-plus@0.1.6
   - @rzl-zone/utils-js@3.13.0
 
-## 0.0.5-beta.3
+## 0.0.5-beta.3 (2026-05-12)
 
 ### Patch Changes
 
@@ -43,7 +43,7 @@
   - @rzl-zone/core@0.0.10-beta.3
   - @rzl-zone/core-react@0.0.10-beta.3
 
-## 0.0.5-beta.2
+## 0.0.5-beta.2 (2026-05-12)
 
 ### Patch Changes
 
@@ -52,7 +52,7 @@
   - @rzl-zone/core@0.0.10-beta.2
   - @rzl-zone/core-react@0.0.10-beta.2
 
-## 0.0.5-beta.1
+## 0.0.5-beta.1 (2026-05-12)
 
 ### Patch Changes
 
@@ -62,7 +62,7 @@
   - @rzl-zone/core@0.0.10-beta.1
   - @rzl-zone/core-react@0.0.10-beta.1
 
-## 0.0.5-beta.0
+## 0.0.5-beta.0 (2026-05-12)
 
 ### Patch Changes
 
@@ -73,7 +73,7 @@
   - @rzl-zone/ts-types-plus@0.1.6-beta.0
   - @rzl-zone/utils-js@3.12.1-beta.0
 
-## 0.0.4
+## 0.0.4 (2026-04-30)
 
 ### Patch Changes
 
@@ -83,7 +83,7 @@
   - @rzl-zone/node-only@0.0.9
   - @rzl-zone/ts-types-plus@0.1.5
 
-## 0.0.3
+## 0.0.3 (2026-04-28)
 
 ### Patch Changes
 
@@ -93,7 +93,7 @@
   - @rzl-zone/core@0.0.8
   - @rzl-zone/ts-types-plus@0.1.4
 
-## 0.0.2
+## 0.0.2 (2026-04-25)
 
 ### Patch Changes
 

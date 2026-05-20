@@ -1,6 +1,6 @@
 # @rzl-zone/build-tools-cli
 
-## 0.0.12
+## 0.0.12 (2026-05-12)
 
 ### Patch Changes
 
@@ -9,7 +9,7 @@
   - @rzl-zone/build-tools@0.0.12
   - @rzl-zone/node-only@0.0.10
 
-## 0.0.12-beta.0
+## 0.0.12-beta.0 (2026-05-12)
 
 ### Patch Changes
 
@@ -18,14 +18,14 @@
   - @rzl-zone/build-tools@0.0.12-beta.0
   - @rzl-zone/node-only@0.0.10-beta.0
 
-## 0.0.11
+## 0.0.11 (2026-05-08)
 
 ### Patch Changes
 
 - Updated dependencies [5bbb93c]
   - @rzl-zone/build-tools@0.0.11
 
-## 0.0.10
+## 0.0.10 (2026-04-30)
 
 ### Patch Changes
 
@@ -34,7 +34,7 @@
   - @rzl-zone/build-tools@0.0.10
   - @rzl-zone/node-only@0.0.9
 
-## 0.0.9
+## 0.0.9 (2026-04-28)
 
 ### Patch Changes
 
@@ -43,14 +43,14 @@
   - @rzl-zone/build-tools@0.0.9
   - @rzl-zone/node-only@0.0.8
 
-## 0.0.8
+## 0.0.8 (2026-04-27)
 
 ### Patch Changes
 
 - Updated dependencies [e9110f0]
   - @rzl-zone/build-tools@0.0.8
 
-## 0.0.7
+## 0.0.7 (2026-04-25)
 
 ### Patch Changes
 
