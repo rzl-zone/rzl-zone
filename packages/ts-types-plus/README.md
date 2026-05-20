@@ -45,8 +45,6 @@
 
 ---
 
----
-
 <h2 id="table-of-contents">📚 <strong>Table of Contents</strong></h2>
 
 - 💻 [Requirements](#requirements)
