@@ -1,25 +1,55 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable @typescript-eslint/no-namespace */
+declare global {
+  namespace NodeJS {
+    interface EventEmitter {}
+    interface ReadableStream {}
+    interface WritableStream {}
+    interface Process {}
+  }
+
+  interface Buffer {}
+}
+
+type Global<K extends PropertyKey> = K extends keyof typeof globalThis
+  ? (typeof globalThis)[K]
+  : never;
+
+type Empty<T> = keyof T extends never ? never : T;
+
 /** --------------------------------------------------
  * * ***Utility Type: `NodeBuiltins`.***
  * --------------------------------------------------
- * **Represents Node.js built-in core objects.**
+ * Represents commonly used Node.js runtime objects
+ * when Node.js type definitions are available.
+ *
  * @description
- * Includes commonly used Node.js core classes/objects that are not plain objects.
+ * Includes frequently encountered Node.js core objects
+ * and runtime-related built-ins.
+ *
  * - **Examples:**
- *      - `Buffer`.
- *      - `EventEmitter`.
- *      - `Stream`.
- *      - `URL`.
- *      - `process`.
- * - ❌ Excludes plain objects (`{}`) and primitives.
- * - ⚠️ Note:
- *      - This is **not exhaustive** because Node.js has
- *        many built-in modules, but it covers the main
- *        runtime objects often encountered.
+ *      - `Buffer`
+ *      - `EventEmitter`
+ *      - `ReadableStream`
+ *      - `WritableStream`
+ *      - `process`
+ *      - `URL`
+ *
+ * - ❌ Excludes:
+ *      - Plain objects (`{}`)
+ *      - Primitive values
+ *      - Most Node.js modules/classes
+ *
+ * - ⚠️ Notes:
+ *      - This type is intentionally **not exhaustive**.
+ *      - Missing Node.js types automatically resolve to `never`.
+ *      - `URL` is always included because it exists in both
+ *        browser and Node.js environments.
  */
 export type NodeBuiltins =
-  | Buffer
-  | NodeJS.EventEmitter
-  | NodeJS.ReadableStream
-  | NodeJS.WritableStream
-  | NodeJS.Process
+  | Empty<Global<"Buffer">>
+  | Empty<NodeJS.EventEmitter>
+  | Empty<NodeJS.ReadableStream>
+  | Empty<NodeJS.WritableStream>
+  | Empty<NodeJS.Process>
   | URL;
