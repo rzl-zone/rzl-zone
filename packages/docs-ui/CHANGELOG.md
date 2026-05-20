@@ -1,5 +1,14 @@
 # @rzl-zone/docs-ui
 
+## 0.0.13-beta.0
+
+### Patch Changes
+
+- @rzl-zone/next-kit@0.10.1-beta.0
+- @rzl-zone/utils-js@3.13.1-beta.0
+- @rzl-zone/core@0.0.11-beta.0
+- @rzl-zone/core-react@0.0.11-beta.0
+
 ## 0.0.12
 
 ### Patch Changes
