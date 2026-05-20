@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.13.1-beta.0
+
+### Patch Changes
+
+- Updated dependencies [7e89dbe]
+  - @rzl-zone/ts-types-plus@0.1.7-beta.0
+
 ## 3.13.0
 
 ### Minor Changes
