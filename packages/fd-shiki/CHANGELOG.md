@@ -1,5 +1,15 @@
 # @workspace/fd-shiki
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [7e89dbe]
+  - @rzl-zone/ts-types-plus@0.1.7
+  - @rzl-zone/utils-js@3.13.1
+  - @rzl-zone/core@0.0.11
+  - @rzl-zone/core-react@0.0.11
+
 ## 0.0.6-beta.0
 
 ### Patch Changes
