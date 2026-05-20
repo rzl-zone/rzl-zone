@@ -1,5 +1,12 @@
 # @rzl-zone/core-react
 
+## 0.0.11
+
+### Patch Changes
+
+- @rzl-zone/utils-js@3.13.1
+- @rzl-zone/core@0.0.11
+
 ## 0.0.11-beta.0
 
 ### Patch Changes
