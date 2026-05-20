@@ -1,5 +1,11 @@
 # @rzl-zone/ts-types-plus
 
+## 0.1.7
+
+### Patch Changes
+
+- 7e89dbe: Fix `NodeBuiltins` fallback behavior for **missing `Node.js` types** and improve type documentation.
+
 ## 0.1.7-beta.0
 
 ### Patch Changes
