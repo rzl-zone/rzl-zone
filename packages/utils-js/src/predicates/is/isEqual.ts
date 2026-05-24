@@ -1,25 +1,36 @@
 import { baseDeepEqual } from "@/predicates/is/_private/baseDeepEqual";
 
-/** ----------------------------------------------------
+/** ---------------------------------------------------------
  * * ***Predicate: `isEqual`.***
  * ----------------------------------------------------------
  * **Performs a deep comparison between two values to determine if they are equivalent.**
+ *
+ * ---
  * @description
  * Checks whether two values are **deeply equal**, not just reference-equal (`===`).
- * - **✅ This method compares:**
- *   - Arrays and TypedArrays
- *   - ArrayBuffers
- *   - Plain objects (`Object`) ➔ own enumerable properties only
- *   - Booleans, Numbers, Strings, Symbols
- *   - Dates
- *   - Errors
- *   - Maps
- *   - Sets
- *   - Regular expressions
- * - ❌ `Functions` and `DOM nodes` are ***not supported***.
+ *
+ * ---
+ * - #### *Behavior:*
+ *      - **This method compares:**
+ *          - Arrays and TypedArrays.
+ *          - ArrayBuffers.
+ *          - Plain objects (`Object`) ➔ own enumerable properties only.
+ *          - Booleans, Numbers, Strings, Symbols.
+ *          - Dates.
+ *          - Errors.
+ *          - Maps.
+ *          - Sets.
+ *          - Regular expressions.
+ *      - `Functions` and `DOM nodes` are ***not supported***.
+ *
+ * ---
  * @param {*} value The value to compare.
  * @param {*} other The other value to compare.
+ *
+ * ---
  * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ *
+ * ---
  * @example
  * const obj1 = { user: "fred" };
  * const obj2 = { user: "fred" };
@@ -39,6 +50,6 @@ import { baseDeepEqual } from "@/predicates/is/_private/baseDeepEqual";
  * isEqual({ a: 1 }, { a: 1, b: undefined });
  * // ➔ false
  */
-export function isEqual(value: unknown, other: unknown): boolean {
+export const isEqual = (value: unknown, other: unknown): boolean => {
   return baseDeepEqual(value, other, undefined, new WeakMap());
-}
+};

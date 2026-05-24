@@ -6,25 +6,27 @@ import type {
 
 type ExcludeNil<T> = Exclude<T, null | undefined>;
 
-/** ----------------------------------------------------------
+/** -------------------------------------------------------------------------------
  *  * ***Element extractor***
- * ----------------------------------------------------------
+ * --------------------------------------------------------------------------------
  */
 type ElementOf<A extends readonly unknown[]> = A extends readonly (infer U)[]
   ? U
   : never;
 
-/** ----------------------------------------------------------
+/** -------------------------------------------------------------------------------
  * * ***Compute `FilterNilArray`***
- * ----------------------------------------------------------
+ * --------------------------------------------------------------------------------
  *
- * for a tuple/array A by using the element type (without null|undefined).
+ * *For a tuple/array A by using the element type (without null|undefined).*
  */
 export type FilterNilArrayFromTuple<A extends readonly unknown[]> =
   FilterNilArray<ExcludeNil<ElementOf<A>>>;
 
-/** ----------------------------------------------------------
- * ***Preserve `mutability`: if A is mutable (extends unknown[]), keep B; otherwise make B readonly***.
+/** -------------------------------------------------------------------------------
+ * * ***Preserve `mutability`: if A is mutable (extends unknown[]), keep B;
+ * otherwise make B readonly***.
+ * --------------------------------------------------------------------------------
  */
 export type PreserveMutability<
   A extends readonly unknown[],

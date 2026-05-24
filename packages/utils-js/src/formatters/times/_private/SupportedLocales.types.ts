@@ -1,13 +1,17 @@
 /** -------------------------------------------------------------
  * * ***Supported IETF BCP-47 locale codes for Intl API.***
- * -------------------------------------------------------------
+ * --------------------------------------------------------------
  * **This type ensures proper autocompletion & validation in TS
  * but does not restrict at runtime (must validate separately).**
+ *
+ * ---
  * - **Includes:**
- *    - Major global locales (`en-US`, `fr-FR`, `zh-CN`, `etc`)
- *    - Regional & minor locales (`mi-NZ`, `rw-RW`, `bi-VU`, `etc`)
- *    - Useful for `Intl.DateTimeFormat`, `Intl.NumberFormat`, `etc`.
- *    - Still allows fallback via `({} & string)` for arbitrary locales.
+ *     - Major global locales (`en-US`, `fr-FR`, `zh-CN`, `etc`).
+ *     - Regional & minor locales (`mi-NZ`, `rw-RW`, `bi-VU`, `etc`).
+ *     - Useful for `Intl.DateTimeFormat`, `Intl.NumberFormat`, `etc`.
+ *     - Still allows fallback via `({} & string)` for arbitrary locales.
+ *
+ * ---
  * @example
  * const locale: SupportedLocales = "fr-CA";
  * new Intl.DateTimeFormat(locale).format(new Date());

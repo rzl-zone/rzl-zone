@@ -58,7 +58,7 @@ describe("delay", () => {
     controller.abort();
     await expect(delay(5000, controller.signal)).rejects.toHaveProperty(
       "name",
-      "AbortError"
+      "AbortError:['@rzl-zone/utils-js/promises:delay']"
     );
   });
 
@@ -69,7 +69,10 @@ describe("delay", () => {
 
     vi.advanceTimersByTime(1000);
     controller.abort();
-    await expect(promise).rejects.toHaveProperty("name", "AbortError");
+    await expect(promise).rejects.toHaveProperty(
+      "name",
+      "AbortError:['@rzl-zone/utils-js/promises:delay']"
+    );
     vi.useRealTimers();
   });
 

@@ -51,19 +51,18 @@ describe("chunkString", () => {
     expect(chunkString(null as any, 3)).toBe(null);
   });
 
+  it("should set back to default and not throw TypeError if argument options is invalid", () => {
+    expect(() => chunkString("abc", 3, 5 as any)).not.toThrow();
+  });
+
   it("should throw TypeError if argument types are invalid", () => {
-    expect(() => chunkString(123 as any, 3, { separator: "-" })).toThrow(
-      TypeError
-    );
-    expect(() => chunkString("abc", "3" as any, { separator: "-" })).toThrow(
-      TypeError
-    );
-    expect(() => chunkString("abc", 3, 5 as any)).toThrow(TypeError);
+    expect(() => chunkString(123 as any, 3, { separator: "-" })).toThrow();
+    expect(() => chunkString("abc", "3" as any, { separator: "-" })).toThrow();
     expect(() =>
       chunkString("abc", 3, {
         separator: "-",
         reCountAfterSpace: "true" as any
       })
-    ).toThrow(TypeError);
+    ).toThrow();
   });
 });

@@ -2,12 +2,22 @@
  * * ***Type guard: `isSet`.***
  * ----------------------------------------------------------
  * **Checks if a value is a **[`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set)** object.**
+ *
+ * ---
  * - **Behavior:**
- *    - Narrows type to `Set<T>` when true.
- *    - Excludes `WeakSet`, arrays, plain objects, and other non-Set values.
+ *     - Narrows type to `Set<T>` when true.
+ *     - Excludes `WeakSet`, arrays, plain objects, and other non-Set values.
+ *
+ * ---
  * @template T - The type of the value being checked.
+ *
+ * ---
  * @param {*} value - The value to check.
+ *
+ * ---
  * @returns {boolean} Returns `true` if the value is a `Set`, otherwise `false`.
+ *
+ * ---
  * @example
  * isSet(new Set);
  * // ➔ true

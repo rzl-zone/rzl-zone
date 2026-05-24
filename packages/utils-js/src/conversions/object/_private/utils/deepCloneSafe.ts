@@ -12,7 +12,8 @@ export const deepCloneSafe = <U>(obj: U): U => {
     if (isFunction(structuredClone)) {
       return structuredClone(obj);
     }
-    // eslint-disable-next-line no-empty
-  } catch {}
+  } catch {
+    // skip
+  }
   return JSON.parse(JSON.stringify(obj));
 };

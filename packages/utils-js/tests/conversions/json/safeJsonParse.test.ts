@@ -139,9 +139,9 @@ describe("safeJsonParse", () => {
     expect(safeJsonParse({} as any)).toBeUndefined();
   });
 
-  it("should throw TypeError if options is not an object", () => {
-    expect(() => safeJsonParse("{}", 123 as any)).toThrow(TypeError);
-    expect(() => safeJsonParse("{}", "wrong" as any)).toThrow(TypeError);
+  it("should set back to default and not throw TypeError if options is not an object", () => {
+    expect(() => safeJsonParse("{}", 123 as any)).not.toThrow();
+    expect(() => safeJsonParse("{}", "wrong" as any)).not.toThrow();
   });
 
   it("should return undefined for invalid JSON", () => {
@@ -159,7 +159,9 @@ describe("safeJsonParse", () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     safeJsonParse("{oops}", { loggingOnFail: true });
     expect(spy).toHaveBeenCalledWith(
-      expect.stringContaining("Failed to parsing at `safeJsonParse`"),
+      expect.stringContaining(
+        "Failed to parsing at `[@rzl-zone/utils-js]:safeJsonParse`"
+      ),
       expect.any(Error)
     );
     spy.mockRestore();

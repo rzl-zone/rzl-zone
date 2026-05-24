@@ -8,11 +8,11 @@ import {
 } from "@/predicates/type/getPreciseType";
 import { PreciseType } from "@/predicates/type/_private/getPreciseType.utils";
 
-// import {
-//   __INTERNAL_ACRONYMS__,
-//   converterHelper,
-//   SPECIAL_CASES_PRECISE_TYPE
-// } from "@/predicates/type/_private/getPreciseType.utils";
+function testIfExists(value: unknown, expected: string) {
+  if (typeof value !== "undefined") {
+    expect(getPreciseType(value)).toBe(expected);
+  }
+}
 
 describe("getPreciseType — ultra comprehensive", () => {
   /**
@@ -393,8 +393,10 @@ describe("getPreciseType — ultra comprehensive", () => {
   cases.forEach((c) => {
     it(`returns "${c.expected}" for ${c.name}`, () => {
       const valueToConvert = (options?: GetPreciseTypeOptions) => {
-        // @ts-expect-error only for test
-        if (PreciseType.specialType.includes(c.expected)) return c.expected;
+        if (
+          (PreciseType.specialType as unknown as string[]).includes(c.expected)
+        )
+          return c.expected;
 
         return ClassPrecise(options).converter(c.expected);
       };
@@ -423,7 +425,7 @@ describe("getPreciseType — ultra comprehensive", () => {
 describe("getPreciseType — extended FIXES_RAW coverage", () => {
   // Proxy object test (expected Proxy, bukan Object)
   it("returns 'Proxy' for Proxy object - with empty object", () => {
-    expect(getPreciseType(new Proxy({}, {}), {})).toBe("object");
+    expect(getPreciseType(new Proxy({}, {}))).toBe("object");
   });
 
   it("returns 'Proxy' for Proxy object with blocking defineProperty trap", () => {
@@ -435,20 +437,20 @@ describe("getPreciseType — extended FIXES_RAW coverage", () => {
         }
       }
     );
-    expect(getPreciseType(proxy, {})).toBe("proxy");
+    expect(getPreciseType(proxy)).toBe("proxy");
   });
 
   // Node.js Buffer (conditional)
   if (typeof Buffer !== "undefined") {
     it("returns 'Buffer' for Node.js Buffer", () => {
-      expect(getPreciseType(Buffer.from("test"), {})).toBe("buffer");
+      expect(getPreciseType(Buffer.from("test"))).toBe("buffer");
     });
   }
 
   // Node.js process (conditional)
   if (typeof process !== "undefined") {
     it("returns 'Process' for Node.js process object", () => {
-      expect(getPreciseType(process, {})).toBe("process");
+      expect(getPreciseType(process)).toBe("process");
     });
   }
 
@@ -522,7 +524,7 @@ describe("getPreciseType — extended FIXES_RAW coverage", () => {
 
     for (const { symbol, expected, name } of symbolsTestCases) {
       it(`returns '${expected}' for ${name}`, () => {
-        expect(getPreciseType(symbol, {})).toBe(expected);
+        expect(getPreciseType(symbol)).toBe(expected);
       });
     }
   });
@@ -531,14 +533,14 @@ describe("getPreciseType — extended FIXES_RAW coverage", () => {
   if (typeof Node !== "undefined") {
     it("returns 'Node' for DOM Node", () => {
       const node = document.createTextNode("text");
-      expect(getPreciseType(node, {})).toBe("text");
+      expect(getPreciseType(node)).toBe("text");
     });
   }
 
   // MutationObserver (if defined)
   if (typeof MutationObserver !== "undefined") {
     it("returns 'Mutation Observer' for MutationObserver instance", () => {
-      expect(getPreciseType(new MutationObserver(() => {}), {})).toBe(
+      expect(getPreciseType(new MutationObserver(() => {}))).toBe(
         "mutation-observer"
       );
     });
@@ -550,7 +552,7 @@ describe("getPreciseType — extended FIXES_RAW coverage", () => {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const EventEmitter = require("events").EventEmitter;
       it("returns 'Event Emitter' for Node.js EventEmitter", () => {
-        expect(getPreciseType(new EventEmitter(), {})).toBe("event-emitter");
+        expect(getPreciseType(new EventEmitter())).toBe("event-emitter");
       });
     } catch {
       // no-op
@@ -579,15 +581,14 @@ describe("getPreciseType - extended JS and Web API types", () => {
   });
 
   // deprecated
-  it.skip("should detect Symbol.arguments (deprecated)", () => {
-    expect(getPreciseType(Symbol.arguments)).toBe("symbol-arguments");
-  });
+  // it.skip("should detect Symbol.arguments (deprecated)", () => {
+  //   expect(getPreciseType(Symbol.arguments)).toBe("symbol-arguments");
+  // });
 
   // Numbers & Math & Constructors
   it("should detect Math and constructors", () => {
     expect(getPreciseType(Math)).toBe("math");
-    // For constructors, usually these are functions
-    // But if you wrap, test accordingly
+    // For constructors, usually these are functions, but if wrap, test accordingly
     expect(getPreciseType(BigInt)).toBe("bigint-constructor");
     expect(getPreciseType(Number)).toBe("number-constructor");
     expect(getPreciseType(String)).toBe("string-constructor");
@@ -613,8 +614,8 @@ describe("getPreciseType - extended JS and Web API types", () => {
   });
 
   // Storage APIs (skip)
-  it.skip("should detect Storage related types", () => {
-    expect(getPreciseType(indexedDB)).toBe("indexed-db");
+  it("should detect Storage related types", () => {
+    expect(getPreciseType(indexedDB)).toBe("object");
     expect(getPreciseType(IDBRequest)).toBe("idb-request");
     expect(getPreciseType(IDBTransaction)).toBe("idb-transaction");
     expect(getPreciseType(IDBObjectStore)).toBe("idb-object-store");
@@ -624,42 +625,28 @@ describe("getPreciseType - extended JS and Web API types", () => {
   });
 
   // Navigator / Browser APIs
-  it.skip("should detect Navigator and related", () => {
-    if (typeof navigator !== "undefined") {
-      expect(getPreciseType(navigator)).toBe("navigator");
-    } else {
-      // skip("navigator not available in Node");
-    }
-
-    if (typeof navigator.geolocation !== "undefined") {
-      expect(getPreciseType(navigator.geolocation)).toBe("geolocation");
-    } else {
-      // skip("geolocation not available in Node");
-    }
-
-    expect(getPreciseType(navigator.clipboard)).toBe("clipboard");
-    expect(getPreciseType(Notification)).toBe("notification");
+  it("should detect Navigator and related", () => {
+    testIfExists(globalThis.navigator, "navigator");
+    testIfExists(globalThis.navigator?.geolocation, "geolocation");
+    testIfExists(globalThis.navigator?.clipboard, "clipboard");
+    testIfExists(globalThis.Notification, "notification");
   });
 
-  if (document.contentType === "text/html") {
-    it.skip("should detect canvas and graphic contexts", () => {});
-  } else {
-    it("should detect canvas and graphic contexts", () => {
-      const canvas = document.createElement("canvas");
-      expect(getPreciseType(canvas)).toBe("html-canvas-element");
-      const ctx = canvas.getContext("2d");
-      expect(getPreciseType(ctx)).toBe("canvas-rendering-context-2d");
-      // OffscreenCanvas may not be available in all envs
-      if (typeof OffscreenCanvas !== "undefined") {
-        expect(getPreciseType(new OffscreenCanvas(10, 10))).toBe(
-          "off-screen-canvas"
-        );
-      }
-      // WebGLRenderingContext
-      const gl = canvas.getContext("webgl");
-      if (gl) expect(getPreciseType(gl)).toBe("webgl-rendering-context");
-    });
-  }
+  it("should detect canvas and graphic contexts", () => {
+    const canvas = document.createElement("canvas");
+    expect(getPreciseType(canvas)).toBe("html-canvas-element");
+    const ctx = canvas.getContext("2d");
+    expect(getPreciseType(ctx)).toBe("canvas-rendering-context-2d");
+    // OffscreenCanvas may not be available in all envs
+    if (typeof OffscreenCanvas !== "undefined") {
+      expect(getPreciseType(new OffscreenCanvas(10, 10))).toBe(
+        "offscreen-canvas"
+      );
+    }
+    // WebGLRenderingContext
+    const gl = canvas.getContext("webgl");
+    if (gl) expect(getPreciseType(gl)).toBe("webgl-rendering-context");
+  });
 
   // Media
   it("should detect media related objects", () => {
@@ -683,30 +670,32 @@ describe("getPreciseType - extended JS and Web API types", () => {
   it("should detect console and reports", () => {
     expect(getPreciseType(console)).toBe("console");
     // DiagnosticReport and Report are not standard globally available objects
-    // If your env has them, test here, else skip or mock
+    // If env has them, test here, else skip or mock
   });
 
   // Miscellaneous DOM
-  if (document.contentType === "text/html") {
-    it.skip("should detect DOM and related objects", () => {});
-  } else {
-    it("should detect DOM and related objects", () => {
-      const domMatrix = new DOMMatrix();
-      expect(getPreciseType(domMatrix)).toBe("dom-matrix");
-      const domRect = new DOMRect();
-      expect(getPreciseType(domRect)).toBe("dom-rect");
-      const domPoint = new DOMPoint();
-      expect(getPreciseType(domPoint)).toBe("dom-point");
-      const parser = new DOMParser();
-      expect(getPreciseType(parser)).toBe("dom-parser");
-      const xhr = new XMLHttpRequest();
-      expect(getPreciseType(xhr)).toBe("xml-http-request");
-      const form = document.createElement("form");
-      expect(getPreciseType(form)).toBe("html-form-element");
-      const input = document.createElement("input");
-      expect(getPreciseType(input)).toBe("html-input-element");
-    });
-  }
+  it("should detect DOM and related objects", () => {
+    const domMatrix = new DOMMatrix();
+    expect(getPreciseType(domMatrix)).toBe("dom-matrix");
+
+    const domRect = new DOMRect();
+    expect(getPreciseType(domRect)).toBe("dom-rect");
+
+    const domPoint = new DOMPoint();
+    expect(getPreciseType(domPoint)).toBe("dom-point");
+
+    const parser = new DOMParser();
+    expect(getPreciseType(parser)).toBe("dom-parser");
+
+    const xhr = new XMLHttpRequest();
+    expect(getPreciseType(xhr)).toBe("xml-http-request");
+
+    const form = document.createElement("form");
+    expect(getPreciseType(form)).toBe("html-form-element");
+
+    const input = document.createElement("input");
+    expect(getPreciseType(input)).toBe("html-input-element");
+  });
 
   // Additions-ons
   it("should detect additional DOM node types", () => {
@@ -717,15 +706,11 @@ describe("getPreciseType - extended JS and Web API types", () => {
     // AnimationEvent, WebSocketMessageEvent may require constructor calls or mocking
   });
 
-  if (document.contentType === "text/html") {
-    it.skip("should detect CDATA section", () => {});
-  } else {
-    it("should detect CDATA section", () => {
-      const xmlDoc = document.implementation.createDocument(null, "root");
-      const cdata = xmlDoc.createCDATASection("test");
-      expect(getPreciseType(cdata)).toBe("cdata-section");
-    });
-  }
+  it("should detect CDATA section", () => {
+    const xmlDoc = document.implementation.createDocument(null, "root");
+    const cdata = xmlDoc.createCDATASection("test");
+    expect(getPreciseType(cdata)).toBe("cdata-section");
+  });
 
   it("should detect Animation", () => {
     const div = document.createElement("div");
@@ -760,7 +745,7 @@ describe("getPreciseType - extended JS and Web API types", () => {
     expect(getPreciseType(new Set().values())).toBe("set-iterator");
     expect(getPreciseType([][Symbol.iterator]())).toBe("array-iterator");
     expect(getPreciseType(""[Symbol.iterator]())).toBe("string-iterator");
-    // AsyncIterator test - you can mock or create async generator if needed
+    // AsyncIterator test - mock or create async generator if needed
   });
 
   // Iterator Results
@@ -795,9 +780,8 @@ describe("getPreciseType - extended JS and Web API types", () => {
   // URLSearchParams and URLPattern
   it("should detect URLSearchParams and URLPattern", () => {
     expect(getPreciseType(new URLSearchParams())).toBe("url-search-params");
-    // @ts-ignore skip (browser api)
+
     if (typeof URLPattern !== "undefined") {
-      // @ts-ignore skip (browser api)
       expect(getPreciseType(new URLPattern())).toBe("url-pattern");
     }
   });

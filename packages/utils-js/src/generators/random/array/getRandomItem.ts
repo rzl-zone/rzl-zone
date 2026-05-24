@@ -7,15 +7,23 @@ import type {
 
 import { isNonEmptyArray } from "@/predicates/is/isNonEmptyArray";
 
-/** ---------------------------------
+/** -------------------------------------------------------------------------------------
  * * ***Utility: `getRandomItem`.***
- * ---------------------------------
+ * --------------------------------------------------------------------------------------
  * **Function to get a random element from a given array.**
+ *
+ * ---
  * @template T - The type of the input array.
+ *
+ * ---
  * @param {*} array - The input array, can be `null`, `undefined`, or an empty array.
+ *
+ * ---
  * @returns
  * - If `array` is a non-empty tuple, returns one of its elements.
  * - If `array` is empty, `null`, or `undefined`, returns `undefined`.
+ *
+ * ---
  * @example
  * getRandomItem([]);
  * // ➔ undefined

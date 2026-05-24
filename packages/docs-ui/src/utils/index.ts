@@ -1,7 +1,7 @@
 import {
   customCnV4,
   cx,
-  twMergeDefaultV4,
+  twMergeDefaultV3,
   type ClassValues
 } from "@rzl-zone/utils-js/tailwind";
 
@@ -78,7 +78,7 @@ export const cn = (...values: ClassValues) => twMerge(cx(...values));
  * --------------------------------------------------------------------
  *
  * This function is a thin wrapper around `customCnV4` and always applies
- * the default Tailwind merge configuration via `twMergeDefaultV4()`,
+ * the default Tailwind merge configuration via `twMergeDefaultV3()`,
  * ensuring consistent class-merging behavior across the codebase.
  *
  * - **Behavior:**
@@ -111,5 +111,5 @@ export const cn = (...values: ClassValues) => twMerge(cx(...values));
  * @deprecated Performance issue because bug at core `@rzl-zone/utils-js/tailwind`, better use `cn` internally using `twMerge` from `tailwind-merge` or use `cn`.
  */
 export const cnDeprecated = (...classes: ClassValues) => {
-  return customCnV4(twMergeDefaultV4({}), ...classes);
+  return customCnV4(twMergeDefaultV3({}), ...classes);
 };

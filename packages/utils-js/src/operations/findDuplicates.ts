@@ -1,21 +1,35 @@
+import { createMessage } from "@/_private/logger";
+
 import { isEqual } from "@/predicates/is/isEqual";
 import { assertIsArray } from "@/assertions/objects/assertIsArray";
 
 /** ----------------------------------------------------------------------
  * * ***Utility: `findDuplicates`.***
- * ----------------------------------------------------------------------
+ * -----------------------------------------------------------------------
  * **Finds duplicate values in an array by deep equality comparison.**
+ *
+ * ---
  * - **Behavior:**
- *    - Uses ***`isEqual` utility function*** to compare elements
- *      (handles objects, arrays, dates, NaN, etc.).
- *    - Returns a new array containing only the *first occurrences* of duplicated values.
- *    - Does **not mutate** the original array.
- *    - Throws ***{@link TypeError | `TypeError`}*** if input is not an array.
+ *     - Uses ***`isEqual` utility function*** to compare elements
+ *       (handles objects, arrays, dates, NaN, etc.).
+ *     - Returns a new array containing only the *first occurrences* of duplicated values.
+ *     - Does **not mutate** the original array.
+ *     - Throws ***{@link TypeError | `TypeError`}*** if input is not an array.
+ *
+ * ---
  * @template T Type of elements in the input array.
+ *
+ * ---
  * @param {T[]} values - The array to check for duplicates.
+ *
+ * ---
+ * @throws **{@link TypeError | `TypeError`}** if the provided `values` argument is not an array.
+ *
+ * ---
  * @returns {T[]} An array of the duplicate values found in the input,
  *                preserving order of their first duplicate appearance.
- * @throws **{@link TypeError | `TypeError`}** if the provided `values` argument is not an array.
+ *
+ * ---
  * @example
  * findDuplicates([1, 2, 2, 3, 4, 4]);
  * // ➔ [2, 4]
@@ -33,7 +47,10 @@ import { assertIsArray } from "@/assertions/objects/assertIsArray";
 export const findDuplicates = <T>(values: T[]): T[] => {
   assertIsArray(values, {
     message: ({ currentType, validType }) =>
-      `First parameter (\`values\`) must be of type \`${validType}\` (array literal or instance), but received: \`${currentType}\`.`
+      createMessage(
+        "findDuplicates",
+        `First parameter (\`values\`) must be of type \`${validType}\` (array literal or instance), but received: \`${currentType}\`.`
+      )
   });
 
   const duplicates: T[] = [];

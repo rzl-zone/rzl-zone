@@ -64,22 +64,30 @@ export type ConfigRemoveObjectPaths<T> = {
    * **This is resolved relative to the root object `T`, and supports
    * any valid **{@link DotPath | `DotPath`}** path within it.**
    *
+   * ---
    * @example
-   * const obj = {
-   *   left: { data: { sensitive: "secret", id: 1 } },
-   *   right: { data: { debug: true, keep: "yes" } },
-   * };
+   * 1. #### Remove multiple nested paths:
+   *    ```ts
+   *    const obj = {
+   *      left: { data: { sensitive: "secret", id: 1 } },
+   *      right: { data: { debug: true, keep: "yes" } }
+   *    };
    *
-   * // Removes "left.data.sensitive" and "right.data.debug"
-   * const result = removeObjectPaths(obj, [
-   *   { key: "left.data.sensitive" },
-   *   { key: "right.data.debug" },
-   * ]);
-   * console.log(result);
-   * // {
-   * //   left: { data: { id: 1 } },
-   * //   right: { data: { keep: "yes" } },
-   * // };
+   *    const result = removeObjectPaths(
+   *      obj,
+   *      [
+   *        { key: "left.data.sensitive" },
+   *        { key: "right.data.debug" }
+   *      ]
+   *    );
+   *
+   *    console.log(result);
+   *
+   *    // ➔ {
+   *    //      left: { data: { id: 1 } },
+   *    //      right: { data: { keep: "yes" } }
+   *    //    }
+   *    ```
    */
   key: DotPath<T>;
   /** ------------------------------------------------------------------------
@@ -88,26 +96,45 @@ export type ConfigRemoveObjectPaths<T> = {
    * ------------------------------------------------------------------------
    * **Useful if the target property might appear multiple times across different
    * branches or array elements.**
-   * @default false
-   * @example
-   * const obj = {
-   *   items: [
-   *     { data: { sensitive: "one", keep: true } },
-   *     { data: { sensitive: "two", keep: true } },
-   *     { other: { sensitive: "other" } },
-   *   ]
-   * };
    *
-   * // Removes all "data.sensitive" occurrences inside items[]
-   * const result = removeObjectPaths(obj, [{ key: "items.data.sensitive", deep: true }]);
-   * console.log(result);
-   * // {
-   * //   items: [
-   * //     { data: { keep: true } },
-   * //     { data: { keep: true } },
-   * //     { other: { sensitive: "other" } },
-   * //   ]
-   * // };
+   * ---
+   * @default
+   * ```ts
+   * false
+   * ```
+   *
+   * ---
+   * @example
+   * 1. #### Deep removal inside nested arrays:
+   *    ```ts
+   *    const obj = {
+   *      items: [
+   *        { data: { sensitive: "one", keep: true }},
+   *        { data: { sensitive: "two", keep: true }},
+   *        { other: { sensitive: "other" }}
+   *      ]
+   *    };
+   *
+   *    const result = removeObjectPaths(
+   *      obj,
+   *      [
+   *        {
+   *          key: "items.data.sensitive",
+   *          deep: true
+   *        }
+   *      ]
+   *    );
+   *
+   *    console.log(result);
+   *
+   *    // ➔ {
+   *    //      items: [
+   *    //        { data: { keep: true }},
+   *    //        { data: { keep: true }},
+   *    //        { other: { sensitive: "other" }}
+   *    //      ]
+   *    //    }
+   *    ```
    */
   deep?: boolean;
 };

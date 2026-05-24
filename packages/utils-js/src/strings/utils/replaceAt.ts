@@ -1,19 +1,29 @@
+import { createMessage } from "@/_private/logger";
+
 import { isNumber } from "@/predicates/is/isNumber";
 import { isString } from "@/predicates/is/isString";
 import { getPreciseType } from "@/predicates/type/getPreciseType";
 
 /** ----------------------------------------------------------
  *  * ***Utility: `replaceAt`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
  * **Replaces exactly one character at the specified index in the original string
  * with the provided `replaceTo` string.**
+ *
+ * ---
  * - **Behavior:**
- *    - If `replaceTo` has more than one character,
- * the result will expand accordingly.
+ *      - If `replaceTo` has more than one character,
+ *        the result will expand accordingly.
+ *
+ * ---
  * @param {number} index - The starting index where the replacement should occur.
  * @param {string} originalString - The original string to modify.
  * @param {string} replaceTo - The string to insert at the specified index.
+ *
+ * ---
  * @returns {string} The modified string with the replacement applied.
+ *
+ * ---
  * @example
  * replaceAt(3, "hello", "X");
  * // ➔ "helXo"
@@ -25,6 +35,7 @@ import { getPreciseType } from "@/predicates/type/getPreciseType";
  * // ➔ "12-45"
  * replaceAt(4, "ABCDE", "Z");
  * // ➔ "ABCDZ"
+ *
  * // ❌ Examples that throw:
  * replaceAt(10, "short", "X");
  * // ➔ ❌ RangeError: First parameter (`index`) is out of range from second parameter `originalString`.
@@ -42,18 +53,22 @@ export const replaceAt = (
 ): string => {
   if (!isNumber(index) || !isString(replaceTo) || !isString(originalString)) {
     throw new TypeError(
-      `First parameter (\`index\`) must be of type \`number\`, second parameter (\`originalString\`) and third parameter (\`replaceTo\`) must be of type \`string\`, but received: "['index': \`${getPreciseType(
-        index
-      )}\`, 'originalString': \`${getPreciseType(
-        originalString
-      )}\`, 'replaceTo': \`${getPreciseType(replaceTo)}\`]".`
+      errorMsg(
+        `First parameter (\`index\`) must be of type \`number\`, second parameter (\`originalString\`) and third parameter (\`replaceTo\`) must be of type \`string\`, but received: "['index': \`${getPreciseType(
+          index
+        )}\`, 'originalString': \`${getPreciseType(
+          originalString
+        )}\`, 'replaceTo': \`${getPreciseType(replaceTo)}\`]".`
+      )
     );
   }
 
   // Handle edge cases
   if (index < 0 || index >= originalString.length) {
     throw new RangeError(
-      "First parameter (`index`) is out of range from second parameter (`originalString`)."
+      errorMsg(
+        "First parameter (`index`) is out of range from second parameter (`originalString`)."
+      )
     );
   }
 
@@ -63,3 +78,8 @@ export const replaceAt = (
     originalString.slice(index + 1) // Extract after replacement
   );
 };
+
+/**
+ * @internal ***`Not part of the public API.`***
+ */
+const errorMsg = (msg: string) => createMessage("replaceAt", msg);

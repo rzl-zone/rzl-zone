@@ -17,7 +17,7 @@
     "src",
     "scripts",
     "tests",
-    "internal-global.d.ts",
+    "types/internal-global.d.ts",
     "_deprecated/src/next"
   ],
   "exclude": [

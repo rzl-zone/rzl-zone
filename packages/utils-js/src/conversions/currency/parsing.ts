@@ -1,22 +1,24 @@
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
-/** -------------------------------------------------------------
+/** -------------------------------------------------------------------------------------------
  * * ***Utility: `parseCurrencyString`.***
- * ---------------------------------------------
+ * --------------------------------------------------------------------------------------------
  * **Parses a human-friendly currency string into a JavaScript number.**
+ *
+ * ---
  * - **Supports multi-locale formats:**
- *    - ***US:***       `"15,000.10"`   ➔ `15300.10`.
- *    - ***Swiss:***    `"15'000.10"`   ➔ `15300.10`.
- *    - ***French:***   `"15 000,10"`   ➔ `15300.10`.
- *    - ***Indian:***   `"1,23,456.78"` ➔ `123456.78`.
- *    - ***European:*** `"151.000,10"`  ➔ `151300.10`.
- *    - ***Compact:***  `"15300000,10"` ➔ `15300000.10`.
+ *     - ***US:***       `"15,000.10"`   ➔ `15300.10`.
+ *     - ***Swiss:***    `"15'000.10"`   ➔ `15300.10`.
+ *     - ***French:***   `"15 000,10"`   ➔ `15300.10`.
+ *     - ***Indian:***   `"1,23,456.78"` ➔ `123456.78`.
+ *     - ***European:*** `"151.000,10"`  ➔ `151300.10`.
+ *     - ***Compact:***  `"15300000,10"` ➔ `15300000.10`.
  * - **Features:**
- *    - Strips symbols automatically: `"Rp"`, `"$"`, `"EUR"`, `etc`.
- *    - Handles bracket negatives: `"(15.000,10)"` ➔ `-15300.10`.
- *    - Normalizes decimal separator (last dot or comma).
- *    - Detects non-breaking spaces (`\u00A0`, `\u202F`) often in European data.
- *    - Fallback to `0` for empty, invalid, or non-numeric strings.
+ *     - Strips symbols automatically: `"Rp"`, `"$"`, `"EUR"`, `etc`.
+ *     - Handles bracket negatives: `"(15.000,10)"` ➔ `-15300.10`.
+ *     - Normalizes decimal separator (last dot or comma).
+ *     - Detects non-breaking spaces (`\u00A0`, `\u202F`) often in European data.
+ *     - Fallback to `0` for empty, invalid, or non-numeric strings.
  * - **How it parses internally:**
  *      1. Removes all characters except digits, `.`, `,`, `'`,  `space`,
  *         `\u00A0`, `\u202F`.
@@ -28,21 +30,28 @@ import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
  *         - If mixed, treats last `,` or `.` as decimal.
  *      5. Converts final decimal to `.` for JS float.
  * - **Gotchas:**
- *    - If both `.` and `,` are present, last occurrence is used as decimal.
- *    - For strings like `"1.121.234,56"` ➔ decimal is `,`.
- *    - For `"1,121,234.56"` ➔ decimal is `.`.
- *    - For `"15300000,2121"` ➔ decimal becomes `.` internally.
- * - **ℹ️ Note:**
- *      - You can use this function as a first step to **sanitize currency inputs**
- *        before storing into database or doing math.
- *      - Always pair this with your formatter for consistent output display.
+ *     - If both `.` and `,` are present, last occurrence is used as decimal.
+ *     - For strings like `"1.121.234,56"` ➔ decimal is `,`.
+ *     - For `"1,121,234.56"` ➔ decimal is `.`.
+ *     - For `"15300000,2121"` ➔ decimal becomes `.` internally.
+ * - **Note:**
+ *       - You can use this function as a first step to **sanitize currency inputs**
+ *         before storing into database or doing math.
+ *       - Always pair this with your formatter for consistent output display.
+ *
+ * ---
  * @param {string|null|undefined} input
  *   ***Any messy currency string, may contain:***
- *    * Currency symbols (`Rp`,`$`, `CHF`, `EUR`).
- *    * Thousands separators (`.`, `,`, `'`,  `space`, `\u00A0`, `\u202F`).
- *    * Various decimal formats (`,` or `.`).
- *    * Bracket negative: `"(15.000,10)"`.
- * @returns {number} JavaScript float representation, will return `0` for invalid, empty, or non-string input.
+ *     * Currency symbols (`Rp`,`$`, `CHF`, `EUR`).
+ *     * Thousands separators (`.`, `,`, `'`,  `space`, `\u00A0`, `\u202F`).
+ *     * Various decimal formats (`,` or `.`).
+ *     * Bracket negative: `"(15.000,10)"`.
+ *
+ * ---
+ * @returns {number} JavaScript float representation, will return `0` for invalid, empty, or
+ *                   non-string input.
+ *
+ * ---
  * @example
  * ```ts
  * parseCurrencyString("Rp 15.300.000,21");

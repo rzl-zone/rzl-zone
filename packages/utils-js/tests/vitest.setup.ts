@@ -36,7 +36,7 @@ if (typeof CustomEvent === "undefined") {
 }
 
 // ---- IndexedDB mocks ----
-globalThis.indexedDB = {} as any;
+globalThis.indexedDB = {} as unknown as IDBFactory;
 (globalThis as any).IDBRequest = makeTagged("IDBRequest");
 (globalThis as any).IDBTransaction = makeTagged("IDBTransaction");
 (globalThis as any).IDBObjectStore = makeTagged("IDBObjectStore");
@@ -64,18 +64,54 @@ globalThis.indexedDB = {} as any;
 
 if (typeof document !== "undefined") {
   const origCreateElement = document.createElement.bind(document);
-  (document as any).createElement = (tag: string) => {
+
+  document.createElement = ((tag: string) => {
     if (tag === "canvas") {
-      return {
-        nodeName: "CANVAS",
-        [Symbol.toStringTag]: "HTMLCanvasElement",
-        getContext: () => ({
-          [Symbol.toStringTag]: "CanvasRenderingContext2D"
-        })
-      };
+      const canvas = Object.create(HTMLCanvasElement.prototype);
+
+      Object.defineProperties(canvas, {
+        nodeName: {
+          value: "CANVAS"
+        },
+
+        tagName: {
+          value: "CANVAS"
+        },
+
+        [Symbol.toStringTag]: {
+          value: "HTMLCanvasElement"
+        },
+
+        getContext: {
+          value(type: string) {
+            switch (type) {
+              case "2d":
+                return {
+                  [Symbol.toStringTag]: "CanvasRenderingContext2D"
+                };
+
+              case "webgl":
+                return {
+                  [Symbol.toStringTag]: "WebGLRenderingContext"
+                };
+
+              case "webgl2":
+                return {
+                  [Symbol.toStringTag]: "WebGL2RenderingContext"
+                };
+
+              default:
+                return null;
+            }
+          }
+        }
+      });
+
+      return canvas as HTMLCanvasElement;
     }
+
     return origCreateElement(tag);
-  };
+  }) as typeof document.createElement;
 
   Object.defineProperty(document, "doctype", {
     value: { name: "html", [Symbol.toStringTag]: "DocumentType" }
@@ -190,4 +226,17 @@ if (typeof globalThis.WebSocket === "undefined") {
     }
   }
   globalThis.WebSocket = WebSocketMock as any;
+}
+
+if (typeof URLPattern === "undefined") {
+  class URLPatternMock {
+    get [Symbol.toStringTag]() {
+      return "URLPattern";
+    }
+  }
+
+  Object.defineProperty(globalThis, "URLPattern", {
+    value: URLPatternMock,
+    writable: true
+  });
 }

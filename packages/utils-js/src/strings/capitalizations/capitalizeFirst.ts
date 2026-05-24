@@ -16,13 +16,19 @@ type CapitalizeFirstOptions = {
 
 /** ----------------------------------------------------------
  * * ***Utility: `capitalizeFirst`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
  * **Capitalizes the first letter of a string, with optionally lowercases the rest and trims whitespace.**
+ *
+ * ---
  * @param {string | null | undefined} string - The string to be processed.
  * @param {CapitalizeFirstOptions} [options] - Options to control behavior.
  * @param {CapitalizeFirstOptions["lowerCaseNextRest"]} [options.lowerCaseNextRest=true] - If true, lowercases the rest (next first letter), default: `true`.
  * @param {CapitalizeFirstOptions["trim"]} [options.trim=false] - If true, trims the string before processing, default: `false`.
+ *
+ * ---
  * @returns {string} The processed string, returns `""` if input is `null`, `undefined`, or `not a valid string`.
+ *
+ * ---
  * @example
  * ```ts
  * capitalizeFirst(" hello WORLD ");
@@ -34,7 +40,8 @@ type CapitalizeFirstOptions = {
  * capitalizeFirst("   foo BAR   ", { trim: true, lowerCaseNextRest: false });
  * // ➔ "Foo BAR"
  * ```
- * #### ℹ️ If null, undefined, or not a valid string input, return `""`.
+ * ---
+ * #### ℹ️ If `null`, `undefined`, or ***`not a valid string`*** input, return `""`.
  * ```ts
  * capitalizeFirst(123);
  * capitalizeFirst(null);
@@ -44,16 +51,11 @@ type CapitalizeFirstOptions = {
  */
 export const capitalizeFirst = (
   string: string | null | undefined,
-  options: CapitalizeFirstOptions = {
-    lowerCaseNextRest: true,
-    trim: false
-  }
+  options?: CapitalizeFirstOptions
 ): string => {
   if (!isNonEmptyString(string)) return "";
 
-  if (!isPlainObject(options)) {
-    options = {};
-  }
+  if (!isPlainObject(options)) options = {};
 
   const lowerCaseNextRest = options.lowerCaseNextRest !== false;
   const trim = options.trim === true;

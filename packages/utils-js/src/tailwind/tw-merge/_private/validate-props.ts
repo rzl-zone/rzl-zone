@@ -1,9 +1,7 @@
 import type { Config as TwConfig } from "tailwindcss";
-import type { ConfigExtension } from "tailwind-merge-v4";
+import type { ConfigExtension } from "tailwind-merge-v3";
 
-import type { OptionsMergeTwClsV4 } from "../v4/_private/types";
-
-import { hasOwnProp } from "@/predicates/has/hasOwnProp";
+import type { OptionsMergeTwClsV3 } from "../v3/_private/types";
 
 import { isNumber } from "@/predicates/is/isNumber";
 import { isFunction } from "@/predicates/is/isFunction";
@@ -46,7 +44,7 @@ type ValidatorTwMergeReturn = {
  * @internal
  */
 export const validatorPropsTwMerge = (
-  options: OptionsMergeTwClsV4
+  options: OptionsMergeTwClsV3
 ): ValidatorTwMergeReturn => {
   if (!isPlainObject(options)) options = {};
   let {
@@ -66,22 +64,14 @@ export const validatorPropsTwMerge = (
   if (!isFunction(experimentalParseClassName))
     experimentalParseClassName = undefined;
 
-  const theme = hasOwnProp(extend, "theme") ? extend.theme : {};
-  const classGroups = hasOwnProp(extend, "classGroups")
-    ? extend.classGroups
-    : {};
-  const conflictingClassGroupModifiers = hasOwnProp(
-    extend,
-    "conflictingClassGroupModifiers"
-  )
-    ? extend.conflictingClassGroupModifiers
-    : {};
+  const theme = extend.theme ?? {};
+  const classGroups = extend.classGroups ?? {};
+  const conflictingClassGroupModifiers =
+    extend.conflictingClassGroupModifiers ?? {};
 
-  const conflictingClassGroups = hasOwnProp(extend, "conflictingClassGroups")
-    ? extend.conflictingClassGroups
-    : {};
+  const conflictingClassGroups = extend.conflictingClassGroups ?? {};
   const orderSensitiveModifiers =
-    hasOwnProp(extend, "orderSensitiveModifiers") &&
+    extend.orderSensitiveModifiers &&
     isNonEmptyArray(extend.orderSensitiveModifiers)
       ? extend.orderSensitiveModifiers
       : [];

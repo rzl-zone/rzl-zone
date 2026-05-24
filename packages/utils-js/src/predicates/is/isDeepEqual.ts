@@ -8,59 +8,83 @@ import { isObjectOrArray } from "./isObjectOrArray";
 
 /** ----------------------------------------------------------
  * * ***Predicate: `isDeepEqual`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
  * **Performs a deep equality check between two values.**
+ *
+ * ---
  * - **Behavior:**
- *    - Compares nested `arrays`, `objects`, `Dates`, `RegExp`, `NaN`, `Symbols`,
- *      `Set`, and `Map`.
- *    - Handles special cases:
- *        - `NaN` is considered equal to `NaN`.
- *        - `Date` objects are equal if `.getTime()` is equal.
- *        - `RegExp` objects are equal if `.toString()` is equal.
- *        - `Symbol("x")` and `Symbol("x")` are treated equal if
- *          `.toString()` matches.
- *        - `Set` and `Map` are deeply compared by content (order-insensitive).
- * - **ℹ️ Note:**
- *    - Does not support circular references.
+ *     - Compares nested `arrays`, `objects`, `Dates`, `RegExp`, `NaN`, `Symbols`,
+ *       `Set`, and `Map`.
+ *     - Handles special cases:
+ *         - `NaN` is considered equal to `NaN`.
+ *         - `Date` objects are equal if `.getTime()` is equal.
+ *         - `RegExp` objects are equal if `.toString()` is equal.
+ *         - `Symbol("x")` and `Symbol("x")` are treated equal if
+ *           `.toString()` matches.
+ *         - `Set` and `Map` are deeply compared by content (order-insensitive).
+ *
+ * ---
+ * - **Note:**
+ *     - Does not support circular references.
+ *
+ * ---
  * @param {*} a - First value to compare.
  * @param {*} b - Second value to compare.
+ *
+ * ---
  * @returns {boolean} `true` if both values are deeply equal, otherwise `false`.
+ *
+ * ---
  * @example
- * // ✅ Primitives
- * isDeepEqual(1, 1);
- * // ➔ true
- * isDeepEqual(NaN, NaN);
- * // ➔ true
- * isDeepEqual("hello", "world");
- * // ➔ false
- *
- * // ✅ Objects
- * isDeepEqual({ x: 1 }, { x: 1 });
- * // ➔ true
- * isDeepEqual({ x: 1 }, { y: 1 });
- * // ➔ false
- *
- * // ✅ Arrays
- * isDeepEqual([1, 2], [1, 2]);
- * // ➔ true
- * isDeepEqual([1, 2], [2, 1]);
- * // ➔ false
- *
- * // ✅ Dates
- * isDeepEqual(new Date(123), new Date(123));
- * // ➔ true
- *
- * // ✅ Sets
- * isDeepEqual(new Set([1, 2]), new Set([2, 1]));
- * // ➔ true
- *
- * // ✅ Maps
- * isDeepEqual(new Map([["a", 1]]), new Map([["a", 1]]));
- * // ➔ true
- *
- * // ❌ Different types
- * isDeepEqual(1, "1");
- * // ➔ false
+ * 1. #### Primitives:
+ *    ```ts
+ *    isDeepEqual(1, 1);
+ *    // ➔ true
+ *    isDeepEqual(NaN, NaN);
+ *    // ➔ true
+ *    isDeepEqual("hello", "world");
+ *    // ➔ false
+ *    ```
+ *    ---
+ * 2. #### Objects:
+ *    ```ts
+ *    isDeepEqual({ x: 1 }, { x: 1 });
+ *    // ➔ true
+ *    isDeepEqual({ x: 1 }, { y: 1 });
+ *    // ➔ false
+ *    ```
+ *    ---
+ * 3. #### Arrays:
+ *    ```ts
+ *    isDeepEqual([1, 2], [1, 2]);
+ *    // ➔ true
+ *    isDeepEqual([1, 2], [2, 1]);
+ *    // ➔ false
+ *    ```
+ *    ---
+ * 4. #### Dates:
+ *    ```ts
+ *    isDeepEqual(new Date(123), new Date(123));
+ *    // ➔ true
+ *    ```
+ *    ---
+ * 5. #### Sets:
+ *    ```ts
+ *    isDeepEqual(new Set([1, 2]), new Set([2, 1]));
+ *    // ➔ true
+ *    ```
+ *    ---
+ * 6. #### Maps:
+ *    ```ts
+ *    isDeepEqual(new Map([["a", 1]]), new Map([["a", 1]]));
+ *    // ➔ true
+ *    ```
+ *    ---
+ * 7. #### Different types:
+ *    ```ts
+ *    isDeepEqual(1, "1");
+ *    // ➔ false
+ *    ```
  */
 export const isDeepEqual = (a: unknown, b: unknown): boolean => {
   // Handle NaN

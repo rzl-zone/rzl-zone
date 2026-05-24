@@ -2,15 +2,18 @@ import type { ArrayFallback } from "@/_private/types.arrays";
 
 /** ----------------------------------------------------------
  * * ***Type guard: `isArray`.***
- * ----------------------------------------------------------
- ***Checks if a value is an ***[`Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)***.**
+ * -----------------------------------------------------------
+ * **Checks if a value is an ***[`Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)***.**
+ *
  * - **Behavior:**
- *    - Uses ***[`Array.isArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)*** for reliable and safe type checking.
- *    - Supports TypeScript **type narrowing** using `value is T[]`.
- *    - Handles edge cases like `null`, `undefined`, and non-array objects.
+ *     - Uses ***[`Array.isArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)*** for reliable and safe type checking.
+ *     - Supports TypeScript **type narrowing** using `value is T[]`.
+ *     - Handles edge cases like `null`, `undefined`, and non-array objects.
+ *
  * @template T - The expected type of array elements.
  * @param {*} value - The value to check.
  * @returns {boolean} Returns `true` if the value is an `array`, otherwise `false`.
+ *
  * @example
  * isArray([1, 2, 3]);
  * // ➔ true

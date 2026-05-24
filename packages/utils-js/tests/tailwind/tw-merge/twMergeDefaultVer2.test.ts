@@ -1,21 +1,21 @@
 import type { Config } from "tailwindcss";
 import { describe, it, expect } from "vitest";
-import { twMergeDefaultV4 } from "@/tailwind/tw-merge/v4/twMergeDefault";
+import { twMergeDefaultV2 } from "@/tailwind/tw-merge/v2/twMergeDefault";
 
-describe("twMergeDefaultV4", () => {
+describe("twMergeDefaultV2", () => {
   it("should return a function", () => {
-    const twMerge = twMergeDefaultV4();
+    const twMerge = twMergeDefaultV2();
     expect(typeof twMerge).toBe("function");
   });
 
   it("should merge basic Tailwind classes", () => {
-    const twMerge = twMergeDefaultV4();
+    const twMerge = twMergeDefaultV2();
     const result = twMerge("p-2 p-4");
     expect(result).toBe("p-4");
   });
 
   it("should extend class groups", () => {
-    const twMerge = twMergeDefaultV4({
+    const twMerge = twMergeDefaultV2({
       extend: {
         classGroups: {
           shadow: ["shadow-soft", "shadow-hard"]
@@ -37,13 +37,13 @@ describe("twMergeDefaultV4", () => {
         }
       }
     };
-    const twMerge = twMergeDefaultV4({ config: customConfig });
+    const twMerge = twMergeDefaultV2({ config: customConfig });
     const result = twMerge("text-base text-xxs text-xxl");
     expect(result).toBe("text-xxl");
   });
 
   it("should accept optional parameters like prefix, cacheSize, experimentalParseClassName", () => {
-    const twMerge = twMergeDefaultV4({
+    const twMerge = twMergeDefaultV2({
       prefix: "tw-",
       cacheSize: 500,
       experimentalParseClassName: ({ className }) => ({
@@ -54,28 +54,18 @@ describe("twMergeDefaultV4", () => {
       })
     });
 
-    const result = twMerge("p-2 p-4");
-    expect(result).toBe("p-4");
+    const result = twMerge("tw-p-2 tw-p-4");
+    expect(result).toBe("tw-p-4");
   });
 
   it("should include default extended text-shadow classes", () => {
-    const twMerge = twMergeDefaultV4();
+    const twMerge = twMergeDefaultV2();
     const result = twMerge("text-shadow text-shadow-lg");
     expect(result).toBe("text-shadow-lg");
   });
 
-  it("should respect order-sensitive modifiers when extended", () => {
-    const twMerge = twMergeDefaultV4({
-      extend: {
-        orderSensitiveModifiers: ["hover"]
-      }
-    });
-    const result = twMerge("hover:p-2 p-4");
-    expect(result).toBe("hover:p-2 p-4");
-  });
-
   it("should respect prefix option", () => {
-    const twMerge = twMergeDefaultV4({
+    const twMerge = twMergeDefaultV2({
       prefix: "tw-",
       extend: {
         classGroups: {
@@ -87,7 +77,7 @@ describe("twMergeDefaultV4", () => {
       }
     });
 
-    const result = twMerge("tw-:p-2 tw-:p-4");
-    expect(result).toBe("tw-:p-4");
+    const result = twMerge("tw-p-2 tw-p-4");
+    expect(result).toBe("tw-p-4");
   });
 });

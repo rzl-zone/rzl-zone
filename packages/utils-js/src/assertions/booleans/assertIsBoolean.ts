@@ -4,37 +4,41 @@ import {
   resolveErrorMessageAssertions
 } from "../_private/assertIs";
 
-/** -------------------------------------------------------
+/** ---------------------------------------------------------------------------------
  * * ***Type guard assertion: `assertIsBoolean`.***
- * -------------------------------------------------------
+ * ----------------------------------------------------------------------------------
  * **This function is an **assertion function**.**
+ *
  * - **Behavior:**
- *    - Validates that the given `value` is a **boolean**.
- *    - After it returns successfully, TypeScript narrows the type of `value` to `boolean`.
- *    - ✅ If `value` is a `boolean` ➔ execution continues normally.
- *    - ❌ If `value` is not a `boolean` ➔ throws a built-in error with either:
- *      - A custom error message (`options.message`), or
- *      - A default message including the actual type.
- * - **⚠️ Error type selection (`options.errorType`):**
- *    - You can override the type of error thrown when validation fails.
- *    - Must be one of the standard JavaScript built-in errors:
- *      - [`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError) |
- *        [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) |
- *        [`EvalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError) |
- *        [`RangeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError) |
- *        [`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError) |
- *        [`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError) |
- *        [`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError)
- *    - **Default:** `"TypeError"` if not provided or invalid.
+ *     - Validates that the given `value` is a **boolean**.
+ *     - After it returns successfully, TypeScript narrows the type of `value` to `boolean`.
+ *     - If `value` is a `boolean` ➔ execution continues normally.
+ *     - If `value` is not a `boolean` ➔ throws a built-in error with either:
+ *       - A custom error message (`options.message`), or
+ *       - A default message including the actual type.
+ * - **Error type selection (`options.errorType`):**
+ *     - You can override the type of error thrown when validation fails.
+ *     - Must be one of the standard JavaScript built-in errors:
+ *       - [`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError) |
+ *         [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) |
+ *         [`EvalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError) |
+ *         [`RangeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError) |
+ *         [`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError) |
+ *         [`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError) |
+ *         [`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError).
+ *     - **Default:** `"TypeError"` if not provided or invalid.
+ *
  * @param {*} value - ***The value to validate.***
  * @param {OptionsAssertIs} [options]
  *  ***Optional configuration:***
- *    - `message`: A custom error message (`string` or `function`).
- *    - `errorType`: A custom built-in JavaScript error type to throw.
- *    - `formatCase`: Controls how detected type names are formatted case in error messages.
- *    - `useAcronyms`: Control uppercase preservation of recognized acronyms during formatting.
- * @returns {boolean} Narrows `value` to `boolean` if no error is thrown.
+ *     - `message`: A custom error message (`string` or `function`).
+ *     - `errorType`: A custom built-in JavaScript error type to throw.
+ *     - `formatCase`: Controls how detected type names are formatted case in error messages.
+ *     - `useAcronyms`: Control uppercase preservation of recognized acronyms during formatting.
+ *
  * @throws [`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError) | [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`EvalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError) | [`RangeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError) | [`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError) | [`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError) | [`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError) if the value is not a boolean.
+ * @returns {boolean} Narrows `value` to `boolean` if no error is thrown.
+ *
  * @example
  * ```ts
  * // ✅ Simple usage
@@ -120,7 +124,7 @@ export const assertIsBoolean: (
   options?: OptionsAssertIs
 ) => asserts value is boolean = (
   value: unknown,
-  options: OptionsAssertIs = {}
+  options?: OptionsAssertIs
 ): asserts value is boolean => {
   if (isBoolean(value)) return;
 

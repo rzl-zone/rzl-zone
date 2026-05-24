@@ -1431,10 +1431,12 @@ export function applyWarningFilter(
 
   if (options?.includeMissingExportWarning ?? true) {
     DEFAULT_PATTERNS.push("[MISSING_EXPORT] Warning");
+    DEFAULT_PATTERNS.push("\x1b[33m[MISSING_EXPORT]");
   }
 
   if (options?.includePluginTimingsWarning ?? true) {
     DEFAULT_PATTERNS.push("[PLUGIN_TIMINGS] Warning");
+    DEFAULT_PATTERNS.push("\x1b[33m[PLUGIN_TIMINGS]");
   }
 
   const safePatterns = (patterns ?? [])

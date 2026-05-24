@@ -14,29 +14,43 @@ const typedArrayTags = new Set([
   "[object BigUint64Array]"
 ]);
 
-/** --------------------------------------------------
+/** ---------------------------------------------------------
  * * ***Type guard: `isTypedArray`.***
  * ----------------------------------------------------------
  * **Checks if `value` is classified as a
  * **[`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)**.**
+ *
+ * ---
  * - **Behavior:**
- *    - Validates that `value` is a non-null object.
- *    - Uses `Object.prototype.toString` tag matching against known typed array tags.
- *    - Narrows type to **{@link TypedArray | `TypedArray`}** when true.
+ *     - Validates that `value` is a non-null object.
+ *     - Uses `Object.prototype.toString` tag matching against known typed array tags.
+ *     - Narrows type to **{@link TypedArray | `TypedArray`}** when true.
+ *
+ * ---
  * @param {*} value - The value to check.
+ *
+ * ---
  * @returns {boolean} Returns `true` if the value is a typed array, otherwise `false`.
+ *
+ * ---
  * @example
- * isTypedArray(new Uint8Array);          // ➔ true
- * isTypedArray(new Uint8Array());        // ➔ true
- * isTypedArray(new Float32Array());      // ➔ true
- * isTypedArray(new Uint8ClampedArray()); // ➔ true
- * isTypedArray([]);                      // ➔ false
- * isTypedArray(Buffer.from("hi"));       // ➔ false
+ * isTypedArray(new Uint8Array);
+ * // ➔ true
+ * isTypedArray(new Uint8Array());
+ * // ➔ true
+ * isTypedArray(new Float32Array());
+ * // ➔ true
+ * isTypedArray(new Uint8ClampedArray());
+ * // ➔ true
+ * isTypedArray([]);
+ * // ➔ false
+ * isTypedArray(Buffer.from("hi"));
+ * // ➔ false
  */
-export function isTypedArray(value: unknown): value is TypedArray {
+export const isTypedArray = (value: unknown): value is TypedArray => {
   return (
     value != null &&
     typeof value === "object" &&
     typedArrayTags.has(Object.prototype.toString.call(value))
   );
-}
+};

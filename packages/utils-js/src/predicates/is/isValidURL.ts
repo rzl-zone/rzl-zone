@@ -2,16 +2,24 @@ import { isNonEmptyString } from "./isNonEmptyString";
 
 /** ---------------------------------------------------------
  * * ***Predicate: `isValidURL`.***
- * ---------------------------------------------------------
+ * ----------------------------------------------------------
  * **Validates whether a given string is a properly formatted URL.**
- * - **Ensures that the input is:**
- *    - A non-empty string.
- *    - A valid **[`URL`](https://developer.mozilla.org/docs/Web/API/URL)** with `http://` or `https://` scheme.
- * - **Behavior:**
- *    - ✅ Includes decoding for percent-encoded URLs (e.g., `https%3A%2F%2F...`).
- *    - ❌ Rejects invalid strings, unsupported schemes, and malformed domains.
+ *
+ * ---
+ * - #### *Behavior:*
+ *      - **Ensures that the input is:**
+ *          - A non-empty string.
+ *          - A valid **[`URL`](https://developer.mozilla.org/docs/Web/API/URL)** with `http://` or `https://` scheme.
+ *      - Includes decoding for percent-encoded URLs (e.g., `https%3A%2F%2F...`).
+ *      - Rejects invalid strings, unsupported schemes, and malformed domains.
+ *
+ * ---
  * @param {*} url - The value to validate.
+ *
+ * ---
  * @returns {boolean} Return `true` if the value is a **valid URL string**, otherwise `false`.
+ *
+ * ---
  * @example
  * isValidURL("https://example.com");
  * // ➔ true

@@ -1,13 +1,21 @@
 import { isPlainObject } from "./isPlainObject";
 
-/** ----------------------------------------------------
+/** ---------------------------------------------------------
  * * ***Type guard: `isElement`.***
  * ----------------------------------------------------------
  * **Checks if `value` is likely a
  *   **[`DOM Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element)**.**
+ *
+ * ---
  * @template T - The type of the value being checked.
+ *
+ * ---
  * @param {*} value The value to check.
+ *
+ * ---
  * @returns {boolean} Returns `true` if `value` is extends instance of **[`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element)**, else `false`.
+ *
+ * ---
  * @example
  * isElement(document.body);
  * // ➔ true

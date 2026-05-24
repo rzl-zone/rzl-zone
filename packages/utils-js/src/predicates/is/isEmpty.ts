@@ -15,24 +15,36 @@ import { isArguments } from "./isArgument";
 import { isTypedArray } from "./isTypedArray";
 import { isPlainObject } from "./isPlainObject";
 
-/** ----------------------------------------------------
+/** ---------------------------------------------------------
  * * ***Predicate: `isEmpty`.***
  * ----------------------------------------------------------
  * **Checks if `value` is an empty object, collection, map, or set.**
+ *
+ * ---
  * - **Behavior:**
- *    - **Objects** are empty if they have no own enumerable string keyed properties.
- *    - **Array-like values** (arrays, strings, `arguments`, typed arrays, buffers)
- *      are empty if their `length` is `0`.
- *    - **Maps** and **Sets** are empty if their `size` is `0`.
- *    - **Booleans**, **numbers** (including `NaN`), **symbols**, and `null`/
- *      `undefined` are treated as empty.
- *    - **Functions** are considered empty if they have no own enumerable keys.
- * - **ℹ️ Note:**
- *    - For more `Strict`, you can use
- *      ***`isEmptyValue` utility function*** instead.
+ *     - **Objects** are empty if they have no own enumerable string keyed properties.
+ *     - **Array-like values** (arrays, strings, `arguments`, typed arrays, buffers)
+ *       are empty if their `length` is `0`.
+ *     - **Maps** and **Sets** are empty if their `size` is `0`.
+ *     - **Booleans**, **numbers** (including `NaN`), **symbols**, and `null`/
+ *       `undefined` are treated as empty.
+ *     - **Functions** are considered empty if they have no own enumerable keys.
+ *
+ * ---
+ * - **Note:**
+ *     - For more `Strict`, you can use
+ *       ***`isEmptyValue` utility function*** instead.
+ *
+ * ---
  * @template T - The type of the value being checked.
+ *
+ * ---
  * @param {*} value The value to check.
+ *
+ * ---
  * @returns {boolean} Returns `true` if `value` is empty, else `false`.
+ *
+ * ----
  * @example
  * isEmpty(null);
  * // ➔ true

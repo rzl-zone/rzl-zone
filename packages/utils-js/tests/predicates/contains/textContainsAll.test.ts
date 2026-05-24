@@ -58,13 +58,11 @@ describe("textContainsAll - comprehensive tests", () => {
     expect(textContainsAll("Hello", [], {})).toBe(false);
   });
 
-  it("should throw if options is not an object", () => {
-    expect(() =>
+  it("should not throw if options is not an object", () => {
+    expect(
       // @ts-expect-error Invalid type props for test only
       textContainsAll("Hello", ["Hello"], "invalid")
-    ).toThrow(
-      "Third parameter (`options`) must be of type `plain-object`, but received: `string`."
-    );
+    ).toBe(true);
   });
 
   it("should throw if exactMatch is not a boolean", () => {

@@ -2,25 +2,35 @@ import { isPlainObject } from "@/predicates/is/isPlainObject";
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
 type RemoveSpacesOptions = {
-  /** If `true`, only trims the string, defaultValue: `false`.
+  /** ---------------------------------------------------------
+   * * If `true`, only trims the string, defaultValue: `false`.
+   * ----------------------------------------------------------
    *
    * @default false
    */
   trimOnly?: boolean;
 };
 
-/** ----------------------------------------------------------
+/** -----------------------------------------------------------
  * * ***Utility: `removeSpaces`.***
- * ----------------------------------------------------------
+ * ------------------------------------------------------------
  * **Removes all spaces from a string or trims only, based on the options provided.**
+ *
+ * ---
  * - **Behavior:**
- *    - If `trimOnly` is `true`, the string is simply trimmed.
- *    - Otherwise, removes **all spaces**, tabs, newlines, etc.
- *    - If the input is `null` or `undefined`, returns an empty string `("")`.
+ *     - If `trimOnly` is `true`, the string is simply trimmed.
+ *     - Otherwise, removes **all spaces**, tabs, newlines, etc.
+ *     - If the input is `null` or `undefined`, returns an empty string `("")`.
+ *
+ * ---
  * @param {string | null | undefined} value - The input string to be processed. If `null` or `undefined`, returns an empty string.
  * @param {RemoveSpacesOptions} [options] - The options object.
  * @param {RemoveSpacesOptions["trimOnly"]} [options.trimOnly=false] - If `true`, only trims the string without removing spaces inside.
+ *
+ * ---
  * @returns {string} The processed string.
+ *
+ * ---
  * @example
  * removeSpaces("  Hello   World  ");
  * // ➔ "HelloWorld"
@@ -31,15 +41,10 @@ type RemoveSpacesOptions = {
  */
 export const removeSpaces = (
   value: string | null | undefined,
-  options: RemoveSpacesOptions = {
-    trimOnly: false
-  }
+  options?: RemoveSpacesOptions
 ): string => {
   if (!isNonEmptyString(value)) return "";
-
-  if (!isPlainObject(options)) {
-    options = {};
-  }
+  if (!isPlainObject(options)) options = {};
 
   const { trimOnly = false } = options;
 

@@ -12,83 +12,82 @@ import type {
 
 import { isSupportedCountry } from "libphonenumber-js/max";
 
+import { createMessage } from "@/_private/logger";
+
+import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
+
 import { isNil } from "@/predicates/is/isNil";
 import { isNumber } from "@/predicates/is/isNumber";
 import { isString } from "@/predicates/is/isString";
 import { isBoolean } from "@/predicates/is/isBoolean";
-import { hasOwnProp } from "@/predicates/has/hasOwnProp";
 import { isUndefined } from "@/predicates/is/isUndefined";
+import { isPlainObject } from "@/predicates/is/isPlainObject";
 import { getPreciseType } from "@/predicates/type/getPreciseType";
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
-import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
 
 import {
   parsingAsYouType,
   isValidParseAsYouType
 } from "./_private/formatPhoneNumber.utils";
-import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
 
 /** -------------------------------------------------------
  * * ***Utility: `formatPhoneNumber`.***
- * -------------------------------------------------------
+ * --------------------------------------------------------
  * **Formats a phone number into a customizable local or international style.**
+ *
+ * ---
  * - **Type:** ***`Formatting Number`.***
  * - **Can also:**
- *    - Return only digits string when **digits-only mode** (`takeNumberOnly`):
- *      - Return empty-string (""), if invalid number phone.
- *    - Return boolean when **validity-check mode** (`checkValidOnly`):
- *      - ***Return `true` if:***
- *          - A phone number is "valid" when it has valid length, and the actual phone number digits match the
- *            regular expressions for its country (parameter options `defaultCountry`).
+ *     - Return only digits string when **digits-only mode** (`takeNumberOnly`):
+ *       - Return empty-string (""), if invalid number phone.
+ *     - Return boolean when **validity-check mode** (`checkValidOnly`):
+ *       - ***Return `true` if:***
+ *            - A phone number is "valid" when it has valid length, and the actual phone number digits match the
+ *              regular expressions for its country (parameter options `defaultCountry`).
  * - **E.164 compliance:**
- *    - Optional leading `+` is recommended but **not required**.
- *    - If Without leading `+`, you must passing `defaultCountry`.
- * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
- * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *     - Optional leading `+` is recommended but **not required**.
+ *     - If Without leading `+`, you must passing `defaultCountry`.
+ *
+ * ---
  * @param {ValueFormatPhoneNumber} value
  *  ***Phone number to format, accepts:***
- *   - `string` (recommended to preserve leading zeros).
- *   - `number` (leading zeros will be lost).
- *   - `null` or `undefined` (returns empty string).
+ *     - `string` (recommended to preserve leading zeros).
+ *     - `number` (leading zeros will be lost).
+ *     - `null` or `undefined` (returns empty string).
  * @param {FormatPhoneNumberMain} [options]
  *  ***Main options object controlling:***
- *   - `separator` (**string**): Group separator, default `" "`.
- *   - `plusNumberCountry` (**string**): Country code with optional leading `+`.
- *   - `openingNumberCountry` (**string**): Characters before the country code, e.g. `"("`.
- *   - `closingNumberCountry` (**string**): Characters after the country code, e.g. `")"`.
- *   - `checkValidOnly` (**boolean**): Return only validity.
- *   - `takeNumberOnly` (**boolean**): Return digits only.
- *   - `defaultCountry` (**string** - **`<ISO-3166-1 alpha-2>`**): Used to interpret numbers without an explicit `+<countryCode>`.
+ *     - `separator` (**string**): Group separator, default `" "`.
+ *     - `plusNumberCountry` (**string**): Country code with optional leading `+`.
+ *     - `openingNumberCountry` (**string**): Characters before the country code, e.g. `"("`.
+ *     - `closingNumberCountry` (**string**): Characters after the country code, e.g. `")"`.
+ *     - `checkValidOnly` (**boolean**): Return only validity.
+ *     - `takeNumberOnly` (**boolean**): Return digits only.
+ *     - `defaultCountry` (**string** - **`<ISO-3166-1 alpha-2>`**): Used to interpret numbers without an explicit `+<countryCode>`.
+ *
+ * ---
+ * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
+ * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *
+ * ---
  * @returns {string|boolean} Formatted phone number string, digits-only string, or boolean.
- * @overload
- * @param {ValueFormatPhoneNumber} value The phone number input (string or number).
- * @param {FormatPhoneNumberCheckValidOnly} [options] With `checkValidOnly: true`.
- * Return a **validity-check mode** when `checkValidOnly: true`.
- * @returns {boolean} A boolean indicating whether the input is a valid phone number.
- * @overload
- * @param {ValueFormatPhoneNumber} value The phone number input (string or number).
- * @param {FormatPhoneNumberTransform} [options] With `takeNumberOnly: true`.
- * Return **digits-only mode** when `takeNumberOnly: true`.
- * @returns {string} A string of digits only.
- * @overload
- * @param {ValueFormatPhoneNumber} value The phone number input (string or number).
- * @param {FormatPhoneNumberTakeNumberOnly} [options] Options to customize format output (country code, separator, etc).
- * Return a **formatted phone number string** with custom formatting and (`checkValidOnly: false`, `takeNumberOnly: false`).
- * @returns {string} Formatting number. return a string of digits only with formatter.
+ *
+ * ---
  * @example
- * 1. ***Formatting Phone Number String:***
- * ```ts
- * formatPhoneNumber("081234567890");
- * // ➔ "0812 3456 7890"
- * formatPhoneNumber("081234567890", {
- *   separator: "-",
- *   plusNumberCountry: "+44",
- *   openingNumberCountry: "(",
- *   closingNumberCountry: ")"
- * });
- * // ➔ "(+44) 8123-4567-890"
- * ```
- * 2. ***Digits-Only Mode:***
+ *
+ * 1. #### *Formatting Phone Number String:*
+ *    ```ts
+ *    formatPhoneNumber("081234567890");
+ *    // ➔ "0812 3456 7890"
+ *    formatPhoneNumber("081234567890", {
+ *      separator: "-",
+ *      plusNumberCountry: "+44",
+ *      openingNumberCountry: "(",
+ *      closingNumberCountry: ")"
+ *    });
+ *    // ➔ "(+44) 8123-4567-890"
+ *    ```
+ *    ---
+ * 2. #### *Digits-Only Mode:*
  *    ```ts
  *    formatPhoneNumber("(0812) 3456-7890", {
  *      takeNumberOnly: true,
@@ -117,7 +116,8 @@ import { safeStableStringify } from "@/conversions/stringify/safeStableStringify
  *    formatPhoneNumber("49 (151) 2345 6789", { takeNumberOnly: true });
  *    // ➔ ""
  *    ```
- * 3. ***Validity-Check Mode:***
+ *    ---
+ * 3. #### *Validity-Check Mode:*
  *    ```ts
  *    formatPhoneNumber("+6281234567890", { checkValidOnly: true });
  *    // ➔ true
@@ -157,29 +157,39 @@ export function formatPhoneNumber(
 ): string;
 /** -------------------------------------------------------
  * * ***Utility: `formatPhoneNumber`.***
- * -------------------------------------------------------
+ * --------------------------------------------------------
  * **Formats a phone number into a customizable local or international style.**
+ *
+ * ---
  * - **Type:** ***`Digits-only Mode`.***
  * - **Can also:**
- *    - Return only digits string when **digits-only mode** (`takeNumberOnly`).
- *    - Return boolean when **validity-check mode** (`checkValidOnly`) using a
- *      regex for international-style phone numbers:
- *      - ***Valid if:***
- *          - Only contains digits, optional leading `+`, spaces, parentheses `()`,
- *            hyphens `-`, or dots `.`.
- *          - Digits-only length < 16.
+ *     - Return only digits string when **digits-only mode** (`takeNumberOnly`).
+ *     - Return boolean when **validity-check mode** (`checkValidOnly`) using a
+ *       regex for international-style phone numbers:
+ *       - ***Valid if:***
+ *            - Only contains digits, optional leading `+`, spaces, parentheses `()`,
+ *              hyphens `-`, or dots `.`.
+ *            - Digits-only length < 16.
  * - **E.164 compliance:**
- *    - Optional leading `+` is recommended but **not required**.
- *    - If Without leading `+`, you must passing `defaultCountry`.
- * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
- * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *     - Optional leading `+` is recommended but **not required**.
+ *     - If Without leading `+`, you must passing `defaultCountry`.
+ *
+ * ---
  * @param {ValueFormatPhoneNumber} value
  *   Phone number to format. Accepts:
- *   - `string` (recommended to preserve leading zeros)
- *   - `number` (leading zeros will be lost)
- *   - `null` or `undefined` (returns empty string).
+ *    - `string` (recommended to preserve leading zeros).
+ *    - `number` (leading zeros will be lost).
+ *    - `null` or `undefined` (returns empty string).
  * @param {FormatPhoneNumberTakeNumberOnly} [options] Options to customize format output (country code, separator, etc).
+ *
+ * ---
+ * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
+ * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *
+ * ---
  * @returns {string} Digits-only mode, return string a digits-only.
+ *
+ * ---
  * @example
  * ```ts
  * formatPhoneNumber("(0812) 3456-7890", {
@@ -216,29 +226,39 @@ export function formatPhoneNumber(
 ): string;
 /** -------------------------------------------------------
  * * ***Utility: `formatPhoneNumber`.***
- * -------------------------------------------------------
+ * --------------------------------------------------------
  * **Formats a phone number into a customizable local or international style.**
+ *
+ * ---
  * - **Type:** ***`Validity-check Mode`.***
  * - **Can also:**
- *    - Return only digits string when **digits-only mode** (`takeNumberOnly`).
- *    - Return boolean when **validity-check mode** (`checkValidOnly`) using a
- *      regex for international-style phone numbers:
- *      - ***Valid if:***
- *          - Only contains digits, optional leading `+`, spaces, parentheses `()`,
- *            hyphens `-`, or dots `.`.
- *          - Digits-only length < 16.
+ *     - Return only digits string when **digits-only mode** (`takeNumberOnly`).
+ *     - Return boolean when **validity-check mode** (`checkValidOnly`) using a
+ *       regex for international-style phone numbers:
+ *       - ***Valid if:***
+ *            - Only contains digits, optional leading `+`, spaces, parentheses `()`,
+ *              hyphens `-`, or dots `.`.
+ *            - Digits-only length < 16.
  * - **E.164 compliance:**
- *    - Optional leading `+` is recommended but **not required**.
- *    - If Without leading `+`, you must passing `defaultCountry`.
- * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
- * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *     - Optional leading `+` is recommended but **not required**.
+ *     - If Without leading `+`, you must passing `defaultCountry`.
+ *
+ * ---
  * @param {ValueFormatPhoneNumber} value
  *  Phone number to format. Accepts:
  *   - `string` (recommended to preserve leading zeros).
  *   - `number` (leading zeros will be lost).
  *   - `null` or `undefined` (returns empty string).
  * @param {FormatPhoneNumberTakeNumberOnly} [options] Options to customize format output (country code, separator, etc).
+ *
+ * ---
+ * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
+ * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *
+ * ---
  * @returns {boolean} Validity-check mode, return a boolean.
+ *
+ * ---
  * @example
  * ```ts
  * formatPhoneNumber("+6281234567890", { checkValidOnly: true });
@@ -279,29 +299,39 @@ export function formatPhoneNumber(
 ): boolean;
 /** -------------------------------------------------------
  * * ***Utility: `formatPhoneNumber`.***
- * -------------------------------------------------------
+ * --------------------------------------------------------
  * **Formats a phone number into a customizable local or international style.**
+ *
+ * ---
  * - **Type:** ***Forced to `Validity-check Mode`***, because `checkValidOnly` has set to `true`.
  * - **Can also:**
- *    - Return only digits string when **digits-only mode** (`takeNumberOnly`).
- *    - Return boolean when **validity-check mode** (`checkValidOnly`) using a
- *      regex for international-style phone numbers:
- *      - ***Valid if:***
- *          - Only contains digits, optional leading `+`, spaces, parentheses `()`,
- *            hyphens `-`, or dots `.`.
- *          - Digits-only length < 16.
+ *     - Return only digits string when **digits-only mode** (`takeNumberOnly`).
+ *     - Return boolean when **validity-check mode** (`checkValidOnly`) using a
+ *       regex for international-style phone numbers:
+ *       - ***Valid if:***
+ *            - Only contains digits, optional leading `+`, spaces, parentheses `()`,
+ *              hyphens `-`, or dots `.`.
+ *            - Digits-only length < 16.
  * - **E.164 compliance:**
- *    - Optional leading `+` is recommended but **not required**.
- *    - If Without leading `+`, you must passing `defaultCountry`.
- * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
- * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *     - Optional leading `+` is recommended but **not required**.
+ *     - If Without leading `+`, you must passing `defaultCountry`.
+ *
+ * ---
  * @param {ValueFormatPhoneNumber} value
  *  Phone number to format. Accepts:
  *   - `string` (recommended to preserve leading zeros).
  *   - `number` (leading zeros will be lost).
  *   - `null` or `undefined` (returns empty string).
  * @param {FormatPhoneNumberTakeNumberOnly} [options] Options to customize format output (country code, separator, etc).
+ *
+ * ---
+ * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
+ * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *
+ * ---
  * @returns {boolean} Validity-check mode, return a boolean.
+ *
+ * ---
  * @example
  * ```ts
  * formatPhoneNumber("+6281234567890", {
@@ -398,29 +428,39 @@ export function formatPhoneNumber(
 ): boolean;
 /** -------------------------------------------------------
  * * ***Utility: `formatPhoneNumber`.***
- * -------------------------------------------------------
+ * --------------------------------------------------------
  * **Formats a phone number into a customizable local or international style.**
+ *
+ * ---
  * - **Type:** ***Forced to `Digits-only Mode`***, because `takeNumberOnly` has set to `true`.
  * - **Can also:**
- *    - Return only digits string when **digits-only mode** (`takeNumberOnly`).
- *    - Return boolean when **validity-check mode** (`checkValidOnly`) using a
- *      regex for international-style phone numbers:
- *      - ***Valid if:***
- *          - Only contains digits, optional leading `+`, spaces, parentheses `()`,
- *            hyphens `-`, or dots `.`.
- *          - Digits-only length < 16.
+ *     - Return only digits string when **digits-only mode** (`takeNumberOnly`).
+ *     - Return boolean when **validity-check mode** (`checkValidOnly`) using a
+ *       regex for international-style phone numbers:
+ *       - ***Valid if:***
+ *            - Only contains digits, optional leading `+`, spaces, parentheses `()`,
+ *              hyphens `-`, or dots `.`.
+ *            - Digits-only length < 16.
  * - **E.164 compliance:**
- *    - Optional leading `+` is recommended but **not required**.
- *    - If Without leading `+`, you must passing `defaultCountry`.
- * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
- * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *     - Optional leading `+` is recommended but **not required**.
+ *     - If Without leading `+`, you must passing `defaultCountry`.
+ *
+ * ---
  * @param {ValueFormatPhoneNumber} value
- *   Phone number to format. Accepts:
+ *  Phone number to format. Accepts:
  *   - `string` (recommended to preserve leading zeros)
  *   - `number` (leading zeros will be lost)
  *   - `null` or `undefined` (returns empty string).
  * @param {FormatPhoneNumberTakeNumberOnly} [options] Options to customize format output (country code, separator, etc).
+ *
+ * ---
+ * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
+ * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *
+ * ---
  * @returns {string} Digits-only mode, return string a digits-only.
+ *
+ * ---
  * @example
  * ```ts
  * formatPhoneNumber("(0812) 3456-7890", {
@@ -479,30 +519,40 @@ export function formatPhoneNumber(
 ): string;
 /** -------------------------------------------------------
  * * ***Utility: `formatPhoneNumber`.***
- * -------------------------------------------------------
+ * --------------------------------------------------------
  * **Formats a phone number into a customizable local or international style.**
+ *
+ * ---
  * - **Type:** ***Forced to `Validity-check Mode`***, because `checkValidOnly` and `takeNumberOnly` has set to `true`,
- *          but `checkValidOnly` will prioritize one.
+ *   but `checkValidOnly` will prioritize one.
  * - **Can also:**
- *    - Return only digits string when **digits-only mode** (`takeNumberOnly`).
- *    - Return boolean when **validity-check mode** (`checkValidOnly`) using a
- *      regex for international-style phone numbers:
- *      - ***Valid if:***
- *          - Only contains digits, optional leading `+`, spaces, parentheses `()`,
- *            hyphens `-`, or dots `.`.
- *          - Digits-only length < 16.
+ *     - Return only digits string when **digits-only mode** (`takeNumberOnly`).
+ *     - Return boolean when **validity-check mode** (`checkValidOnly`) using a
+ *       regex for international-style phone numbers:
+ *       - ***Valid if:***
+ *            - Only contains digits, optional leading `+`, spaces, parentheses `()`,
+ *              hyphens `-`, or dots `.`.
+ *            - Digits-only length < 16.
  * - **E.164 compliance:**
- *    - Optional leading `+` is recommended but **not required**.
- *    - If Without leading `+`, you must passing `defaultCountry`.
- * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
- * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *     - Optional leading `+` is recommended but **not required**.
+ *     - If Without leading `+`, you must passing `defaultCountry`.
+ *
+ * ---
  * @param {ValueFormatPhoneNumber} value
  *  Phone number to format. Accepts:
  *   - `string` (recommended to preserve leading zeros).
  *   - `number` (leading zeros will be lost).
  *   - `null` or `undefined` (returns empty string).
  * @param {FormatPhoneNumberTakeNumberOnly} [options] Options to customize format output (country code, separator, etc).
+ *
+ * ---
+ * @throws **{@link TypeError | `TypeError`}** if `value` is not string, number, null or undefined.
+ * @throws **{@link TypeError | `TypeError`}** if `options` is not an object or contains wrong types.
+ *
+ * ---
  * @returns {boolean} Validity-check mode, return a boolean.
+ *
+ * ---
  * @example
  * ```ts
  * formatPhoneNumber("+6281234567890", {
@@ -623,49 +673,32 @@ export function formatPhoneNumber(
 ): boolean;
 export function formatPhoneNumber(
   value: ValueFormatPhoneNumber,
-  options: FormatPhoneNumberMain = {}
+  options?: FormatPhoneNumberMain
 ): string | boolean {
   if (isNil(value)) return "";
 
   if (!isString(value) && !isNumber(value)) {
     throw new TypeError(
-      `First parameter (\`value\`) must be of type \`string\`, \`number\`, \`null\` or \`undefined\`, but received: \`${getPreciseType(
-        value
-      )}\`.`
+      errorMsg(
+        `First parameter (\`value\`) must be of type \`string\`, \`number\`, \`null\` or \`undefined\`, but received: \`${getPreciseType(
+          value
+        )}\`.`
+      )
     );
   }
 
-  assertIsPlainObject(options, {
-    message: ({ currentType, validType }) =>
-      `Second parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
-  });
+  if (!isPlainObject(options)) options = {};
 
-  const takeNumberOnly = hasOwnProp(options, "takeNumberOnly")
-    ? options.takeNumberOnly
-    : false;
-  const checkValidOnly = hasOwnProp(options, "checkValidOnly")
-    ? options.checkValidOnly
-    : false;
-  const defaultCountry: typeof options.defaultCountry = hasOwnProp(
-    options,
-    "defaultCountry"
-  )
-    ? options.defaultCountry
-    : undefined;
+  const takeNumberOnly = options.takeNumberOnly ?? false;
+  const checkValidOnly = options.checkValidOnly ?? false;
+  const defaultCountry: typeof options.defaultCountry =
+    options.defaultCountry ?? undefined;
 
-  const separator = hasOwnProp(options, "separator") ? options.separator : " ";
-  const prependPlusCountryCode = hasOwnProp(options, "prependPlusCountryCode")
-    ? options.prependPlusCountryCode
-    : true;
-  const outputFormat: OutputFormat = hasOwnProp(options, "outputFormat")
-    ? options.outputFormat
-    : "INTERNATIONAL";
-  const openingNumberCountry = hasOwnProp(options, "openingNumberCountry")
-    ? options.openingNumberCountry
-    : "";
-  const closingNumberCountry = hasOwnProp(options, "closingNumberCountry")
-    ? options.closingNumberCountry
-    : "";
+  const separator = options.separator ?? " ";
+  const prependPlusCountryCode = options.prependPlusCountryCode ?? true;
+  const outputFormat: OutputFormat = options.outputFormat ?? "INTERNATIONAL";
+  const openingNumberCountry = options.openingNumberCountry ?? "";
+  const closingNumberCountry = options.closingNumberCountry ?? "";
 
   if (
     !isBoolean(takeNumberOnly) ||
@@ -673,21 +706,25 @@ export function formatPhoneNumber(
     !isBoolean(prependPlusCountryCode)
   ) {
     throw new TypeError(
-      `Parameter \`takeNumberOnly\`, \`checkValidOnly\` and \`prependPlusCountryCode\` property of the \`options\` (second parameter) must be of type \`boolean\` or unset as \`undefined\` value, but received: ['takeNumberOnly': \`${getPreciseType(
-        takeNumberOnly
-      )}\`, 'checkValidOnly': \`${getPreciseType(
-        checkValidOnly
-      )}\`, 'prependPlusCountryCode': \`${getPreciseType(prependPlusCountryCode)}\`].`
+      errorMsg(
+        `Parameter \`takeNumberOnly\`, \`checkValidOnly\` and \`prependPlusCountryCode\` property of the \`options\` (second parameter) must be of type \`boolean\` or unset as \`undefined\` value, but received: ['takeNumberOnly': \`${getPreciseType(
+          takeNumberOnly
+        )}\`, 'checkValidOnly': \`${getPreciseType(
+          checkValidOnly
+        )}\`, 'prependPlusCountryCode': \`${getPreciseType(prependPlusCountryCode)}\`].`
+      )
     );
   }
 
   if (!isUndefined(defaultCountry) && !isSupportedCountry(defaultCountry)) {
     throw new TypeError(
-      `Parameter \`defaultCountry\` property of the \`options\` (second parameter) must be of type \`string\` as \`CountryCode\` (ISO-3166-1 alpha-2) or unset as \`undefined\` value, but received: \`${getPreciseType(
-        defaultCountry
-      )}\`, with value: \`${safeStableStringify(defaultCountry, {
-        keepUndefined: true
-      })}\`.\n\nSee: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements, for all ISO 3166-1 alpha-2 code.`
+      errorMsg(
+        `Parameter \`defaultCountry\` property of the \`options\` (second parameter) must be of type \`string\` as \`CountryCode\` (ISO-3166-1 alpha-2) or unset as \`undefined\` value, but received: \`${getPreciseType(
+          defaultCountry
+        )}\`, with value: \`${safeStableStringify(defaultCountry, {
+          keepUndefined: true
+        })}\`.\n\nSee: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements, for all ISO 3166-1 alpha-2 code.`
+      )
     );
   }
 
@@ -695,9 +732,11 @@ export function formatPhoneNumber(
     !["INTERNATIONAL", "NATIONAL", "RFC3966", "E.164"].includes(outputFormat)
   ) {
     throw new TypeError(
-      `Parameter \`outputFormat\` property of the \`options\` (second parameter) must be of type \`string\` as \`OutputFormat\` ("NATIONAL" | "INTERNATIONAL" | "E.164" | "RFC3966") or unset as \`undefined\` (default value to: \`INTERNATIONAL\`) value, but received: \`${getPreciseType(
-        outputFormat
-      )}\`, with value: ${safeStableStringify(outputFormat, { keepUndefined: true })}.`
+      errorMsg(
+        `Parameter \`outputFormat\` property of the \`options\` (second parameter) must be of type \`string\` as \`OutputFormat\` ("NATIONAL" | "INTERNATIONAL" | "E.164" | "RFC3966") or unset as \`undefined\` (default value to: \`INTERNATIONAL\`) value, but received: \`${getPreciseType(
+          outputFormat
+        )}\`, with value: ${safeStableStringify(outputFormat, { keepUndefined: true })}.`
+      )
     );
   }
 
@@ -707,11 +746,13 @@ export function formatPhoneNumber(
     !isString(closingNumberCountry)
   ) {
     throw new TypeError(
-      `Parameter \`separator\`, \`plusNumberCountry\`, \`openingNumberCountry\` and \`closingNumberCountry\` property of the \`options\` (second parameter) must be of type \`string\` or unset as \`undefined\` value, but received: ['separator': \`${getPreciseType(
-        separator
-      )}\`,'openingNumberCountry': \`${getPreciseType(
-        openingNumberCountry
-      )}\`, 'closingNumberCountry': \`${getPreciseType(closingNumberCountry)}\`].`
+      errorMsg(
+        `Parameter \`separator\`, \`plusNumberCountry\`, \`openingNumberCountry\` and \`closingNumberCountry\` property of the \`options\` (second parameter) must be of type \`string\` or unset as \`undefined\` value, but received: ['separator': \`${getPreciseType(
+          separator
+        )}\`,'openingNumberCountry': \`${getPreciseType(
+          openingNumberCountry
+        )}\`, 'closingNumberCountry': \`${getPreciseType(closingNumberCountry)}\`].`
+      )
     );
   }
 
@@ -759,3 +800,8 @@ export function formatPhoneNumber(
 
   return intlNumb;
 }
+
+/**
+ * @internal ***`Not part of the public API.`***
+ */
+const errorMsg = (msg: string) => createMessage("formatPhoneNumber", msg);

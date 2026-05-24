@@ -8,19 +8,29 @@ import { isObjectOrArray } from "./isObjectOrArray";
 
 /** ----------------------------------------------------------
  * * ***Predicate: `isEmptyDeep`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
  * **Recursively checks whether a value is **deeply empty**.**
- * - **Returns `true` for:**
- *    - Empty objects: `{}`
- *    - Empty arrays: `[]`
- *    - Nested empty structures: `{ a: [], b: {} }`
- *    - Falsy values (except numbers): `null`, `undefined`, `false`, `""`, `NaN`
- * - **Returns `false` for:**
- *    - Non-zero numbers
- *    - Objects or arrays containing non-empty values
- *    - Non-empty strings, `true`, functions, symbols, etc.
+ *
+ * ---
+ * - #### *Behavior:*
+ *      - #### Returns `true` for:
+ *           - Empty objects: `{}`.
+ *           - Empty arrays: `[]`.
+ *           - Nested empty structures: `{ a: [], b: {} }`.
+ *           - Falsy values (except numbers): `null`, `undefined`, `false`, `""`, `NaN`.
+ *           ---
+ *      - #### Returns `false` for:
+ *           - Non-zero numbers.
+ *           - Objects or arrays containing non-empty values.
+ *           - Non-empty strings, `true`, functions, symbols, etc.
+ *
+ * ---
  * @param {*} value - The value to deeply check.
+ *
+ * ---
  * @returns {boolean} `true` if the value is deeply empty, otherwise `false`.
+ *
+ * ---
  * @example
  * isEmptyDeep({});
  * // ➔ true

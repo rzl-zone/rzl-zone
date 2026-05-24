@@ -19,52 +19,66 @@ import { isBooleanObject } from "@/predicates/is/isBooleanObject";
 import { isObjectOrArray } from "@/predicates/is/isObjectOrArray";
 import { getPreciseType } from "@/predicates/type/getPreciseType";
 import { safeStableStringify } from "../stringify/safeStableStringify";
+import { createMessage } from "@/_private/logger";
 
 /** ----------------------------------------------------------
  * * ***Utility: `toStringDeepForce`.***
- * ---------------------------------------------
+ * -----------------------------------------------------------
  * **Recursively converts a value into a string based on the `forceToString` options.**
- * - **Rules `forceToString` options:**
- *    - `"stringOrNumber"`: Converts strings and numbers to strings.
- *    - `"primitives"`: Converts all primitives (number, string, boolean, bigint, undefined, null, NaN) to strings.
- *    - `"all"`: Converts everything, including symbols, functions, Dates, RegExp, Maps, Sets, Errors, Promises,
- *       boxed primitives box (new Number, new String, new Boolean), and deeply all object properties, to strings.
- *    - `false`: Leaves everything unchanged.
- * - **Special behaviors:**
- *    - `NaN` ➔ `"NaN"` only in `"primitives"` or `"all"` mode.
- *    - `Date` ➔ ISO string only in `"all"` mode.
- *    -  ***Primitives Boxed*** (`new Number`, `new String`, `new Boolean`):
- *       - For `new String` we convert everything to string (behavior JS of new String):
- *         - `new String("hi")` ➔ `.valueOf()` ➔ `"hi"`.
- *         - `new String(true)` ➔ `.valueOf()` ➔ `"true"`.
- *       - For `new Boolean` we convert to boolean (behavior JS of new Boolean) then convert to string:
- *         - `new Boolean(true)` ➔ `.valueOf()` ➔ `true` ➔ `true.toString()` ➔ `"true"`.
- *         - Special behavior JS of new Boolean, return `false` **(convert to string: `"false"`)**
- *           for `false`, (`0` / `-0`), `""` (empty-string), `null`, `undefined`, `NaN`, otherwise
- *           `true` **(convert to string: `"true"`)**.
- *       - For `new Number`:
- *         - `new Number(42)` ➔ `.valueOf()` ➔ `42` ➔ `42.toString()` ➔ `"42"`.
- *         - `new Number(NaN)` ➔ `.valueOf()` ➔ `NaN` ➔ `NaN.toString()` ➔ `"NaN"`.
- *         - `new Number(null)` ➔ `.valueOf()` ➔ `0` (`null` is `0` behavior JS of new Number) ➔ `0.toString()` ➔ `"0"`.
- *         - `new Number(undefined)` ➔ `.valueOf()` ➔ `NaN` ➔ `NaN.toString()` ➔ `"NaN"`.
- *         - `new Number(Infinity)` ➔ `Infinity` ➔ `Infinity` ➔ `Infinity.toString()` ➔ `"Infinity"`.
- *         - `new Number(-Infinity)` ➔ `-Infinity` ➔ `-Infinity` ➔ `-Infinity.toString()` ➔ `"-Infinity"`.
- *    - `RegExp` ➔ Source string (e.g. `/abc/i`) only in `"all"` mode.
- *    - `Symbol` ➔ `Symbol(description)` string only in `"all"` mode.
- *    - `Map` ➔ Array of [key, value] pairs with keys/values stringified deeply (only in `"all"` mode).
- *    - `Set` ➔ Array of values stringified deeply (only in `"all"` mode).
- *    - `Function` ➔ Source code string (e.g. `"() => 1"`) only in `"all"` mode.
- *    - `Error`, `Promise` ➔ Stringified via `.toString()` only in `"all"` mode.
+ *
+ * ---
+ * - #### *Rules `forceToString` options:*
+ *     - `"stringOrNumber"`: Converts strings and numbers to strings.
+ *     - `"primitives"`: Converts all primitives (number, string, boolean, bigint, undefined, null, NaN) to strings.
+ *     - `"all"`: Converts everything, including symbols, functions, Dates, RegExp, Maps, Sets, Errors, Promises,
+ *        boxed primitives box (new Number, new String, new Boolean), and deeply all object properties, to strings.
+ *     - `false`: Leaves everything unchanged.
+ *     ---
+ * - #### *Special behaviors:*
+ *     - `NaN` ➔ `"NaN"` only in `"primitives"` or `"all"` mode.
+ *     - `Date` ➔ ISO string only in `"all"` mode.
+ *     -  ***Primitives Boxed*** (`new Number`, `new String`, `new Boolean`):
+ *           - #### For `new String` we convert everything to string (behavior JS of new String):
+ *                - `new String("hi")` ➔ `.valueOf()` ➔ `"hi"`.
+ *                - `new String(true)` ➔ `.valueOf()` ➔ `"true"`.
+ *                ---
+ *           - #### For `new Boolean` we convert to boolean (behavior JS of new Boolean) then convert to string:
+ *                - `new Boolean(true)` ➔ `.valueOf()` ➔ `true` ➔ `true.toString()` ➔ `"true"`.
+ *                - Special behavior JS of new Boolean, return `false` **(convert to string: `"false"`)**
+ *                  for `false`, (`0` / `-0`), `""` (empty-string), `null`, `undefined`, `NaN`, otherwise
+ *                  `true` **(convert to string: `"true"`)**.
+ *                ---
+ *           - #### For `new Number`:
+ *                - `new Number(42)` ➔ `.valueOf()` ➔ `42` ➔ `42.toString()` ➔ `"42"`.
+ *                - `new Number(NaN)` ➔ `.valueOf()` ➔ `NaN` ➔ `NaN.toString()` ➔ `"NaN"`.
+ *                - `new Number(null)` ➔ `.valueOf()` ➔ `0` (`null` is `0` behavior JS of new Number) ➔ `0.toString()` ➔ `"0"`.
+ *                - `new Number(undefined)` ➔ `.valueOf()` ➔ `NaN` ➔ `NaN.toString()` ➔ `"NaN"`.
+ *                - `new Number(Infinity)` ➔ `Infinity` ➔ `Infinity` ➔ `Infinity.toString()` ➔ `"Infinity"`.
+ *                - `new Number(-Infinity)` ➔ `-Infinity` ➔ `-Infinity` ➔ `-Infinity.toString()` ➔ `"-Infinity"`.
+ *     - `RegExp` ➔ Source string (e.g. `/abc/i`) only in `"all"` mode.
+ *     - `Symbol` ➔ `Symbol(description)` string only in `"all"` mode.
+ *     - `Map` ➔ Array of [key, value] pairs with keys/values stringified deeply (only in `"all"` mode).
+ *     - `Set` ➔ Array of values stringified deeply (only in `"all"` mode).
+ *     - `Function` ➔ Source code string (e.g. `"() => 1"`) only in `"all"` mode.
+ *     - `Error`, `Promise` ➔ Stringified via `.toString()` only in `"all"` mode.
+ *
+ * ---
  * @param {*} value
  * * ***The value to process.***
- *    - ***Can be anything:***
- *        - `primitive`.
- *        - `array`.
- *        - `object`.
- *        - `function`.
- *        - `etc`.
+ *     - ***Can be anything:***
+ *         - `primitive`.
+ *         - `array`.
+ *         - `object`.
+ *         - `function`.
+ *         - `etc`.
+ *
+ * ---
  * @param {false | "stringOrNumber" | "primitives" | "all"} forceToString - ***The mode of string conversion.***
+ *
+ * ---
  * @returns {unknown} A new value with the conversion applied based on `forceToString`.
+ *
+ * ---
  * @example
  * toStringDeepForce(42, "stringOrNumber");
  * // ➔ "42"
@@ -118,11 +132,14 @@ export function toStringDeepForce(
     )
   ) {
     throw new TypeError(
-      `Second parameter \`forceToString\` must be of type \`false\` or \`string\` with value one of "stringOrNumber" | "primitives" | "all", but received: \`${getPreciseType(
-        forceToString
-      )}\`, with value: \`${safeStableStringify(forceToString, {
-        keepUndefined: true
-      })}\`.`
+      createMessage(
+        "toStringDeepForce",
+        `Second parameter \`forceToString\` must be of type \`false\` or \`string\` with value one of "stringOrNumber" | "primitives" | "all", but received: \`${getPreciseType(
+          forceToString
+        )}\`, with value: \`${safeStableStringify(forceToString, {
+          keepUndefined: true
+        })}\`.`
+      )
     );
   }
 

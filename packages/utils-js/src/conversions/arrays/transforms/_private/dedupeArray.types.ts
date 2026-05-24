@@ -112,13 +112,16 @@ export type DedupeArrayOptions<
   F extends ForceToStringOptions,
   Fl extends boolean
 > = {
-  /** Enables string conversion for comparison, default is `false`.
+  /** ---------------------------------------------------------
+   * * ***Enables string conversion for comparison, default is `false`.***
+   * ----------------------------------------------------------
    *
    * @default false
-   * @type {ForceToStringOptions}
    */
   forceToString?: F;
-  /** If true, deeply flattens `Arrays`, `Maps`, and `Sets` before deduplication, default is `false`.
+  /** ---------------------------------------------------------
+   * * ***If true, deeply flattens `Arrays`, `Maps`, and `Sets` before deduplication, default is `false`.***
+   * ----------------------------------------------------------
    *
    * @default false
    */

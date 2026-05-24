@@ -4,7 +4,7 @@
   </a>
 </div>
 
-<h1 align="center"><strong>Utils-JS</strong></h1>
+<h1 align="center"><strong>Utils JS</strong></h1>
 
 <p align="center">
   <i>
@@ -122,8 +122,8 @@ pnpm add @rzl-zone/utils-js@latest
 >
 > Migrated entry points:
 >
-> - `@rzl-zone/utils-js/next` → `@rzl-zone/next-kit/utils`
-> - `@rzl-zone/utils-js/next/server` → `@rzl-zone/next-kit/utils/server`
+> - `@rzl-zone/utils-js/next` ➔ `@rzl-zone/next-kit/utils`
+> - `@rzl-zone/utils-js/next/server` ➔ `@rzl-zone/next-kit/utils/server`
 
 ---
 
@@ -141,6 +141,7 @@ pnpm add @rzl-zone/utils-js@latest
   ```ts
   import { /* … */ } from "@rzl-zone/utils-js/assertions";
   import { /* … */ } from "@rzl-zone/utils-js/conversions"; 
+  import { /* … */ } from "@rzl-zone/utils-js/errors";
   import { /* … */ } from "@rzl-zone/utils-js/events";
   import { /* … */ } from "@rzl-zone/utils-js/formatters";
   import { /* … */ } from "@rzl-zone/utils-js/generators";
@@ -153,7 +154,7 @@ pnpm add @rzl-zone/utils-js@latest
   import { /* … */ } from "@rzl-zone/utils-js/urls"; 
   ```
 
-#### Place your cursor inside `{ }` or right after the package path `@rzl-zone/utils-js/<put-cursor-here>`, then press Ctrl+Space (Windows/Linux) or Cmd+Space (macOS), or use your editor’s autocomplete shortcut, to see all available functions and types with full TSDoc hints. 
+#### Place your cursor inside `{ }` or right after the package path `@rzl-zone/utils-js/<put-cursor-here>`, then press Ctrl+Space (Windows/Linux) or Cmd+Space (macOS), or use your editor’s autocomplete shortcut, to see all available functions and types with full TSDoc hints.
 
   ---
   
@@ -179,9 +180,9 @@ pnpm add @rzl-zone/utils-js@latest
   > - Always include first the `<script/>` tag before your own scripts when using the CDN version.
   > - Some Node.js-specific utilities may **not** be available, e.g.:  
   >   - Category utils of `tailwind`.  
-  >   - Server-only features (like Next.js helpers) will **not** be available.  
+  >   - Any `server-only` features will **not** be available.  
   > - The global object provided is `RzlUtilsJs`.  
-  > - The CDN bundle is **~370KB+ minified**, for production, consider using bundlers or npm packages for smaller size and tree-shaking.
+  > - The CDN bundle is **~373KB+ minified**, for production, consider using bundlers or npm packages for smaller size and tree-shaking.
 
 ---
 

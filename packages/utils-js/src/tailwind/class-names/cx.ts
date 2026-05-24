@@ -10,24 +10,35 @@ import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
  * * ***Type-Utility: `ClassValue`.***
  * ----------------------------------------------------------
  * **Represents a single valid value that can be converted to a CSS class string.**
+ *
+ * ---
  * @description
  * - Supports the following types:
- *    - `string` → literal class names (non-empty only)
- *    - `number | bigint` → numeric class names
- *    - `boolean` → only `true` is considered in objects/arrays
- *    - `null | undefined` → ignored
- *    - `ClassObject` → objects where **keys with truthy values** are included
- *    - `ClassValues` → arrays recursively flattened
+ *   - `string` ➔ literal class names (non-empty only).
+ *   - `number | bigint` ➔ numeric class names.
+ *   - `boolean` ➔ only `true` is considered in objects/arrays.
+ *   - `null | undefined` ➔ ignored.
+ *   - `ClassObject` ➔ objects where **keys with truthy values** are included.
+ *   - `ClassValues` ➔ arrays recursively flattened.
  * - Used internally by ***`cx` utility function*** to process mixed input values.
+ *
+ * ---
  * @example
  * ```ts
- * const val1: ClassValue = "button";              // ➔ string
- * const val2: ClassValue = 0;                     // ➔ number
- * const val3: ClassValue = ["a", { b: true }];    // ➔ array with object
- * const val4: ClassValue = { d: true, e: false }; // ➔ object
- * const val5: ClassValue = new String("foo");     // ➔ boxed string
- * const val6: ClassValue = new Number("123");     // ➔ boxed number
- * const val7: ClassValue = new Boolean("true");   // ➔ boxed boolean
+ * const val1: ClassValue = "button";
+ * // ➔ string
+ * const val2: ClassValue = 0;
+ * // ➔ number
+ * const val3: ClassValue = ["a", { b: true }];
+ * // ➔ array with object
+ * const val4: ClassValue = { d: true, e: false };
+ * // ➔ object
+ * const val5: ClassValue = new String("foo");
+ * // ➔ boxed string
+ * const val6: ClassValue = new Number("123");
+ * // ➔ boxed number
+ * const val7: ClassValue = new Boolean("true");
+ * // ➔ boxed boolean
  * ```
  */
 export type ClassValue =
@@ -44,6 +55,8 @@ export type ClassValue =
  * * ***Type-Utility: `ClassObject`.***
  * ----------------------------------------------------------
  * **Represents an object whose keys with truthy values are included in the final class string.**
+ *
+ * ---
  * @example
  * ```ts
  * const obj: ClassObject = { "text-red": true, "hidden": false };
@@ -57,6 +70,8 @@ export type ClassObject = Record<string, any>;
  * * ***Type-Utility: `ClassValues`.***
  * ----------------------------------------------------------
  * **Represents an array of {@link ClassValue | `ClassValue's`}, potentially nested.**
+ *
+ * ---
  * @example
  * ```ts
  * const arr: ClassValues = [
@@ -72,9 +87,10 @@ export type ClassValues = ClassValue[];
 /** ----------------------------------------------------------
  * * ***Utility: `toStringValue`.***
  * ----------------------------------------------------------
- * **Converts a `ClassValue` into a single space-separated string suitable for CSS class usage.**
- * @param {ClassValue} value The mixed value to process.
- * @returns {string} A string containing all valid class names.
+ *
+ * @internal **Converts a `ClassValue` into a single space-separated string suitable for CSS class usage.**
+ *
+ * ---
  * @description
  * - Arrays are recursively flattened.
  * - Objects include only keys with truthy values.
@@ -83,16 +99,32 @@ export type ClassValues = ClassValue[];
  * - Boolean `false` is ignored in objects/arrays.
  * - Boxed primitives (`new String()`, `new Number()`, `new Boolean()`) are supported.
  * - Preserves inherited object keys.
+ *
+ * ---
+ * @param {ClassValue} value The mixed value to process.
+ *
+ * ---
+ * @returns {string} A string containing all valid class names.
+ *
+ * ---
  * @example
  * ```ts
- * toStringValue("btn"); // ➔ "btn"
- * toStringValue(["a", 0, "b"]); // ➔ "a b"
- * toStringValue({ a: true, b: false, c: 1 }); // ➔ "a c"
- * toStringValue(["a", ["b", { c: true, d: false }]]); // ➔ "a b c"
- * toStringValue(new String("foo")); // ➔ "foo"
- * toStringValue(new Number(42));    // ➔ "42"
- * toStringValue(new Boolean(true)); // ➔ "true"
- * toStringValue(new Boolean(false));// ➔ ""
+ * toStringValue("btn");
+ * // ➔ "btn"
+ * toStringValue(["a", 0, "b"]);
+ * // ➔ "a b"
+ * toStringValue({ a: true, b: false, c: 1 });
+ * // ➔ "a c"
+ * toStringValue(["a", ["b", { c: true, d: false }]]);
+ * // ➔ "a b c"
+ * toStringValue(new String("foo"));
+ * // ➔ "foo"
+ * toStringValue(new Number(42));
+ * // ➔ "42"
+ * toStringValue(new Boolean(true));
+ * // ➔ "true"
+ * toStringValue(new Boolean(false));
+ * // ➔ ""
  * ```
  */
 function toStringValue(value: ClassValue): string {
@@ -132,54 +164,72 @@ function toStringValue(value: ClassValue): string {
  * * ***Utility: `cx`.***
  * ----------------------------------------------------------
  * **Merge multiple class values into a single, space-separated string suitable for CSS usage.**
- * @description
- * - Supports **nested combinations** of arrays and objects, recursively.
- * - **Falsy values** are skipped:
- *   - `false`, `null`, `undefined`, empty strings `""` are ignored anywhere.
- *   - Numbers `0` are ignored inside nested arrays/objects.
- * - **Boxed primitives** are correctly unwrapped to their primitive value.
- * - **Inherited object keys** are included in the final class string.
- * - Optimized for **CSS class merging** where conditional inclusion is common.
+ *
+ * ---
+ * - **Behavior:**
+ *     - Supports **nested combinations** of arrays and objects, recursively.
+ *     - **Falsy values** are skipped:
+ *         - `false`, `null`, `undefined`, empty strings `""` are ignored anywhere.
+ *         - Numbers `0` are ignored inside nested arrays/objects.
+ *     - **Boxed primitives** are correctly unwrapped to their primitive value.
+ *     - **Inherited object keys** are included in the final class string.
+ *     - Optimized for **CSS class merging** where conditional inclusion is common.
+ *
+ * ---
  * @param {ClassValues} values
  *   A list of mixed class values, which can include:
- *   - **Strings** → literal class names.
- *   - **Numbers** → numeric class names.
- *   - **BigInt** → numeric class names larger than JS safe integer limit.
- *   - **Arrays** → recursively flattened, can contain nested arrays or objects.
- *   - **Objects** → include keys whose values are truthy. Inherited keys are also included.
- *   - **Boxed primitives** (`new String()`, `new Number()`, `new Boolean()`) → automatically unwrapped.
+ *   - **Strings** ➔ literal class names.
+ *   - **Numbers** ➔ numeric class names.
+ *   - **BigInt** ➔ numeric class names larger than JS safe integer limit.
+ *   - **Arrays** ➔ recursively flattened, can contain nested arrays or objects.
+ *   - **Objects** ➔ include keys whose values are truthy. Inherited keys are also included.
+ *   - **Boxed primitives** (`new String()`, `new Number()`, `new Boolean()`) ➔ automatically unwrapped.
  *   - **Falsy values** (`false`, `null`, `undefined`, `""`, `0`) are ignored according to original behavior.
+ *
+ * ---
  * @returns {string}
  *   A single space-separated string containing all valid class names.
+ *
+ * ---
  * @example
- * ```ts
- * // Basic string merge
- * cx("btn", "btn-primary");
- * // ➔ "btn btn-primary"
+ * 1. #### Basic string merge:
+ *    ```ts
+ *    cx("btn", "btn-primary");
+ *    // ➔ "btn btn-primary"
+ *    ```
+ *    ---
+ * 2. #### Mixed arrays and objects:
+ *    ```ts
+ *    cx("a", ["b", { c: true, d: false }], { e: 1, f: 0 }, null, 2);
+ *    // ➔ "a b c e 2"
+ *    ```
  *
- * // Mixed arrays and objects
- * cx("a", ["b", { c: true, d: false }], { e: 1, f: 0 }, null, 2);
- * // ➔ "a b c e 2"
- *
- * // Empty and falsy values are ignored
- * cx("", null, undefined, false, 0);
- * // ➔ ""
- *
- * // Nested arrays with objects
- * cx(["a", ["b", { c: true, d: false }]]);
- * // ➔ "a b c"
- *
- * // Boxed primitives are unwrapped
- * cx(new String("foo"), new Number(42), new Boolean(true), new Number(0), new Boolean(false));
- * // ➔ "foo 42 true"
- *
- * // Inherited keys from objects are included
- * const proto = { inherited: true };
- * const obj = Object.create(proto);
- * obj.own = true;
- * cx(obj);
- * // ➔ "own inherited"
- * ```
+ * 3. #### Empty and falsy values are ignored:
+ *    ```ts
+ *    cx("", null, undefined, false, 0);
+ *    // ➔ ""
+ *    ```
+ *    ---
+ * 4. #### Nested arrays with objects:
+ *    ```ts
+ *    cx(["a", ["b", { c: true, d: false }]]);
+ *    // ➔ "a b c"
+ *    ```
+ *    ---
+ * 5. #### Boxed primitives are unwrapped:
+ *    ```ts
+ *    cx(new String("foo"), new Number(42), new Boolean(true), new Number(0), new Boolean(false));
+ *    // ➔ "foo 42 true"
+ *    ```
+ *    ---
+ * 6. #### Inherited keys from objects are included:
+ *    ```ts
+ *    const proto = { inherited: true };
+ *    const obj = Object.create(proto);
+ *    obj.own = true;
+ *    cx(obj);
+ *    // ➔ "own inherited"
+ *    ```
  */
 export function cx(...values: ClassValues): string {
   let str = "";

@@ -1,50 +1,71 @@
+import { createMessage } from "@/_private/logger";
+
 import { isNil } from "@/predicates/is/isNil";
 import { isString } from "@/predicates/is/isString";
 import { isNumber } from "@/predicates/is/isNumber";
 import { isBoolean } from "@/predicates/is/isBoolean";
-import { hasOwnProp } from "@/predicates/has/hasOwnProp";
 import { isPlainObject } from "@/predicates/is/isPlainObject";
-
 import { getPreciseType } from "@/predicates/type/getPreciseType";
 
 type ToBooleanExplicitOptions = {
-  /** Whether string comparison ignores case, _defaultValue: `false`_.
+  /** -------------------------------------------------------------------------------------------------
+   * * ***Whether string comparison ignores case, _defaultValue: `false`_.***
+   * --------------------------------------------------------------------------------------------------
    *
    * @default false
    */
   caseInsensitive?: boolean;
-  /** Whether to trim whitespace before comparison, _defaultValue: `true`_.
+  /** -------------------------------------------------------------------------------------------------
+   * * ***Whether to trim whitespace before comparison, _defaultValue: `true`_.***
+   * --------------------------------------------------------------------------------------------------
    *
    * @default true
    */
   trimString?: boolean;
-  /** Whether to consider the string `"indeterminate"` as `true`, _defaultValue: `false`_.
+  /** -------------------------------------------------------------------------------------------------
+   * * ***Whether to consider the string `"indeterminate"` as `true`, _defaultValue: `false`_.***
+   * --------------------------------------------------------------------------------------------------
    *
    * @default false
    */
   includeIndeterminate?: boolean;
 };
 
-/** --------------------------------------------
+/** ---------------------------------------------------------------------------------------------------
  * * ***Utility: `toBooleanExplicit`.***
- * ---------------------------------------------
+ * ----------------------------------------------------------------------------------------------------
  * **Converts a value into a strict boolean.**
+ *
+ * ---
  * - **Behavior:**
- *    - It supports various common string representations of truthy values,
- *      including `"true"`, `"on"`, `"yes"`, `"1"`, the number `1`, the boolean `true`,
- *      and optionally the string `"indeterminate"` if enabled.
- * - **ℹ️ Note:**
- *    - Any other value, including `undefined`, `null`, `false`, `0`, and
- *      unrecognized strings will return `false`.
- *    - Supports optional `caseInsensitive` and `trimString` to customize
- *      string normalization.
+ *     - It supports various common string representations of truthy values,
+ *       including `"true"`, `"on"`, `"yes"`, `"1"`, the number `1`, the boolean `true`,
+ *       and optionally the string `"indeterminate"` if enabled.
+ *
+ * ---
+ * - **Note:**
+ *     - Any other value, including `undefined`, `null`, `false`, `0`, and
+ *       unrecognized strings will return `false`.
+ *     - Supports optional `caseInsensitive` and `trimString` to customize
+ *       string normalization.
+ *
+ * ---
  * @param {*} value - The value to convert.
  * @param {ToBooleanExplicitOptions} [options] - Options for conversion behavior.
- * @param {ToBooleanExplicitOptions["caseInsensitive"]} [options.caseInsensitive=false] - Whether string comparison ignores case, default: `false`.
- * @param {ToBooleanExplicitOptions["trimString"]} [options.trimString=true] - Whether to trim whitespace before comparison, default: `true`.
- * @param {ToBooleanExplicitOptions["includeIndeterminate"]} [options.includeIndeterminate=false] - If `true`, the string `"indeterminate"` is considered a truthy value, defaults to `false`.
- * @returns {boolean} Return `true` if the value matches a truthy representation, otherwise `false`.
+ * @param {ToBooleanExplicitOptions["caseInsensitive"]} [options.caseInsensitive=false]
+ *         Whether string comparison ignores case, default: `false`.
+ * @param {ToBooleanExplicitOptions["trimString"]} [options.trimString=true]
+ *         Whether to trim whitespace before comparison, default: `true`.
+ * @param {ToBooleanExplicitOptions["includeIndeterminate"]} [options.includeIndeterminate=false]
+ *         If `true`, the string `"indeterminate"` is considered a truthy value, defaults to `false`.
+ *
+ * ---
  * @throws **{@link TypeError | `TypeError`}** if any option provided is not a boolean.
+ *
+ * ---
+ * @returns {boolean} Return `true` if the value matches a truthy representation, otherwise `false`.
+ *
+ * ---
  * @example
  * toBooleanExplicit(1);
  * // ➔ true
@@ -82,24 +103,22 @@ export const toBooleanExplicit = (
   options: ToBooleanExplicitOptions = {}
 ): boolean => {
   if (isNil(value)) return false;
-
   if (!isPlainObject(options)) options = {};
 
-  const ci = hasOwnProp(options, "caseInsensitive")
-    ? options.caseInsensitive
-    : false;
-  const ts = hasOwnProp(options, "trimString") ? options.trimString : true;
-  const incInd = hasOwnProp(options, "includeIndeterminate")
-    ? options.includeIndeterminate
-    : false;
+  const ci = options.caseInsensitive ?? false;
+  const ts = options.trimString ?? true;
+  const incInd = options.includeIndeterminate ?? false;
 
   if (!isBoolean(ci) || !isBoolean(ts) || !isBoolean(incInd)) {
     throw new TypeError(
-      `Parameters \`caseInsensitive\`, \`trimString\` and \`includeIndeterminate\` property of the \`options\` (second parameter) expected to be a \`boolean\` type, but received: ['caseInsensitive': \`${getPreciseType(
-        ci
-      )}\`, 'trimString': \`${getPreciseType(
-        ts
-      )}\`, 'includeIndeterminate': \`${getPreciseType(incInd)}\`].`
+      createMessage(
+        "toBooleanExplicit",
+        `Parameters \`caseInsensitive\`, \`trimString\` and \`includeIndeterminate\` property of the \`options\` (second parameter) expected to be a \`boolean\` type, but received: ['caseInsensitive': \`${getPreciseType(
+          ci
+        )}\`, 'trimString': \`${getPreciseType(
+          ts
+        )}\`, 'includeIndeterminate': \`${getPreciseType(incInd)}\`].`
+      )
     );
   }
 

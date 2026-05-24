@@ -17,15 +17,21 @@ function isSameValue(x: unknown, y: unknown): boolean {
  * -------------------------------------------------------------------
  * **Recursively checks whether `object` matches `source`. Supports custom comparison
  * via `customizer`, and handles arrays, objects, and nested structures.**
+ *
+ * ---
  * @param object
  * - The object to test against the `source`.
  * @param source
  * - The source object to match.
  * @param customizer
  * - Optional function to customize the comparison for each property/value.
+ *
+ * ---
  * @returns
- * - `true`  → `object` matches `source`.
- * - `false` → `object` does not match `source`.
+ * - `true`  ➔ `object` matches `source`.
+ * - `false` ➔ `object` does not match `source`.
+ *
+ * ---
  * @example
  * ```ts
  * const obj = { name: "Alice", age: 30 };
@@ -37,7 +43,7 @@ function isSameValue(x: unknown, y: unknown): boolean {
  * };
  *
  * baseIsMatch(obj, src, customizer);
- * // returns true
+ * // ➔ true
  * ```
  */
 export function baseIsMatch(

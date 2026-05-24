@@ -4,18 +4,26 @@ import { isDate } from "@/predicates/is/isDate";
 import { isString } from "@/predicates/is/isString";
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
-/** ----------------------------------------------------------
+/** -----------------------------------------------------------------------------------
  * * ***Utility: `formatDateTime`.***
- * ----------------------------------------------------------
+ * ------------------------------------------------------------------------------------
  * **Formats a date and time into a custom string format.**
+ *
+ * ---
  *  - **Features:**
- *    - Supports only `YYYY`, `MM`, `DD`, `hh`, `mm`, and `ss` as placeholders.
- *    - Uses a simple string replace (no locale).
- *    - Returns `null` if the date is invalid or not provided.
- *    - Defaults to `"YYYY-MM-DD hh:mm:ss"` format if none is specified.
+ *      - Supports only `YYYY`, `MM`, `DD`, `hh`, `mm`, and `ss` as placeholders.
+ *      - Uses a simple string replace (no locale).
+ *      - Returns `null` if the date is invalid or not provided.
+ *      - Defaults to `"YYYY-MM-DD hh:mm:ss"` format if none is specified.
+ *
+ * ---
  * @param {string | Date | null| undefined} date - The date to format.
  * @param {string} [format="YYYY-MM-DD hh:mm:ss"] - The desired date format, if format is `null` or `undefined` will force to defaultValue, defaultValue is: `"YYYY-MM-DD hh:mm:ss"`.
+ *
+ * ---
  * @returns {string | null} The formatted date string or `null` if invalid.
+ *
+ * ---
  * @example
  * formatDateTime(new Date());
  * // ➔ "2024-02-09 14:30:45" (example output with current time)
@@ -46,7 +54,7 @@ import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
  */
 export const formatDateTime = (
   date: string | Date | null | undefined,
-  format?: string
+  format: string = "YYYY-MM-DD hh:mm:ss"
 ): string | null => {
   if (isNil(format)) {
     format = "YYYY-MM-DD hh:mm:ss";
@@ -55,9 +63,7 @@ export const formatDateTime = (
   if (!isString(format)) return null;
 
   // Handle missing or invalid date input type
-  if (isNil(date) || !(isDate(date) || isNonEmptyString(date))) {
-    return null;
-  }
+  if (isNil(date) || !(isDate(date) || isNonEmptyString(date))) return null;
 
   try {
     const parsedDate = new Date(date);

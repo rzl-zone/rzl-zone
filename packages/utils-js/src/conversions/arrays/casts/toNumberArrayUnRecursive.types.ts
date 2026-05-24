@@ -3,9 +3,9 @@ import type { KeepNull, KeepUndef, Nullish } from "@rzl-zone/ts-types-plus";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { toNumberArrayUnRecursive } from "./toNumberArrayUnRecursive";
 
-// ============================================================
+// =================================================================================================
 // Helper types for inferring the return type of toNumberArrayUnRecursive
-// ============================================================
+// =================================================================================================
 
 export type NormalizeInputToNumberArrayUnRecursive<T> = T extends
   | string
@@ -45,26 +45,28 @@ type HasNonNumberLikeNonNullish<T> = [
   ? false
   : true;
 
-// ============================================================
+// =================================================================================================
 // Return type calculator
-// ============================================================
+// =================================================================================================
 
-/** -------------------------------------------------------
+/** ------------------------------------------------------------------------------------------------
  * * ***Computes the return type of {@link toNumberArrayUnRecursive|`toNumberArrayUnRecursive`}
  *   based on input type `T` and option `R`.***
- * -------------------------------------------------------
+ * -------------------------------------------------------------------------------------------------
  *
- * **Behavior:**
- * - If `R = true` (`removeInvalidValueNumber: true`):
- *    - If `T` is only `null | undefined` ➔ returns `[]`.
- *    - If `T` contains number-like (`string | number | bigint`) ➔ returns `number[]`.
- *    - Otherwise ➔ returns `[]`.
- * - If `R = false` (`removeInvalidValueNumber: false`):
- *    - Preserves `null[]` or `undefined[]` if input is purely nullish.
- *    - Otherwise returns an array of:
- *      - `number` if `T` includes number-like.
- *      - `undefined` if parsing fails (string or invalid non-number-like).
- *      - Original `null` / `undefined` from input.
+ * - **Behavior:**
+ *     - If `R = true` (`removeInvalidValueNumber: true`):
+ *        - If `T` is only `null | undefined` ➔ returns `[]`.
+ *        - If `T` contains number-like (`string | number | bigint`) ➔ returns `number[]`.
+ *        - Otherwise ➔ returns `[]`.
+ *     - If `R = false` (`removeInvalidValueNumber: false`):
+ *        - Preserves `null[]` or `undefined[]` if input is purely nullish.
+ *        - Otherwise returns an array of:
+ *          - `number` if `T` includes number-like.
+ *          - `undefined` if parsing fails (string or invalid non-number-like).
+ *          - Original `null` / `undefined` from input.
+ *
+ * ---
  * @template T Input element type.
  * @template R Flag indicating whether invalid values should be removed (`true`) or kept (`false`).
  *
@@ -95,14 +97,17 @@ export type ToNumberArrayUnRecursiveReturn<
           | KeepUndef<T>
         >;
 
-/** -------------------------------------------------------
+/** ------------------------------------------------------------------------------------------------
  * * ***Options for {@link toNumberArrayUnRecursive|`toNumberArrayUnRecursive`}.***
- * -------------------------------------------------------
+ * -------------------------------------------------------------------------------------------------
  *
  * @template T Flag indicating whether invalid values should be removed.
  */
 export type ToNumberArrayUnRecursiveOptions<T extends boolean> = {
-  /** If true, removes invalid number values (`NaN`, non-numeric strings, `null`, `undefined`) from the result, defaultValue: `true`.
+  /** ------------------------------------------------------------------------------------------------
+   * * ***If true, removes invalid number values (`NaN`, non-numeric strings, `null`, `undefined`) from
+   * the result, defaultValue: `true`.***
+   * ------------------------------------------------------------------------------------------------
    *
    * @default true
    */

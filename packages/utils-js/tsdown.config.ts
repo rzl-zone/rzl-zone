@@ -54,16 +54,11 @@ export default resolveDefaultConfig(() => {
       dts: { oxc: true },
       deps: {
         neverBundle: [
-          "next",
-          "react",
-          "react-dom",
-          "next/server",
           "date-fns",
-          "server-only",
           "libphonenumber-js",
           "tailwindcss",
-          "tailwind-merge-v3",
-          "tailwind-merge-v4"
+          "tailwind-merge-v2",
+          "tailwind-merge-v3"
         ]
       },
       async onSuccess() {

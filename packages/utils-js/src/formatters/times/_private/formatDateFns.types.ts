@@ -3,7 +3,7 @@ import type { AnyString, OmitStrict, Prettify } from "@rzl-zone/ts-types-plus";
 
 /** ----------------------------------------------------------------------
  * * ***Options for formatting dates with `date-fns/format`.***
- * ----------------------------------------------------------------------
+ * -----------------------------------------------------------------------
  *
  * Extends the base **{@link FormatOptions | *`FormatOptions`*}** (without **`locale`**) with extra options
  * for handling output formatting, localization, and parsing non-standard inputs.
@@ -12,24 +12,44 @@ export type FormatDateFnsOptions = Prettify<
   OmitStrict<FormatOptions, "locale", { recursive: false }> & {
     /** ------------------------------------------------------------
      * * ***Output format string passed to `date-fns/format`.***
-     * ------------------------------------------------------------
+     * -------------------------------------------------------------
      * - **Behavior:**
-     *    - Determines how the date will be rendered.
-     *    - Uses the full power of `date-fns` tokens.
+     *     - Determines how the date will be rendered.
+     *     - Uses the full power of `date-fns` tokens.
+     *
+     * ---
      * - ***Default Value***: `"dd MMM yyyy - HH:mm:ss"`.
+     *
+     * ---
+     * @default
+     * ```ts
+     * "dd MMM yyyy - HH:mm:ss"
+     * ```
+     *
+     * ---
      * @example
      * "dd MMMM yyyy, HH:mm:ss" // ➔ "03 September 2025, 10:25:42"
-     * @default "dd MMM yyyy - HH:mm:ss"
      */
     format?: string;
 
     /** ------------------------------------------------------------
      * * ***Locale used for formatting.***
-     * ------------------------------------------------------------
+     * -------------------------------------------------------------
      * - **Behavior:**
-     *    - If `string`: only accepts `"id"` (Indonesian) or `"en"` (English) - **(default)**.
-     *    - If `Locale`: accepts a locale object from `date-fns/locale`.
+     *     - If `string`: only accepts `"id"` (Indonesian) or `"en"` (English) - **(default)**.
+     *     - If `Locale`: accepts a locale object from `date-fns/locale`.
+     *
+     * ---
      * - ***Default Value***: `"en"`.
+     *
+     * ---
+     * @default
+     * ```ts
+     * "en"
+     * ```
+     * ---
+     * @example
+     *
      * ```ts
      * import { ar } from "date-fns/locale";
      *
@@ -39,18 +59,28 @@ export type FormatDateFnsOptions = Prettify<
      * });
      * // ➔ "03 سبتمبر 2025"
      * ```
-     * @default "en"
      */
     locale?: "id" | "en" | AnyString | Locale;
 
     /** ------------------------------------------------------------
      * * ***Input locale used when parsing non-standard string dates.***
-     * ------------------------------------------------------------
+     * -------------------------------------------------------------
      * - **Behavior:**
-     *    - Required if `date` is a **localized string**
-     *      (e.g. `"03 Mei 2025 10:25:42"` in Indonesian).
-     *    - Same accepted types as `locale` parameter.
+     *     - Required if `date` is a **localized string**
+     *       (e.g. `"03 Mei 2025 10:25:42"` in Indonesian).
+     *     - Same accepted types as `locale` parameter.
+     *
+     * ---
      * - ***Default Value***: `"en"`.
+     *
+     * ---
+     * @default
+     * ```ts
+     * "en"
+     * ```
+     *
+     * ---
+     * @example
      * ```ts
      * import { ar } from "date-fns/locale";
      *
@@ -61,18 +91,26 @@ export type FormatDateFnsOptions = Prettify<
      * });
      * // ➔ "May 3, 2025 at 10:25:42 AM"
      * ```
-     * @default "en"
      */
     inputLocale?: "id" | "en" | AnyString | Locale;
 
     /** ------------------------------------------------------------
      * * ***Input format string for parsing non-ISO string dates.***
-     * ------------------------------------------------------------
+     * -------------------------------------------------------------
      * - **Behavior:**
-     *    - Required if `date` is **not ISO-8601** and not a native `Date`.
-     *    - Works together with `inputLocale` parameter.
+     *     - Required if `date` is **not ISO-8601** and not a native `Date`.
+     *     - Works together with `inputLocale` parameter.
+     *
+     * ---
      * -  ***Default Value***: `undefined`.
-     * @default undefined
+     *
+     * ---
+     * @default
+     * ```ts
+     * undefined
+     * ```
+     *
+     * ---
      * @example
      * "dd MMMM yyyy HH:mm:ss" // ➔ "03 May 2025 10:25:42"
      */

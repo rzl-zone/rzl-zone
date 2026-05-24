@@ -1,74 +1,97 @@
-import { hasOwnProp } from "@/predicates/has/hasOwnProp";
+import { createMessage } from "@/_private/logger";
+
+import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
+
+import { isPlainObject } from "@/predicates/is/isPlainObject";
 import { getPreciseType } from "@/predicates/type/getPreciseType";
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
-import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
-import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
 import { _censor, hashSeedGenerate } from "./_private/censorEmail.utils";
 
 type CensorEmailOptions = {
   /** ----------------------------------------------------------
    * * ***Censorship Mode.***
-   * ----------------------------------------------------------
+   * -----------------------------------------------------------
    * - **Valid value:**
-   *    - `"fixed"` (default) – Deterministic censorship based on a hash of the email, same input always produces the same output.
-   *    - `"random"` – Each character is randomly replaced every time the function is called.
+   *     - `"random"` – Each character is randomly replaced every time the function is called.
+   *     - `"fixed"` ***(default)*** – Deterministic censorship based on a hash of the email, same input always produces the same output.
+   *
+   * ---
+   * @default "fixed"
    */
   mode?: "random" | "fixed";
 };
 
 /** ----------------------------------------------------------
  * * ***Utility: `censorEmail`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
  * **Censors an email by replacing characters with `"*"` while supporting random or fixed mode.**
+ *
+ * ---
  * - **This function replaces parts of an email with asterisks to protect privacy.**
- *    - **Modes:**
- *        - `"fixed"` (default) – Deterministic censorship based on a hash of the email, same input always produces the same output.
- *        - `"random"` – Each character is randomly replaced every time the function is called.
- *    - **ℹ️ Note:**
- *        - Invalid emails or non-string input will return an empty-string (`""`).
+ *      - **Modes:**
+ *          - `"fixed"` **(default)** – Deterministic censorship based on a hash of the email, same input always produces the same output.
+ *          - `"random"` – Each character is randomly replaced every time the function is called.
+ *      - **Note:**
+ *          - Invalid emails or non-string input will return an empty-string (`""`).
+ *
+ * ---
  * @param {string | null | undefined} email - The email address to censor.
  * @param {CensorEmailOptions} [options={}] - Options object for mode.
- * @returns {string} The censored email, or an empty string if input is invalid.
+ *
+ * ---
  * @throws **{@link TypeError | `TypeError`}** if `options` is not a plain object or `mode` is invalid.
+ *
+ * ---
+ * @returns {string} The censored email, or an empty string if input is invalid.
+ *
+ * ---
  * @example
- * // Fixed mode (default, deterministic)
- * censorEmail("john.doe@gmail.com");
- * // ➔ "j**n.**e@g***l.com"
  *
- * // Fixed mode explicitly
- * censorEmail("john.doe@gmail.com", { mode: "fixed" });
- * // ➔ "j**n.**e@g***l.com"
- *
- * // Random mode (output may vary each time)
- * censorEmail("john.doe@gmail.com", { mode: "random" });
- * // ➔ "j*hn.***e@g***l.com" (random)
- *
- * // Invalid email returns empty string
- * censorEmail("invalid-email");
- * // ➔ ""
+ * 1. #### Fixed mode (default, deterministic):
+ *    ```ts
+ *    censorEmail("john.doe@gmail.com");
+ *    // ➔ "j**n.**e@g***l.com"
+ *    ```
+ *    ---
+ * 2. #### Fixed mode explicitly:
+ *    ```ts
+ *    censorEmail("john.doe@gmail.com", { mode: "fixed" });
+ *    // ➔ "j**n.**e@g***l.com"
+ *    ```
+ *    ---
+ * 3. #### Random mode (output may vary each time):
+ *    ```ts
+ *    censorEmail("john.doe@gmail.com", { mode: "random" });
+ *    // ➔ "j*hn.***e@g***l.com" (random)
+ *    ```
+ *    ---
+ * 4. #### Invalid email returns empty string:
+ *    ```ts
+ *    censorEmail("invalid-email");
+ *    // ➔ ""
+ *    ```
  */
 export const censorEmail = (
   email: string | null | undefined,
-  options: CensorEmailOptions = {}
+  options?: CensorEmailOptions
 ): string => {
   if (!isNonEmptyString(email)) return "";
+  if (!isPlainObject(options)) options = {};
 
-  assertIsPlainObject(options, {
-    message: ({ currentType, validType }) =>
-      `Second parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
-  });
-
-  const mode = hasOwnProp(options, "mode") ? options.mode : "fixed";
+  const mode = options.mode ?? "fixed";
 
   // Ensure mode is either "random" or "fixed"
   if (mode !== "random" && mode !== "fixed") {
     throw new TypeError(
-      `Parameter \`mode\` property of the \`options\` (second parameter) must be one of "fixed" or "random", but received: \`${getPreciseType(
-        mode
-      )}\`, with value: \`${safeStableStringify(mode, {
-        keepUndefined: true
-      })}\`.`
+      createMessage(
+        "censorEmail",
+        `Parameter \`mode\` property of the \`options\` (second parameter) must be one of "fixed" or "random", but received: \`${getPreciseType(
+          mode
+        )}\`, with value: \`${safeStableStringify(mode, {
+          keepUndefined: true
+        })}\`.`
+      )
     );
   }
 

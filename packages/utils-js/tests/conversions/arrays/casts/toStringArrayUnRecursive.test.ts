@@ -127,17 +127,17 @@ describe("toStringArrayUnRecursive", () => {
     expect(toStringArrayUnRecursive(undefined)).toBeUndefined();
   });
 
-  it("should throw if options is not object or options.removeInvalidValue is not a boolean", () => {
-    expect(() =>
+  it("should set back to default and not throw if options is not object or options.removeInvalidValue is not a boolean (except null|undefined)", () => {
+    expect(
       // @ts-expect-error Invalid type option for test only
-      toStringArrayUnRecursive([1, 2], { removeInvalidValue: "false" })
-    ).toThrow(TypeError);
-    expect(() =>
+      () => toStringArrayUnRecursive([1, 2], { removeInvalidValue: "false" })
+    ).toThrow();
+    expect(
       // @ts-expect-error Invalid type option for test only
-      toStringArrayUnRecursive([1, 2], { removeInvalidValue: null })
-    ).toThrow(TypeError);
+      () => toStringArrayUnRecursive([1, 2], { removeInvalidValue: null })
+    ).not.toThrow();
     // @ts-expect-error Invalid type option for test only
-    expect(() => toStringArrayUnRecursive([1, 2], "bad")).toThrow(TypeError);
+    expect(() => toStringArrayUnRecursive([1, 2], "bad")).not.toThrow();
   });
 });
 

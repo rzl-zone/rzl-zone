@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi } from "vitest";
 import { randomStr } from "@/generators/random/string/randomStr";
+import { createMessage } from "@/_private/logger";
+import { joinLines } from "@rzl-zone/build-tools/utils";
 
 describe("randomStr", () => {
   it("should generate a string with exact length when minLength equals maxLength", () => {
@@ -81,7 +83,13 @@ describe("randomStr", () => {
         avoidWhiteSpace: true
       });
     }).toThrow(
-      "Character set is empty. Ensure `replaceGenStr` has valid characters and non empty string."
+      createMessage(
+        "randomStr",
+        joinLines(
+          "Character set is empty.",
+          "  > Ensure `replaceGenStr` has valid characters and non empty string."
+        )
+      )
     );
   });
 

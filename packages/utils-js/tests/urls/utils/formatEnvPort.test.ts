@@ -41,14 +41,14 @@ describe("formatEnvPort", () => {
     expect(formatEnvPort("8080", {})).toBe("8080");
   });
 
-  it("should throw if options is not a proper object", () => {
+  it("should not throw if options is not a proper object", () => {
     expect(() => formatEnvPort("8080", 123 as any)).toThrow(TypeError);
     expect(() => formatEnvPort("8080", "string" as any)).toThrow(TypeError);
     expect(() => formatEnvPort("8080", null as any)).toThrow(TypeError);
     expect(() => formatEnvPort("8080", [1, 2, 3] as any)).toThrow(TypeError);
   });
 
-  it("should throw if prefixColon is not boolean", () => {
+  it("should not throw if prefixColon is not boolean", () => {
     expect(() => formatEnvPort("8080", { prefixColon: "yes" as any })).toThrow(
       TypeError
     );

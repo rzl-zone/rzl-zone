@@ -153,19 +153,23 @@ describe("toNumberArrayUnRecursive", () => {
     expect(toNumberArrayUnRecursive(undefined)).toBeUndefined();
   });
 
-  it("should throw if options is not object or options.removeInvalidValueNumber is not a boolean", () => {
+  it("should set back to default and not throw if options is not object", () => {
+    // @ts-expect-error Invalid type prop for test only
+    expect(() => toNumberArrayUnRecursive(["1", "2"], "bad")).not.toThrow(
+      TypeError
+    );
+  });
+
+  it("should set back to default and not throw if options.removeInvalidValueNumber is not a boolean (except null|undefined)", () => {
+    expect(
+      // @ts-expect-error Invalid type prop for test only
+      () => toNumberArrayUnRecursive([1, 2], { removeInvalidValueNumber: null })
+    ).not.toThrow(TypeError);
+
     expect(() =>
       // @ts-expect-error Invalid type prop for test only
       toNumberArrayUnRecursive([1, 2], { removeInvalidValueNumber: "false" })
     ).toThrow(TypeError);
-    expect(() =>
-      // @ts-expect-error Invalid type prop for test only
-      toNumberArrayUnRecursive([1, 2], { removeInvalidValueNumber: null })
-    ).toThrow(TypeError);
-    // @ts-expect-error Invalid type prop for test only
-    expect(() => toNumberArrayUnRecursive(["1", "2"], "bad")).toThrow(
-      TypeError
-    );
   });
 });
 

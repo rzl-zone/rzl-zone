@@ -6,6 +6,8 @@
  * Unicode domain names to ASCII (`Punycode-UtilsJS`) and vice versa.
  */
 
+import { createMessage } from "@/_private/logger";
+
 import { getPreciseType } from "@/predicates/type/getPreciseType";
 import { assertIsString } from "@/assertions/strings/assertIsString";
 
@@ -15,7 +17,7 @@ import { assertIsString } from "@/assertions/strings/assertIsString";
 const maxInt = 2147483647;
 
 /**
- * Bootstring parameters for `Punycode-UtilsJS`.
+ * Boot-string parameters for `Punycode-UtilsJS`.
  */
 const base = 36,
   tMin = 1,
@@ -32,17 +34,17 @@ const initialBias = 72,
 
 /**
  * Regular expressions used internally.
- * Matches `Punycode-UtilsJS` prefix.
+ * - Matches `Punycode-UtilsJS` prefix.
  */
 const regexPunycode = /^xn--/;
 /**
  * Regular expressions used internally.
- * Matches non-ASCII chars.
+ * - Matches non-ASCII chars.
  */
 const regexNonASCII = /[^\0-\x7F]/;
 /**
  * Regular expressions used internally.
- * Matches domain label separators.
+ * - Matches domain label separators.
  */
 const regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g;
 
@@ -59,10 +61,9 @@ const errors: Record<string, string> = {
  * Aliases of `Math.floor`.
  */
 const floor = Math.floor;
-/** 
+/**
  * Aliases of `String.fromCharCode`.
-
-*/
+ */
 const stringFromCharCode = String.fromCharCode;
 
 /** ---------------------------------------------------------
@@ -81,6 +82,8 @@ function error(type: keyof typeof errors): never {
  *
  * @param array - Array to transform.
  * @param fn - Function to apply to each element.
+ *
+ * ---
  * @returns Transformed array.
  */
 function map<T, U>(array: T[], fn: (v: T) => U): U[] {
@@ -97,10 +100,13 @@ function map<T, U>(array: T[], fn: (v: T) => U): U[] {
 /** ---------------------------------------------------------
  * * ***Maps a domain name using a callback on each label.***
  * ---------------------------------------------------------
- *
  * Handles email-like domains (local@domain).
+ *
+ * ---
  * @param domain - Domain string to process.
  * @param fn - Function applied to each domain label.
+ *
+ * ---
  * @returns Transformed domain string.
  */
 function mapDomain(domain: string, fn: (v: string) => string): string {
@@ -120,12 +126,17 @@ function mapDomain(domain: string, fn: (v: string) => string): string {
  * ---------------------------------------------------------
  *
  * @param input - String to decode.
+ *
+ * ---
  * @returns Array of Unicode code points.
  */
 function ucs2decode(input: string): number[] {
   assertIsString(input, {
     message: ({ currentType, validType }) =>
-      `Utils \`punycodeUtilsJS.ucs2.decode\`, parameter \`input\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      createMessage(
+        "punycodeUtilsJS.ucs2.decode",
+        `Parameter \`input\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   const output: number[] = [];
@@ -151,6 +162,8 @@ function ucs2decode(input: string): number[] {
  * ---------------------------------------------------------
  *
  * @param points - Array of Unicode code points.
+ *
+ * ---
  * @returns Encoded string.
  */
 const ucs2encode = (points: number[]): string => {
@@ -159,9 +172,12 @@ const ucs2encode = (points: number[]): string => {
     !points.every((p) => typeof p === "number" && Number.isFinite(p))
   ) {
     throw new TypeError(
-      `Utils \`punycodeUtilsJS.ucs2.encode\`, parameter \`points\` must be an array of numbers, but received: \`${getPreciseType(
-        points
-      )}\`.`
+      createMessage(
+        "punycodeUtilsJS.ucs2.encode",
+        `Parameter \`points\` must be an array of numbers, but received: \`${getPreciseType(
+          points
+        )}\`.`
+      )
     );
   }
 
@@ -173,6 +189,8 @@ const ucs2encode = (points: number[]): string => {
  * ---------------------------------------------------------
  *
  * @param codePoint - Unicode code point.
+ *
+ * ---
  * @returns Digit value.
  */
 function basicToDigit(codePoint: number): number {
@@ -188,6 +206,8 @@ function basicToDigit(codePoint: number): number {
  *
  * @param digit - Numeric value.
  * @param flag - Bias flag (0 or 1).
+ *
+ * ---
  * @returns Code point.
  */
 function digitToBasic(digit: number, flag: number): number {
@@ -201,6 +221,8 @@ function digitToBasic(digit: number, flag: number): number {
  * @param delta - Delta value.
  * @param numPoints - Number of code points.
  * @param firstTime - Indicates first adaptation.
+ *
+ * ---
  * @returns Adapted bias.
  */
 function adapt(delta: number, numPoints: number, firstTime: boolean): number {
@@ -219,12 +241,17 @@ function adapt(delta: number, numPoints: number, firstTime: boolean): number {
  * ---------------------------------------------------------
  *
  * @param input - `Punycode-UtilsJS` string.
+ *
+ * ---
  * @returns Decoded Unicode string.
  */
 function decode(input: string): string {
   assertIsString(input, {
     message: ({ currentType, validType }) =>
-      `Utils \`punycodeUtilsJS.decode\`, parameter \`input\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      createMessage(
+        "punycodeUtilsJS.decode",
+        `Parameter \`input\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   const output: number[] = [];
@@ -242,7 +269,7 @@ function decode(input: string): string {
   }
 
   for (let index = basic > 0 ? basic + 1 : 0; index < inputLength; ) {
-    const oldi = i;
+    const oldIdx = i;
     let w = 1;
     for (let k = base; ; k += base) {
       if (index >= inputLength) error("invalid-input");
@@ -257,7 +284,7 @@ function decode(input: string): string {
       w *= baseMinusT;
     }
     const out = output.length + 1;
-    bias = adapt(i - oldi, out, oldi === 0);
+    bias = adapt(i - oldIdx, out, oldIdx === 0);
     if (floor(i / out) > maxInt - n) error("overflow");
     n += floor(i / out);
     i %= out;
@@ -271,12 +298,17 @@ function decode(input: string): string {
  * ---------------------------------------------------------
  *
  * @param input - Unicode string.
+ *
+ * ---
  * @returns `Punycode-UtilsJS` string.
  */
 function encode(input: string): string {
   assertIsString(input, {
     message: ({ currentType, validType }) =>
-      `Utils \`punycodeUtilsJS.encode\`, parameter \`input\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      createMessage(
+        "punycodeUtilsJS.encode",
+        `Parameter \`input\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   const output: string[] = [];
@@ -335,12 +367,17 @@ function encode(input: string): string {
  * ---------------------------------------------------------
  *
  * @param input - Domain or label.
+ *
+ * ---
  * @returns Unicode string.
  */
 function toUnicode(input: string): string {
   assertIsString(input, {
     message: ({ currentType, validType }) =>
-      `Utils \`punycodeUtilsJS.toUnicode\`, parameter \`input\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      createMessage(
+        "punycodeUtilsJS.toUnicode",
+        `Parameter \`input\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   return mapDomain(input, (str) =>
@@ -353,12 +390,17 @@ function toUnicode(input: string): string {
  * ---------------------------------------------------------
  *
  * @param input - Domain or label.
+ *
+ * ---
  * @returns ASCII string.
  */
 function toASCII(input: string): string {
   assertIsString(input, {
     message: ({ currentType, validType }) =>
-      `Utils \`punycodeUtilsJS.toASCII\`, parameter \`input\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      createMessage(
+        "punycodeUtilsJS.toASCII",
+        `Parameter \`input\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   return mapDomain(input, (str) =>
@@ -385,7 +427,11 @@ type PunycodeUtilsJS = {
      * ---------------------------------------------------------
      *
      * @param input - The UCS-2 string to decode.
+     *
+     * ---
      * @returns Array of Unicode code points.
+     *
+     * ---
      * @example
      * punycodeUtilsJS.ucs2.decode("𐍈");
      * // ➔ [66376]
@@ -396,7 +442,11 @@ type PunycodeUtilsJS = {
      * ---------------------------------------------------------
      *
      * @param points - Array of Unicode code points.
+     *
+     * ---
      * @returns Encoded string.
+     *
+     * ---
      * @example
      * punycodeUtilsJS.ucs2.encode([66376]);
      * // ➔ "𐍈"
@@ -408,7 +458,11 @@ type PunycodeUtilsJS = {
    * ---------------------------------------------------------
    *
    * @param input - The `Punycode-UtilsJS` string to decode.
+   *
+   * ---
    * @returns Decoded Unicode string.
+   *
+   * ---
    * @example
    * punycodeUtilsJS.decode("xn--fsq");
    * // ➔ "ü"
@@ -419,7 +473,11 @@ type PunycodeUtilsJS = {
    * ---------------------------------------------------------
    *
    * @param input - Unicode string to encode.
+   *
+   * ---
    * @returns `Punycode-UtilsJS` string.
+   *
+   * ---
    * @example
    * punycodeUtilsJS.encode("ü");
    * // ➔ "xn--fsq"
@@ -430,7 +488,11 @@ type PunycodeUtilsJS = {
    * ---------------------------------------------------------
    *
    * @param input - Domain or label string.
+   *
+   * ---
    * @returns ASCII string suitable for DNS.
+   *
+   * ---
    * @example
    * punycodeUtilsJS.toASCII("пример.рф");
    * // ➔ "xn--e1afmkfd.xn--p1ai"
@@ -441,7 +503,11 @@ type PunycodeUtilsJS = {
    * ---------------------------------------------------------
    *
    * @param input - ASCII string (with xn-- prefix if needed).
+   *
+   * ---
    * @returns Unicode string.
+   *
+   * ---
    * @example
    * punycodeUtilsJS.toUnicode("xn--e1afmkfd.xn--p1ai");
    * // ➔ "пример.рф"
@@ -452,10 +518,9 @@ type PunycodeUtilsJS = {
 /** ---------------------------------------------------------
  * * ***`Punycode-UtilsJS` object exposing all API functions and version.***
  * ---------------------------------------------------------
- * Provides encoding and decoding of Unicode domain names to ASCII (`Punycode-UtilsJS`)
- * and vice versa.
+ * **Provides encoding and decoding of Unicode domain names to ASCII (`Punycode-UtilsJS`) and vice versa.**
  *
- * - Useful for IDN (Internationalized Domain Names) support.
+ * - Useful for `IDN` (**Internationalized Domain Names**) support.
  */
 const punycodeUtilsJS: PunycodeUtilsJS = {
   version: "1.0.0",

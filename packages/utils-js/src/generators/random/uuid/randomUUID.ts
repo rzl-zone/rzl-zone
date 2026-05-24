@@ -1,46 +1,69 @@
+import { createMessage } from "@/_private/logger";
+
 import { isBoolean } from "@/predicates/is/isBoolean";
 import { isPlainObject } from "@/predicates/is/isPlainObject";
 import { getPreciseType } from "@/predicates/type/getPreciseType";
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
 
-/**
- * Configuration options for `randomUUID()`.
+/** ---------------------------------------------------------
+ * * ***Configuration options for `randomUUID()`.***
+ * ----------------------------------------------------------
  */
 type OptionsRandomUUID = {
-  /**
-   * Specifies which UUID version to generate.
+  /** ---------------------------------------------------------
+   * * ***Specifies which UUID version to generate.***
+   * ----------------------------------------------------------
    *
-   * - `"v4"` — Fully random UUID (RFC 4122). No timestamp, no ordering guarantees.
-   * - `"v7"` — Time-ordered UUID (RFC 9562). Uses Unix timestamp + randomness.
+   * - `"v4"` — Fully random UUID (RFC 4122), no timestamp, no ordering guarantees.
+   * - `"v7"` — Time-ordered UUID (RFC 9562), uses Unix timestamp + randomness.
    *
-   * @default "v4"
+   * ---
+   * @default
+   * ```ts
+   * "v4"
+   * ```
    *
+   * ---
    * @example
-   * // Random v4 UUID
-   * randomUUID({ version: "v4" }); // ➔ "3ec0de5a-b8a9-4ffb-a62a-fcc76851e9c2"
-   *
-   * @example
-   * // Time-ordered v7 UUID
-   * randomUUID({ version: "v7" }); // ➔ "0199f3f6-3c5e-744b-affa-46b2cfd496f8"
+   * 1. #### Random `v4` UUID:
+   *    ```ts
+   *    randomUUID({ version: "v4" });
+   *    // ➔ "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx"
+   *    ```
+   *    ---
+   * 2. #### Time-ordered `v7` UUID:
+   *    ```ts
+   *    randomUUID({ version: "v7" });
+   *    // ➔ "xxxxxxxx-xxxx-7xxx-xxxx-xxxxxxxxxxxx"
+   *    ```
    */
   version?: "v4" | "v7";
 
-  /**
-   * Enables monotonic sequencing for UUID v7.
+  /** ---------------------------------------------------------
+   * * ***Enables monotonic sequencing for UUID v7.***
+   *  ----------------------------------------------------------
    *
    * - Guarantees that multiple UUIDs generated within the same millisecond
    *   are strictly non-decreasing (lexicographically and timestamp-wise).
-   * - Only valid when `version === "v7"`. Using with `v4` will throw a `TypeError`.
+   * - Only valid when `version === "v7"`, using with `v4` will throw a `TypeError`.
    * - Useful for database inserts, logs, or any system where order matters.
    *
-   * @default false
+   * ---
+   * @default
+   * ```ts
+   * false
+   * ```
    *
+   * ---
    * @example
-   * // Monotonic v7 UUIDs
-   * const a = randomUUID({ version: "v7", monotonic: true });
-   * const b = randomUUID({ version: "v7", monotonic: true });
-   * console.log(a < b); // true, guaranteed
+   * - #### Monotonic `v7` UUIDs:
+   *   ```ts
+   *   const a = randomUUID({ version: "v7", monotonic: true });
+   *   const b = randomUUID({ version: "v7", monotonic: true });
+   *   console.log(a < b);
+   *   // ➔ true (guaranteed)
+   *   ```
    */
   monotonic?: boolean;
 };
@@ -50,119 +73,138 @@ type OptionsRandomUUID = {
  * ------------------------------------------------------------------------
  * **Generates a UUID string according to the specified version and options.**
  *
- * - **Supported versions**:
- *    - **`"v4"` (default)** ➔ Fully random UUID, RFC 4122 compliant.
- *        - Uses `crypto.randomUUID()` if available.
- *        - Falls back to `crypto.getRandomValues()` or `Math.random()`
- *          if needed.
- *    - **`"v7"`** ➔ Time-ordered UUID, RFC 9562 compliant.
- *        - Timestamp (Unix ms, 48 bits) + 80 bits randomness.
- *        - Good for database indexing / sorting.
- *    - **`"v7"` + `monotonic: true`** ➔ Ensures strictly non-decreasing UUIDs
- *      for multiple calls in the same millisecond (per-process).
+ * ---
+ * - #### Supported versions:
+ *     - #### **`"v4"` *(default)*** ➔ Fully random UUID, RFC 4122 compliant.
+ *          - Uses `crypto.randomUUID()` if available.
+ *          - Falls back to `crypto.getRandomValues()` or `Math.random()`
+ *            if needed.
+ *          ---
+ *     - #### **`"v7"`** ➔ Time-ordered UUID, RFC 9562 compliant.
+ *          - Timestamp (Unix ms, 48 bits) + 80 bits randomness.
+ *          - Good for database indexing / sorting.
+ *          ---
+ *     - #### **`"v7"` + `monotonic: true`** ➔ Ensures strictly non-decreasing UUIDs
+ *          for multiple calls in the same millisecond (per-process).
  *
- * - **Behavior / Safety Notes**:
- *    - **v4**: Fully random; probability of duplicates is astronomically low.
- *    - **v7**: Time-ordered; collisions extremely unlikely unless same ms + random repeat.
- *    - **Monotonic v7**: Guaranteed ordering per-process if multiple UUIDs are generated
- *      in the same millisecond.
- *    - **All versions**: Fallback safely if `crypto` APIs are unavailable.
+ * ---
+ * - #### Behavior / Safety Notes:
+ *     - **v4**: Fully random; probability of duplicates is astronomically low.
+ *     - **v7**: Time-ordered; collisions extremely unlikely unless same ms + random repeat.
+ *     - **Monotonic v7**: Guaranteed ordering per-process if multiple UUIDs are generated
+ *       in the same millisecond.
+ *     - **All versions**: Fallback safely if `crypto` APIs are unavailable.
  *
+ * ---
  * @param {object} [options] - Optional settings object.
  * @param {"v4" | "v7"} [options.version="v4"] - UUID version to generate.
- * @param {boolean} [options.monotonic=false] - For v7 only: generate monotonic UUIDs
+ * @param {boolean} [options.monotonic=false] - ***For v7 only***, generate monotonic UUIDs
  *                                              to maintain strict lexicographic order
  *                                              when generating multiple UUIDs within the same ms.
  *
- * @returns {string} A 36-character UUID string compliant with the selected version.
- *
  * @throws **{@link TypeError | `TypeError`}** if:
- * - `options` is not a plain object.
  * - `options.version` is provided but not a string.
  * - `options.monotonic` is provided but not a boolean.
  * - `monotonic: true` is used with `version` other than `"v7"`.
+ *
+ * ---
+ * @returns {string} A 36-character UUID string compliant with the selected version.
+ *
  * @throws **{@link RangeError | `RangeError`}** if `options.version` is provided but not `"v4"` or `"v7"`.
  *
  * @example
- * // Default (v4)
- * const id = randomUUID();
- * // ➔ "3b12f1df-5232-4804-897e-917bf397618a"
- *
- * @example
- * // Explicit v4
- * const id4 = randomUUID({ version: "v4" });
- *
- * @example
- * // Time-ordered v7
- * const id7 = randomUUID({ version: "v7" });
- * // ➔ "018f48d2-84c1-7ccd-b5a3-2f9463b3a889"
- *
- * @example
- * // Monotonic v7
- * const a = randomUUID({ version: "v7", monotonic: true });
- * const b = randomUUID({ version: "v7", monotonic: true });
- * // a < b lexicographically (guaranteed)
- *
- * @example
- * // Throws TypeError
- * randomUUID("v4" as any); // options must be object
- * randomUUID({ version: 123 as any }); // version must be string
- * randomUUID({ version: "v4", monotonic: true } as any); // monotonic only for v7
- *
- * @example
- * // Throws RangeError
- * randomUUID({ version: "v1" as any }); // unsupported version
+ * 1. #### Default (v4):
+ *    ```ts
+ *    const id = randomUUID();
+ *    // ➔ "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx"
+ *    ```
+ *    ---
+ * 2. #### Explicit `v4`:
+ *    ```ts
+ *    const id4 = randomUUID({ version: "v4" });
+ *    // ➔ "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx"
+ *    ```
+ *    ---
+ * 3. #### Time-ordered `v7`:
+ *    ```ts
+ *    const id7 = randomUUID({ version: "v7" });
+ *    // ➔ "xxxxxxxx-xxxx-7xxx-xxxx-xxxxxxxxxxxx"
+ *    ```
+ *    ---
+ * 4. #### Monotonic `v7`:
+ *    ```ts
+ *    const a = randomUUID({ version: "v7", monotonic: true });
+ *    const b = randomUUID({ version: "v7", monotonic: true });
+ *    // a < b lexicographically (guaranteed)
+ *    ```
+ * ---
+ * - #### *Throws:*
+ *      - #### `TypeError`:
+ *        ```ts
+ *        randomUUID({ version: 123 as any });
+ *        // version must be string
+ *        randomUUID({ version: "v4", monotonic: true } as any);
+ *        // monotonic only for v7
+ *        ```
+ *        ---
+ *      - #### `RangeError`:
+ *        ```ts
+ *        randomUUID({ version: "v1" as any });
+ *        // unsupported version
+ *        ```
  */
 export function randomUUID(options: OptionsRandomUUID = {}): string {
   // Validate options is a plain object if provided
-  if (!isPlainObject(options)) {
-    throw new TypeError(
-      `First parameter (\`options\`) must be a plain object with optional properties \`version\` and \`monotonic\`, but received: \`${getPreciseType(
-        options
-      )}\` - (with value: \`${safeStableStringify(options, { keepUndefined: true })}\`).`
-    );
-  }
+  if (!isPlainObject(options)) options = {};
 
   const { version = "v4", monotonic = false } = options;
 
   // Validate version type
   if (!isNonEmptyString(version)) {
     throw new TypeError(
-      `Parameter \`version\` property of the \`options\` (first parameter) must be a \`string\` of either "v4" or "v7", but received type: \`${getPreciseType(
-        version
-      )}\` - (with value: \`${safeStableStringify(version, { keepUndefined: true })}\`).`
+      errorMsg(
+        `Parameter \`version\` property of the \`options\` (first parameter) must be a \`string\` of either "v4" or "v7", but received type: \`${getPreciseType(
+          version
+        )}\` - (with value: \`${safeStableStringify(version, { keepUndefined: true })}\`).`
+      )
     );
   }
 
   if (version !== "v4" && version !== "v7") {
     throw new RangeError(
-      `Unsupported UUID version. Allowed values are "v4" or "v7". (received: \`${safeStableStringify(
-        version,
-        {
-          keepUndefined: true
-        }
-      )}\`).`
+      errorMsg(
+        `Unsupported UUID version. Allowed values are "v4" or "v7". (received: \`${safeStableStringify(
+          version,
+          {
+            keepUndefined: true
+          }
+        )}\`).`
+      )
     );
   }
 
   // Validate monotonic type
   if (!isBoolean(monotonic)) {
     throw new TypeError(
-      `Parameter \`monotonic\` property of the \`options\` (first parameter) must be a \`boolean\` when provided, but received type: \`${getPreciseType(
-        monotonic
-      )}\` - (with value: \`${safeStableStringify(monotonic, {
-        keepUndefined: true
-      })}\`).`
+      errorMsg(
+        `Parameter \`monotonic\` property of the \`options\` (first parameter) must be a \`boolean\` when provided, but received type: \`${getPreciseType(
+          monotonic
+        )}\` - (with value: \`${safeStableStringify(monotonic, {
+          keepUndefined: true
+        })}\`).`
+      )
     );
   }
 
   // monotonic only allowed with v7
   if (monotonic && version !== "v7") {
     throw new TypeError(
-      `Parameter \`monotonic\` property of the \`options\` (first parameter) is only supported for version "v7". Received: version=${safeStableStringify(
-        version,
-        { keepUndefined: true }
-      )}.`
+      errorMsg(
+        `Parameter \`monotonic\` property of the \`options\` (first parameter) is only supported for version "v7". Received: version=${safeStableStringify(
+          version,
+          { keepUndefined: true }
+        )}.`
+      )
     );
   }
 
@@ -282,8 +324,9 @@ function generateUUIDv4(): string {
 }
 
 /* ---------------------------
-   Monotonic state (singleton per-process)
-   --------------------------- */
+ *  Monotonic state (singleton per-process)
+ *  ---------------------------
+ */
 
 /**
  * Internal monotonic state:
@@ -332,7 +375,9 @@ function generateUUIDv7({
       if (overflow) {
         // Practically impossible (2^80 increments in 1ms). Throw to be safe.
         throw new RangeError(
-          "Monotonic UUID sequence overflow: too many UUIDs generated within the same millisecond."
+          errorMsg(
+            "Monotonic UUID sequence overflow, too many UUIDs generated within the same millisecond."
+          )
         );
       }
       // use incremented copy as rand
@@ -374,3 +419,8 @@ function generateUUIDv7({
 
   return [part1, part2, part3, part4, part5].join("-");
 }
+
+/**
+ * @internal ***`Not part of the public API.`***
+ */
+const errorMsg = (msg: string) => createMessage("randomUUID", msg);

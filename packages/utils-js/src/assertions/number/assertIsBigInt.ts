@@ -5,40 +5,44 @@ import {
   type OptionsAssertIs
 } from "../_private/assertIs";
 
-/** -------------------------------------------------------
+/** --------------------------------------------------------------------------------
  * * ***Type guard assertion: `assertIsBigInt`.***
- * -------------------------------------------------------
+ * ---------------------------------------------------------------------------------
  * **This function is an **assertion function**.**
+ *
  * - **Behavior:**
- *    - Validates that the given `value` is a **bigint**.
- *    - After it returns successfully, TypeScript narrows the type of `value` to `bigint`.
- *    - ✅ If `value` is a `bigint` ➔ execution continues normally.
- *    - ❌ If `value` is not a `bigint` ➔ throws a built-in error with either:
- *      - A custom error message (`options.message`), or
- *      - A default message including the actual type.
- *  - **ℹ️ Note:**
- *    - A `bigint` refers strictly to the JavaScript `bigint` primitive type (e.g., `123n`, `0n`, `-999999999999999999999n`).
- *    - This excludes `BigInt` objects created with `Object(BigInt(123))`.
- *  - **⚠️ Error type selection (`options.errorType`):**
- *    - You can override the type of error thrown when validation fails.
- *    - Must be one of the standard JavaScript built-in errors:
- *      - [`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError) |
- *        [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) |
- *        [`EvalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError) |
- *        [`RangeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError) |
- *        [`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError) |
- *        [`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError) |
- *        [`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError)
- *    - **Default:** `"TypeError"` if not provided or invalid.
+ *     - Validates that the given `value` is a **bigint**.
+ *     - After it returns successfully, TypeScript narrows the type of `value` to `bigint`.
+ *     - If `value` is a `bigint` ➔ execution continues normally.
+ *     - If `value` is not a `bigint` ➔ throws a built-in error with either:
+ *       - A custom error message (`options.message`), or
+ *       - A default message including the actual type.
+ * - **Note:**
+ *     - A `bigint` refers strictly to the JavaScript `bigint` primitive type (e.g., `123n`, `0n`, `-999999999999999999999n`).
+ *     - This excludes `BigInt` objects created with `Object(BigInt(123))`.
+ * - **Error type selection (`options.errorType`):**
+ *     - You can override the type of error thrown when validation fails.
+ *     - Must be one of the standard JavaScript built-in errors:
+ *       - [`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError) |
+ *         [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) |
+ *         [`EvalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError) |
+ *         [`RangeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError) |
+ *         [`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError) |
+ *         [`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError) |
+ *         [`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError).
+ *     - **Default:** `"TypeError"` if not provided or invalid.
+ *
  * @param {*} value - ***The value to validate.***
  * @param {OptionsAssertIs} [options]
  *  ***Optional configuration:***
- *    - `message`: A custom error message (`string` or `function`).
- *    - `errorType`: Built-in JavaScript error type to throw on failure (default `"TypeError"`).
- *    - `formatCase`: Controls how detected type names are formatted case in error messages.
- *    - `useAcronyms`: Control uppercase preservation of recognized acronyms during formatting.
- * @returns {boolean} Narrows `value` to `bigint` if no error is thrown.
+ *     - `message`: A custom error message (`string` or `function`).
+ *     - `errorType`: Built-in JavaScript error type to throw on failure (default `"TypeError"`).
+ *     - `formatCase`: Controls how detected type names are formatted case in error messages.
+ *     - `useAcronyms`: Control uppercase preservation of recognized acronyms during formatting.
+ *
  * @throws [`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError) | [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`EvalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError) | [`RangeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError) | [`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError) | [`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError) | [`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError) if the value is not a bigint.
+ * @returns {boolean} Narrows `value` to `bigint` if no error is thrown.
+ *
  * @example
  * ```ts
  * // ✅ Simple usage
@@ -120,7 +124,7 @@ export const assertIsBigInt: (
   options?: OptionsAssertIs
 ) => asserts value is bigint = (
   value: unknown,
-  options: OptionsAssertIs = {}
+  options?: OptionsAssertIs
 ): asserts value is bigint => {
   if (isBigInt(value)) return;
 

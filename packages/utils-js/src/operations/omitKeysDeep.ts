@@ -1,6 +1,11 @@
 import type { NumberRangeUnion } from "@rzl-zone/ts-types-plus";
 
-import { findDuplicates } from "./findDuplicates";
+import { createMessage } from "@/_private/logger";
+
+import { assertIsArray } from "@/assertions/objects/assertIsArray";
+
+import { safeJsonParse } from "@/conversions/json/safeJsonParse";
+import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
 
 import { isNaN } from "@/predicates/is/isNaN";
 import { isArray } from "@/predicates/is/isArray";
@@ -10,10 +15,7 @@ import { isPlainObject } from "@/predicates/is/isPlainObject";
 import { isNonEmptyArray } from "@/predicates/is/isNonEmptyArray";
 import { isObjectOrArray } from "@/predicates/is/isObjectOrArray";
 
-import { assertIsArray } from "@/assertions/objects/assertIsArray";
-
-import { safeJsonParse } from "@/conversions/json/safeJsonParse";
-import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
+import { findDuplicates } from "./findDuplicates";
 
 type IndexArray = NumberRangeUnion<0, 30>;
 type DotPath<T, Prev extends string = ""> =
@@ -29,31 +31,45 @@ type DotPath<T, Prev extends string = ""> =
 
 /** ------------------------------------------------------
  * * ***Utility: `omitKeysDeep`.***
- * ------------------------------------------------------
+ * -------------------------------------------------------
  * **Recursively omits properties from an object using dot notation paths.**
+ *
+ * ---
  * - **Behavior:**
- *    - Removes resulting empty objects (`{}`) and arrays (`[]`), cascading upwards
- *      to remove empty parents until root if needed.
- * - **⚠️ Be careful:**
- *    - If after omission an object or array becomes empty, it will be removed entirely
- *      including all the way up to the root if necessary, resulting in `{}`.
- * - **ℹ️ Note:**
- *    - For array indices, TypeScript autocomplete only suggests `0`–`30`
- *      (to prevent editor lag on large unions).
- *      However, higher indices are still fully supported at runtime — you can
- *      manually type `"arr.99.key"` and it will work the same.
- * @template I - Type of the input object
+ *     - Removes resulting empty objects (`{}`) and arrays (`[]`), cascading upwards
+ *       to remove empty parents until root if needed.
+ * ---
+ * - **Be careful:**
+ *     - If after omission an object or array becomes empty, it will be removed entirely
+ *       including all the way up to the root if necessary, resulting in `{}`.
+ * ---
+ * - **Note:**
+ *     - For array indices, TypeScript autocomplete only suggests `0`–`30`
+ *       (to prevent editor lag on large unions).
+ *       However, higher indices are still fully supported at runtime — you can
+ *       manually type `"arr.99.key"` and it will work the same.
+ *
+ * ---
+ * @template I - Type of the input object.
+ *
+ * ---
  * @param {I} object
  *  The object to process, should be a plain nested object or array structure.
  * @param {DotPath<I>[]} keysToOmit
  *  An array of string paths in dot notation indicating the properties to remove, paths
  *  can include numeric indices to target array elements, e.g. `"arr.0.x"` to
  *  remove `x` from the first object inside the `arr` array.
+ *
+ * ---
+ * @throws **{@link TypeError | `TypeError`}** if `keysToOmit` is not an array.
+ * @throws **{@link Error | `Error`}** if `keysToOmit` contains duplicate paths.
+ *
+ * ---
  * @returns {Partial<I>}
  *  A new deeply cloned object with the specified keys omitted, with resulting
  *  empty objects or arrays fully removed (even if it collapses to `{}`).
- * @throws **{@link TypeError | `TypeError`}** if `keysToOmit` is not an array.
- * @throws **{@link Error | `Error`}** if `keysToOmit` contains duplicate paths.
+ *
+ * ---
  * @example
  * omitKeysDeep({ arr: [{ a: 1 }] }, ["arr.0.a"]);
  * // ➔ {} (array becomes empty and removed)
@@ -102,18 +118,19 @@ export const omitKeysDeep = <I extends Record<string, unknown>>(
 
   assertIsArray(keysToOmit, {
     message: ({ currentType, validType }) =>
-      `Second parameter (\`keysToOmit\`) must be of type \`${validType}\` (array literal or instance), but received: \`${currentType}\`.`
+      errorMsg(
+        `Second parameter (\`keysToOmit\`) must be of type \`${validType}\` (array literal or instance), but received: \`${currentType}\`.`
+      )
   });
 
   const duplicates = findDuplicates(keysToOmit);
   if (isNonEmptyArray(duplicates)) {
     throw new Error(
-      `Function "omitKeysDeep" Error: Duplicate keys detected - \`${safeStableStringify(
-        duplicates,
-        {
+      errorMsg(
+        `Duplicate keys detected - \`${safeStableStringify(duplicates, {
           keepUndefined: true
-        }
-      )}\`.`
+        })}\`.`
+      )
     );
   }
 
@@ -172,3 +189,8 @@ export const omitKeysDeep = <I extends Record<string, unknown>>(
 
   return deepRemoveEmptyObjects(result) as Partial<I>;
 };
+
+/**
+ * @internal ***`Not part of the public API.`***
+ */
+const errorMsg = (msg: string) => createMessage("omitKeysDeep", msg);

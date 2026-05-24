@@ -95,8 +95,8 @@ describe("cleanParsedData", () => {
     });
   });
 
-  it("should throw if options is not an object", () => {
+  it("should set back to default and not throw if options is not an object", () => {
     // @ts-expect-error intentionally wrong
-    expect(() => cleanParsedData({}, "invalid")).toThrow(TypeError);
+    expect(() => cleanParsedData({}, "invalid")).not.toThrow();
   });
 });

@@ -65,9 +65,11 @@ describe("randomUUID", () => {
     expect(/[89ab]/i.test(id.charAt(19))).toBe(true);
   });
 
-  it("should throw TypeError if options is not an object", () => {
-    expect(() => (randomUUID as any)("v4")).toThrow(TypeError);
-    expect(() => (randomUUID as any)(123)).toThrow(TypeError);
+  it("should set to default and not throw TypeError if options is not an object", () => {
+    // @ts-expect-error ignore error for test invalid object
+    expect(() => randomUUID("v4")).not.toThrow();
+    // @ts-expect-error ignore error for test invalid object
+    expect(() => randomUUID(123)).not.toThrow();
   });
 
   it("should throw TypeError if version is not a string", () => {

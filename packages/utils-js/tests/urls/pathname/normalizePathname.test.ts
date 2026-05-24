@@ -94,10 +94,6 @@ describe("normalizePathname", () => {
     expect(normalizePathname("/double//slashes")).toBe("/double/slashes");
     expect(normalizePathname("/double///slashes///")).toBe("/double/slashes");
     expect(normalizePathname("nested/path/🚀")).toBe("/nested/path/🚀");
-
-    // expect(
-    //   normalizePathname("nested/path/🚀/?test=🚀", { keepTrailingSlash: false })
-    // ).toBe("/nested/path/🚀?test=🚀");
   });
 
   it("should respect keepTrailingSlash option", () => {
@@ -285,13 +281,13 @@ describe("normalizePathname - ignoreDomainExtensions (extended tests)", () => {
       normalizePathname("folder/image.png/file.txt", {
         ignoreDomainExtensions: [".png"]
       })
-    ).toBe("/folder/image.png/file.txt"); // first segment is folder → domain stripped normally
+    ).toBe("/folder/image.png/file.txt"); // first segment is folder ➔ domain stripped normally
 
     expect(
       normalizePathname("image.png/folder/file.txt", {
         ignoreDomainExtensions: [".png"]
       })
-    ).toBe("/image.png/folder/file.txt"); // first segment matches → preserved
+    ).toBe("/image.png/folder/file.txt"); // first segment matches ➔ preserved
   });
 
   it("should ignore extensions option if first segment is full domain or has protocol", () => {

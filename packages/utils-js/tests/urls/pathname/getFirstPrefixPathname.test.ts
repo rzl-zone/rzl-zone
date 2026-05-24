@@ -5,7 +5,7 @@ import { describe, it, expect } from "vitest";
 describe("getFirstPrefixPathname", () => {
   it("should return first element if result is an array of strings", () => {
     expect(getFirstPrefixPathname(["/settings", "/admin"])).toBe("/settings");
-    expect(getFirstPrefixPathname(["/onlyone"])).toBe("/onlyone");
+    expect(getFirstPrefixPathname(["/onlyOne"])).toBe("/onlyOne");
     expect(getFirstPrefixPathname([])).toBe("/");
   });
 

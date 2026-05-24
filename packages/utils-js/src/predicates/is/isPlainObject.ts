@@ -5,16 +5,22 @@ import type { IsHasKeysObject } from "./_private/_types";
 
 /** ----------------------------------------------------------
  * * ***Utility type: `IsPlainObjectResult`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
  * **Represents the inferred type after asserting a value is a **plain object**.**
+ *
+ * ---
  * - **Behavior:**
- *    - If `T` is `unknown`, the resulting type is `Record<PropertyKey, unknown> & T`.
- *    - If `T` is an object:
- *        - If it is a non-plain object (class instance, built-in object, etc.), the result is `never`.
- *        - If it has no keys (`IsHasKeysObject<T>` checked by **{@link IsHasKeysObject|`IsHasKeysObject`}** is false), the result is `Record<PropertyKey, unknown> & T`.
- *        - Otherwise, the result is `T` itself.
- *    - For any other types, the result is `never`.
+ *     - If `T` is `unknown`, the resulting type is `Record<PropertyKey, unknown> & T`.
+ *     - If `T` is an object:
+ *         - If it is a non-plain object (class instance, built-in object, etc.), the result is `never`.
+ *         - If it has no keys (`IsHasKeysObject<T>` checked by **{@link IsHasKeysObject|`IsHasKeysObject`}** is false), the result is `Record<PropertyKey, unknown> & T`.
+ *         - Otherwise, the result is `T` itself.
+ *     - For any other types, the result is `never`.
+ *
+ * ---
  * @template T - The input type to be asserted as a plain object.
+ *
+ * ---
  * @example
  * ```ts
  * type A = IsPlainObjectResult<unknown>;
@@ -39,25 +45,37 @@ export type IsPlainObjectResult<T> = unknown extends T
 
 /** ----------------------------------------------------------
  * * ***Type guard: `isPlainObject`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
  * **Checks if a value is a **plain-object**.**
- * - **A plain object is:**
- *    - Created by the `Object` constructor, or
- *    - Has a `[[Prototype]]` of `null` (e.g. `Object.create(null)`).
- * - **✅ Returns `true` for:**
- *    - Empty object literals: `{}`
- *    - Objects with null prototype: `Object.create(null)`
- * - **❌ Returns `false` for:**
- *    - Arrays (`[]`, `new Array()`)
- *    - Functions (regular, arrow, or class constructors)
- *    - Built-in objects: `Date`, `RegExp`, `Error`, `Map`, `Set`, `WeakMap`, `WeakSet`
- *    - Boxed primitives: `new String()`, `new Number()`, `new Boolean()`
- *    - `null` or `undefined`
- *    - Symbols
- *    - Class instances
+ *
+ * - #### A plain object is:
+ *      - Created by the `Object` constructor, or.
+ *      - Has a `[[Prototype]]` of `null` (e.g. `Object.create(null)`).
+ * ---
+ * - #### *Behavior:*
+ *      - #### Returns `true` for:
+ *          - Empty object literals: `{}`.
+ *          - Objects with null prototype: `Object.create(null)`.
+ *          ---
+ *      - #### Returns `false` for:
+ *          - Arrays (`[]`, `new Array()`).
+ *          - Functions (regular, arrow, or class constructors).
+ *          - Built-in objects: `Date`, `RegExp`, `Error`, `Map`, `Set`, `WeakMap`, `WeakSet`.
+ *          - Boxed primitives: `new String()`, `new Number()`, `new Boolean()`.
+ *          - `null` or `undefined`.
+ *          - Symbols.
+ *          - Class instances.
+ *
+ * ---
  * @template T - The type of the value being checked.
+ *
+ * ---
  * @param {*} value - The value to check.
+ *
+ * ---
  * @returns {boolean} Return `true` if `value` is a `plain-object`, otherwise `false`.
+ *
+ * ---
  * @example
  * isPlainObject({});
  * // ➔ true

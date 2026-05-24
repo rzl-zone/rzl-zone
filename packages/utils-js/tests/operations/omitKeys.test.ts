@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { omitKeys } from "@/operations/omitKeys";
+import { createMessage } from "@/_private/logger";
 
 describe("omitKeys", () => {
   it("should omit a single key", () => {
@@ -26,8 +27,7 @@ describe("omitKeys", () => {
 
   it("should throw error if duplicate keys in keysToOmit", () => {
     expect(() => omitKeys({ a: 1, b: 2 }, ["a", "a"])).toThrow(
-      // eslint-disable-next-line quotes
-      'Function "omitKeys" Error: Duplicate keys detected - `a`'
+      createMessage("omitKeys", "Duplicate keys detected - `a`")
     );
   });
 

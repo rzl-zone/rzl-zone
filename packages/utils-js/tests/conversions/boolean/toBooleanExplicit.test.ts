@@ -43,32 +43,32 @@ describe("toBooleanExplicit", () => {
     expect(toBooleanExplicit("true", { trimString: false })).toBe(true);
   });
 
-  it("should throw if caseInsensitive is not a boolean", () => {
-    expect(() =>
-      toBooleanExplicit("yes", { caseInsensitive: null as any })
-    ).toThrow(TypeError);
-
+  it("should throw if caseInsensitive is not a boolean (except null|undefined)", () => {
     expect(() =>
       toBooleanExplicit("yes", { caseInsensitive: "abc" as any })
     ).toThrow(TypeError);
+
+    expect(() =>
+      toBooleanExplicit("yes", { caseInsensitive: null as any })
+    ).not.toThrow(TypeError);
   });
 
-  it("should throw if trimString, caseInsensitive, includeIndeterminate is not a boolean", () => {
-    expect(() => toBooleanExplicit("yes", { trimString: null as any })).toThrow(
-      TypeError
-    );
+  it("should set back to default and not throw if trimString, caseInsensitive, includeIndeterminate is not a boolean (except null|undefined)", () => {
+    expect(() =>
+      toBooleanExplicit("yes", { trimString: null as any })
+    ).not.toThrow();
 
     expect(() =>
       toBooleanExplicit("yes", { caseInsensitive: 123 as any })
-    ).toThrow(TypeError);
+    ).toThrow();
 
     expect(() =>
       toBooleanExplicit("yes", { trimString: "123" as any })
-    ).toThrow(TypeError);
+    ).toThrow();
 
     expect(() =>
       toBooleanExplicit("yes", { includeIndeterminate: "123" as any })
-    ).toThrow(TypeError);
+    ).toThrow();
 
     expect(() =>
       toBooleanExplicit("yes", {
@@ -76,7 +76,7 @@ describe("toBooleanExplicit", () => {
         caseInsensitive: 123 as any,
         includeIndeterminate: "123" as any
       })
-    ).toThrow(TypeError);
+    ).toThrow();
   });
 
   it("should handle number input", () => {

@@ -11,41 +11,42 @@ import type {
   IsEmptyString,
   AnyString
 } from "@rzl-zone/ts-types-plus";
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { hasOwnProp } from "./hasOwnProp";
 
 // ------------------- HELPER TYPES -------------------
 
 /**
- * Restrict array indices to a fixed numeric range (1–25).
+ * * ***Restrict array indices to a fixed numeric range (1–5).***
  */
-type ArrayIndex = NumberRangeUnion<1, 25>;
+type ArrayIndex = NumberRangeUnion<1, 5>;
 
 /**
- * Remove `undefined` from a type.
+ * * ***Remove `undefined` from a type.***
  */
 type NonUndef<T> = T extends undefined ? never : T;
 
 /**
- * Remove `null` from a type.
+ * * ***Remove `null` from a type.***
  */
 type NonNull<T> = T extends null ? never : T;
 
 /**
- * Convert optional boolean for "discard undefined" to actual boolean.
+ * * ***Convert optional boolean for "discard undefined" to actual boolean.***
  */
 type EffectiveDiscardUndefined<O extends boolean | undefined> =
   O extends boolean ? O : true;
 
 /**
- * Convert optional boolean for "discard null" to actual boolean.
+ * * ***Convert optional boolean for "discard null" to actual boolean.***
  */
 type EffectiveDiscardNull<O extends boolean | undefined> = O extends boolean
   ? O
   : false;
 
 /**
- * Unwrap array type.
+ * * ***Unwrap array type.***
  */
 type UnwrapArray<T> = T extends (infer U)[]
   ? U
@@ -54,28 +55,33 @@ type UnwrapArray<T> = T extends (infer U)[]
     : T;
 
 /**
- * Force symbol key to be deep required.
+ * * ***Force symbol key to be deep required.***
  */
 type IsOptionalKey<T, K extends keyof T> =
   Record<never, never> extends Pick<T, K> ? true : false;
 
 // ------------------- NESTED KEYS OF OBJECT -------------------
 
-/** * ***Returns numeric keys of an object.***
+/** ---------------------------------------------------------
+ * * ***Returns numeric keys of an object.***
+ * ----------------------------------------------------------
  *
- * @private ***types for {@link hasOwnProp}.***
+ * @private ***Types for {@link hasOwnProp}.***
  */
 export type NumericKeyOfHasOwnProp<Obj> = Extract<keyof Obj, number>;
 
-/** * ***Generate all nested keys of an object or array in dot/bracket notation.***
+/** ---------------------------------------------------------
+ * * ***Generate all nested keys of an object or array in dot/bracket notation.***
+ * ---------------------------------------------------------
  *
- * @private ***types for {@link hasOwnProp}.***
+ * @private ***Types for {@link hasOwnProp}.***
  *
- * Example:
- * ```ts
- * type Keys = NestedKeyOfHasOwnProp<{ users: { name: string }[] }>
- * // Keys = "users" | "users.[number]" | "users.[number].name"
- * ```
+ * ---
+ * - #### Example:
+ *               ```ts
+ *               type Keys = NestedKeyOfHasOwnProp<{ users: { name: string }[] }>
+ *               // Keys = "users" | "users.[number]" | "users.[number].name"
+ *               ```
  */
 export type NestedKeyOfHasOwnProp<T> = T extends readonly (infer U)[]
   ? `[${number}]` | `[${number}].${NestedKeyOfHasOwnProp<U>}`
@@ -96,13 +102,16 @@ export type NestedKeyOfHasOwnProp<T> = T extends readonly (infer U)[]
 
 // ------------------- PARSE / NARROW PATH TYPES -------------------
 
-/** Apply discard rules to the last key of a path.
+/** ---------------------------------------------------------
+ * * ***Apply discard rules to the last key of a path.***
+ * ----------------------------------------------------------
  *
- * Rules:
- * - If discardUndefined=true -> remove `undefined` from value
- * - If discardNull=true -> remove `null` from value
+ * - #### Rules:
+ *      - If `discardUndefined` is `true` ➔ remove `undefined` from value.
+ *      - If `discardNull` is `true` ➔ remove `null` from value.
  *
- * Order: first strip undefined (if requested), then strip null (if requested)
+ * ---
+ * **Order:** First strip undefined (if requested), then strip null (if requested).
  */
 type ApplyLastRulesHasOwnProp<
   V,
@@ -117,7 +126,7 @@ type ApplyLastRulesHasOwnProp<
     : V | Extract<V, undefined>; // <- keep undefined if not discarded
 
 /**
- * Force an array index N to type U.
+ * * ***Force an array index N to type U.***
  */
 type RefineArrayAtIndex<
   T extends readonly unknown[],
@@ -127,7 +136,9 @@ type RefineArrayAtIndex<
   [K in N]: U;
 };
 
-/** Narrow object/array type based on a path string.
+/** ---------------------------------------------------------
+ * * ***Narrow object/array type based on a path string.***
+ * ----------------------------------------------------------
  *
  * @template T - object type to narrow
  * @template P - path string like "user.addresses.[2].zip"
@@ -238,10 +249,12 @@ type NarrowByPathHasOwnProp<
 
 // ------------------- DOT TO NESTED SPECIAL SMART DETECT -------------------
 
-/** * ***Expand an array/string/function into a nested type according
+/** ---------------------------------------------------------
+ * * ***Expand an array/string/function into a nested type according
  * to a dot/bracket path.***
+ * ----------------------------------------------------------
  *
- * @private ***types for {@link hasOwnProp}.***
+ * @private ***Types for {@link hasOwnProp}.***
  */
 export type SmartDetectStringHasOwnProp<
   Obj extends string | undefined | null,
@@ -260,7 +273,7 @@ export type SmartDetectStringHasOwnProp<
 // : Prettify<DotToNestedSpecialSmartDetect<Key>, { recursive: true }>;
 
 /**
- * ***types for {@link hasOwnProp}.***
+ * * ***Types for {@link hasOwnProp}.***
  */
 export type SmartDetectArrayFuncHasOwnProp<
   Obj extends unknown[] | AnyFunction,
@@ -273,10 +286,12 @@ export type SmartDetectArrayFuncHasOwnProp<
   { recursive: false }
 >;
 
-/** * ***Smartly detect nested path keys of an unknown object or function,
+/** ---------------------------------------------------------
+ * * ***Smartly detect nested path keys of an unknown object or function,
  * falls-back to inferred nested structure when path is not valid.***
+ * ----------------------------------------------------------
  *
- * @private ***types for {@link hasOwnProp}.***
+ * @private ***Types for {@link hasOwnProp}.***
  */
 export type SmartDetectUnknownKeyHasOwnProp<
   Obj extends unknown | AnyFunction,
@@ -294,9 +309,10 @@ export type SmartDetectUnknownKeyHasOwnProp<
         { recursive: true }
       >;
 
-/**
- * Convert dot/bracket path string to nested object type with leaf value.
- * Path not found in object key ➔ return unknown.
+/** ---------------------------------------------------------
+ * * ***Convert dot/bracket path string to nested object type with leaf value.
+ * Path not found in object key ➔ return `unknown`.***
+ * ----------------------------------------------------------
  */
 type DotToNestedSpecialSmartDetect<Path extends PropertyKey, Value = unknown> =
   IsEmptyString<Extract<Path, string>> extends true
@@ -311,9 +327,11 @@ type DotToNestedSpecialSmartDetect<Path extends PropertyKey, Value = unknown> =
 
 // ------------------- GUARDED RESULT -------------------
 
-/** * ***Guarded wrapper for `NarrowByPathHasOwnProp` with `Prettify`.***
+/** ---------------------------------------------------------
+ * * ***Guarded wrapper for `NarrowByPathHasOwnProp` with `Prettify`.***
+ * ----------------------------------------------------------
  *
- * @private ***types for {@link hasOwnProp}.***
+ * @private ***Types for {@link hasOwnProp}.***
  */
 export type GuardedHasOwnProp<
   Obj,
@@ -333,10 +351,14 @@ export type GuardedHasOwnProp<
 
 // ------------------- DeepRequiredHasOwnProp -------------------
 
-/** * ***Make a specific symbol key deeply required in an object symbols.***
+/** ---------------------------------------------------------
+ * * ***Make a specific symbol key deeply required in an object symbols.***
+ * ----------------------------------------------------------
+ *
  * **Used internally to enforce stronger type narrowing.**
  *
- * @private ***types for {@link hasOwnProp}.***
+ * ---
+ * @private ***Types for {@link hasOwnProp}.***
  */
 export type DeepRequiredSymbolHasOwnProp<
   Obj,
@@ -357,12 +379,16 @@ export type DeepRequiredSymbolHasOwnProp<
   { recursive: true }
 >;
 
-/** * ***Apply discard rules to numeric keys in an object type.***
+/** ---------------------------------------------------------
+ * * ***Apply discard rules to numeric keys in an object type.***
+ * ----------------------------------------------------------
  *
+ * ---
  * - If `discardUndefined = true` ➔ undefined removed, key required
  * - If `discardNull = true` ➔ null removed
  *
- * @private ***types for {@link hasOwnProp}.***
+ * ---
+ * @private ***Types for {@link hasOwnProp}.***
  */
 export type NumericKeyHasOwnPropMapped<
   Obj extends object,
@@ -387,7 +413,9 @@ export type NumericKeyHasOwnPropMapped<
 
 // ------------------- OPTIONS -------------------
 
-/** * ***Options to control `hasOwnProp` behavior.***
+/** ---------------------------------------------------------
+ * * ***Options to control `hasOwnProp` behavior.***
+ * ----------------------------------------------------------
  *
  * @private ***types options for {@link hasOwnProp}.***
  */
@@ -395,31 +423,44 @@ export type HasOwnPropOptions<
   DiscardUndefined extends boolean = true,
   DiscardNull extends boolean = false
 > = {
-  /** If `true` ***(default)***, properties with `undefined` values are treated as non-existent.
+  /** ---------------------------------------------------------
+   * * ***If `true` ***(default)***, properties with `undefined` values are treated as non-existent.***
+   * ----------------------------------------------------------
    *
+   * ---
    * - **Effects:**
-   *    - **Runtime:** `hasOwnProp(obj, key)` returns `false` if the property exists but its value is `undefined`.
-   *    - **TypeScript narrowing:** The property's type is narrowed to exclude `undefined`.
+   *     - **Runtime:** `hasOwnProp(obj, key)` returns `false` if the property exists but its value is `undefined`.
+   *     - **TypeScript narrowing:** The property's type is narrowed to exclude `undefined`.
+   * ---
    * - **Example:**
-   * ```ts
+   *     ```ts
    *     const obj = { a: undefined, b: 123 };
-   *     hasOwnProp(obj, "a"); // ➔ false
-   *     hasOwnProp(obj, "a", { discardUndefined: false }); // ➔ true
-   * ```
+   *     hasOwnProp(obj, "a");
+   *     // ➔ false
+   *     hasOwnProp(obj, "a", { discardUndefined: false });
+   *     // ➔ true
+   *     ```
    */
   discardUndefined?: DiscardUndefined;
 
-  /** If `true` ***(default: `false`)***, properties with `null` values are treated as non-existent.
+  /** ---------------------------------------------------------
+   * * ***If `true` ***(default: `false`)***, properties with `null` values are treated as non-existent.***
+   * ----------------------------------------------------------
    *
+   * ---
    * - **Effects:**
-   *    - **Runtime:** `hasOwnProp(obj, key)` returns `false` if the property exists but its value is `null`.
-   *    - **TypeScript narrowing:** The property's type is narrowed to exclude `null`.
+   *     - **Runtime:** `hasOwnProp(obj, key)` returns `false` if the property exists but its value is `null`.
+   *     - **TypeScript narrowing:** The property's type is narrowed to exclude `null`.
+   *
+   * ---
    * - **Example:**
-   * ```ts
-   *     const obj = { a: null, b: 123 };
-   *     hasOwnProp(obj, "a"); // ➔ true (default discardNull = false)
-   *     hasOwnProp(obj, "a", { discardNull: true }); // ➔ false
-   * ```
+   *     ```ts
+   *      const obj = { a: null, b: 123 };
+   *      hasOwnProp(obj, "a");
+   *      // ➔ true (default discardNull = false)
+   *      hasOwnProp(obj, "a", { discardNull: true });
+   *      // ➔ false
+   *     ```
    */
   discardNull?: DiscardNull;
 };

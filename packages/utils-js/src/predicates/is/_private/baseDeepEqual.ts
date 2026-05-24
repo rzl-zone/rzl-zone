@@ -12,10 +12,12 @@ import { isObjectOrArray } from "../isObjectOrArray";
 
 /** -------------------------------------------------------------------
  * * ***Base function (**Internal**) for deep equality comparison with optional customizer.***
- * -------------------------------------------------------------------
+ * --------------------------------------------------------------------
  * **Recursively checks whether `value` and `other` are deeply equal. Supports custom comparison
  * via `customizer`, and handles arrays, objects, maps, sets, dates, errors, regexps, typed arrays,
  * and nested structures.**
+ *
+ * ---
  * @param value
  * - The value to compare.
  * @param other
@@ -24,9 +26,13 @@ import { isObjectOrArray } from "../isObjectOrArray";
  * - Optional function to customize the comparison for each property/value.
  * @param seen
  * - WeakMap used internally to track circular references and prevent infinite recursion.
+ *
+ * ---
  * @returns
- * - `true`  → `value` and `other` are deeply equal.
- * - `false` → `value` and `other` are not deeply equal.
+ * - `true`  ➔ `value` and `other` are deeply equal.
+ * - `false` ➔ `value` and `other` are not deeply equal.
+ *
+ * ---
  * @example
  * ```ts
  * const obj1 = { name: "Alice", scores: [1, 2, 3] };
@@ -38,7 +44,7 @@ import { isObjectOrArray } from "../isObjectOrArray";
  * };
  *
  * baseDeepEqual(obj1, obj2, customizer);
- * // returns true
+ * // ➔ true
  * ```
  */
 export function baseDeepEqual(

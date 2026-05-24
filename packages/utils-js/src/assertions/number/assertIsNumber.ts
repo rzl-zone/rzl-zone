@@ -4,46 +4,49 @@ import {
   resolveErrorMessageAssertions,
   type OptionsAssertIs
 } from "../_private/assertIs";
-import { hasOwnProp } from "@/predicates/has/hasOwnProp";
 
 type OptionsAssertIsNumber = OptionsAssertIs & IsNumberOptions;
 
-/** -------------------------------------------------------
+/** --------------------------------------------------------------------------------
  * * ***Type guard assertion: `assertIsNumber`.***
- * -------------------------------------------------------
+ * ---------------------------------------------------------------------------------
  * **This function is an **assertion function**.**
+ *
  * - **Behavior:**
- *    - Validates that the given `value` is a **number**.
- *    - After it returns successfully, TypeScript narrows the type of `value` to `number`.
- *    - ✅ If `value` is a `number` ➔ execution continues normally.
- *    - ❌ If `value` is not a `number` ➔ throws a built-in error with either:
- *      - A custom error message (`options.message`), or
- *      - A default message including the actual type.
- * - **ℹ️ Note:**
- *    - A `number` refers strictly to the JavaScript `number` primitive type (e.g., `42`, `3.14`, `-1`, `0`).
- *    - This excludes `Number` objects created with `new Number(123)`.
- *    - By default, `NaN` is **not considered** valid, you can allow it with `{ includeNaN: true }`.
- * - **⚠️ Error type selection (`options.errorType`):**
- *    - You can override the type of error thrown when validation fails.
- *    - Must be one of the standard JavaScript built-in errors:
- *      - [`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError) |
- *        [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) |
- *        [`EvalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError) |
- *        [`RangeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError) |
- *        [`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError) |
- *        [`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError) |
- *        [`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError)
- *    - **Default:** `"TypeError"` if not provided or invalid.
+ *     - Validates that the given `value` is a **number**.
+ *     - After it returns successfully, TypeScript narrows the type of `value` to `number`.
+ *     - If `value` is a `number` ➔ execution continues normally.
+ *     - If `value` is not a `number` ➔ throws a built-in error with either:
+ *       - A custom error message (`options.message`), or
+ *       - A default message including the actual type.
+ * - **Note:**
+ *     - A `number` refers strictly to the JavaScript `number` primitive type (e.g., `42`, `3.14`, `-1`, `0`).
+ *     - This excludes `Number` objects created with `new Number(123)`.
+ *     - By default, `NaN` is **not considered** valid, you can allow it with `{ includeNaN: true }`.
+ * - **Error type selection (`options.errorType`):**
+ *     - You can override the type of error thrown when validation fails.
+ *     - Must be one of the standard JavaScript built-in errors:
+ *       - [`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError) |
+ *         [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) |
+ *         [`EvalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError) |
+ *         [`RangeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError) |
+ *         [`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError) |
+ *         [`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError) |
+ *         [`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError).
+ *     - **Default:** `"TypeError"` if not provided or invalid.
+ *
  * @param {*} value - ***The value to validate.***
  * @param {OptionsAssertIsNumber} [options]
  *  ***Optional configuration:***
- *    - `message`: A custom error message (`string` or `function`).
- *    - `errorType`: Built-in JavaScript error type to throw on failure (default `"TypeError"`).
- *    - `formatCase`: Controls how detected type names are formatted case in error messages.
- *    - `useAcronyms`: Control uppercase preservation of recognized acronyms during formatting.
- *    - `includeNaN`: Whether to treat `NaN` as valid.
- * @returns {boolean} Narrows `value` to `number` if no error is thrown.
+ *     - `message`: A custom error message (`string` or `function`).
+ *     - `errorType`: Built-in JavaScript error type to throw on failure (default `"TypeError"`).
+ *     - `formatCase`: Controls how detected type names are formatted case in error messages.
+ *     - `useAcronyms`: Control uppercase preservation of recognized acronyms during formatting.
+ *     - `includeNaN`: Whether to treat `NaN` as valid.
+ *
  * @throws [`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError) | [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) | [`EvalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError) | [`RangeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError) | [`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError) | [`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError) | [`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError) if the value is not a number (or is `NaN` when `includeNaN` is `false`).
+ * @returns {boolean} Narrows `value` to `number` if no error is thrown.
+ *
  * @example
  * ```ts
  * // ✅ Simple usage
@@ -135,11 +138,9 @@ export const assertIsNumber: (
   options?: OptionsAssertIsNumber
 ) => asserts value is number = (
   value: unknown,
-  options: OptionsAssertIsNumber = {}
+  options?: OptionsAssertIsNumber
 ): asserts value is number => {
-  const includeNaN = hasOwnProp(options, "includeNaN")
-    ? options.includeNaN
-    : undefined;
+  const includeNaN = options?.includeNaN ?? undefined;
 
   if (isNumber(value, { includeNaN })) return;
 

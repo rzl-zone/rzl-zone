@@ -432,19 +432,25 @@ export type ToStringDeepOptions<
   RemoveEmptyObjects extends boolean = false,
   RemoveEmptyArrays extends boolean = false
 > = {
-  /** Whether to remove empty objects (`{}`) from the result.
+  /** ----------------------------------------------------------
+   * * ***Whether to remove empty objects (`{}`) from the result.***
+   * -----------------------------------------------------------
    *
    * - `true` ➔ remove empty objects recursively.
    * - `false` **(default)** ➔ keep empty objects as-is.
    *
+   * ---
    * @default false
    */
   removeEmptyObjects?: RemoveEmptyObjects;
-  /** Whether to remove empty arrays (`[]`) from the result.
+  /** ----------------------------------------------------------
+   * * ***Whether to remove empty arrays (`[]`) from the result.***
+   * -----------------------------------------------------------
    *
    * - `true` ➔ remove empty arrays recursively.
    * - `false` **(default)** ➔ keep empty arrays as-is.
    *
+   * ---
    * @default false
    */
   removeEmptyArrays?: RemoveEmptyArrays;

@@ -1,9 +1,11 @@
-/** -------------------
+/** ----------------------------------------------------------
  * * ***Type guard: `isArguments`.***
- * -------------------
+ * -----------------------------------------------------------
  * **Checks if `value` is likely an `arguments` object.**
+ *
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is an ***[`IArguments`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments)*** object, else `false`.
+ *
  * @example
  * isArguments(function() { return arguments; }());
  * // ➔ true

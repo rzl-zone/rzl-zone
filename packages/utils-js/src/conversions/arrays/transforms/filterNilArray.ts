@@ -8,19 +8,26 @@ import { isNil } from "@/predicates/is/isNil";
 import { isArray } from "@/predicates/is/isArray";
 import { isEmptyArray } from "@/predicates/is/isEmptyArray";
 
-/** ----------------------------------------------------------
+/** ------------------------------------------------------------------------------------
  * * ***Utility: `filterNilArray`.***
- * ---------------------------------------------
+ * -------------------------------------------------------------------------------------
  * **Removes `null` and `undefined` values from an array, including nested arrays.**
+ *
+ * ---
  * - **Behavior:**
- *    - Returns `undefined` if the input is explicitly `undefined` or `null`.
- *    - Returns `[]` if input is empty or all elements are removed after filtering.
- *    - Recursively filters nested arrays while preserving structure.
- *    - Ensures proper type inference for safer downstream operations.
+ *     - Returns `undefined` if the input is explicitly `undefined` or `null`.
+ *     - Returns `[]` if input is empty or all elements are removed after filtering.
+ *     - Recursively filters nested arrays while preserving structure.
+ *     - Ensures proper type inference for safer downstream operations.
+ *
+ * ---
  * @template A - The type of elements in the array.
  * @param {T[]|null|undefined} input - The array to be filtered.
  * @returns {T[] | undefined} A new array with `null` and `undefined` values removed,
- * or `undefined` if the input is explicitly `undefined` or `null`.
+ *                            or `undefined` if the input is explicitly `undefined`
+ *                            or `null`.
+ *
+ * ---
  * @example
  * ```ts
  * filterNilArray([1, null, 2, undefined, 3]);
@@ -31,8 +38,10 @@ import { isEmptyArray } from "@/predicates/is/isEmptyArray";
  * // ➔ undefined
  * filterNilArray(null);
  * // ➔ undefined
- * filterNilArray([]); // or
- * filterNilArray([[[]]]); // or
+ * filterNilArray([]);
+ * // ➔ []
+ * filterNilArray([[[]]]);
+ * // ➔ []
  * filterNilArray([[[],undefined,null]]);
  * // ➔ []
  * filterNilArray([1, [null, 2, [undefined, 3]]]);

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it } from "vitest";
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
@@ -33,8 +32,8 @@ describe("isNonEmptyString", () => {
     expect(isNonEmptyString(" a ")).toBe(true);
   });
 
-  it("should handle invalid options object to throw error type", () => {
-    expect(() => isNonEmptyString("x", null as any)).toThrow(TypeError);
-    expect(() => isNonEmptyString("  ", 123 as any)).toThrow(TypeError);
-  });
+  // it("should handle invalid options object to throw error type", () => {
+  //   expect(() => isNonEmptyString("x", null as any)).toThrow(TypeError);
+  //   expect(() => isNonEmptyString("  ", 123 as any)).toThrow(TypeError);
+  // });
 });

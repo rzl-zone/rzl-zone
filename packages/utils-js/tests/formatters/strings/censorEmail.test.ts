@@ -137,21 +137,21 @@ describe("censorEmail", () => {
   });
 
   // --- Test Cases for Error Handling Mode ---
-  describe("should throw TypeError for invalid mode", () => {
-    it("should throw TypeError for an unknown mode string", () => {
-      // @ts-ignore: Intentionally passing invalid type for testing
-      expect(() => censorEmail("test@example.com", "invalidOptions")).toThrow(
-        TypeError
-      );
-      // @ts-ignore: Intentionally passing invalid type for testing
-      expect(() => censorEmail("test@example.com", "invalidOptions")).toThrow(
-        "Second parameter (`options`) must be of type `plain-object`, but received: `string`."
-      );
+  describe("should set back to default and not throw TypeError for invalid mode", () => {
+    it("should set back to default and not throw TypeError for an unknown mode string", () => {
+      expect(() =>
+        // @ts-ignore: Intentionally passing invalid type for testing
+        censorEmail("test@example.com", "invalidOptions")
+      ).not.toThrow();
+      expect(() =>
+        // @ts-ignore: Intentionally passing invalid type for testing
+        censorEmail("test@example.com", "invalidOptions")
+      ).not.toThrow();
     });
 
-    it("should throw TypeError for a non-string mode", () => {
+    it("should set back to default and not throw TypeError for a non-string mode", () => {
       // @ts-ignore: Intentionally passing invalid type for testing
-      expect(() => censorEmail("test@example.com", 123)).toThrow(TypeError);
+      expect(() => censorEmail("test@example.com", 123)).not.toThrow();
     });
   });
 });

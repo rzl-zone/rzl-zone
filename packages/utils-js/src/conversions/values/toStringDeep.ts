@@ -3,6 +3,8 @@ import type {
   ToStringDeepOptions
 } from "./_private/toStringDeep.types";
 
+import { createMessage } from "@/_private/logger";
+
 import { isNaN } from "@/predicates/is/isNaN";
 import { isNil } from "@/predicates/is/isNil";
 import { isSet } from "@/predicates/is/isSet";
@@ -15,108 +17,170 @@ import { isRegExp } from "@/predicates/is/isRegExp";
 import { isString } from "@/predicates/is/isString";
 import { isNumber } from "@/predicates/is/isNumber";
 import { isBoolean } from "@/predicates/is/isBoolean";
-import { hasOwnProp } from "@/predicates/has/hasOwnProp";
 import { isUndefined } from "@/predicates/is/isUndefined";
 import { isEmptyArray } from "@/predicates/is/isEmptyArray";
 import { isTypedArray } from "@/predicates/is/isTypedArray";
+import { isPlainObject } from "@/predicates/is/isPlainObject";
 import { isNumberObject } from "@/predicates/is/isNumberObject";
 import { isStringObject } from "@/predicates/is/isStringObject";
 import { isBooleanObject } from "@/predicates/is/isBooleanObject";
 import { getPreciseType } from "@/predicates/type/getPreciseType";
 import { isInfinityNumber } from "@/predicates/is/isInfinityNumber";
 
-import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
-
-/** --------------------------------------------------
+/** ---------------------------------------------------------------------------------------------------
  * * ***Utility: `toStringDeep`.***
- * ---------------------------------------------------
+ * ----------------------------------------------------------------------------------------------------
  * **Converts all values in an array, object, Set, Map, or deeply nested structure to string.**
+ *
+ * ---
  * - **Features:**
- *    - Converts numbers and strings to string:
- *      - `3.5` ➔ `"3.5"`.
- *      - `"3.5"` ➔ `"3.5"`.
- *    - Converts boolean to string:
- *      - `true` ➔ `"true"`.
- *      - `false` ➔ `"false"`.
- *    - Converts Date to ISO string (`Date ➔ string`).
- *    - Converts RegExp to string (e.g., `/abc/ ➔ "/abc/"`).
- *    - Converts `Buffer`, `TypedArray`, `Set`, `Map`, and `arrays` recursively to `arrays of strings`.
- *    - Converts boxed primitives box into their primitive equivalents then convert to string:
- *      - For `new String` we convert everything to string (behavior JS of new String):
- *        - `new String("hi")` ➔ `.valueOf()` ➔ `"hi"`.
- *        - `new String(true)` ➔ `.valueOf()` ➔ `"true"`.
- *      - For `new Boolean` we convert to boolean (behavior JS of new Boolean) then convert to string:
- *        - `new Boolean(true)` ➔ `.valueOf()` ➔ `true` ➔ `true.toString()` ➔ `"true"`.
- *        - Special behavior JS of new Boolean, return `false` **(convert to string: `"false"`)**
- *          for `false`, (`0` / `-0`), `""` (empty-string), `null`, `undefined`, `NaN`, otherwise
- *          `true` **(convert to string: `"true"`)**.
- *      - For `new Number`:
- *        - `new Number(42)` ➔ `.valueOf()` ➔ `42` ➔ `42.toString()` ➔ `"42"`.
- *        - `new Number("42")` ➔ `.valueOf()` ➔ `42` ➔ `42.toString()` ➔ `"42"`.
- *        - `new Number(null)` ➔ `.valueOf()` ➔ `0` (`null` is `0` behavior JS of new Number) ➔ `0.toString()` ➔ `"0"`.
- *        - If result from `valueOf()` is `NaN` or `Infinity` ***(will removing)***:
- *          - `new Number(NaN)` ➔ `.valueOf()` ➔ `NaN` ***(remove)***.
- *          - `new Number("abc")` ➔ `.valueOf()` ➔ `NaN`  ***(remove)***.
- *          - `new Number(undefined)` ➔ `.valueOf()` ➔ `NaN` ***(remove)***.
- *          - `new Number(Infinity)` ➔ `.valueOf()` ➔ `Infinity` ***(remove)***.
- *          - `new Number(-Infinity)` ➔ `.valueOf()` ➔ `-Infinity` ***(remove)***.
- *    - Recursively processes `nested objects`, `arrays`, `buffers`, `sets`, `maps`, and `typed arrays`.
- *    - Removes `null`, `undefined`, `NaN`, `Infinity`, `-Infinity`.
- *    - Removes `unsupported` types like `functions`, `symbols`, and `BigInt`.
- *    - Can optionally remove empty arrays (`[]`) and/or empty objects (`{}`) **recursively**.
+ *      - Converts numbers and strings to string:
+ *        - `3.5` ➔ `"3.5"`.
+ *        - `"3.5"` ➔ `"3.5"`.
+ *      - Converts boolean to string:
+ *        - `true` ➔ `"true"`.
+ *        - `false` ➔ `"false"`.
+ *      - Converts Date to ISO string (`Date ➔ string`).
+ *      - Converts RegExp to string (e.g., `/abc/ ➔ "/abc/"`).
+ *      - Converts `Buffer`, `TypedArray`, `Set`, `Map`, and `arrays` recursively to `arrays of strings`.
+ *      - Converts boxed primitives box into their primitive equivalents then convert to string:
+ *        - For `new String` we convert everything to string (behavior JS of new String):
+ *          - `new String("hi")` ➔ `.valueOf()` ➔ `"hi"`.
+ *          - `new String(true)` ➔ `.valueOf()` ➔ `"true"`.
+ *        - For `new Boolean` we convert to boolean (behavior JS of new Boolean) then convert to string:
+ *          - `new Boolean(true)` ➔ `.valueOf()` ➔ `true` ➔ `true.toString()` ➔ `"true"`.
+ *          - Special behavior JS of new Boolean, return `false` **(convert to string: `"false"`)**
+ *            for `false`, (`0` / `-0`), `""` (empty-string), `null`, `undefined`, `NaN`, otherwise
+ *            `true` **(convert to string: `"true"`)**.
+ *        - For `new Number`:
+ *          - `new Number(42)` ➔ `.valueOf()` ➔ `42` ➔ `42.toString()` ➔ `"42"`.
+ *          - `new Number("42")` ➔ `.valueOf()` ➔ `42` ➔ `42.toString()` ➔ `"42"`.
+ *          - `new Number(null)` ➔ `.valueOf()` ➔ `0` (`null` is `0` behavior JS of new Number) ➔ `0.toString()` ➔ `"0"`.
+ *          - If result from `valueOf()` is `NaN` or `Infinity` ***(will removing)***:
+ *            - `new Number(NaN)` ➔ `.valueOf()` ➔ `NaN` ***(remove)***.
+ *            - `new Number("abc")` ➔ `.valueOf()` ➔ `NaN`  ***(remove)***.
+ *            - `new Number(undefined)` ➔ `.valueOf()` ➔ `NaN` ***(remove)***.
+ *            - `new Number(Infinity)` ➔ `.valueOf()` ➔ `Infinity` ***(remove)***.
+ *            - `new Number(-Infinity)` ➔ `.valueOf()` ➔ `-Infinity` ***(remove)***.
+ *      - Recursively processes `nested objects`, `arrays`, `buffers`, `sets`, `maps`, and `typed arrays`.
+ *      - Removes `null`, `undefined`, `NaN`, `Infinity`, `-Infinity`.
+ *      - Removes `unsupported` types like `functions`, `symbols`, and `BigInt`.
+ *      - Can optionally remove empty arrays (`[]`) and/or empty objects (`{}`) **recursively**.
+ *
+ * ---
  * @template T - The input data type (`primitive`, `object`, `array`, `Set`, `Map`, or `any nested combination`).
  * @template RemoveEmptyObjects - If `true`, empty objects `{}` will be removed recursively.
  * @template RemoveEmptyArrays - If `true`, empty arrays `[]` will be removed recursively (including arrays nested in `objects` / `arrays` / `Sets` / `Maps`).
+ *
+ * ---
  * @param {*} input - The data to convert.
  * @param {ToStringDeepOptions<RemoveEmptyObjects, RemoveEmptyArrays>} [options] - Conversion options.
+ *
+ * ---
  * @returns {ConvertedDeepString<T, RemoveEmptyObjects, RemoveEmptyArrays>|undefined}
  * The transformed data, or `undefined` if the entire structure becomes empty after processing.
+ *
+ * ---
  * @example
- * ```ts
- * // Simple array conversion
- * toStringDeep([1, "2", 3]);
- * // ➔ ["1", "2", "3"]
  *
- * // Simple top-level conversion
- * toStringDeep(123);
- * // ➔ "123"
- * toStringDeep("123");
- * // ➔ "123"
- * toStringDeep(true);
- * // ➔ "true"
- * toStringDeep(false);
- * // ➔ "false"
+ * 1. #### Simple array conversion:
+ *    ```ts
+ *    toStringDeep([1, "2", 3]);
+ *    // ➔ ["1", "2", "3"]
+ *    ```
+ *    ---
+ * 2. #### Simple top-level conversion:
+ *    ```ts
+ *    toStringDeep(123);
+ *    // ➔ "123"
  *
- * // Nested arrays
- * toStringDeep([1, ["2", [3, [null, "4", true, false]]]]);
- * // ➔ ["1", ["2", ["3", ["4", "true", "false"]]]]
+ *    toStringDeep("123");
+ *    // ➔ "123"
  *
- * // Object with nested values
- * toStringDeep({ a: 1, b: "2", c: { d: 3, e: null, f: true, g: false } });
- * // ➔ { a: "1", b: "2", c: { d: "3", f: "true", g: "false" } }
+ *    toStringDeep(true);
+ *    // ➔ "true"
  *
- * // Removing empty objects
- * toStringDeep({ a: {}, b: "1" }, { removeEmptyObjects: true });
- * // ➔ { b: "1" }
- *
- * // Removing empty arrays recursively
- * toStringDeep(["1", [], { a: [] }], { removeEmptyArrays: true });
- * // ➔ ["1", { a: [] }]
- *
- * // Removing both empty objects and arrays recursively
- * toStringDeep({ a: {}, b: [], c: [{ d: {}, e: [] }, "1"] }, {
- *   removeEmptyObjects: true,
- *   removeEmptyArrays: true
- * });
- * // ➔ { c: ["1"] }
- *
- * // Fully empty structure becomes undefined
- * toStringDeep([null, undefined, {}], {
- *   removeEmptyObjects: true,
- *   removeEmptyArrays: true
- * });
- * // ➔ undefined
- * ```
+ *    toStringDeep(false);
+ *    // ➔ "false"
+ *    ```
+ *    ---
+ * 3. #### Nested arrays:
+ *    ```ts
+ *    toStringDeep([
+ *      1,
+ *      ["2", [3, [null, "4", true, false]]]
+ *    ]);
+ *    // ➔ ["1", ["2", ["3", ["4", "true", "false"]]]]
+ *    ```
+ *    ---
+ * 4. #### Object with nested values:
+ *    ```ts
+ *    toStringDeep({
+ *      a: 1,
+ *      b: "2",
+ *      c: {
+ *        d: 3,
+ *        e: null,
+ *        f: true,
+ *        g: false
+ *      }
+ *    });
+ *    // ➔ {
+ *    //      a: "1",
+ *    //      b: "2",
+ *    //      c: {
+ *    //        d: "3",
+ *    //        f: "true",
+ *    //        g: "false"
+ *    //      }
+ *    //    }
+ *    ```
+ *    ---
+ * 5. #### Remove empty objects:
+ *    ```ts
+ *    toStringDeep(
+ *      { a: {}, b: "1" },
+ *      { removeEmptyObjects: true }
+ *    );
+ *    // ➔ { b: "1" }
+ *    ```
+ *    ---
+ * 6. #### Remove empty arrays recursively:
+ *    ```ts
+ *    toStringDeep(
+ *      ["1", [], { a: [] }],
+ *      { removeEmptyArrays: true }
+ *    );
+ *    // ➔ ["1", { a: [] }]
+ *    ```
+ *    ---
+ * 7. #### Remove empty objects and arrays recursively:
+ *    ```ts
+ *    toStringDeep(
+ *      {
+ *        a: {},
+ *        b: [],
+ *        c: [{ d: {}, e: [] }, "1"]
+ *      },
+ *      {
+ *        removeEmptyObjects: true,
+ *        removeEmptyArrays: true
+ *      }
+ *    );
+ *    // ➔ { c: ["1"] }
+ *    ```
+ *    ---
+ * 8. #### Fully empty structure returns undefined:
+ *    ```ts
+ *    toStringDeep(
+ *      [null, undefined, {}],
+ *      {
+ *        removeEmptyObjects: true,
+ *        removeEmptyArrays: true
+ *      }
+ *    );
+ *    // ➔ undefined
+ *    ```
  */
 export function toStringDeep(
   input?: null | undefined,
@@ -136,19 +200,12 @@ export function toStringDeep<
   RemoveEmptyArrays extends boolean = false
 >(
   input: T,
-  options: ToStringDeepOptions<RemoveEmptyObjects, RemoveEmptyArrays> = {}
+  options?: ToStringDeepOptions<RemoveEmptyObjects, RemoveEmptyArrays>
 ) {
-  assertIsPlainObject(options, {
-    message: ({ currentType, validType }) =>
-      `Second parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
-  });
+  if (!isPlainObject(options)) options = {};
 
-  const removeEmptyObjects = hasOwnProp(options, "removeEmptyObjects")
-    ? options.removeEmptyObjects
-    : false;
-  const removeEmptyArrays = hasOwnProp(options, "removeEmptyArrays")
-    ? options.removeEmptyArrays
-    : false;
+  const removeEmptyObjects = options.removeEmptyObjects ?? false;
+  const removeEmptyArrays = options.removeEmptyArrays ?? false;
 
   function _internal<
     T,
@@ -168,9 +225,12 @@ export function toStringDeep<
 
     if (!isBoolean(removeEmptyObjects) || !isBoolean(removeEmptyArrays)) {
       throw new TypeError(
-        `Parameters \`removeEmptyObjects\` and \`removeEmptyArrays\` property of the \`options\` (second parameter) must be of type \`boolean\`, but received: ['removeEmptyObjects': \`${getPreciseType(
-          removeEmptyObjects
-        )}\`, 'removeEmptyArrays': \`${getPreciseType(removeEmptyArrays)}\`].`
+        createMessage(
+          "toStringDeep",
+          `Parameters \`removeEmptyObjects\` and \`removeEmptyArrays\` property of the \`options\` (second parameter) must be of type \`boolean\`, but received: ['removeEmptyObjects': \`${getPreciseType(
+            removeEmptyObjects
+          )}\`, 'removeEmptyArrays': \`${getPreciseType(removeEmptyArrays)}\`].`
+        )
       );
     }
 

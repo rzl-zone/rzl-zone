@@ -3,6 +3,8 @@ import type {
   ToNumberDeepOptions
 } from "./_private/toNumberDeep.types";
 
+import { createMessage } from "@/_private/logger";
+
 import { isNaN } from "@/predicates/is/isNaN";
 import { isSet } from "@/predicates/is/isSet";
 import { isMap } from "@/predicates/is/isMap";
@@ -14,10 +16,10 @@ import { isNumber } from "@/predicates/is/isNumber";
 import { isRegExp } from "@/predicates/is/isRegExp";
 import { isObject } from "@/predicates/is/isObject";
 import { isBoolean } from "@/predicates/is/isBoolean";
-import { hasOwnProp } from "@/predicates/has/hasOwnProp";
 import { isUndefined } from "@/predicates/is/isUndefined";
 import { isEmptyArray } from "@/predicates/is/isEmptyArray";
 import { isTypedArray } from "@/predicates/is/isTypedArray";
+import { isPlainObject } from "@/predicates/is/isPlainObject";
 import { isEmptyObject } from "@/predicates/is/isEmptyObject";
 import { isNumberObject } from "@/predicates/is/isNumberObject";
 import { isStringObject } from "@/predicates/is/isStringObject";
@@ -25,58 +27,67 @@ import { isBooleanObject } from "@/predicates/is/isBooleanObject";
 import { getPreciseType } from "@/predicates/type/getPreciseType";
 import { isInfinityNumber } from "@/predicates/is/isInfinityNumber";
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
-import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
 
-/** --------------------------------------------------
+/** --------------------------------------------------------------------------------------------------------------------------
  * * ***Utility: `toNumberDeep`.***
- * ---------------------------------------------------
+ * ---------------------------------------------------------------------------------------------------------------------------
  * **Converts deeply nested arrays, objects, buffers, sets, maps, or typed arrays into numbers while preserving structure.**
+ *
+ * ---
  * - **Features:**
- *    - Converts numeric strings, number to numbers:
- *      - `3.5` ➔ `3.5`.
- *      - `"3.5"` ➔ `3.5`.
- *    - Converts boolean to number:
- *      - `true` ➔ `1`.
- *      - `false` ➔ `0`.
- *    - Converts Date to getTime (timestamp) `Date ➔ number`, if invalid Date value will return `0`:
- *      - `new Date("invalid")` ➔ `0`.
- *      - `new Date("11-09-2025 22:04:11")` ➔ `1762700651000`.
- *    - Converts `Buffer`, `TypedArray`, `Set`, `Map`, and `arrays` recursively to `arrays of numbers`.
- *    - Converts boxed primitives box into their primitive equivalents then convert to number:
- *      - For `new String` we convert everything to number (behavior JS of new String):
- *        - `new String(123)` ➔ `.valueOf()` ➔ `"123"` ➔ `Number("123")` ➔ `123`.
- *        - `new String("123")` ➔ `.valueOf()` ➔ `"123"` ➔ `Number("123")` ➔ `123`.
- *        - `new String(true)` ➔ `.valueOf()` ➔ `"true"` ➔ `Number(true)` ➔ `1`.
- *        - `new String(false)` ➔ `.valueOf()` ➔ `"false"` ➔ `Number(false)` ➔ `0`.
- *        - If result from `valueOf()` is `NaN` or `Infinity` ***(will removing)***:
- *          - `new String("hi")` ➔ `.valueOf()` ➔ `"hi"` ➔ `Number("hi")` ➔ `NaN` ***(remove)***.
- *          - `new String(()=>{})` ➔ `.valueOf()` ➔ `"()=>{}"` ➔ `Number("()=>{}")` ➔ `NaN` ***(remove)***.
- *      - For `new Boolean` we convert to boolean (behavior JS of new Boolean) then convert to number:
- *        - `new Boolean(true)` ➔ `.valueOf()` ➔ `true` ➔ `Number(true)` ➔ `1`.
- *        - `new Boolean(false)` ➔ `.valueOf()` ➔ `false` ➔ `Number(false)` ➔ `0`.
- *        - Special behavior JS of new Boolean, return `false` **(convert to number: `0`)**
- *          for `false`, (`0` / `-0`), `""` (empty-string),
- *          `null`, `undefined`, `NaN`, otherwise `true` **(convert to number: `1`)**.
- *      - For `new Number`:
- *        - `new Number(42)` ➔ `.valueOf()` ➔ `42`.
- *        - `new Number("42")` ➔ `.valueOf()` ➔ `42`.
- *        - `new Number(null)` ➔ `.valueOf()` ➔ `0` (`null` is `0` behavior JS of new Number).
- *        - If result from `valueOf()` is `NaN` or `Infinity` ***(will removing)***:
- *          - `new Number(NaN)` ➔ `.valueOf()` ➔ `NaN` ***(remove)***.
- *          - `new Number(undefined)` ➔ `.valueOf()` ➔ `NaN` ***(remove)***.
- *          - `new Number(Infinity)` ➔ `.valueOf()` ➔ `Infinity` ***(remove)***.
- *          - `new Number(-Infinity)` ➔ `.valueOf()` ➔ `-Infinity` ***(remove)***.
- *    - Recursively processes `nested objects`, `arrays`, `buffers`, `sets`, `maps`, and `typed arrays`.
- *    - Removes `empty-string`, `non-numeric strings`.
- *    - Removes `null`, `undefined`, `NaN`, `Infinity`, `-Infinity`.
- *    - Removes `unsupported` types like `functions` , `RegExp`, `symbols`, and `BigInt`.
- *    - Can optionally remove empty arrays (`[]`) and/or empty objects (`{}`) **recursively**.
+ *     - Converts numeric strings, number to numbers:
+ *       - `3.5` ➔ `3.5`.
+ *       - `"3.5"` ➔ `3.5`.
+ *     - Converts boolean to number:
+ *       - `true` ➔ `1`.
+ *       - `false` ➔ `0`.
+ *     - Converts Date to getTime (timestamp) `Date ➔ number`, if invalid Date value will return `0`:
+ *       - `new Date("invalid")` ➔ `0`.
+ *       - `new Date("11-09-2025 22:04:11")` ➔ `1762700651000`.
+ *     - Converts `Buffer`, `TypedArray`, `Set`, `Map`, and `arrays` recursively to `arrays of numbers`.
+ *     - Converts boxed primitives box into their primitive equivalents then convert to number:
+ *       - For `new String` we convert everything to number (behavior JS of new String):
+ *         - `new String(123)` ➔ `.valueOf()` ➔ `"123"` ➔ `Number("123")` ➔ `123`.
+ *         - `new String("123")` ➔ `.valueOf()` ➔ `"123"` ➔ `Number("123")` ➔ `123`.
+ *         - `new String(true)` ➔ `.valueOf()` ➔ `"true"` ➔ `Number(true)` ➔ `1`.
+ *         - `new String(false)` ➔ `.valueOf()` ➔ `"false"` ➔ `Number(false)` ➔ `0`.
+ *         - If result from `valueOf()` is `NaN` or `Infinity` ***(will removing)***:
+ *           - `new String("hi")` ➔ `.valueOf()` ➔ `"hi"` ➔ `Number("hi")` ➔ `NaN` ***(remove)***.
+ *           - `new String(()=>{})` ➔ `.valueOf()` ➔ `"()=>{}"` ➔ `Number("()=>{}")` ➔ `NaN` ***(remove)***.
+ *       - For `new Boolean` we convert to boolean (behavior JS of new Boolean) then convert to number:
+ *         - `new Boolean(true)` ➔ `.valueOf()` ➔ `true` ➔ `Number(true)` ➔ `1`.
+ *         - `new Boolean(false)` ➔ `.valueOf()` ➔ `false` ➔ `Number(false)` ➔ `0`.
+ *         - Special behavior JS of new Boolean, return `false` **(convert to number: `0`)**
+ *           for `false`, (`0` / `-0`), `""` (empty-string),
+ *           `null`, `undefined`, `NaN`, otherwise `true` **(convert to number: `1`)**.
+ *       - For `new Number`:
+ *         - `new Number(42)` ➔ `.valueOf()` ➔ `42`.
+ *         - `new Number("42")` ➔ `.valueOf()` ➔ `42`.
+ *         - `new Number(null)` ➔ `.valueOf()` ➔ `0` (`null` is `0` behavior JS of new Number).
+ *         - If result from `valueOf()` is `NaN` or `Infinity` ***(will removing)***:
+ *           - `new Number(NaN)` ➔ `.valueOf()` ➔ `NaN` ***(remove)***.
+ *           - `new Number(undefined)` ➔ `.valueOf()` ➔ `NaN` ***(remove)***.
+ *           - `new Number(Infinity)` ➔ `.valueOf()` ➔ `Infinity` ***(remove)***.
+ *           - `new Number(-Infinity)` ➔ `.valueOf()` ➔ `-Infinity` ***(remove)***.
+ *     - Recursively processes `nested objects`, `arrays`, `buffers`, `sets`, `maps`, and `typed arrays`.
+ *     - Removes `empty-string`, `non-numeric strings`.
+ *     - Removes `null`, `undefined`, `NaN`, `Infinity`, `-Infinity`.
+ *     - Removes `unsupported` types like `functions` , `RegExp`, `symbols`, and `BigInt`.
+ *     - Can optionally remove empty arrays (`[]`) and/or empty objects (`{}`) **recursively**.
+ *
+ * ---
  * @template T - The input type.
  * @template RemoveEmptyObjects - Whether to remove empty objects.
  * @template RemoveEmptyArrays - Whether to remove empty arrays.
+ *
+ * ---
  * @param {*} input - The input value to convert.
  * @param {ToNumberDeepOptions<RemoveEmptyObjects, RemoveEmptyArrays>} [options] - Conversion options.
+ *
+ * ---
  * @returns {ConvertedDeepNumber<T, RemoveEmptyObjects, RemoveEmptyArrays>|undefined} The converted value, return `undefined` if the input is entirely empty or filtered out by options.
+ *
+ * ---
  * @example
  * ```ts
  * toNumberDeep("123");
@@ -125,19 +136,12 @@ export function toNumberDeep<
   RemoveEmptyArrays extends boolean = false
 >(
   input: T,
-  options: ToNumberDeepOptions<RemoveEmptyObjects, RemoveEmptyArrays> = {}
+  options?: ToNumberDeepOptions<RemoveEmptyObjects, RemoveEmptyArrays>
 ) {
-  assertIsPlainObject(options, {
-    message: ({ currentType, validType }) =>
-      `Second parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
-  });
+  if (!isPlainObject(options)) options = {};
 
-  const removeEmptyObjects = hasOwnProp(options, "removeEmptyObjects")
-    ? options.removeEmptyObjects
-    : false;
-  const removeEmptyArrays = hasOwnProp(options, "removeEmptyArrays")
-    ? options.removeEmptyArrays
-    : false;
+  const removeEmptyObjects = options.removeEmptyObjects ?? false;
+  const removeEmptyArrays = options.removeEmptyArrays ?? false;
 
   function _internal<
     T,
@@ -157,9 +161,12 @@ export function toNumberDeep<
 
     if (!isBoolean(removeEmptyObjects) || !isBoolean(removeEmptyArrays)) {
       throw new TypeError(
-        `Parameters \`removeEmptyObjects\` and \`removeEmptyArrays\` property of the \`options\` (second parameter) must be of type \`boolean\`, but received: ['removeEmptyObjects': \`${getPreciseType(
-          removeEmptyObjects
-        )}\`, 'removeEmptyArrays': \`${getPreciseType(removeEmptyArrays)}\`].`
+        createMessage(
+          "toNumberDeep",
+          `Parameters \`removeEmptyObjects\` and \`removeEmptyArrays\` property of the \`options\` (second parameter) must be of type \`boolean\`, but received: ['removeEmptyObjects': \`${getPreciseType(
+            removeEmptyObjects
+          )}\`, 'removeEmptyArrays': \`${getPreciseType(removeEmptyArrays)}\`].`
+        )
       );
     }
 

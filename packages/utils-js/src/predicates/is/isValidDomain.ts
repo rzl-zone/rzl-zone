@@ -1,5 +1,7 @@
 import { joinLines, EOL } from "@rzl-zone/build-tools/utils";
 
+import { createMessage } from "@/_private/logger";
+
 import { punycodeUtilsJS } from "@/urls/utils/punyCode";
 import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
 import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
@@ -14,106 +16,156 @@ import { getPreciseType } from "../type/getPreciseType";
 
 /** ---------------------------------------------------------
  * * ***Options for `isValidDomain` predicate.***
- * ---------------------------------------------------------
+ * ----------------------------------------------------------
  * **Customize the behavior of domain validation.**
  */
 type IsValidDomainOptions = {
-  /** * ***Enable conversion of Unicode domains (IDN) to ASCII (punycode).***
+  /** ---------------------------------------------------------
+   * * ***Enable conversion of Unicode domains (IDN) to ASCII (punycode).***
+   * ----------------------------------------------------------
    *
-   * - Example: `"пример.рф"` ➔ `"xn--e1afmkfd.xn--p1ai"`
+   * - Example:
+   *     - `"пример.рф"` ➔ `"xn--e1afmkfd.xn--p1ai"`.
    * - Allows validating Unicode domains correctly.
-   * - Default: `false`
+   * - Default: `false`.
    *
-   * @defaultValue `false`.
+   * ---
+   * @default
+   * ```ts
+   * false
+   * ```
    */
   allowUnicode?: boolean;
 
-  /** * ***If `true`, validates **only top-level domains (TLDs)** that are not part of any SLD/second-level domain.***
+  /** ---------------------------------------------------------
+   * * ***If `true`, validates **only top-level domains (TLDs)** that are not part of any SLD/second-level domain.***
+   * ----------------------------------------------------------
    *
-   * - Accepts country-code TLDs like `"ai"` or `"ai."` ✅
-   * - Rejects common TLDs that are part of SLDs like `"com"` ❌
-   * - Only the final label is checked; subdomains are ignored.
-   * - Default: `false`
+   * - Behavior:
+   *     - Accepts country-code TLDs like `"ai"` or `"ai."` ✅.
+   *     - Rejects common TLDs that are part of SLDs like `"com"` ❌.
+   *     - Only the final label is checked; subdomains are ignored.
+   *     - Default: `false`.
    *
-   * @defaultValue `false`.
+   * ---
+   * @default
+   * ```ts
+   * false
+   * ```
    */
   topLevel?: boolean;
 
-  /** * ***Allow or disallow subdomains.***
+  /** ---------------------------------------------------------
+   * * ***Allow or disallow subdomains.***
+   * ----------------------------------------------------------
    *
-   * - Example: `"sub.example.com"` ✅ if `subdomain` is `true`, ❌ if `false`
+   * - Example:
+   *     - `"sub.example.com"` ✅ if `subdomain` is `true`, ❌ if `false`.
    * - Wildcards and SLDs are considered when evaluating subdomains.
-   * - Default: `true`
+   * - Default: `true`.
    *
-   * @defaultValue `true`.
+   * ---
+   * @default
+   * ```ts
+   * true
+   * ```
    */
   subdomain?: boolean;
 
-  /** * ***Allow a wildcard `*` in the left-most label.***
+  /** ---------------------------------------------------------
+   * * ***Allow a wildcard `*` in the left-most label.***
+   * ----------------------------------------------------------
    *
-   * - Example: `"*.example.com"` ✅ if `wildcard` is `true`, ❌ if `false`
+   * - Example:
+   *     - `"*.example.com"` ✅ if `wildcard` is `true`, ❌ if `false`.
    * - Wildcards are only valid in the first label and require at least one additional label.
-   * - Default: `false`
+   * - Default: `false`.
    *
-   * @defaultValue `false`.
+   * ---
+   * @default
+   * ```ts
+   * false
+   * ```
    */
   wildcard?: boolean;
 
-  /** * ***Allow a port after the domain.***
+  /** ---------------------------------------------------------
+   * * ***Allow a port after the domain.***
+   * ----------------------------------------------------------
    *
-   * - Example: `"localhost:3000"` or `"example.com:8080"` ✅ if `allowPort` is `true`
+   * - Example:
+   *     - `"localhost:3000"` or `"example.com:8080"` ✅ if `allowPort` is `true`.
    * - Validates that the port is a number between `1` and `65535`.
    * - Does not affect domain validation rules otherwise.
-   * - Default: `false`
+   * - Default: `false`.
    *
-   * @defaultValue `false`.
+   * ---
+   * @default
+   * ```ts
+   * false
+   * ```
    */
   allowPort?: boolean;
 
-  /** * ***Allow special domains like `localhost`.***
+  /** ---------------------------------------------------------
+   * * ***Allow special domains like `localhost`.***
+   * ----------------------------------------------------------
    *
-   * - Example: `"localhost"` ✅ if `allowLocalhost` is `true`
+   * - Example:
+   *     - `"localhost"` ✅ if `allowLocalhost` is `true`.
    * - Works with or without a port if `allowPort` is enabled.
-   * - Default: `false`
+   * - Default: `false`.
    *
-   * @defaultValue `false`.
+   * ---
+   * @default
+   * ```ts
+   * false
+   * ```
    */
   allowLocalhost?: boolean;
 
-  /** * ***Allow URLs with protocol (`http`/`https`) and automatically extract the hostname.***
+  /** ---------------------------------------------------------
+   * * ***Allow URLs with protocol (`http`/`https`) and automatically extract the hostname.***
+   * ----------------------------------------------------------
    *
-   * - Example: `"https://example.com/foo/bar"` ➔ `"example.com"`
-   * - The function will validate only the hostname part and ignore the path, query, and fragment.
-   * - Default: `false`
+   * - Example:
+   *     - `"https://example.com/foo/bar"` ➔ `"example.com"`.
+   * - The function will validate only the hostname part and ***ignore*** the `path`, `query`, and `fragment`.
+   * - Default: `false`.
    *
-   * @defaultValue `false`.
+   * ---
+   * @default
+   * ```ts
+   * false
+   * ```
    */
   allowProtocol?: boolean;
 };
 
 /** ---------------------------------------------------------
  * * ***Predicate: `isValidDomain`.***
- * ---------------------------------------------------------
+ * ----------------------------------------------------------
  * **Validates whether a given string is a properly formatted domain name.**
  *
- * - **Supports options for:**
- *    - `allowUnicode` ➔ allows internationalized domain names (IDN) with Unicode characters.
- *    - `topLevel` ➔ validates **only top-level domains (TLDs)**; ignores subdomains and SLDs.
- *    - `subdomain` ➔ allows or disallows subdomains.
- *    - `wildcard` ➔ allows wildcard (`*`) in the left-most label.
- *    - `allowPort` ➔ allows a port number after the domain (e.g., `example.com:8080`).
- *    - `allowLocalhost` ➔ allows the special domain `"localhost"`.
- *    - `allowProtocol` ➔ allows a URL with protocol (`http`/`https`) and extracts the hostname.
+ * ---
+ * - #### *Behavior:*
+ *     - Supports options for:
+ *         - `allowUnicode` ➔ allows internationalized domain names (IDN) with Unicode characters.
+ *         - `topLevel` ➔ validates **only top-level domains (TLDs)**; ignores subdomains and SLDs.
+ *         - `subdomain` ➔ allows or disallows subdomains.
+ *         - `wildcard` ➔ allows wildcard (`*`) in the left-most label.
+ *         - `allowPort` ➔ allows a port number after the domain (e.g., `example.com:8080`).
+ *         - `allowLocalhost` ➔ allows the special domain `"localhost"`.
+ *         - `allowProtocol` ➔ allows a URL with protocol (`http`/`https`) and extracts the hostname.
+ *     - Converts Unicode to ASCII (punycode) if `allowUnicode` is `true`.
+ *     - Checks label lengths (`≤63` chars), valid characters, and punycode consistency.
+ *     - Validates port if `allowPort` is `true` (must be 1–65535).
+ *     - Accepts `"localhost"` if `allowLocalhost` is `true`.
+ *     - Extracts hostname from URLs if `allowProtocol` is `true`.
+ *     - Rejects invalid domains, labels starting/ending with `-`, double dots, malformed TLDs, or invalid port numbers.
+ *     - Handles both standard domains (`example.com`), URLs with protocols (`https://example.com/foo`), and IDNs (`пример.рф`).
  *
- * - **Behavior:**
- *    - ✅ Converts Unicode to ASCII (punycode) if `allowUnicode` is `true`.
- *    - ✅ Checks label lengths (≤63 chars), valid characters, and punycode consistency.
- *    - ✅ Validates port if `allowPort` is `true` (must be 1–65535).
- *    - ✅ Accepts `"localhost"` if `allowLocalhost` is `true`.
- *    - ✅ Extracts hostname from URLs if `allowProtocol` is `true`.
- *    - ❌ Rejects invalid domains, labels starting/ending with `-`, double dots, malformed TLDs, or invalid port numbers.
- *    - ✅ Handles both standard domains (example.com), URLs with protocols (https://example.com/foo), and IDNs (пример.рф).
- *
+ * ---
  * @param {*} value - The value to validate; only strings are valid domains.
  * @param {IsValidDomainOptions} [options] - Optional configuration for domain validation.
  * @param {boolean} [options.allowUnicode=false] - Enable punycode conversion for Unicode domains.
@@ -123,8 +175,11 @@ type IsValidDomainOptions = {
  * @param {boolean} [options.allowPort=false] - Allow port number after domain (e.g., `:3000`); must be 1–65535.
  * @param {boolean} [options.allowLocalhost=false] - Allow special domain `"localhost"`.
  * @param {boolean} [options.allowProtocol=false] - Allow URLs with protocol (`http`/`https`) and extract hostname only.
+ *
+ * ---
  * @returns {boolean} Returns `true` if the value is a valid domain according to the rules and options; otherwise `false`.
  *
+ * ---
  * @example
  * isValidDomain("google.com");
  * // ➔ true
@@ -149,15 +204,17 @@ type IsValidDomainOptions = {
  * isValidDomain("invalid_domain.com");
  * // ➔ false
  */
-export function isValidDomain(
+export const isValidDomain = (
   value: unknown,
   options: IsValidDomainOptions = {}
-): boolean {
+): boolean => {
   if (!isString(value)) return false;
 
   assertIsPlainObject(options, {
     message: ({ currentType, validType }) =>
-      `Second parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      errorMsg(
+        `Second parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   const {
@@ -198,13 +255,12 @@ export function isValidDomain(
       .join(EOL);
 
     throw new TypeError(
-      joinLines(
-        "",
-        "> Invalid options detected in second parameter of `isValidDomain`:",
-        msg
+      errorMsg(
+        joinLines("", "> Invalid options detected in second parameter:", msg)
       )
     );
   }
+
   // -----------------
 
   let _value = value.toLowerCase();
@@ -310,4 +366,9 @@ export function isValidDomain(
       !label.endsWith("-")
     );
   });
-}
+};
+
+/**
+ * @internal ***`Not part of the public API.`***
+ */
+const errorMsg = (msg: string) => createMessage("isValidDomain", msg);

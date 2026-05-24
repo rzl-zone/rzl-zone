@@ -54,6 +54,13 @@ describe("stripHtmlTags", () => {
     expect(stripHtmlTags('<a href="https://example.com">Link</a>')).toBe(
       "Link"
     );
+
+    expect(
+      stripHtmlTags(
+        // prettier-ignore
+        "<div id='id-test' style='top: calc(var(--spacing) * 0);'>Test</div>"
+      )
+    ).toBe("Test");
   });
 
   it("does not strip angle brackets not part of tags", () => {

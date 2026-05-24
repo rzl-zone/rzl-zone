@@ -13,14 +13,16 @@ import type { Nilable } from "@rzl-zone/ts-types-plus";
  * * ***Represents a string input.***
  * --------------------------------------------------
  * - **Can be one of:**
- *    - A single `string`
- *    - An array of strings (`string[]`)
- *    - A readonly array of strings (`readonly string[]`)
- *    - `null` or `undefined`
+ *     - A single `string`.
+ *     - An array of strings (`string[]`).
+ *     - A readonly array of strings (`readonly string[]`).
+ *     - `null` or `undefined`.
+ *
+ * ---
  * @template T - A string or array of strings.
  *
- *
- * @note ***Types input for {@link toCamelCase}, {@link toPascalCaseSpace}, {@link toPascalCase}, {@link toLowerCase}, {@link toKebabCase}, {@link toSnakeCase}, {@link toDotCase} and {@link slugify}.***
+ * ---
+ * @note ***Types input for {@link toCamelCase | `toCamelCase`}, {@link toPascalCaseSpace | `toPascalCaseSpace`}, {@link toPascalCase | `toPascalCase`}, {@link toLowerCase | `toLowerCase`}, {@link toKebabCase | `toKebabCase`}, {@link toSnakeCase | `toSnakeCase`}, {@link toDotCase | `toDotCase`} and {@link slugify | `slugify`}.***
  */
 export type StringLike = Nilable<string | string[] | ReadonlyArray<string>>;
 
@@ -28,14 +30,14 @@ export type StringLike = Nilable<string | string[] | ReadonlyArray<string>>;
  * * ***Represents a collection of strings.***
  * --------------------------------------------------
  * - **Can be one of:**
- *    - A single `string`
- *    - An array of strings (`string[]`)
- *    - A readonly array of strings (`readonly string[]`)
- *    - A `Set<string>`
- *    - A `ReadonlySet<string>`
+ *     - A single `string`.
+ *     - An array of strings (`string[]`).
+ *     - A readonly array of strings (`readonly string[]`).
+ *     - A `Set<string>`.
+ *     - A `ReadonlySet<string>`.
  *
- *
- * @note ***Types options for {@link toCamelCase}, {@link toPascalCaseSpace}, {@link toPascalCase}, {@link toLowerCase}, {@link toKebabCase}, {@link toSnakeCase}, {@link toDotCase} and {@link slugify}.***
+ * ---
+ * @note ***Types options for {@link toCamelCase | `toCamelCase`}, {@link toPascalCaseSpace | `toPascalCaseSpace`}, {@link toPascalCase | `toPascalCase`}, {@link toLowerCase | `toLowerCase`}, {@link toKebabCase | `toKebabCase`}, {@link toSnakeCase | `toSnakeCase`}, {@link toDotCase | `toDotCase`} and {@link slugify | `slugify`}.***
  */
 export type StringCollection =
   | string

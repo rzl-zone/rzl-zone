@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { customCnV3 } from "@/tailwind/class-names/customCn";
-import { twMergeDefaultV3 } from "@/tailwind/tw-merge/v3/twMergeDefault";
+import { twMergeDefaultV2 } from "@/tailwind/tw-merge/v2/twMergeDefault";
 
-describe("customCn with twMergeDefaultV3", () => {
-  const twMerge = twMergeDefaultV3();
+describe("customCn with twMergeDefaultV2", () => {
+  const twMerge = twMergeDefaultV2();
 
   it("should merge basic Tailwind classes", () => {
     const result = customCnV3(twMerge, "p-2 p-4");
@@ -11,7 +11,7 @@ describe("customCn with twMergeDefaultV3", () => {
   });
 
   it("should merge extended class groups", () => {
-    const twMergeExtended = twMergeDefaultV3({
+    const twMergeExtended = twMergeDefaultV2({
       extend: {
         classGroups: {
           shadow: ["shadow-soft", "shadow-hard"]
@@ -33,7 +33,7 @@ describe("customCn with twMergeDefaultV3", () => {
         }
       }
     };
-    const twMergeWithConfig = twMergeDefaultV3({ config: customConfig });
+    const twMergeWithConfig = twMergeDefaultV2({ config: customConfig });
     const result = customCnV3(twMergeWithConfig, "text-base text-xxs text-xxl");
     expect(result).toBe("text-xxl");
   });

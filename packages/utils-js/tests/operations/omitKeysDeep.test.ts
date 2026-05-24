@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { omitKeysDeep } from "@/operations/omitKeysDeep";
+import { createMessage } from "@/_private/logger";
 
 describe("omitKeysDeep", () => {
   it("should omit a nested key using dot notation", () => {
@@ -82,8 +83,11 @@ describe("omitKeysDeep", () => {
 
   it("should throw error if keysToOmit contains duplicates", () => {
     expect(() => omitKeysDeep({ a: { b: 2 } }, ["a.b", "a.b"])).toThrow(
-      // eslint-disable-next-line quotes
-      'Function "omitKeysDeep" Error: Duplicate keys detected - `["a.b"]`'
+      createMessage(
+        "omitKeysDeep",
+        // eslint-disable-next-line quotes
+        'Duplicate keys detected - `["a.b"]`'
+      )
     );
   });
 

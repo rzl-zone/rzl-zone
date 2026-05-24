@@ -12,7 +12,7 @@ import type {
 import type { toNumberDeep } from "../toNumberDeep";
 
 /** ----------------------------------------------------------
- * * Normalize leaked `never[]` into literal empty array `[]`.
+ * * ***Normalize leaked `never[]` into literal empty array `[]`.***
  * ----------------------------------------------------------
  */
 type FixNeverArray<T, RemoveEmptyArrays extends boolean> = [T] extends [never[]]
@@ -24,7 +24,7 @@ type FixNeverArray<T, RemoveEmptyArrays extends boolean> = [T] extends [never[]]
   : T;
 
 /** ----------------------------------------------------------
- * * Simplify object type to remove unnecessary TypeScript wrappers.
+ * * ***Simplify object type to remove unnecessary TypeScript wrappers.***
  * ----------------------------------------------------------
  */
 type Simplify<T> = T extends object ? { [K in keyof T]: T[K] } : T;
@@ -179,7 +179,7 @@ type ConvertedDeepNumberInternal<
                       >
                     : never;
 /** ----------------------------------------------------------
- * * Recursively map tuples while preserving `never` removals.
+ * * ***Recursively map tuples while preserving `never` removals.***
  * ----------------------------------------------------------
  */
 type _MapTuple<
@@ -411,25 +411,31 @@ export type ConvertedDeepNumber<
     >;
 
 /**
- * ***Types options for {@link toNumberDeep | `toNumberDeep`}.***
+ * * ***Types options for {@link toNumberDeep | `toNumberDeep`}.***
  */
 export type ToNumberDeepOptions<
   RemoveEmptyObjects extends boolean = false,
   RemoveEmptyArrays extends boolean = false
 > = {
-  /** Whether to remove empty objects (`{}`) from the result.
+  /** ----------------------------------------------------------
+   * * ***Whether to remove empty objects (`{}`) from the result.***
+   * -----------------------------------------------------------
    *
    * - `true` ➔ remove empty objects recursively.
    * - `false` **(default)** ➔ keep empty objects as-is.
    *
+   * ---
    * @default false
    */
   removeEmptyObjects?: RemoveEmptyObjects;
-  /** Whether to remove empty arrays (`[]`) from the result.
+  /** ----------------------------------------------------------
+   * * ***Whether to remove empty arrays (`[]`) from the result.***
+   * -----------------------------------------------------------
    *
    * - `true` ➔ remove empty arrays recursively.
    * - `false` **(default)** ➔ keep empty arrays as-is.
    *
+   * ---
    * @default false
    */
   removeEmptyArrays?: RemoveEmptyArrays;

@@ -54,14 +54,24 @@ describe("twMergeDefaultV3", () => {
       })
     });
 
-    const result = twMerge("tw-p-2 tw-p-4");
-    expect(result).toBe("tw-p-4");
+    const result = twMerge("p-2 p-4");
+    expect(result).toBe("p-4");
   });
 
   it("should include default extended text-shadow classes", () => {
     const twMerge = twMergeDefaultV3();
     const result = twMerge("text-shadow text-shadow-lg");
     expect(result).toBe("text-shadow-lg");
+  });
+
+  it("should respect order-sensitive modifiers when extended", () => {
+    const twMerge = twMergeDefaultV3({
+      extend: {
+        orderSensitiveModifiers: ["hover"]
+      }
+    });
+    const result = twMerge("hover:p-2 p-4");
+    expect(result).toBe("hover:p-2 p-4");
   });
 
   it("should respect prefix option", () => {
@@ -77,7 +87,7 @@ describe("twMergeDefaultV3", () => {
       }
     });
 
-    const result = twMerge("tw-p-2 tw-p-4");
-    expect(result).toBe("tw-p-4");
+    const result = twMerge("tw-:p-2 tw-:p-4");
+    expect(result).toBe("tw-:p-4");
   });
 });

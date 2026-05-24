@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { isNaN as rzlIsNaN } from "./src/predicates/is/isNaN";
-import type { isFinite as rzlIsFinite } from "./src/predicates/is/isFinite";
+import type { isNaN as rzlIsNaN } from "../src/predicates/is/isNaN.ts";
+import type { isFinite as rzlIsFinite } from "../src/predicates/is/isFinite.ts";
 
 // We used this for safe internally environment only (not export at build mean is no public).
 declare global {

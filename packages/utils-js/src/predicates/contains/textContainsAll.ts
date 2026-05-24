@@ -1,17 +1,23 @@
-import { isArray } from "../is/isArray";
-import { isNonEmptyString } from "../is/isNonEmptyString";
+import { createMessage } from "@/_private/logger";
 
 import { assertIsString } from "@/assertions/strings/assertIsString";
 import { assertIsBoolean } from "@/assertions/booleans/assertIsBoolean";
-import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
+
+import { isArray } from "../is/isArray";
+import { isPlainObject } from "../is/isPlainObject";
+import { isNonEmptyString } from "../is/isNonEmptyString";
 
 type OptionsTextContainsAll = {
-  /** If `true`, matches whole words only, defaultValue is `false`.
+  /** ----------------------------------------------------------
+   * * ***If `true`, matches whole words only, defaultValue is `false`.***
+   * -----------------------------------------------------------
    *
    * @default false
    */
   exactMatch?: boolean;
-  /** Optional regex flags (default: `"i"` for case-insensitive).
+  /** ----------------------------------------------------------
+   * * ***Optional regex flags (default: `"i"` for case-insensitive).***
+   * -----------------------------------------------------------
    *
    * @default "i"
    */
@@ -20,20 +26,28 @@ type OptionsTextContainsAll = {
 
 /** ----------------------------------------------------------
  * * ***Predicate: `textContainsAll`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
  * **Checks if the given `text` contains all of the specified `searchWords`.**
+ *
+ * ---
  * - **Behavior:**
- *    - Returns `false` if `text` or `searchWords` is `null`/`undefined`/invalid.
- *    - Uses **regular expressions** for flexible pattern matching.
- *    - **Escapes special characters** to prevent regex injection attacks.
- *    - **Trims input** to avoid false positives with empty spaces.
- *    - **Supports exact word matching** (optional).
+ *     - Returns `false` if `text` or `searchWords` is `null`/`undefined`/invalid.
+ *     - Uses **regular expressions** for flexible pattern matching.
+ *     - **Escapes special characters** to prevent regex injection attacks.
+ *     - **Trims input** to avoid false positives with empty spaces.
+ *     - **Supports exact word matching** (optional).
+ *
+ * ---
  * @param {string|null|undefined} text - The string text to search within.
  * @param {string[]|null} [searchWords] - An array of words/phrases to match against the text.
  * @param {OptionsTextContainsAll} [options] - Optional configuration object.
  * @param {OptionsTextContainsAll["exactMatch"]} [options.exactMatch=false] - If `true`, matches whole words only, defaultValue is `false`.
  * @param {OptionsTextContainsAll["flags"]} [options.flags="i"] - Optional regex flags (default: `"i"` for case-insensitive).
+ *
+ * ---
  * @returns {boolean} Return `true` if all `searchWords` are found in `text`, otherwise `false`.
+ *
+ * ---
  * @example
  * textContainsAll("Hello world, WithAI APP", ["Hello", "world"]);
  * // ➔ true
@@ -53,26 +67,24 @@ export const textContainsAll = <T extends string>(
   searchWords?: T[] | string[] | null,
   options: OptionsTextContainsAll = {}
 ): boolean => {
-  if (!isNonEmptyString(text) || !isArray(searchWords)) {
-    return false;
-  }
-
-  assertIsPlainObject(options, {
-    message: ({ currentType, validType }) =>
-      `Third parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
-  });
+  if (!isNonEmptyString(text) || !isArray(searchWords)) return false;
+  if (!isPlainObject(options)) options = {};
 
   // fallback to default
   const { exactMatch = false, flags = "i" } = options;
 
   assertIsBoolean(exactMatch, {
     message: ({ currentType, validType }) =>
-      `Parameter \`exactMatch\` property of the \`options\` (third parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      errorMsg(
+        `Parameter \`exactMatch\` property of the \`options\` (third parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   assertIsString(flags, {
     message: ({ currentType, validType }) =>
-      `Parameter \`flags\` property of the \`options\` (third parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      errorMsg(
+        `Parameter \`flags\` property of the \`options\` (third parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
   // Escape special regex characters to prevent unintended behavior
   const escapeRegex = (str: string) =>
@@ -93,3 +105,8 @@ export const textContainsAll = <T extends string>(
     );
   });
 };
+
+/**
+ * @internal ***`Not part of the public API.`***
+ */
+const errorMsg = (msg: string) => createMessage("textContainsAll", msg);

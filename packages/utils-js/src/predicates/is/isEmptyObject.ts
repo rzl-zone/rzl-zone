@@ -1,11 +1,14 @@
-import { isObject } from "./isObject";
-import { hasOwnProp } from "../has/hasOwnProp";
+import { createMessage } from "@/_private/logger";
 
 import { assertIsBoolean } from "@/assertions/booleans/assertIsBoolean";
-import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
+
+import { isObject } from "./isObject";
+import { isPlainObject } from "./isPlainObject";
 
 type IsEmptyObjectOptions = {
-  /** Whether to check for symbol properties in addition to string keys, defaultValue: `false`.
+  /** ----------------------------------------------------------
+   * * ***Whether to check for symbol properties in addition to string keys, defaultValue: `false`.***
+   * -----------------------------------------------------------
    *
    * @default false
    */
@@ -14,16 +17,24 @@ type IsEmptyObjectOptions = {
 
 /** ----------------------------------------------------------
  * * ***Predicate: `isEmptyObject`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
  * **Checks if a value is a plain object with **no own enumerable string-key properties**,
  * and optionally **no own enumerable symbol-key properties** when `checkSymbols` is `true`.**
+ *
+ * ---
  * - **Behavior:**
- *    - If the value is **not an object** (e.g. `null`, array, primitive), it is considered empty.
- *    - If `options.checkSymbols` is `true`, **symbol properties** are also checked.
+ *     - If the value is **not an object** (e.g. `null`, array, primitive), it is considered empty.
+ *     - If `options.checkSymbols` is `true`, **symbol properties** are also checked.
+ *
+ * ---
  * @param {*} value - The value to check.
  * @param {IsEmptyObjectOptions} [options] - Optional settings.
  * @param {IsEmptyObjectOptions["checkSymbols"]} [options.checkSymbols=false] - Whether to also check symbol properties.
+ *
+ * ---
  * @returns {boolean} Return `true` if the value is considered empty or not an object, false otherwise.
+ *
+ * ---
  * @example
  * isEmptyObject({});
  * // ➔ true
@@ -42,26 +53,21 @@ type IsEmptyObjectOptions = {
  * isEmptyObject(123);
  * // ➔ true (not object)
  */
-export function isEmptyObject(
+export const isEmptyObject = (
   value: unknown,
   options: IsEmptyObjectOptions = {}
-): boolean {
-  if (!isObject(value)) {
-    return true;
-  }
+): boolean => {
+  if (!isObject(value)) return true;
+  if (!isPlainObject(options)) options = {};
 
-  assertIsPlainObject(options, {
-    message: ({ currentType, validType }) =>
-      `Second parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
-  });
-
-  const checkSymbols = hasOwnProp(options, "checkSymbols")
-    ? options.checkSymbols
-    : false;
+  const checkSymbols = options.checkSymbols ?? false;
 
   assertIsBoolean(checkSymbols, {
     message: ({ currentType, validType }) =>
-      `Parameter \`checkSymbols\` property of the \`options\` (second parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      createMessage(
+        "isEmptyObject",
+        `Parameter \`checkSymbols\` property of the \`options\` (second parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   const hasNoKeys = Object.keys(value).length === 0;
@@ -69,4 +75,4 @@ export function isEmptyObject(
     return hasNoKeys && Object.getOwnPropertySymbols(value).length === 0;
   }
   return hasNoKeys;
-}
+};

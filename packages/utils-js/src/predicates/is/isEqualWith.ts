@@ -3,12 +3,16 @@ import { baseDeepEqual } from "@/predicates/is/_private/baseDeepEqual";
 
 /** ----------------------------------------------------
  * * ***Predicate: `isEqualWith`.***
- * ----------------------------------------------------
+ * -----------------------------------------------------
  * **Performs a deep comparison between two values with support for a
  * customizer function.**
+ *
+ * ---
  * @description
  * This method is like ***`isEqual` utility function*** except that it
  * accepts a `customizer` which is invoked to compare values.
+ *
+ * ---
  * - **Behavior:**
  *     - If `customizer` returns `undefined`, the comparison is handled by
  *       the default deep equality algorithm.
@@ -18,10 +22,16 @@ import { baseDeepEqual } from "@/predicates/is/_private/baseDeepEqual";
  *     - Supports comparing `arrays`, `objects`, `maps`, `sets`, `dates`,
  *       `regexes`, `typed arrays`, `etc`.
  *     - Functions and DOM nodes are **not** supported.
+ *
+ * ---
  * @param {*} value The value to compare.
  * @param {*} other The other value to compare.
  * @param {CustomizerIsEqualWith} [customizer] The function to customize comparisons.
+ *
+ * ---
  * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ *
+ * ---
  * @example
  * function isGreeting(value: unknown) {
  *   return typeof value === "string" && /^h(?:i|ello)$/.test(value);
@@ -39,10 +49,10 @@ import { baseDeepEqual } from "@/predicates/is/_private/baseDeepEqual";
  * isEqualWith(array, other, customizer);
  * // ➔ true
  */
-export function isEqualWith(
+export const isEqualWith = (
   value: unknown,
   other: unknown,
   customizer?: CustomizerIsEqualWith
-): boolean {
+): boolean => {
   return baseDeepEqual(value, other, customizer, new WeakMap());
-}
+};

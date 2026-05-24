@@ -28,29 +28,46 @@ type IsObjectOrArray<T> =
  * * ***Type guard: `isObjectOrArray`.***
  * ----------------------------------------------------------
  * **Checks if a value is an **object** or an **array**.**
- * - **✅ Returns `true` for:**
- *    - Plain objects (`{}`, `Object.create(null)`)
- *    - Custom objects
- *    - Arrays (`[]`, `[1,2,3]`)
- * - **❌ Returns `false` for:**
- *    - `null`
- *    - `undefined`
- *    - Primitives:
- *        - `string`
- *        - `number`
- *        - `boolean`
- *        - `symbol`
- *        - `bigint`
- *    - Functions
+ *
+ * ---
+ * - #### *Behavior:*
+ *      - #### Returns `true` for:
+ *          - Plain objects (`{}`, `Object.create(null)`).
+ *          - Custom objects.
+ *          - Arrays (`[]`, `[1,2,3]`).
+ *      ---
+ *      - #### Returns `false` for:
+ *          - `null`.
+ *          - `undefined`.
+ *          - Primitives:
+ *             - `string`.
+ *             - `number`.
+ *             - `boolean`.
+ *             - `symbol`.
+ *             - `bigint`.
+ *          - Functions.
+ *
+ * ---
  * @template T - The type of the value being checked.
+ *
+ * ---
  * @param {*} value - The value to check.
+ *
+ * ---
  * @returns {boolean} Returns `true` if the value is an `object` or `array`.
+ *
+ * ---
  * @example
- * isObjectOrArray([1,2,3]);           // ➔ true
- * isObjectOrArray({ name: "Alice" }); // ➔ true
- * isObjectOrArray(null);              // ➔ false
- * isObjectOrArray(undefined);         // ➔ false
- * isObjectOrArray("hello");           // ➔ false
+ * isObjectOrArray([1,2,3]);
+ * // ➔ true
+ * isObjectOrArray({ name: "Alice" });
+ * // ➔ true
+ * isObjectOrArray(null);
+ * // ➔ false
+ * isObjectOrArray(undefined);
+ * // ➔ false
+ * isObjectOrArray("hello");
+ * // ➔ false
  */
 export function isObjectOrArray(value: []): value is [];
 export function isObjectOrArray<T>(value: T): value is IsObjectOrArray<T>;

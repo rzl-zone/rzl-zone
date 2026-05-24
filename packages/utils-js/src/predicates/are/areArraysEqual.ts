@@ -1,16 +1,22 @@
-import { isArray } from "../is/isArray";
-import { isEqual } from "../is/isEqual";
-import { getPreciseType } from "../type/getPreciseType";
+import { createMessage } from "@/_private/logger";
 
 import { assertIsBoolean } from "@/assertions/booleans/assertIsBoolean";
 import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
 
+import { isArray } from "../is/isArray";
+import { isEqual } from "../is/isEqual";
+import { getPreciseType } from "../type/getPreciseType";
+
 /** ----------------------------------------------------------
  * * ***Predicate: `areArraysEqual`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
  * **Compares two arrays deeply to check if they are equal.**
+ *
+ * ---
  * @description Supports deep comparison of arrays containing nested arrays or objects,
  *  can also ignore the order of elements at all levels by recursively sorting.
+ *
+ * ---
  * @param {unknown[]} array1
  *   ***The first array to compare, can contain nested arrays or objects.***
  * @param {unknown[]} array2
@@ -18,9 +24,15 @@ import { safeStableStringify } from "@/conversions/stringify/safeStableStringify
  * @param {boolean|undefined} [ignoreOrder=false]
  *   ***Whether to ignore the order of elements when comparing.***
  *    - If `true`, will sort both arrays recursively before comparing, default is `false`.
+ *
+ * ---
+ * @throws **{@link TypeError | `TypeError`}** if `array1` or `array2` are not arrays, or if `ignoreOrder` is not a boolean.
+ *
+ * ---
  * @returns {boolean}
  *    Returns `true` if both arrays are deeply equal, otherwise `false`.
- * @throws **{@link TypeError | `TypeError`}** if `array1` or `array2` are not arrays, or if `ignoreOrder` is not a boolean.
+ *
+ * ---
  * @example
  * ```ts
  * areArraysEqual([1, 2, 3], [1, 2, 3]);
@@ -40,15 +52,19 @@ export const areArraysEqual = (
 ): boolean => {
   if (!(isArray(array1) && isArray(array2))) {
     throw new TypeError(
-      `Parameters \`array1\` and \`array2\` property of the \`options\` (second parameter) must be of type \`array\`, but received: ['array1': \`${getPreciseType(
-        array1
-      )}\`, 'array2': \`${getPreciseType(array2)}\`].`
+      errorMsg(
+        `Parameters \`array1\` and \`array2\` property of the \`options\` (second parameter) must be of type \`array\`, but received: ['array1': \`${getPreciseType(
+          array1
+        )}\`, 'array2': \`${getPreciseType(array2)}\`].`
+      )
     );
   }
 
   assertIsBoolean(ignoreOrder, {
     message: ({ currentType, validType }) =>
-      `Third parameter \`ignoreOrder\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      errorMsg(
+        `Third parameter \`ignoreOrder\` must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   if (!isEqual(array1.length, array2.length)) return false;
@@ -89,3 +105,8 @@ export const areArraysEqual = (
       safeStableStringify(item) === safeStableStringify(normalizedArr2[index])
   );
 };
+
+/**
+ * @internal ***`Not part of the public API.`***
+ */
+const errorMsg = (msg: string) => createMessage("areArraysEqual", msg);

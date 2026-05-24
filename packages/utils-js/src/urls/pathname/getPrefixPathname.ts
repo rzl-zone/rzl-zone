@@ -1,5 +1,7 @@
 import { joinLines, EOL } from "@rzl-zone/build-tools/utils";
 
+import { createMessage } from "@/_private/logger";
+
 import { isNull } from "@/predicates/is/isNull";
 import { isArray } from "@/predicates/is/isArray";
 import { isString } from "@/predicates/is/isString";
@@ -15,15 +17,22 @@ import { safeStableStringify } from "@/conversions/stringify/safeStableStringify
 import { normalizePathname } from "./normalizePathname";
 
 type GetPrefixPathnameOptions = {
-  /** The number of levels to include in the prefix (default is `1`).
+  /** --------------------------------------------------------
+   * * ***The number of levels to include in the prefix (default is `1`).***
+   * ---------------------------------------------------------
    *
    * - For example, with `levels = 2`, the function will return the first two parts of the URL.
-   *
+   * ---
    * @default 1
    */
   levels?: number;
-  /** Whether to remove duplicates from the result if multiple URLs are passed (default is `true`).
+  /** --------------------------------------------------------
+   * * ***Whether to remove duplicates from the result if multiple URLs are passed (default is `true`).***
+   * ---------------------------------------------------------
    *
+   * - ***⚠️ Warning:***
+   *      - Non-boolean values will throw `TypeError`.
+   * ---
    * @default true
    */
   removeDuplicates?: boolean;
@@ -31,131 +40,161 @@ type GetPrefixPathnameOptions = {
 
 /** --------------------------------------------------------
  * * ***Utility: `getPrefixPathname`.***
- * --------------------------------------------------------
+ * ---------------------------------------------------------
  * **Get Prefix from URL with Optional Base or Auto-detection (Supports String or Array of URLs).**
+ *
+ * ---
  * - **This function extracts the prefix from one or more URLs. It can either:**
- *    - Use a provided `base` string or an array of strings to check and return the matching prefix.
- *    - Automatically detect the prefix if no `base` is provided by analyzing the first part of the URL.
+ *     - Use a provided `base` string or an array of strings to check and return the matching prefix.
+ *     - Automatically detect the prefix if no `base` is provided by analyzing the first part of the URL.
+ * ---
+ *
  * - **The function is flexible and can handle both scenarios:**
- *    1. **When the base is provided as a single string or an array of strings**:
- *        - The function will check if the URL starts with one of the provided base(s) and return the matching base.
- *    2. **When the base is not provided**:
- *        - The function will automatically detect the prefix by splitting the URL or using a regex.
+ *     1. **When the base is provided as a single string or an array of strings**:
+ *          - The function will check if the URL starts with one of the provided base(s) and return the matching base.
+ *     2. **When the base is not provided**:
+ *          - The function will automatically detect the prefix by splitting the URL or using a regex.
+ * ---
  * - **Important Notes**:
- *    - If a base (or an array of bases) is provided, the URL must start with one of the given base(s).
- *    - If no base is provided, the function will attempt to detect the prefix automatically.
- *    - The `url` parameter can be either a string or an array of strings.
- *    - Supports deduplication of results (enabled by default).
- *    - Automatically returns a single string if only one unique result exists after processing.
+ *     - If a base (or an array of bases) is provided, the URL must start with one of the given base(s).
+ *     - If no base is provided, the function will attempt to detect the prefix automatically.
+ *     - The `url` parameter can be either a string or an array of strings.
+ *     - Supports deduplication of results (enabled by default).
+ *     - Automatically returns a single string if only one unique result exists after processing.
+ * ---
+ *
  * @param {string|string[]} url
  *  ***The full URL(s) from which the prefix should be extracted, can be a `string` or an `array of strings`.***
  * @param {string|string[]|null} [base=null]
  *  ***The base URL(s) (e.g., `"/settings"`), behavior:***
- *    - It can be a `string`, an `array of strings`, or `null`.
- *    - If `provided`, it will be used to check the URL(s).
- *    - If `not provided`, the prefix will be auto-detected.
+ *     - It can be a `string`, an `array of strings`, or `null`.
+ *     - If `provided`, it will be used to check the URL(s).
+ *     - If `not provided`, the prefix will be auto-detected.
  * @param {GetPrefixPathnameOptions} [options]
  *  ***Additional options object:***
- *    - `levels` (default `1`): The number of segments to include when auto-detecting the prefix (e.g. `/foo/bar` for `levels: 2`).
- *    - `removeDuplicates` (default `true`): Whether to remove duplicate prefixes from the final array result.
- * @returns {string|string[]|null}
- *  ***Returns one of:***
- *    - A single string if only one unique prefix/base is found.
- *    - An array of strings if multiple different prefixes/bases are found.
- *    - `null` if no matching base is found when using `base`.
+ *     - `levels` (default `1`): The number of segments to include when auto-detecting the prefix (e.g. `/foo/bar` for `levels: 2`).
+ *     - `removeDuplicates` (default `true`): Whether to remove duplicate prefixes from the final array result.
+ *
+ * ---
  * @throws **{@link TypeError | `TypeError`}**
  *  ***if:***
- *    - `url` is `not a string` or `not an array of strings`.
- *    - `base` is `not a string`, `array of strings`, or `null`.
- *    - `options` is `not an object`.
- *    - `levels` is `not a number`.
- *    - `removeDuplicates` is `not a boolean`.
+ *     - `url` is `not a string` or `not an array of strings`.
+ *     - `base` is `not a string`, `array of strings`, or `null`.
+ *     - `options` is `not an object`.
+ *     - `levels` is `not a number`.
+ *     - `removeDuplicates` is `not a boolean`.
+ *
+ * ---
+ * @returns {string|string[]|null}
+ *  ***Returns one of:***
+ *     - A single string if only one unique prefix/base is found.
+ *     - An array of strings if multiple different prefixes/bases are found.
+ *     - `null` if no matching base is found when using `base`.
+ *
+ * ---
  * @example
- * - #### ✅ **Correct Usage (With an Array of URLs and Base):**
- * ```ts
- *    const routes = [
- *      "/settings/profile",
- *      "/settings/password",
- *      "/settings/other-path",
- *      "/other-path/xyz",
- *    ];
+ * 1.  #### Correct Usage (With an Array of URLs and Base):
+ *      ```ts
+ *      const routes = [
+ *        "/settings/profile",
+ *        "/settings/password",
+ *        "/settings/other-path",
+ *        "/other-path/xyz",
+ *      ];
  *
- *    // With base provided as a string
- *    routes.forEach(route => {
- *      console.log(getPrefixPathname(route, '/settings'));
+ *      // With base provided as a string
+ *      routes.forEach(route => {
+ *        console.log(getPrefixPathname(route, '/settings'));
+ *        // ➔ "/settings"
+ *      });
+ *
+ *      // With base provided as an array
+ *      routes.forEach(route => {
+ *        console.log(getPrefixPathname(route, ['/settings', '/admin']));
+ *        // ➔ "/settings" or "/admin" depending on the current URL.
+ *      });
+ *      ```
+ *      ---
+ * 2.  #### Correct Usage (With Single URL and Single Base):
+ *      ```ts
+ *      const result = getPrefixPathname("/settings/profile", "/settings");
+ *      console.log(result);
  *      // ➔ "/settings"
- *    });
+ *      ```
+ *      ---
+ * 3.  #### Correct Usage (With Multiple URLs and Single Base):
+ *      ```ts
+ *      const result = getPrefixPathname(
+ *        ["/settings/profile", "/settings/password"],
+ *        "/settings"
+ *      );
+ *      console.log(result);
+ *      // ➔ "/settings"
  *
- *    // With base provided as an array
- *    routes.forEach(route => {
- *      console.log(getPrefixPathname(route, ['/settings', '/admin']));
- *      // ➔ "/settings" or "/admin" depending on the current URL.
- *    });
- * ```
- * - #### ✅ **Correct Usage (With Single URL and Single Base):**
- * ```ts
- *    const result = getPrefixPathname("/settings/profile", "/settings");
- *    console.log(result); // ➔ "/settings"
- * ```
- * - #### ✅ **Correct Usage (With Multiple URLs and Single Base):**
- * ```ts
- *    const result = getPrefixPathname(
- *      ["/settings/profile", "/settings/password"],
- *      "/settings"
- *    );
- *    console.log(result); // ➔ "/settings"
+ *      const result2 = getPrefixPathname(
+ *        ["/settings/profile", "/other/password"],
+ *        "/other"
+ *      );
+ *      console.log(result2);
+ *      // ➔ "/other"
+ *      ```
+ *      ---
+ * 4.  #### Correct Usage (With Multiple URLs and Multiple Bases):
+ *      ```ts
+ *      const result = getPrefixPathname(
+ *        ["/settings/profile", "/admin/password"],
+ *        ["/settings", "/admin"]
+ *      );
+ *      console.log(result);
+ *      // ➔ ["/settings", "/admin"]
+ *      ```
+ *      ---
+ * 5.  #### Auto-detection of Prefix:
+ *      ```ts
+ *      const result = getPrefixPathname("/settings/profile");
+ *      console.log(result);
+ *      // ➔ "/settings"
  *
- *    const result2 = getPrefixPathname(
- *      ["/settings/profile", "/other/password"],
- *      "/other"
- *    );
- *    console.log(result2); // ➔ "/other"
- * ```
- * - #### ✅ **Correct Usage (With Multiple URLs and Multiple Bases)**
- * ```ts
- *    const result = getPrefixPathname(
- *      ["/settings/profile", "/admin/password"],
- *      ["/settings", "/admin"]
- *    );
- *    console.log(result); // ➔ ["/settings", "/admin"]
- * ```
- * - #### ✅ **Auto-detection of Prefix**
- * ```ts
- *    const result = getPrefixPathname("/settings/profile");
- *    console.log(result); // ➔ "/settings"
+ *      const result2 = getPrefixPathname(
+ *        "/settings/profile/info",
+ *        null,
+ *        { levels: 2 }
+ *      );
+ *      console.log(result2);
+ *      // ➔ "/settings/profile"
+ *      ```
+ *      ---
+ * 6.  #### Multiple URLs with Auto-detection:
+ *      ```ts
+ *      const result = getPrefixPathname(["/admin/profile", "/settings/password"]);
+ *      console.log(result);
+ *      // ➔ ["/admin", "/settings"]
+ *      ```
+ *      ---
+ * 7.  #### Handling Duplicates:
+ *      ```ts
+ *      const result = getPrefixPathname(
+ *        ["/settings/profile", "/settings/password"],
+ *        "/settings"
+ *      );
+ *      console.log(result);
+ *      // ➔ "/settings" (deduped to single string)
  *
- *    const result2 = getPrefixPathname(
- *      "/settings/profile/info",
- *      null,
- *      { levels: 2 }
- *    );
- *    console.log(result2); // ➔ "/settings/profile"
- * ```
- * - #### ✅ **Multiple URLs with Auto-detection**
- * ```ts
- *    const result = getPrefixPathname(["/admin/profile", "/settings/password"]);
- *    console.log(result); // ➔ ["/admin", "/settings"]
- * ```
- * - #### ✅ **Handling Duplicates**
- * ```ts
- *    const result = getPrefixPathname(
- *      ["/settings/profile", "/settings/password"],
- *      "/settings"
- *    );
- *    console.log(result); // ➔ "/settings" (deduped to single string)
- *
- *    const result2 = getPrefixPathname(
- *      ["/settings/profile", "/settings/profile"],
- *      "/settings",
- *      { removeDuplicates: false }
- *    );
- *    console.log(result2); // ➔ ["/settings", "/settings"]
- * ```
- * - #### ❌ **Incorrect Usage (URL Does Not Match Base)**
- * ```ts
- *    const result = getPrefixPathname("/other-path/profile", "/settings");
- *    console.log(result); // ➔ null
- * ```
+ *      const result2 = getPrefixPathname(
+ *        ["/settings/profile", "/settings/profile"],
+ *        "/settings",
+ *        { removeDuplicates: false }
+ *      );
+ *      console.log(result2);
+ *      // ➔ ["/settings", "/settings"]
+ *      ```
+ *      ---
+ * 8.  #### Incorrect Usage (URL Does Not Match Base):
+ *      ```ts
+ *      const result = getPrefixPathname("/other-path/profile", "/settings");
+ *      console.log(result);
+ *      // ➔ null
+ *      ```
  */
 export const getPrefixPathname = (
   url: string | string[],
@@ -206,9 +245,11 @@ export const getPrefixPathname = (
   }
   if (isNonEmptyArray(errors)) {
     throw new TypeError(
-      joinLines(
-        "Invalid parameter(s) in `getPrefixPathname` function:",
-        `- ${errors.join(`${EOL}- `)}`
+      errorMsg(
+        joinLines(
+          "Invalid parameter(s) function:",
+          `- ${errors.join(`${EOL}- `)}`
+        )
       )
     );
   }
@@ -268,3 +309,8 @@ export const getPrefixPathname = (
   // If url is a single string, process it and return the result
   return processUrl(url);
 };
+
+/**
+ * @internal ***`Not part of the public API.`***
+ */
+const errorMsg = (msg: string) => createMessage("getPrefixPathname", msg);

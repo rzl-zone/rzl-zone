@@ -20,14 +20,16 @@ type RequiredValidType =
   | Uppercase<FixedRaw[keyof FixedRaw]>
   | AnyString;
 
-/** -------------------------------------------------------
+/** -----------------------------------------------------------------------------
  * * ***Shape of the object passed to custom error message functions.***
- * -------------------------------------------------------
+ * ------------------------------------------------------------------------------
  * **This type describes the parameters received when `options.message`
  * is defined as a function in {@link OptionsAssertIs | `OptionsAssertIs`}.**
+ *
  * - **Parameter:**
- *    - `currentType` ➔ the actual detected runtime type of the value.
- *    - `validType`   ➔ the required/expected type name that the value must match.
+ *      - `currentType` ➔ the actual detected runtime type of the value.
+ *      - `validType`   ➔ the required/expected type name that the value must match.
+ *
  * @example
  * ```ts
  * const options: OptionsAssertIs = {
@@ -40,17 +42,17 @@ type RequiredValidType =
 export type OptionsMessageFunctionAssertIs = {
   /** ---------------------------------------------------------------------------
    * * ***The actual runtime type of the value being checked.***
-   * ---------------------------------------------------------------------------
+   * ----------------------------------------------------------------------------
    * - ***Example:***
-   *    - `"number"`, `"big-int"`, `"plain-object"`, (depends `formatCase` options).
+   *      - `"number"`, `"big-int"`, `"plain-object"`, (depends-on `formatCase` options).
    */
   currentType: string;
 
   /** ---------------------------------------------------------------------------
    * * ***The required/expected type that the value must conform to.***
-   * ---------------------------------------------------------------------------
+   * ----------------------------------------------------------------------------
    * - ***Example:***
-   *    - `"boolean"`, `"string"`, `"big-int"`, `"plain-object"`, (will force format to `kebab-case`).
+   *      - `"boolean"`, `"string"`, `"big-int"`, `"plain-object"`, (will force format to `kebab-case`).
    */
   validType: string;
 };
@@ -59,8 +61,8 @@ export type OptionsMessageFunctionAssertIs = {
  * * ***Custom error-message type for assertions option {@link OptionsAssertIs | `OptionsAssertIs`}.***
  * -------------------------------------------------------
  * - ***Accepts:***
- *    - A static string message.
- *    - A function receiving `{ currentType, validType }` and returning a string.
+ *      - A static string message.
+ *      - A function receiving `{ currentType, validType }` and returning a string.
  */
 type OptionsMessageAssertIs =
   | (({ currentType, validType }: OptionsMessageFunctionAssertIs) => string)
@@ -68,25 +70,27 @@ type OptionsMessageAssertIs =
 
 /** ---------------------------------------------------------------------------
  * * ***Base options for `assertIs*` functions.***
- * ---------------------------------------------------------------------------
+ * ----------------------------------------------------------------------------
  */
 export type OptionsAssertIs = Prettify<
   {
-    /** -------------------------------------------------------
+    /** -----------------------------------------------------------------------
      * * ***Custom error message for assertion failures.***
-     * -------------------------------------------------------
+     * ------------------------------------------------------------------------
      * **This option allows overriding the **default error message** when a value
      * does not match the required type.**
+     *
      * - If a **string** is provided:
-     *    - Must be non-empty after trimming.
-     *    - Will be used directly as the error message.
+     *      - Must be non-empty after trimming.
+     *      - Will be used directly as the error message.
      * - If a **function** is provided:
-     *    - Receives an object containing:
-     *      - `currentType` ➔ the detected runtime type of the value (depends `formatCase` options, e.g., `"number"`).
-     *      - `validType`  ➔ the expected type name (with format `kebab-case`, e.g., `"boolean"`, `"big-int"`, `"plain-object"`).
-     *    - **Must** return a **string**:
-     *      - **If** the **returned string is** `empty` or `whitespace`,
-     *        the **default message** will be used instead.
+     *      - Receives an object containing:
+     *          - `currentType` ➔ the detected runtime type of the value (depends-on `formatCase` options, e.g., `"number"`).
+     *          - `validType`  ➔ the expected type name (with format `kebab-case`, e.g., `"boolean"`, `"big-int"`, `"plain-object"`).
+     *      - **Must** return a **string**:
+     *          - **If** the **returned string is** `empty` or `whitespace`,
+     *            the **default message** will be used instead.
+     *
      * @example
      * ```ts
      * // Static message
@@ -102,18 +106,19 @@ export type OptionsAssertIs = Prettify<
      */
     message?: OptionsMessageAssertIs;
 
-    /** -------------------------------------------------------
+    /** -----------------------------------------------------------------------
      * * ***Custom error type for assertion failures.***
-     * -------------------------------------------------------
+     * ------------------------------------------------------------------------
      * **This option allows overriding the default error type** that will be thrown
      * when a value does not match the required type.
      *
      * - **Behavior:**
-     *    - Must be one of the standard JavaScript built-in error types:
-     *      `"Error" | "EvalError" | "RangeError" | "ReferenceError" | "SyntaxError" | "TypeError" | "URIError"`
-     *    - **Default:** `"TypeError"` if not provided or if an invalid value is passed.
-     *    - The assertion function will **always throw a valid built-in error**, ensuring
-     *   fallback to `TypeError` in case of an unknown or incorrect type.
+     *     - Must be one of the standard JavaScript built-in error types:
+     *       `"Error" | "EvalError" | "RangeError" | "ReferenceError" | "SyntaxError" | "TypeError" | "URIError"`.
+     *     - **Default:** `"TypeError"` if not provided or if an invalid value is passed.
+     *     - The assertion function will **always throw a valid built-in error**, ensuring
+     *       fallback to `TypeError` in case of an unknown or incorrect type.
+     *
      * @example
      * ```ts
      * // Valid: Throw a RangeError instead of TypeError
@@ -128,7 +133,7 @@ export type OptionsAssertIs = Prettify<
      */
     errorType?: ErrorType;
   } & PickStrict<GetPreciseTypeOptions, "formatCase" | "useAcronyms">,
-  { recursive: true }
+  { recursive: false }
 >;
 
 type ErrorType =
@@ -144,16 +149,17 @@ type ErrorType =
  * * ***Throws a JavaScript built-in error based on type.***
  * -------------------------------------------------------
  * **This function asserts and throws a specific built-in error (`ErrorType`) with an optional message.**
+ *
  * - **Behavior:**
- *    1. Throws the error corresponding to the `type` argument:
- *       - `"Error"` ➔ `Error`
- *       - `"EvalError"` ➔ `EvalError`
- *       - `"RangeError"` ➔ `RangeError`
- *       - `"ReferenceError"` ➔ `ReferenceError`
- *       - `"SyntaxError"` ➔ `SyntaxError`
- *       - `"TypeError"` ➔ `TypeError`
- *       - `"URIError"` ➔ `URIError`
- *    2. **Default fallback**: If `type` does not match any case, a `TypeError` is thrown.
+ *      1. Throws the error corresponding to the `type` argument:
+ *          - `"Error"` ➔ `Error`.
+ *          - `"EvalError"` ➔ `EvalError`.
+ *          - `"RangeError"` ➔ `RangeError`.
+ *          - `"ReferenceError"` ➔ `ReferenceError`.
+ *          - `"SyntaxError"` ➔ `SyntaxError`.
+ *          - `"TypeError"` ➔ `TypeError`.
+ *          - `"URIError"` ➔ `URIError`.
+ *      2. **Default fallback**: If `type` does not match any case, a `TypeError` is thrown.
  * @param {ErrorType} type - The type of error to throw.
  * @param {string} [message] - Optional error message to include in the thrown error.
  * @returns {never} This function never returns; it always throws.
@@ -200,20 +206,21 @@ type ParamsResolveErrorMessageAssertions<T> = {
   requiredValidType: RequiredValidType;
 };
 
-/** -------------------------------------------------------
+/** ------------------------------------------------------------------------------
  * * ***Resolve a custom error message for type assertions.***
- * -------------------------------------------------------
+ * -------------------------------------------------------------------------------
  * **Produces the **final error message** used by assertion functions (`assertIs*`).**
+ *
  * - **Message resolution follows this order:**
- *    1. **Function message** ➔ If `options.message` is a function, it is invoked with:
- *        - `currentType`: the detected runtime type of `value`.
- *        - `validType`: the required/expected type name.
- *        - If the function returns a non-empty string, it is used, otherwise, the default message is used.
- *    2. **String message** ➔ If `options.message` is a non-empty string, it is used directly.
- *    3. **Fallback** ➔ If no valid message is provided, a default message is generated:
- *    ```ts
- *       "Parameter input (`value`) must be of type `<validType>`, but received: `<currentType>`."
- *    ```
+ *      1. **Function message** ➔ If `options.message` is a function, it is invoked with:
+ *            - `currentType`: the detected runtime type of `value`.
+ *            - `validType`: the required/expected type name.
+ *            - If the function returns a non-empty string, it is used, otherwise, the default message is used.
+ *      2. **String message** ➔ If `options.message` is a non-empty string, it is used directly.
+ *      3. **Fallback** ➔ If no valid message is provided, a default message is generated:
+ *          ```ts
+ *          "Parameter input (`value`) must be of type `<validType>`, but received: `<currentType>`."
+ *          ```
  * @template T - The type of the value being checked.
  * @param {ParamsResolveErrorMessageAssertions<T>} params - Parameters object.
  * @param {ParamsResolveErrorMessageAssertions<T>["value"]} params.value - The value being asserted.

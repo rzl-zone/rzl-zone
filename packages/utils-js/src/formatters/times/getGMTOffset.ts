@@ -5,24 +5,32 @@ import { isString } from "@/predicates/is/isString";
 import { isEmptyString } from "@/predicates/is/isEmptyString";
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
-/** ----------------------------------------------------------
+/** ----------------------------------------------------------------------------------------------
  * * ***Utility: `getGMTOffset`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------------------------------------------
  * **Returns the formatted GMT offset (e.g., `+0700`, `-0500`) for a given date.**
+ *
+ * ---
  *  - **Features:**
- *    - If `date` is **not provided** or empty string, it defaults to the current date/time.
- *    - If `date` is **invalid** or of wrong type (like object or number), it returns `"0"`.
- *    - The returned string follows the **GMT offset format** (`±HHMM`), where:
- *      - `±` is `+` if ahead of UTC, `-` if behind.
- *      - `HH` is two-digit hours.
- *      - `MM` is two-digit minutes.
+ *      - If `date` is **not provided** or empty string, it defaults to the current date/time.
+ *      - If `date` is **invalid** or of wrong type (like object or number), it returns `"0"`.
+ *      - The returned string follows the **GMT offset format** (`±HHMM`), where:
+ *        - `±` is `+` if ahead of UTC, `-` if behind.
+ *        - `HH` is two-digit hours.
+ *        - `MM` is two-digit minutes.
+ *
+ * ---
  * @param {string | Date | null} [date]
  *  ***The date to get the GMT offset from.***
- *   - Accepts `Date` object or ISO date string (e.g., `"2024-01-01T12:00:00Z"`).
- *   - If `null`, `undefined`, or empty string, uses current system date.
- *   - If invalid date or wrong type (like `123` or `{}`), returns `"0"`.
+ *     - Accepts `Date` object or ISO date string (e.g., `"2024-01-01T12:00:00Z"`).
+ *     - If `null`, `undefined`, or empty string, uses current system date.
+ *     - If invalid date or wrong type (like `123` or `{}`), returns `"0"`.
+ *
+ * ---
  * @returns {string} The GMT offset string in format `±HHMM`,
  *   e.g. `"+0700"`, `"-0530"`, or `"0"` if invalid.
+ *
+ * ---
  * @example
  * getGMTOffset();
  * // ➔ "+0700" (depends on your system timezone)

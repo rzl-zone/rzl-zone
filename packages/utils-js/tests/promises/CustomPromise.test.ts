@@ -1,4 +1,3 @@
-// tests/customs-promise.spec.ts
 import { describe, it, expect, vi } from "vitest";
 import { CustomPromise } from "@/promises/CustomPromise";
 
@@ -178,7 +177,7 @@ describe("CustomPromise: 2", () => {
 });
 
 describe("CustomPromise: 3", () => {
-  // ✅ BASIC RESOLVE / REJECT
+  // BASIC RESOLVE / REJECT
   it("resolves value like a normal Promise", async () => {
     const p = new CustomPromise<number>((resolve) => resolve(42));
     const v = await p;
@@ -191,7 +190,7 @@ describe("CustomPromise: 3", () => {
     await expect(p).rejects.toThrow("boom");
   });
 
-  // ✅ FINISH BEHAVIOR (resolve & reject)
+  // FINISH BEHAVIOR (resolve & reject)
   it("resolves and finish receives (result, undefined)", async () => {
     const spy = vi.fn();
     const p = new CustomPromise<User, ApiError>((resolve) =>
@@ -243,7 +242,7 @@ describe("CustomPromise: 3", () => {
     expect(out).toEqual([["done", undefined]]);
   });
 
-  // ✅ CHAINING (then / catch) + TYPE PRESERVATION
+  // CHAINING (then / catch) + TYPE PRESERVATION
   it("then chaining still returns CustomPromise and finish is available", async () => {
     const spy = vi.fn();
     const p = new CustomPromise<number, string>((resolve) => resolve(1));

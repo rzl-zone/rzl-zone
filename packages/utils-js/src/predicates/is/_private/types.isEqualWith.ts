@@ -2,6 +2,8 @@
  * * ***Customizer function for `isEqualWith`.***
  * -------------------------------------------------------------------
  * **Allows customizing how two values are compared for deep equality.**
+ *
+ * ---
  * @param value
  * - The current value being compared.
  * @param other
@@ -14,10 +16,14 @@
  * - The parent object or array containing `other`.
  * @param stack
  * - WeakMap or tracking structure for already visited objects to handle circular references.
+ *
+ * ---
  * @returns
- * - `true`  → Treat the values as equal.
- * - `false` → Treat the values as unequal.
- * - `undefined` → Fallback to default deep equality comparison.
+ * - `true`  ➔ Treat the values as equal.
+ * - `false` ➔ Treat the values as unequal.
+ * - `undefined` ➔ Fallback to default deep equality comparison.
+ *
+ * ---
  * @example
  * ```ts
  * const customizer: CustomizerIsEqualWith = (value, other, key) => {
@@ -28,20 +34,32 @@
  * };
  *
  * baseDeepEqual({ name: "Alice" }, { name: "alice" }, customizer);
- * // returns true
+ * // ➔ true
  * ```
  */
 export type CustomizerIsEqualWith = (
-  /** * ***The current value being compared.*** */
+  /**
+   * * ***The current value being compared.***
+   */
   value: unknown,
-  /** * ***The corresponding value from the other object.*** */
+  /**
+   * * ***The corresponding value from the other object.***
+   */
   other: unknown,
-  /** * ***Property key (for objects) or index (for arrays) of the current value.*** */
+  /**
+   * * ***Property key (for objects) or index (for arrays) of the current value.***
+   */
   indexOrKey: PropertyKey,
-  /** * ***Parent object or array containing `value`.*** */
+  /**
+   * * ***Parent object or array containing `value`.***
+   */
   parent: unknown,
-  /** * ***Parent object or array containing `other`.*** */
+  /**
+   * * ***Parent object or array containing `other`.***
+   */
   otherParent: unknown,
-  /** * ***WeakMap or tracking structure for visited objects to handle circular references.*** */
+  /**
+   * * ***WeakMap or tracking structure for visited objects to handle circular references.***
+   */
   stack: unknown
 ) => boolean | undefined;

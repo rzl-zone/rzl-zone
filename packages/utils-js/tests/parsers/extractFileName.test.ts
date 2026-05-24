@@ -284,7 +284,7 @@ describe("extractFileName - Domain-aware Mode", () => {
 // === TYPE + PLATFORM EDGE CASES ===
 // =======================================================
 describe("extractFileName - Type & Platform Edge Cases", () => {
-  it("should throw TypeError if options is not a plain object", () => {
+  it("should set back to default and not throw TypeError if options is not a plain object", () => {
     const invalidOptions = [
       123,
       "abc",
@@ -298,7 +298,7 @@ describe("extractFileName - Type & Platform Edge Cases", () => {
     for (const opt of invalidOptions) {
       if (opt) {
         // @ts-expect-error testing invalid option type
-        expect(() => extractFileName("file.txt", opt)).toThrow(TypeError);
+        expect(() => extractFileName("file.txt", opt)).not.toThrow(TypeError);
       }
     }
   });

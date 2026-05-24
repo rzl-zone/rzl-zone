@@ -54,7 +54,7 @@ describe("normalizeSpaces", () => {
 
   it("does not throw if options is null", () => {
     const input = "   Test  string ";
-    // @ts-expect-error intentionally passing invalid options
+    // @ts-expect-error intentionally passing invalid options for test only
     expect(normalizeSpaces(input, null)).toBe("Test string");
   });
 });

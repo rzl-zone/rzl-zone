@@ -1,9 +1,15 @@
-/** ----------------------------------------------------
+/** ---------------------------------------------------------
  * * ***Type guard: `isBuffer`.***
  * ----------------------------------------------------------
  * **Checks if a value is a *****{@link Buffer | `Node.js - Buffer`}***** instance.**
+ *
+ * ---
  * @param {*} value The value to check.
+ *
+ * ---
  * @returns {boolean} Returns `true` if `value` is a `Buffer`, else `false`.
+ *
+ * ---
  * @example
  * isBuffer(new Buffer(2));
  * // ➔ true

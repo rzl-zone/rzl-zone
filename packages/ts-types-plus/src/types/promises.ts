@@ -108,7 +108,7 @@ interface CustomPromiseLike<OnSuccess, OnError> {
  * import { CustomPromise } from "@rzl-zone/utils-js/promises";
  *
  * const fetchUser = (): CustomPromiseType<User, ApiError> =>
- *   CustomsPromise<User, ApiError>((resolve, reject) => {
+ *   new CustomsPromise<User, ApiError>((resolve, reject) => {
  *      apiCall().then(resolve).catch(reject);
  *   });
  *

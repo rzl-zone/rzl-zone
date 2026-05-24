@@ -1,5 +1,6 @@
 export * from "./assertions/index";
 export * from "./conversions/index";
+export * from "./errors/index";
 export * from "./events/index";
 export * from "./formatters/index";
 export * from "./generators/index";

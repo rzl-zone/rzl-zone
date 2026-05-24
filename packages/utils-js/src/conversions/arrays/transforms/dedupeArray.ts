@@ -9,7 +9,6 @@ import { isMap } from "@/predicates/is/isMap";
 import { isArray } from "@/predicates/is/isArray";
 import { isEqual } from "@/predicates/is/isEqual";
 
-import { hasOwnProp } from "@/predicates/has/hasOwnProp";
 import { getPreciseType } from "@/predicates/type/getPreciseType";
 
 import { assertIsArray } from "@/assertions/objects/assertIsArray";
@@ -18,26 +17,40 @@ import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
 
 import { toStringDeepForce } from "@/conversions/values/toStringDeepForce";
 import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
+import { createMessage } from "@/_private/logger";
 
-/** ----------------------------------------------------------
+/** -------------------------------------------------------------------------------------------------------------------------
  * * ***Utility: `dedupeArray`.***
- * ---------------------------------------------
+ * --------------------------------------------------------------------------------------------------------------------------
  * **Deduplicates values in an array (with optional flattening and deep stringification).**
+ *
+ * ---
  * - Supports various modes for converting values to strings before deduplication:
- *    - `"stringOrNumber"`: Converts strings and numbers to strings.
- *    - `"primitives"`: Converts all primitives (string, number, boolean, bigint, null, undefined, NaN) to strings.
- *    - `"all"`: Converts all values (primitives, objects, Maps, Sets, Symbols, RegExp, Dates, Errors, Promises, functions)
- *   to strings, including nested object properties.
- *    - `false` (default): No conversion applied.
+ *     - `"stringOrNumber"`: Converts strings and numbers to strings.
+ *     - `"primitives"`: Converts all primitives (string, number, boolean, bigint, null, undefined, NaN) to strings.
+ *     - `"all"`: Converts all values (primitives, objects, Maps, Sets, Symbols, RegExp, Dates, Errors, Promises, functions).
+ *       to strings, including nested object properties.
+ *     - `false` (default): No conversion applied.
  * - Options:
- *    - `forceToString`: Enables string conversion for comparison, default is `false`.
- *    - `flatten`: If true, deeply flattens arrays, Maps, and Sets before deduplication, default is `false`.
+ *     - `forceToString`: Enables string conversion for comparison, default is `false`.
+ *     - `flatten`: If true, deeply flattens arrays, Maps, and Sets before deduplication, default is `false`.
+ *
+ * ---
  * @template ForceToString - `forceToString` mode.
  * @template Flattening - `flatten` mode.
+ *
+ * ---
  * @param {unknown[]} inputArray - The array to deduplicate, can be deeply nested and contain any mix of types.
  * @param {DedupeArrayOptions<ForceToString, Flattening>|undefined} [options] - Options to control string conversion.
+ *
+ * ---
+ * @throws **{@link TypeError | `TypeError`}** if the input is not an array, or options is not an object, or if
+ *         `forceToString` is invalid.
+ *
+ * ---
  * @returns {DedupeResult<ForceToString, Flattening>} Deduplicated array with optional transformations.
- * @throws **{@link TypeError | `TypeError`}** if the input is not an array, or options is not an object, or if `forceToString` is invalid.
+ *
+ * ---
  * @example
  * ```ts
  * dedupeArray(["apple", "banana", "apple"]);
@@ -48,13 +61,16 @@ import { safeStableStringify } from "@/conversions/stringify/safeStableStringify
  * // ➔ [1, 2, 3]
  * dedupeArray([1, "1", 2, "2"], {
  *    forceToString: "stringOrNumber"
- * }); // ➔ ["1", "2"]
+ * });
+ * // ➔ ["1", "2"]
  * dedupeArray([true, "true", false, undefined], {
  *    forceToString: "primitives"
- * }); // ➔ ["true", "false", "undefined"]
+ * });
+ * // ➔ ["true", "false", "undefined"]
  * dedupeArray([1, "1", { a: 1 }], {
  *    forceToString: "all"
- * }); // ➔ ["1", { a: "1" }]
+ * });
+ * // ➔ ["1", { a: "1" }]
  * dedupeArray([1, 1, [2, 2, [3, 3]]]);
  * // ➔ [1, [2, [3]]]
  * dedupeArray([null, undefined, null]);
@@ -70,32 +86,40 @@ import { safeStableStringify } from "@/conversions/stringify/safeStableStringify
  * // ➔ [NaN, 1, "1"]
  * dedupeArray([NaN, NaN, 1, "1"], {
  *    forceToString: "primitives"
- * }); // ➔ ["NaN", "1"]
+ * });
+ * // ➔ ["NaN", "1"]
  * dedupeArray([new Date("2025-01-01"), new Date("2025-01-01")]);
  * // ➔ [Date("2025-01-01")] (same time, deduped)
  * dedupeArray([new Date("2025-01-01"), new Date("2025-01-01")], {
  *    forceToString: "all"
- * }); // ➔ ["2025-01-01T00:00:00.000Z"]
+ * });
+ * // ➔ ["2025-01-01T00:00:00.000Z"]
  * dedupeArray([/abc/, /abc/], {
  *    forceToString: "all"
- * }); // ➔ ["/abc/"]
+ * });
+ * // ➔ ["/abc/"]
  * dedupeArray([new Map(), new Set(), new Error("err")], {
  *    forceToString: "all"
- * }); // ➔ ["[object Map]", "[object Set]", "Error: err"]
+ * });
+ * // ➔ ["[object Map]", "[object Set]", "Error: err"]
  * dedupeArray([Promise.resolve(1), Promise.resolve(1)], {
  *    forceToString: "all"
- * }); // ➔ ["[object Promise]"]
+ * });
+ * // ➔ ["[object Promise]"]
  * dedupeArray([{ a: 1 }, { a: 1 }, { a: 2 }], {
  *    forceToString: "primitives"
- * }); // ➔ [{ a: "1" }, { a: "2" }]
+ * });
+ * // ➔ [{ a: "1" }, { a: "2" }]
  * dedupeArray([{ a: { b: 1 } }, { a: { b: 1 } }], {
  *    forceToString: "all"
- * }); // ➔ [{ a: { b: "1" } }]
+ * });
+ * // ➔ [{ a: { b: "1" } }]
  * dedupeArray("not an array");
  * // ➔ Throws TypeError
  * dedupeArray([1, 2, 3], {
  *    forceToString: "invalid"
- * }); // ➔ Throws TypeError
+ * });
+ * // ➔ Throws TypeError
  * ```
  */
 export const dedupeArray = <
@@ -107,18 +131,20 @@ export const dedupeArray = <
 ): DedupeResult<ForceToString, Flattening> => {
   assertIsArray(inputArray, {
     message: ({ currentType, validType }) =>
-      `First parameter (\`inputArray\`) must be of type \`${validType}\` (array literal or instance), but received: \`${currentType}\`.`
+      errorMsg(
+        `First parameter (\`inputArray\`) must be of type \`${validType}\` (array literal or instance), but received: \`${currentType}\`.`
+      )
   });
 
   assertIsPlainObject(options, {
     message: ({ currentType, validType }) =>
-      `Second parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      errorMsg(
+        `Second parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
-  const flatten = hasOwnProp(options, "flatten") ? options.flatten : false;
-  const forceToString = hasOwnProp(options, "forceToString")
-    ? options.forceToString
-    : false;
+  const flatten = options.flatten ?? false;
+  const forceToString = options.forceToString ?? false;
 
   if (
     !(
@@ -129,17 +155,21 @@ export const dedupeArray = <
     )
   ) {
     throw new TypeError(
-      `Parameter \`forceToString\` property of the \`options\` (second parameter) must be of type \`false\` or \`string\` with value one of "stringOrNumber" | "primitives" | "all", but received: \`${getPreciseType(
-        forceToString
-      )}\`, with value: \`${safeStableStringify(forceToString, {
-        keepUndefined: true
-      })}\`.`
+      errorMsg(
+        `Parameter \`forceToString\` property of the \`options\` (second parameter) must be of type \`false\` or \`string\` with value one of "stringOrNumber" | "primitives" | "all", but received: \`${getPreciseType(
+          forceToString
+        )}\`, with value: \`${safeStableStringify(forceToString, {
+          keepUndefined: true
+        })}\`.`
+      )
     );
   }
 
   assertIsBoolean(flatten, {
     message: ({ currentType, validType }) =>
-      `Parameter \`flatten\` property of the \`options\` (second parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      errorMsg(
+        `Parameter \`flatten\` property of the \`options\` (second parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   const process = (arr: unknown[]): unknown[] => {
@@ -177,3 +207,8 @@ export const dedupeArray = <
     flatten ? process(deepFlatten(inputArray)) : process(inputArray)
   ) as DedupeResult<ForceToString, Flattening>;
 };
+
+/**
+ * @internal ***`Not part of the public API.`***
+ */
+const errorMsg = (msg: string) => createMessage("dedupeArray", msg);

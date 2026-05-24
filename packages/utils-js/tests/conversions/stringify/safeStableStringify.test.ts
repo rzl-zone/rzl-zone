@@ -198,9 +198,11 @@ describe("safeStableStringify (advanced)", () => {
     );
   });
 
-  it("should throw on invalid options, sortKeys or sortArray types", () => {
+  it("should set back to default and not throw on invalid options", () => {
     // @ts-expect-error intentionally wrong
-    expect(() => safeStableStringify({}, "nope")).toThrow();
+    expect(() => safeStableStringify({}, "nope")).not.toThrow();
+  });
+  it("should throw on invalid sortKeys or sortArray types", () => {
     expect(() =>
       // @ts-expect-error intentionally wrong
       safeStableStringify({}, { sortKeys: true, sortArray: "nah" })

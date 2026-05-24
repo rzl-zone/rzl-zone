@@ -1,14 +1,17 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { isFinite } from "./isFinite";
 
+import { createMessage } from "@/_private/logger";
+
+import { assertIsBoolean } from "@/assertions/booleans/assertIsBoolean";
+
 import { isBoolean } from "./isBoolean";
 import { isPlainObject } from "./isPlainObject";
 
-import { assertIsBoolean } from "@/assertions/booleans/assertIsBoolean";
-import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
-
 export type IsNumberOptions = {
-  /** If set to `true`, `NaN` will be considered a valid number, defaultValue: `false`.
+  /** ---------------------------------------------------------
+   * * ***If set to `true`, `NaN` will be considered a valid number, defaultValue: `false`.***
+   * ----------------------------------------------------------
    *
    * @default false
    */
@@ -19,17 +22,27 @@ export type IsNumberOptions = {
  * * ***Type guard: `isNumber`.***
  * ----------------------------------------------------------
  * **Checks if a value is of type **`number`**.**
- * - **Behavior:**
- *    - Uses `typeof value === "number"`.
- *    - By default, excludes **`NaN`**.
- *    - If `options.includeNaN` is `true`, then **`NaN`** is also considered valid.
- *    - Still considers `Infinity` and `-Infinity` as **numbers** (consistent with JavaScript).
- * - **ℹ️ Note:**
- *    - To exclude `Infinity` and `-Infinity`, use **{@link isFinite | `isFinite`}** instead.
+ *
+ * ---
+ * - #### *Behavior:*
+ *      - Uses `typeof value === "number"`.
+ *      - By default, excludes **`NaN`**.
+ *      - If `options.includeNaN` is `true`, then **`NaN`** is also considered valid.
+ *      - Still considers `Infinity` and `-Infinity` as **numbers** (consistent with JavaScript).
+ *
+ * ---
+ * - #### *Note:*
+ *      - To exclude `Infinity` and `-Infinity`, use **{@link isFinite | `isFinite`}** instead.
+ *
+ * ---
  * @param {*} value - The value to check.
  * @param {IsNumberOptions} [options] - Optional settings.
  * @param {boolean} [options.includeNaN=false]  If `true`, `NaN` will be considered a valid number, defaults to `false`, which excludes `NaN`.
+ *
+ * ---
  * @returns {boolean} Returns `true` if the value is a number (and depending on `includeNaN`, `NaN` is included or excluded).
+ *
+ * ---
  * @example
  * isNumber(42);
  * // ➔ true
@@ -48,10 +61,7 @@ export const isNumber = (
   value: unknown,
   options: IsNumberOptions = {}
 ): value is number => {
-  assertIsPlainObject(options, {
-    message: ({ currentType, validType }) =>
-      `Second parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
-  });
+  if (!isPlainObject(options)) options = {};
 
   const includeNaN =
     isPlainObject(options) && isBoolean(options.includeNaN)
@@ -60,9 +70,16 @@ export const isNumber = (
 
   assertIsBoolean(includeNaN, {
     message: ({ currentType, validType }) =>
-      `Parameter \`includeNaN\` property of the \`options\` (second parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      errorMsg(
+        `Parameter \`includeNaN\` property of the \`options\` (second parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   const aNumber = typeof value === "number";
   return includeNaN ? aNumber : aNumber && !Number.isNaN(value);
 };
+
+/**
+ * @internal ***`Not part of the public API.`***
+ */
+const errorMsg = (msg: string) => createMessage("isNumber", msg);

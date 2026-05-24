@@ -415,11 +415,11 @@ describe("hasOwnProp handle errors", () => {
 describe("hasOwnProp handle TypeError", () => {
   const obj = { a: 1 };
 
-  it("should throw TypeError if options is not a plain object", () => {
-    expect(() => hasOwnProp(obj, "a", null as any)).toThrow(TypeError);
-    expect(() => hasOwnProp(obj, "a", [] as any)).toThrow(TypeError);
-    expect(() => hasOwnProp(obj, "a", "invalid" as any)).toThrow(TypeError);
-    expect(() => hasOwnProp(obj, "a", 123 as any)).toThrow(TypeError);
+  it("should not throw TypeError if options is not a plain object", () => {
+    expect(hasOwnProp(obj, "a", null as any)).toBe(true);
+    expect(hasOwnProp(obj, "a", [] as any)).toBe(true);
+    expect(hasOwnProp(obj, "a", "invalid" as any)).toBe(true);
+    expect(hasOwnProp(obj, "a", 123 as any)).toBe(true);
   });
 
   it("should throw TypeError if options.discardUndefined is not a boolean", () => {

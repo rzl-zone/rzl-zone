@@ -164,11 +164,11 @@ describe("toStringDeep - tests", () => {
     expect(toStringDeep(input)).toEqual(["1", []]);
   });
 
-  it("should throw if flags are not boolean", () => {
+  it("should set back to default and not throw if flags are not boolean", () => {
     // @ts-expect-error intentional wrong type
-    expect(() => toStringDeep([1], "true")).toThrow(TypeError);
+    expect(() => toStringDeep([1], "true")).not.toThrow();
     // @ts-expect-error intentional wrong type
-    expect(() => toStringDeep([1], false, "false")).toThrow(TypeError);
+    expect(() => toStringDeep([1], false, "false")).not.toThrow();
   });
 
   it("Mixed", () => {

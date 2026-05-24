@@ -1,63 +1,81 @@
-import { isNil } from "@/predicates/is/isNil";
-import { isInteger } from "@/predicates/is/isInteger";
-import { hasOwnProp } from "@/predicates/has/hasOwnProp";
-import { getPreciseType } from "@/predicates/type/getPreciseType";
+import { createMessage } from "@/_private/logger";
 
 import { assertIsString } from "@/assertions/strings/assertIsString";
 import { assertIsBoolean } from "@/assertions/booleans/assertIsBoolean";
-import { assertIsPlainObject } from "@/assertions/objects/assertIsPlainObject";
 
 import { normalizeSpaces } from "@/strings/sanitizations/normalizeSpaces";
 import { safeStableStringify } from "@/conversions/stringify/safeStableStringify";
 
+import { isNil } from "@/predicates/is/isNil";
+import { isInteger } from "@/predicates/is/isInteger";
+import { isPlainObject } from "@/predicates/is/isPlainObject";
+import { getPreciseType } from "@/predicates/type/getPreciseType";
+
 type ChunkStringOptions = {
-  /** ***The separator string to insert between characters or words.***
+  /** ---------------------------------------------------------
+   * * ***The separator string to insert between characters or words.***
+   * ----------------------------------------------------------
    *
-   * - Used when inserting separators every `limiter` characters.
-   * - Default is a single space `" "`.
+   * - #### *Behavior:*
+   *      - Used when inserting separators every `limiter` characters.
+   *      - Default is a single space `" "`.
    *
+   * ---
    * @default " "
    */
   separator?: string;
 
-  /** ***Determines whether counting for `limiter` resets after each space.***
+  /** ---------------------------------------------------------
+   * * ***Determines whether counting for `limiter` resets after each space.***
+   * ----------------------------------------------------------
    *
-   * - If `true`, the string is treated as words separated by spaces,
-   *   and separators are applied within words, then words are grouped.
-   * - If `false` ***(default)***, counting is continuous across the whole string,
-   *   treating spaces as normal characters.
+   * - #### *Behavior:*
+   *      - If `true`, the string is treated as words separated by spaces,
+   *        and separators are applied within words, then words are grouped.
+   *      - If `false` ***(default)***, counting is continuous across the whole string,
+   *        treating spaces as normal characters.
    *
+   * ---
    * @default false
    */
   reCountAfterSpace?: boolean;
 };
 
-/** ----------------------------------------------
+/** ---------------------------------------------------------
  * * ***Utility: `chunkString`.***
- * ----------------------------------------------
+ * ----------------------------------------------------------
  * **Chunks a string by inserting a separator every `limiter` characters.**
- * - **This function handles two main behaviors based on `reCountAfterSpace`:**
- *    1. ***If `reCountAfterSpace` is `false` (default):***
- *        - The separator is inserted strictly every `limiter` characters throughout the entire string, regardless of spaces, spaces are treated as regular characters in the count.
- *            - Example: `chunkString("1234567890", 3, "-")` ➔ `"123-456-789-0"`.
- *            - Example: `chunkString("Hello World", 3, "-")` ➔ `"Hel-lo -Wor-ld"`.
- *    2. ***If `reCountAfterSpace` is `true`:***
- *        - The function first processes the input string to replace any multiple consecutive spaces with a
- *          single space (e.g., "A   B" becomes "A B").
- *      Then, it treats the string as a sequence of "words" (segments separated by single spaces).
- *            - Each word is processed independently:
- *              - if a word's length exceeds the `limiter`, separators are inserted internally within that word.
- *              - Words are then grouped. Each group will contain `limiter` number of words.
- *              - Words within the same group are joined by the specified `separator`.
- *              - Finally, these groups are joined by a single space, preserving the original word separation
- *                structure between groups.
+ *
+ * - #### **This function handles two main behaviors based on `reCountAfterSpace`:**
+ *      1. #### *If `reCountAfterSpace` is `false` (default):*
+ *            - The separator is inserted strictly every `limiter` characters throughout the entire string, regardless of spaces, spaces are
+ *              treated as regular characters in the count.
+ *                - Example: `chunkString("1234567890", 3, "-")` ➔ `"123-456-789-0"`.
+ *                - Example: `chunkString("Hello World", 3, "-")` ➔ `"Hel-lo -Wor-ld"`.
+ *            ---
+ *      2. #### *If `reCountAfterSpace` is `true`:*
+ *            - The function first processes the input string to replace any multiple consecutive spaces with a
+ *              single space (e.g., `"A   B"` becomes `"A B"`).
+ *              Then, it treats the string as a sequence of **"words"** (segments separated by single spaces).
+ *                - Each word is processed independently:
+ *                  - if a word's length exceeds the `limiter`, separators are inserted internally within that word.
+ *                  - Words are then grouped. Each group will contain `limiter` number of words.
+ *                  - Words within the same group are joined by the specified `separator`.
+ *                  - Finally, these groups are joined by a single space, preserving the original word separation
+ *                    structure between groups.
+ *
+ * ---
  * @param {string} subject - ***The target string to chunk.****
  * @param {number} limiter
  *  ***The interval (number of characters) for inserting separators, behavior:***
  *   - If `reCountAfterSpace = false`, it counts characters.
  *   - If `reCountAfterSpace = true`, it counts both characters within words and words per group.
  * @param {ChunkStringOptions} [options={}] - ***Optional settings for separator and counting behavior.***
+ *
+ * ---
  * @returns {string} Return the formatted string with separators.
+ *
+ * ---
  * @example
  * // Basic usage
  * chunkString("1234567890", 3);
@@ -86,43 +104,46 @@ type ChunkStringOptions = {
 export function chunkString(
   subject: string,
   limiter: number,
-  options: ChunkStringOptions = {}
+  options?: ChunkStringOptions
 ): string {
   if (isNil(subject) || limiter <= 0) return subject;
 
   assertIsString(subject, {
     message: ({ currentType, validType }) =>
-      `First parameter (\`subject\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      errorMsg(
+        `First parameter (\`subject\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   if (!isInteger(limiter)) {
     throw new TypeError(
-      `Second parameter (\`limiter\`) must be of type \`integer-number\`, but received: \`${getPreciseType(
-        limiter
-      )}\`, with value: \`${safeStableStringify(limiter, {
-        keepUndefined: true
-      })}\`.`
+      errorMsg(
+        `Second parameter (\`limiter\`) must be of type \`integer-number\`, but received: \`${getPreciseType(
+          limiter
+        )}\`, with value: \`${safeStableStringify(limiter, {
+          keepUndefined: true
+        })}\`.`
+      )
     );
   }
 
-  assertIsPlainObject(options, {
-    message: ({ currentType, validType }) =>
-      `Third parameter (\`options\`) must be of type \`${validType}\`, but received: \`${currentType}\`.`
-  });
+  if (!isPlainObject(options)) options = {};
 
-  const separator = hasOwnProp(options, "separator") ? options.separator : " ";
-  const reCountAfterSpace = hasOwnProp(options, "reCountAfterSpace")
-    ? options.reCountAfterSpace
-    : false;
+  const separator = options.separator ?? " ";
+  const reCountAfterSpace = options.reCountAfterSpace ?? false;
 
   assertIsString(separator, {
     message: ({ currentType, validType }) =>
-      `Parameter \`separator\` property of the \`options\` (third parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      errorMsg(
+        `Parameter \`separator\` property of the \`options\` (third parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   assertIsBoolean(reCountAfterSpace, {
     message: ({ currentType, validType }) =>
-      `Parameter \`reCountAfterSpace\` property of the \`options\` (third parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      errorMsg(
+        `Parameter \`reCountAfterSpace\` property of the \`options\` (third parameter) must be of type \`${validType}\`, but received: \`${currentType}\`.`
+      )
   });
 
   subject = normalizeSpaces(subject);
@@ -186,3 +207,8 @@ export function chunkString(
   // Finally, join the main segments (groups) with spaces
   return finalSegments.join(" ");
 }
+
+/**
+ * @internal ***`Not part of the public API.`***
+ */
+const errorMsg = (msg: string) => createMessage("chunkString", msg);

@@ -3,16 +3,19 @@ import { isEmptyArray } from "../is/isEmptyArray";
 
 /** ----------------------------------------------------------
  * * ***Predicate: `arrayHasAnyMatch`.***
- * ----------------------------------------------------------
+ * -----------------------------------------------------------
  * **Checks if at least one element from `targetArray` exists in `sourceArray`.**
+ *
  * - **Behavior:**
- *    - Uses `Set` for **faster lookup** compared to `Array.prototype.includes()`.
- *    - Supports **any data type** (`number`, `string`, `boolean`, `object`, `array`, `function`, etc.).
- *    - Uses **reference equality** for non-primitive values (object, array, function).
- *    - Returns `false` if either array is missing, empty, or not an array.
+ *     - Uses `Set` for **faster lookup** compared to `Array.prototype.includes()`.
+ *     - Supports **any data type** (`number`, `string`, `boolean`, `object`, `array`, `function`, etc.).
+ *     - Uses **reference equality** for non-primitive values (object, array, function).
+ *     - Returns `false` if either array is missing, empty, or not an array.
+ *
  * @template T - The expected type of array elements.
  * @param {T[] | null | undefined} sourceArray - The array to search within.
  * @param {T[] | null | undefined} targetArray - The array containing elements to match.
+ *
  * @returns {boolean}
  *  ***Return:***
  *  - `true` if **at least one element from `targetArray` is strictly found

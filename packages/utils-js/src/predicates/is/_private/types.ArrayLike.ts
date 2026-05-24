@@ -4,7 +4,11 @@
  * -------------------------------------------------------------------
  * **Represents objects with indexed elements and a `length` property,
  * similar to arrays, but not necessarily full Array instances.**
+ *
+ * ---
  * @template T The type of elements stored in the array-like object.
+ *
+ * ---
  * @example
  * ```ts
  * function logArrayLike<T>(items: ArrayLike<T>) {
@@ -18,8 +22,12 @@
  * ```
  */
 export interface ArrayLike<T> {
-  /** * ***Number of elements in the array-like object.*** */
+  /**
+   * * ***Number of elements in the array-like object.***
+   */
   readonly length: number;
-  /** * ***Indexed access to elements.*** */
+  /**
+   * * ***Indexed access to elements.***
+   */
   readonly [n: number]: T;
 }

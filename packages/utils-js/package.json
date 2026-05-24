@@ -198,16 +198,16 @@
   },
   "dependencies": {
     "@rzl-zone/node-only": "workspace:*",
-    "@rzl-zone/ts-types-plus": "workspace:*",
     "date-fns": "^4.1.0",
     "libphonenumber-js": "^1.13.1",
-    "tailwind-merge-v3": "npm:tailwind-merge@^2",
-    "tailwind-merge-v4": "npm:tailwind-merge@^3"
+    "tailwind-merge-v2": "npm:tailwind-merge@^2",
+    "tailwind-merge-v3": "npm:tailwind-merge@^3"
   },
   "devDependencies": {
     "@eslint/js": "^10",
     "@rzl-zone/build-tools": "workspace:*",
     "@rzl-zone/eslint": "workspace:*",
+    "@rzl-zone/ts-types-plus": "workspace:*",
     "@types/node": "^20.19.11",
     "@vitest/coverage-v8": "^4.1.6",
     "@workspace/eslint-config": "workspace:*",
