@@ -1,0 +1,24 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "docs": "0.0.0",
+    "mcp-server": "1.0.0",
+    "@rzl-zone/build-tools": "0.0.12",
+    "@rzl-zone/build-tools-cli": "0.0.12",
+    "@rzl-zone/click-feedback": "0.0.10",
+    "@rzl-zone/core": "0.0.11",
+    "@rzl-zone/core-react": "0.0.11",
+    "@rzl-zone/docs-ui": "0.0.13",
+    "@rzl-zone/eslint": "0.0.10",
+    "@workspace/eslint-config": "0.0.0",
+    "@workspace/fd-shiki": "0.0.6",
+    "@rzl-zone/next-kit": "0.10.1",
+    "@workspace/nextjs": "0.0.6",
+    "@rzl-zone/node-only": "0.0.10",
+    "@rzl-zone/ts-types-plus": "0.1.7",
+    "@workspace/typescript-config": "0.0.0",
+    "@rzl-zone/utils-js": "3.13.1"
+  },
+  "changesets": []
+}
