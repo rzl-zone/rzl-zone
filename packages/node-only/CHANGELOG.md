@@ -1,6 +1,6 @@
 # @rzl-zone/node-only
 
-## 0.0.11
+## 0.0.11 (2026-05-24)
 
 ### Patch Changes
 
