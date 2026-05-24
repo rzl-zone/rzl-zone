@@ -1,6 +1,6 @@
 # @rzl-zone/core
 
-## 0.0.12
+## 0.0.12 (2026-05-24)
 
 ### Patch Changes
 
