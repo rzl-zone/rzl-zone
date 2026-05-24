@@ -1,5 +1,11 @@
 # @rzl-zone/node-only
 
+## 0.0.11-beta.0
+
+### Patch Changes
+
+- 688282a: Add usage examples and improve documentation clarity for `node-only`.
+
 ## 0.0.10 (2026-05-12)
 
 ### Patch Changes

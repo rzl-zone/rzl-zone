@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.14.0-beta.0
+
+### Minor Changes
+
+- 688282a: Add new `copyText` API in `/operations` and `AbortError` in `/errors`. Improve tsDocs formatting, utility logging, and tests. Refactor internal typings, mark `PreciseType` as internal, and optimize `hasOwnProp` autocomplete performance.
+
+### Patch Changes
+
+- Updated dependencies [688282a]
+  - @rzl-zone/node-only@0.0.11-beta.0
+
 ## 3.13.1 (2026-05-20)
 
 ### Patch Changes
@@ -129,7 +140,7 @@
 ### Bug Fixes
 
 - Fixing keywords at `package.json`.
-- Fixing some bug at utility `isValidDomain` and add extra options `allowPort`, `allowLocalhost`, and `allowProtocol`, also refactor tsDoc at `punycodeUtilsJS` utility. 
+- Fixing some bug at utility `isValidDomain` and add extra options `allowPort`, `allowLocalhost`, and `allowProtocol`, also refactor tsDoc at `punycodeUtilsJS` utility.
 - Update url docs web at `README.md`.
 
 ## 3.5.7 (2025-09-29)

@@ -1,5 +1,18 @@
 # @rzl-zone/next-kit
 
+## 0.10.2-beta.0
+
+### Patch Changes
+
+- Updated dependencies [688282a]
+- Updated dependencies [688282a]
+- Updated dependencies [688282a]
+  - @rzl-zone/utils-js@3.14.0-beta.0
+  - @rzl-zone/ts-types-plus@0.1.8-beta.0
+  - @rzl-zone/node-only@0.0.11-beta.0
+  - @rzl-zone/core@0.0.12-beta.0
+  - @rzl-zone/core-react@0.0.12-beta.0
+
 ## 0.10.1 (2026-05-20)
 
 ### Patch Changes
@@ -84,7 +97,7 @@
   - @rzl-zone/ts-types-plus@0.1.6-beta.0
   - @rzl-zone/utils-js@3.12.1-beta.0
 
-## 0.9.9  (2026-05-06)
+## 0.9.9 (2026-05-06)
 
 ### Patch Changes
 
@@ -253,8 +266,8 @@
 - Fixing types result at `extra/context`.
 - Full reset release-please to use `0.0.1`.
 - Remove unused displayName for react component internal at `themes` category.
-- Try to fixing bundle build error about  (ecmascript)}["fileURLToPath"] is not a function (2).
-- Try to fixing bundle build error about  (ecmascript)}["fileURLToPath"] is not a function.
+- Try to fixing bundle build error about (ecmascript)}["fileURLToPath"] is not a function (2).
+- Try to fixing bundle build error about (ecmascript)}["fileURLToPath"] is not a function.
 - TsDoc for `ProvidersThemesApp`.
 - Update docs at `Readme.md`.
 
@@ -275,7 +288,7 @@
 
 ### Features
 
-- Add features utility `isRenderedRzlProgress`, `isStartedRzlProgress`, `pauseRzlProgress`, resumeRzlProgress` for control `progress-bar`.
+- Add features utility `isRenderedRzlProgress`, `isStartedRzlProgress`, `pauseRzlProgress`, resumeRzlProgress`for control`progress-bar`.
 
 ### Bug Fixes
 
