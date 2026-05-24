@@ -61,8 +61,8 @@
 
 ---
 
-> ⚠️ **This repository is under active development.**
-> APIs, internal structures, and package contents may evolve before stable `v1.0.0` releases.
+> ⚠️ **This monorepo is under active development.**
+> Packages may receive updates, refactors, or breaking changes as development continues.
 
 ---
 
