@@ -1,5 +1,11 @@
 # @rzl-zone/ts-types-plus
 
+## 0.1.8 (2026-05-24)
+
+### Patch Changes
+
+- 688282a: Improve `CustomPromiseType` tsDocs formatting and documentation clarity.
+
 ## 0.1.8-beta.0 (2026-05-24)
 
 ### Patch Changes

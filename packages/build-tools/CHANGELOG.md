@@ -1,6 +1,14 @@
 # @rzl-zone/build-tools
 
-## 0.0.13-beta.0  (2026-05-24)
+## 0.0.13 (2026-05-24)
+
+### Patch Changes
+
+- 688282a: Update `applyWarningFilter` to support new tsdown warning types (`[MISSING_EXPORT]`, `[PLUGIN_TIMINGS]`) with new filtering options.
+- Updated dependencies [688282a]
+  - @rzl-zone/node-only@0.0.11
+
+## 0.0.13-beta.0 (2026-05-24)
 
 ### Patch Changes
 

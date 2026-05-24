@@ -1,5 +1,14 @@
 # @rzl-zone/build-tools-cli
 
+## 0.0.13 (2026-05-24)
+
+### Patch Changes
+
+- Updated dependencies [688282a]
+- Updated dependencies [688282a]
+  - @rzl-zone/build-tools@0.0.13
+  - @rzl-zone/node-only@0.0.11
+
 ## 0.0.13-beta.0 (2026-05-24)
 
 ### Patch Changes
