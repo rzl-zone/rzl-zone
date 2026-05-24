@@ -1,5 +1,18 @@
 # @rzl-zone/next-kit
 
+## 0.10.2
+
+### Patch Changes
+
+- Updated dependencies [688282a]
+- Updated dependencies [688282a]
+- Updated dependencies [688282a]
+  - @rzl-zone/utils-js@3.14.0
+  - @rzl-zone/ts-types-plus@0.1.8
+  - @rzl-zone/node-only@0.0.11
+  - @rzl-zone/core@0.0.12
+  - @rzl-zone/core-react@0.0.12
+
 ## 0.10.2-beta.0 (2026-05-24)
 
 ### Patch Changes
