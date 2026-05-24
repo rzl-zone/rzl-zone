@@ -1,5 +1,11 @@
 # @rzl-zone/ts-types-plus
 
+## 0.1.8-beta.0 (2026-05-24)
+
+### Patch Changes
+
+- 688282a: Improve `CustomPromiseType` tsDocs formatting and documentation clarity.
+
 ## 0.1.7 (2026-05-20)
 
 ### Patch Changes
@@ -31,13 +37,13 @@
 
 - c29c9c2: Integrate `@rzl-zone/utils-js` into the monorepo, update workspace dependencies, upgrade tooling versions, and improve package documentation.
 
-## 0.1.5  (2026-04-30)
+## 0.1.5 (2026-04-30)
 
 ### Patch Changes
 
 - 9a5c803: chore: refine and improve TSDoc comments across packages.
 
-## 0.1.4  (2026-04-25)
+## 0.1.4 (2026-04-25)
 
 ### Patch Changes
 
@@ -47,7 +53,7 @@
 
 ### Features
 
-- **Config:** **Update** (`TypeScript`  to 5.9.3, `@eslint/js` to `^10`, `eslint` to `^10`).
+- **Config:** **Update** (`TypeScript` to 5.9.3, `@eslint/js` to `^10`, `eslint` to `^10`).
 
 ## 0.1.1 (2026-04-07)
 
@@ -59,7 +65,7 @@
 
 ### Features
 
-- **Config:** **Update** _requirement_ minimum engines (`Node.js` to &gt;=18.18.0), peerDependencies (`TypeScript`  &gt;=5.9.0, `@types/node` &gt;=18.18.0), _update_ (`README.md`, `CHANGELOG.md`).
+- **Config:** **Update** _requirement_ minimum engines (`Node.js` to &gt;=18.18.0), peerDependencies (`TypeScript` &gt;=5.9.0, `@types/node` &gt;=18.18.0), _update_ (`README.md`, `CHANGELOG.md`).
 
 ## 0.0.1 (2025-10-17)
 

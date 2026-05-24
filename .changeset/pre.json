@@ -20,5 +20,11 @@
     "@workspace/typescript-config": "0.0.0",
     "@rzl-zone/utils-js": "3.13.1"
   },
-  "changesets": []
+  "changesets": [
+    "cozy-insects-tease",
+    "cozy-singers-stay",
+    "dry-webs-shop",
+    "five-colts-show",
+    "rare-times-make"
+  ]
 }

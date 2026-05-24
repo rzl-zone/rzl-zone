@@ -1,6 +1,6 @@
 {
   "name": "@rzl-zone/utils-js",
-  "version": "3.13.1",
+  "version": "3.14.0-beta.0",
   "description": "A modern, lightweight set of JavaScript utility functions with TypeScript support for everyday development, crafted to enhance code readability and maintainability.",
   "license": "MIT",
   "unpkg": "./dist/rzl-utils.global.js",

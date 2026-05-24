@@ -1,5 +1,17 @@
 # @rzl-zone/docs-ui
 
+## 0.0.14-beta.0 (2026-05-24)
+
+### Patch Changes
+
+- 688282a: Fix `cnDeprecated` API categorization issue in `/utils`.
+- Updated dependencies [688282a]
+  - @rzl-zone/utils-js@3.14.0-beta.0
+  - @rzl-zone/click-feedback@0.0.10
+  - @rzl-zone/core@0.0.12-beta.0
+  - @rzl-zone/core-react@0.0.12-beta.0
+  - @rzl-zone/next-kit@0.10.2-beta.0
+
 ## 0.0.13 (2026-05-20)
 
 ### Patch Changes
