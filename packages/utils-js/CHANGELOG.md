@@ -1,10 +1,14 @@
 # Changelog
 
-## 3.14.0
+## 3.14.0 (2026-05-24)
 
 ### Minor Changes
 
-- 688282a: Add new `copyText` API in `/operations` and `AbortError` in `/errors`. Improve tsDocs formatting, utility logging, and tests. Refactor internal typings, mark `PreciseType` as internal, and optimize `hasOwnProp` autocomplete performance.
+- 688282a:
+  - Add new `copyText` API in `/operations` and `AbortError` in `/errors`.
+  - Improve tsDocs formatting, utility logging, and tests.
+  - Refactor internal typings, mark `PreciseType` as internal, and optimize `hasOwnProp` autocomplete performance.
+
 
 ### Patch Changes
 
