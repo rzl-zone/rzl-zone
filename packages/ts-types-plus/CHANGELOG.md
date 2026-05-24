@@ -1,6 +1,6 @@
 # @rzl-zone/ts-types-plus
 
-## 0.1.8-beta.0
+## 0.1.8-beta.0 (2026-05-24)
 
 ### Patch Changes
 
