@@ -1,5 +1,17 @@
 # @rzl-zone/docs-ui
 
+## 0.0.15-beta.0 (2026-06-20)
+
+### Patch Changes
+
+- f7a7255: Add missing `@import "@rzl-zone/click-feedback/styles";` to `global.css`.
+- Updated dependencies [f7a7255]
+  - @rzl-zone/click-feedback@1.0.0-beta.0
+  - @rzl-zone/utils-js@3.14.1-beta.0
+  - @rzl-zone/core@0.0.13-beta.0
+  - @rzl-zone/core-react@0.0.13-beta.0
+  - @rzl-zone/next-kit@0.10.3-beta.0
+
 ## 0.0.14 (2026-05-24)
 
 ### Patch Changes

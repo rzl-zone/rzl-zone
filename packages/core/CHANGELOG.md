@@ -1,5 +1,12 @@
 # @rzl-zone/core
 
+## 0.0.13-beta.0 (2026-06-20)
+
+### Patch Changes
+
+- Updated dependencies [f7a7255]
+  - @rzl-zone/utils-js@3.14.1-beta.0
+
 ## 0.0.12 (2026-05-24)
 
 ### Patch Changes
