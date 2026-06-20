@@ -1,6 +1,6 @@
 # @rzl-zone/build-tools-cli
 
-## 0.0.14-beta.0
+## 0.0.14-beta.0 (2026-06-20)
 
 ### Patch Changes
 
