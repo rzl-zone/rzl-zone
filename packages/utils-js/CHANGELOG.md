@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.14.1-beta.0
+## 3.14.1-beta.0 (2026-06-20)
 
 ### Patch Changes
 
