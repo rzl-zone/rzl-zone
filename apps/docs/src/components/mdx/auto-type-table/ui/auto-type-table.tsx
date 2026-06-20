@@ -99,7 +99,8 @@ const AutoTypeTableInternal: React.FC<AutoTypeTableProps> = async ({
         key={item.name}
         {...props}
         updateHashInHistory={updateHashInHistory}
-        id={updateHashInHistory ? `type-table-${item.id}` : undefined}
+        hashUrl={item.hashUrl}
+        id={updateHashInHistory ? `${item.id}` : undefined}
         type={Object.fromEntries(await Promise.all(entries))}
       />
     );

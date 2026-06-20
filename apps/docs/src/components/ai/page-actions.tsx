@@ -4,15 +4,6 @@
 import { type ComponentProps, useEffect, useMemo, useState } from "react";
 
 import {
-  CheckSquare,
-  ChevronDown,
-  Copy,
-  ExternalLinkIcon,
-  Loader,
-  Smartphone,
-  TextIcon
-} from "@rzl-zone/docs-ui/components/icons/lucide";
-import {
   TbBrandTelegram,
   TbBrandWhatsappFilled,
   TbBrandXFilled
@@ -21,10 +12,21 @@ import { FaRegCopy, FaShare } from "react-icons/fa";
 
 import { usePathname } from "fumadocs-core/framework";
 
+import {
+  CheckSquare,
+  ChevronDown,
+  Copy,
+  ExternalLinkIcon,
+  Loader,
+  Smartphone,
+  TextIcon
+} from "@rzl-zone/docs-ui/components/icons/lucide";
 import { toast } from "@rzl-zone/docs-ui/components/sonner";
 import { Button } from "@rzl-zone/docs-ui/components/button";
 import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
 import { Transition } from "@rzl-zone/docs-ui/components/headless-ui-react";
+
+import { copyText } from "@rzl-zone/utils-js/operations";
 
 import { useEffectEvent } from "@rzl-zone/core-react/hooks";
 import { isError, isNonEmptyString } from "@rzl-zone/utils-js/predicates";
@@ -34,7 +36,6 @@ import {
   assertValidShareUrl,
   withShareUrlGuard
 } from "@/utils/validations/url-check";
-import { copyText } from "@/utils/clipboard/copyText";
 import { useCopyButton } from "@/hooks/use-copy-button";
 
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";

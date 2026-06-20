@@ -192,7 +192,10 @@ export function SidebarNavToggle({
         </PopoverTrigger>
       )}
 
-      <PopoverContent className="flex flex-col gap-1 w-(--radix-popover-trigger-width) overflow-hidden p-1">
+      <PopoverContent
+        className="flex flex-col gap-1 w-(--radix-popover-trigger-width) p-1"
+        disableArrow
+      >
         {options.map((item) => {
           const itemUrl = normalizePathname(item.url);
           const selectedUrl = normalizePathname(selected?.url, {

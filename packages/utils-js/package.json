@@ -84,6 +84,16 @@
         "default": "./dist/conversions/index.cjs"
       }
     },
+    "./errors": {
+      "import": {
+        "types": "./dist/errors/index.d.ts",
+        "default": "./dist/errors/index.js"
+      },
+      "require": {
+        "types": "./dist/errors/index.d.cts",
+        "default": "./dist/errors/index.cjs"
+      }
+    },
     "./events": {
       "import": {
         "types": "./dist/events/index.d.ts",

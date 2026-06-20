@@ -25,6 +25,7 @@ export interface GeneratedDoc {
    */
   id: string;
   name: string;
+  hashUrl: string;
   description?: string;
   entries: DocEntry[];
 }
@@ -113,7 +114,8 @@ export function createGenerator(options: GeneratorOptions = {}) {
   function getSourceFile(
     project: Project,
     filePath: string,
-    fileContent: string
+    fileContent: string,
+    name?: string
   ) {
     const baseUrl = SOURCE_CONFIG.LOADER.BASE_URL;
     const escapedBase = baseUrl.replace(/\//g, "\\/");
@@ -144,9 +146,19 @@ export function createGenerator(options: GeneratorOptions = {}) {
       ? sourceFile
       : project.createSourceFile(filePath, fileContent, { overwrite: true });
 
+    const hashUrl =
+      isNonEmptyString(pkg) && isNonEmptyString(name)
+        ? `ty-tab-${pkg.trim()}-${name.trim()}`
+        : isNonEmptyString(pkg) && !isNonEmptyString(name)
+          ? `ty-tab-${pkg.trim()}`
+          : !isNonEmptyString(pkg) && isNonEmptyString(name)
+            ? `ty-tab-${name.trim()}`
+            : "";
+
     return {
       sourceFile: finalSourceFile,
-      pkgAndVersion
+      pkgAndVersion,
+      hashUrl
     };
   }
 
@@ -173,10 +185,11 @@ export function createGenerator(options: GeneratorOptions = {}) {
       }
 
       const project = await getProject();
-      const { sourceFile, pkgAndVersion } = getSourceFile(
+      const { sourceFile, pkgAndVersion, hashUrl } = getSourceFile(
         project,
         fullPath,
-        content
+        content,
+        name
       );
       const out: GeneratedDoc[] = [];
 
@@ -199,7 +212,8 @@ export function createGenerator(options: GeneratorOptions = {}) {
           await generate(
             encodeURI(`${pkgAndVersion}${path.basename(file.path)}-${name}`),
             k,
-            entryContext
+            entryContext,
+            hashUrl
           )
         );
       }
@@ -221,7 +235,8 @@ export function createGenerator(options: GeneratorOptions = {}) {
 async function generate(
   id: string,
   name: string,
-  entryContext: EntryContext
+  entryContext: EntryContext,
+  hashUrl: string
 ): Promise<GeneratedDoc> {
   const { ts } = await import("ts-morph");
   const { declaration, program } = entryContext;
@@ -240,6 +255,7 @@ async function generate(
   return {
     id,
     name,
+    hashUrl,
     description: comment ? ts.displayPartsToString(comment) : undefined,
     entries
   };

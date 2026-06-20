@@ -7,6 +7,8 @@
 /* @source "../../../*\*\/\*.{ts,tsx,js,jsx,cjs,md,mdx}"; */
 @source "../../../../apps/**/*.{ts,tsx,js,jsx,cjs,md,mdx}";
 
+@import "@rzl-zone/click-feedback/styles";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {

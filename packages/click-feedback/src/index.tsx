@@ -1,10 +1,10 @@
 import type { CSSProperties } from "react";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import React from "react";
 
 import styles from "./main.module.css";
 
-const interactiveElementSelector = "a, button" as const;
+const interactiveElementSelector = "a, button";
 
 /** ----------------------------------------------------------------
  * * ***Global click ripple / pointer feedback overlay for interactive elements.***
@@ -13,6 +13,18 @@ const interactiveElementSelector = "a, button" as const;
  * `ClickFeedback` is a client-side React component that renders
  * animated visual feedback (ripple-like effect) when the user
  * interacts with supported interactive elements.
+ *
+ * ---
+ *
+ * **⚠️ Important: CSS Import Required**
+ *
+ * - You must manually include the accompanying CSS file in your application.
+ * - Without this CSS, the feedback animation will not render or behave correctly.
+ * - You can do this in one of two ways using the `"@rzl-zone/click-feedback/styles"` path:
+ *    1. Import it in your root JS/TS entry point (e.g., `main.tsx`, `layout.tsx`).
+ *    2. Or, use `@import` inside your global stylesheet (e.g., `globals.css`, `app.css`).
+ *
+ * ---
  *
  * Without this import, the feedback animation will not render
  * or behave correctly.
@@ -41,6 +53,15 @@ const interactiveElementSelector = "a, button" as const;
  * - Safe against interactions with nested elements and SVG nodes.
  *
  * @example
+ * **Required CSS Import**
+ * ```tsx
+ * // Import this once in your main.tsx, _app.tsx, or layout.tsx:
+ * import "@rzl-zone/click-feedback/styles";
+ * ```
+ * For **alternative setups *(like using global CSS)***,
+ * please read the **`README.md`**: [`https://github.com/rzl-zone/rzl-zone/tree/main/packages/click-feedback#quick-start`](https://github.com/rzl-zone/rzl-zone/tree/main/packages/click-feedback#quick-start)
+ *
+ * @example
  * ```tsx
  * export default function Page() {
  *   return (
@@ -61,7 +82,7 @@ const interactiveElementSelector = "a, button" as const;
  * ```
  */
 export const ClickFeedback = () => {
-  const [clickFeedbacks, setClickFeedback] = useState<
+  const [clickFeedbacks, setClickFeedback] = React.useState<
     Array<{
       id: number;
       size: number;
@@ -69,41 +90,42 @@ export const ClickFeedback = () => {
       y: number;
     }>
   >([]);
-  const ref = useRef<HTMLSpanElement>(null);
-  const handlePointerDown = useCallback((event: PointerEvent) => {
+  const ref = React.useRef<HTMLSpanElement>(null);
+  const handlePointerDown = React.useCallback((event: PointerEvent) => {
     const clickFeedbackElement = ref.current;
-    if (!clickFeedbackElement) {
-      return;
-    }
+
+    if (!clickFeedbackElement) return;
+
     const parent = clickFeedbackElement.parentElement?.closest(
       interactiveElementSelector
     );
-    if (!parent) {
-      return;
-    }
+
+    if (!parent) return;
+
     if (
       !(event.target instanceof HTMLElement) &&
       !(event.target instanceof SVGElement)
-    ) {
+    )
       return;
-    }
+
     const interactedWithElement = event.target.closest(
       interactiveElementSelector
     );
-    if (interactedWithElement !== parent) {
-      return;
-    }
+
+    if (interactedWithElement !== parent) return;
+
     if (
       interactedWithElement instanceof HTMLButtonElement &&
       interactedWithElement.disabled
-    ) {
+    )
       return;
-    }
+
     const rect = parent.getBoundingClientRect();
     const size =
       2 * Math.sqrt(Math.pow(rect.width, 2) + Math.pow(rect.height, 2));
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
+
     setClickFeedback((clickFeedbacks) => [
       ...clickFeedbacks,
       {
@@ -115,19 +137,20 @@ export const ClickFeedback = () => {
     ]);
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     document.body.addEventListener("pointerdown", handlePointerDown);
+
     return () => {
       document.body.removeEventListener("pointerdown", handlePointerDown);
     };
   }, [handlePointerDown]);
 
-  const discardClickFeedback = useCallback((clickFeedbackId: number) => {
-    setClickFeedback((clickFeedbacks) =>
-      clickFeedbacks.filter(
+  const discardClickFeedback = React.useCallback((clickFeedbackId: number) => {
+    setClickFeedback((clickFeedbacks) => {
+      return clickFeedbacks.filter(
         (clickFeedback) => clickFeedback.id !== clickFeedbackId
-      )
-    );
+      );
+    });
   }, []);
 
   return (

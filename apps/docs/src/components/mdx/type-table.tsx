@@ -3,6 +3,7 @@
 import {
   type ComponentProps,
   type ReactNode,
+  useCallback,
   useEffect,
   useState
 } from "react";
@@ -104,9 +105,11 @@ export function TypeTable({
   textType = "Type",
   allowMultiple = true,
   updateHashInHistory = false,
+  hashUrl,
   ...props
 }: {
   type: Record<string, TypeNode>;
+  hashUrl?: string;
 } & ComponentProps<"div"> &
   TypeTableMainOptions) {
   /** Tracks which item keys are currently open. */
@@ -117,7 +120,7 @@ export function TypeTable({
    * @param key - The unique key of the item.
    * @param isOpen - Whether the item is being opened or closed.
    */
-  const handleOpenChange = (key: string, isOpen: boolean) => {
+  const handleOpenChange = useCallback((key: string, isOpen: boolean) => {
     setOpenKeys((prev) => {
       if (allowMultiple) {
         if (isOpen && prev.includes(key)) return prev;
@@ -131,7 +134,7 @@ export function TypeTable({
 
       return isOpen ? [key] : [];
     });
-  };
+  }, []);
 
   useEffect(() => {
     if (!id || !updateHashInHistory) return;
@@ -149,18 +152,18 @@ export function TypeTable({
     }
   }, [id, type]);
 
-  useEffect(() => {
-    if (!id || !updateHashInHistory) return;
+  // useEffect(() => {
+  //   if (!id || !updateHashInHistory) return;
 
-    const active = openKeys[0];
-    if (!active) return;
+  //   const active = openKeys[0];
+  //   if (!active) return;
 
-    const newHash = `${id}-${active}`;
+  //   const newHash = `${id}-${active}`;
 
-    if (window.location.hash === `#${newHash}`) return;
+  //   if (window.location.hash === `#${newHash}`) return;
 
-    window.history.pushState(null, "", `#${newHash}`);
-  }, [openKeys, id]);
+  //   window.history.pushState(null, "", `#${newHash}`);
+  // }, [openKeys, id]);
 
   return (
     <div
@@ -184,8 +187,10 @@ export function TypeTable({
           parentId={id}
           name={key}
           item={value}
+          hashUrl={hashUrl}
           openKeys={openKeys}
           onOpenChange={handleOpenChange}
+          updateHashInHistory={updateHashInHistory}
         />
       ))}
     </div>
@@ -194,12 +199,14 @@ export function TypeTable({
 
 function Item({
   keyElement,
-  parentId,
+  // parentId,
   name,
   allowMultiple = false,
   item,
   onOpenChange,
-  openKeys
+  openKeys,
+  updateHashInHistory = false,
+  hashUrl
 }: {
   keyElement: string;
   parentId?: string;
@@ -214,8 +221,15 @@ function Item({
    */
   allowMultiple?: boolean;
 
+  /**
+   * @default false
+   */
+  updateHashInHistory?: boolean;
+
   openKeys: string[];
   onOpenChange: (key: string, isOpen: boolean) => void;
+
+  hashUrl?: string;
 }) {
   const {
     parameters = [],
@@ -229,15 +243,26 @@ function Item({
     returns
   } = item;
 
-  const id = parentId ? `${parentId}-${name}` : undefined;
+  const idHashUrl = isNonEmptyString(hashUrl)
+    ? `${hashUrl}-${name}`
+    : undefined;
 
-  const handleChange = (isOpen: boolean) => {
-    onOpenChange(keyElement, isOpen);
-  };
+  const handleChange = useCallback(
+    (isOpen: boolean) => {
+      onOpenChange(keyElement, isOpen);
+
+      if (isOpen && !!idHashUrl && updateHashInHistory) {
+        const newHash = `#${idHashUrl}`;
+        if (window.location.hash === newHash) return;
+        window.history.pushState(null, "", newHash);
+      }
+    },
+    [keyElement, idHashUrl]
+  );
 
   return (
     <Collapsible
-      id={id}
+      id={idHashUrl}
       open={
         allowMultiple
           ? openKeys.includes(keyElement)
@@ -251,6 +276,7 @@ function Item({
           : "border-transparent not-last:mb-0.5",
         "scroll-m-37 xl:scroll-m-26"
       )}
+      onClick={() => {}}
     >
       <CollapsibleTrigger
         className={cn(

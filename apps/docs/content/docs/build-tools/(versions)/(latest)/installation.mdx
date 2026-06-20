@@ -31,7 +31,7 @@ Before installing, please ensure your environment meets the requirements, if you
 You can install **Build Tools** using your preferred package manager, below are example commands for different package managers.
 
 ```package-install
-npm i @rzl-zone/build-tools@latest --save-dev
+npm install @rzl-zone/build-tools@latest --save-dev
 ```
 
 <SeparatorSection />
@@ -42,7 +42,7 @@ After installing, test the package with a quick import:
 
 <Tabs groupId="tabsSelect::import" items={['ESM', 'CJS']} defaultIndex={0} className="mt-1.5" persist>
   <Tab id="ESM" value="ESM">
-    ```ts
+    ```js
     import { getPackageJson } from "@rzl-zone/build-tools";
 
     const pkg = await getPackageJson();
@@ -50,7 +50,7 @@ After installing, test the package with a quick import:
     ```
   </Tab>
   <Tab id="CJS" value="CJS">
-    ```ts
+    ```js
     const { getPackageJson } = require("@rzl-zone/build-tools");
 
     (async () => {

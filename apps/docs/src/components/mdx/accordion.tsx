@@ -20,10 +20,10 @@ import { Button } from "@rzl-zone/docs-ui/components/button";
 import { Transition } from "@rzl-zone/docs-ui/components/headless-ui-react";
 
 import { delay } from "@rzl-zone/utils-js/promises";
+import { copyText } from "@rzl-zone/utils-js/operations";
 import { isNonEmptyString } from "@rzl-zone/utils-js/predicates";
 
 import { cn } from "@/lib/cn";
-import { copyText } from "@/utils/clipboard/copyText";
 import { useCopyButton } from "@/hooks/use-copy-button";
 import { useMainRzlFumadocs } from "@/context/main-rzl-fumadocs";
 

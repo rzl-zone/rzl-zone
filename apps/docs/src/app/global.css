@@ -136,3 +136,7 @@ svg[data-bg="override"] > path {
   line-height: calc(var(--spacing) * 5.25);
   margin-block: 6px;
 }
+
+/* .shiki:not(.not-fumadocs-codeblock *) code span {
+  @apply flex gap-0.5 items-center;
+} */

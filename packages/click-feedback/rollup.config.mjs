@@ -2,18 +2,17 @@ import { defineConfig } from "rollup";
 import dts from "rollup-plugin-dts";
 import del from "rollup-plugin-delete";
 import postcss from "rollup-plugin-postcss";
-import commonjs from "@rollup/plugin-commonjs";
-import resolve from "@rollup/plugin-node-resolve";
-// import typescript from "rollup-plugin-typescript2";
+import _commonjs from "@rollup/plugin-commonjs";
+import _resolve from "@rollup/plugin-node-resolve";
 import esbuild from "rollup-plugin-esbuild";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import _preserveDirectives from "rollup-plugin-preserve-directives";
 import {
   cleanJsBuildArtifacts,
-  ensureCssImport,
   copyFileToDest,
   ensureFinalNewline,
   generatePackageBanner,
+  stripJsComments,
   injectDirective,
   injectBanner
 } from "@rzl-zone/build-tools";
@@ -39,15 +38,6 @@ function onSuccessPlugin() {
         removeAdjacentEmptyLines: true
       });
 
-      await ensureCssImport("dist/index.{cjs,js}", {
-        logLevel: "error",
-        minify: true,
-        cssImportPath: ["./main.css"]
-      });
-
-      await injectDirective("dist/**/*.cjs", ["use strict"], {
-        logLevel: "error"
-      });
       await injectDirective("dist/index.{js,cjs}", ["use client"], {
         logLevel: "error"
       });
@@ -69,109 +59,97 @@ function onSuccessPlugin() {
         logLevel: "error"
       });
 
+      await stripJsComments("dist/*.{js}", {
+        logLevel: "error",
+        sourceType: "module"
+      });
+      await stripJsComments("dist/*.{cjs}", {
+        logLevel: "error",
+        sourceType: "commonjs"
+      });
+
       await ensureFinalNewline(["dist/*"], { logLevel: "error" });
     }
   };
 }
+
+/** @typedef {import("rollup-plugin-esbuild").Options["format"]} EsbuildFormat  */
+/** @param {EsbuildFormat} esbuildFormat  */
+const getSharedPlugins = (esbuildFormat) => [
+  peerDepsExternal(),
+  esbuild({
+    tsconfig: "tsconfig.json",
+    target: "es2015",
+    minifySyntax: true,
+    minifyIdentifiers: false,
+    minifyWhitespace: false,
+    treeShaking: true,
+    legalComments: "none",
+    format: esbuildFormat
+  }),
+  _commonjs(),
+  _resolve(),
+  postcss({
+    extract: "main.css"
+  })
+];
 
 export default defineConfig([
   buildStage(del({ targets: "./dist" + "/*" }), {
     clean: true,
     silent: true
   }),
+
+  // ESM
   {
     input: "./src/index.tsx",
-    output: [
-      {
-        dir: "./dist",
-        format: "esm",
-        sourcemap: true,
-        preserveModules: true,
-        entryFileNames: "[name].js",
-        chunkFileNames: "[name].js",
-        plugins: [
-          _terser({
-            format: {
-              comments: /^!/, // keep banner
-              preserve_annotations: true
-            }
-          })
-        ],
-        banner: await generatePackageBanner()
-      },
-      {
-        dir: "./dist",
-        format: "cjs",
-        sourcemap: true,
-        preserveModules: true,
-        entryFileNames: "[name].cjs",
-        chunkFileNames: "[name].cjs",
-        plugins: [
-          _terser({
-            format: {
-              comments: /^!/, // keep banner
-              preserve_annotations: true
-            }
-          })
-        ],
-        banner: await generatePackageBanner()
-      }
-    ],
+    output: {
+      dir: "./dist",
+      format: "esm",
+      sourcemap: true,
+      preserveModules: false,
+      entryFileNames: "[name].js",
+      chunkFileNames: "[name].js",
+      banner: await generatePackageBanner()
+    },
     watch: {
       onInvalidate: async () => {
         console.log("🔄 Rebuilding...");
       }
     },
-    onwarn(warning, warn) {
-      if (
-        warning?.code === "MODULE_LEVEL_DIRECTIVE" &&
-        warning?.message?.includes?.("use client")
-      ) {
-        // return; // Silent
-        // keep warn log as-is
-      }
-
-      warn(warning);
-    },
-    external: ["react", "react-dom"],
-    plugins: [
-      peerDepsExternal(),
-      esbuild({
-        jsx: "automatic",
-        tsconfig: "tsconfig.json"
-      }),
-      postcss({
-        extract: "main.css",
-        modules: false
-      }),
-      resolve(),
-      // typescript({
-      //   tsconfigOverride: {
-      //     compilerOptions: {
-      //       declaration: true
-      //     }
-      //   }
-      // }),
-      commonjs()
-    ]
+    plugins: getSharedPlugins("esm")
   },
+
+  // CJS
   {
     input: "./src/index.tsx",
     output: {
-      file: "./dist/index.d.cts",
-      format: "cjs",
+      dir: "./dist",
+      format: "commonjs",
+      sourcemap: true,
+      preserveModules: false,
+      entryFileNames: "[name].cjs",
+      chunkFileNames: "[name].cjs",
       banner: await generatePackageBanner()
     },
-    plugins: [dts()]
+    watch: {
+      onInvalidate: async () => {
+        console.log("🔄 Rebuilding...");
+      }
+    },
+    plugins: getSharedPlugins("cjs")
   },
+
+  // types
   {
     input: "./src/index.tsx",
     output: {
       file: "./dist/index.d.ts",
-      format: "es",
+      format: "esm",
       banner: await generatePackageBanner()
     },
     plugins: [dts()]
   },
+
   buildStage(onSuccessPlugin())
 ]);

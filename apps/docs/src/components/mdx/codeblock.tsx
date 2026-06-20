@@ -12,15 +12,15 @@ import {
 import { mergeRefs } from "@rzl-zone/core-react/utils";
 import { createRequiredContext } from "@rzl-zone/core-react/context";
 
-import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
-import { CheckSquare, Copy } from "@rzl-zone/docs-ui/components/icons/lucide";
-
 import { Button } from "@rzl-zone/docs-ui/components/button";
+import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
 import { ScrollArea } from "@rzl-zone/docs-ui/components/scroll-area";
 import { Transition } from "@rzl-zone/docs-ui/components/headless-ui-react";
+import { CheckSquare, Copy } from "@rzl-zone/docs-ui/components/icons/lucide";
+
+import { copyText } from "@rzl-zone/utils-js/operations";
 
 import { cn } from "@/lib/cn";
-import { copyText } from "@/utils/clipboard/copyText";
 import { useCopyButton } from "@/hooks/use-copy-button";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
@@ -121,7 +121,7 @@ export function CodeBlock({
       className={cn(
         inTab
           ? "bg-fd-card -mx-px -mb-px rounded-b-xl"
-          : "mB-2 mt-2.5 bg-fd-card rounded-xl",
+          : "mb-2 mt-2.5 bg-fd-card rounded-xl",
         keepBackground && "bg-(--shiki-light-bg) dark:bg-(--shiki-dark-bg)",
         !inTab && "shadow-md",
         "shiki relative border outline-none not-prose text-sm",
