@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.14.1-beta.0
+
+### Patch Changes
+
+- f7a7255: Add missing `./errors` export path in `package.json`.
+
 ## 3.14.0 (2026-05-24)
 
 ### Minor Changes
@@ -8,7 +14,6 @@
   - Add new `copyText` API in `/operations` and `AbortError` in `/errors`.
   - Improve tsDocs formatting, utility logging, and tests.
   - Refactor internal typings, mark `PreciseType` as internal, and optimize `hasOwnProp` autocomplete performance.
-
 
 ### Patch Changes
 
