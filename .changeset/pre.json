@@ -21,6 +21,7 @@
     "@rzl-zone/utils-js": "3.14.0"
   },
   "changesets": [
+    "dry-rabbits-invent",
     "hot-worlds-fall",
     "odd-cats-jam",
     "short-phones-stop"

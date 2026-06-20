@@ -1,5 +1,11 @@
 # @rzl-zone/eslint
 
+## 0.0.11-beta.0
+
+### Patch Changes
+
+- 5994c67: Update all dependencies and devDependencies
+
 ## 0.0.10 (2026-05-12)
 
 ### Patch Changes
