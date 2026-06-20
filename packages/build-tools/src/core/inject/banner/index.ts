@@ -45,10 +45,12 @@ import { CommandIdentity } from "@/commander-kit/identity";
  * - `filesOnly`: Ensures only files are matched.
  * - `forceUnique`: Deduplicates matched results.
  */
-export const DEFAULT_IB_PATTERN_POLICY = {
+export const DEFAULT_IB_PATTERN_POLICY: Required<
+  PatternRuntimePolicy<true, true>
+> = {
   filesOnly: true,
   forceUnique: true
-} as const satisfies PatternRuntimePolicy<boolean, boolean>;
+};
 
 /** ----------------------------------------------------------------
  * * ***Resolved Pattern Options for **inject banner** operations.***

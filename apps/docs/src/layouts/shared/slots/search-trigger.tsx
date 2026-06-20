@@ -2,8 +2,9 @@
 
 import type { ComponentProps } from "react";
 
-import { useI18n } from "fumadocs-ui/contexts/i18n";
 import { useSearchContext } from "fumadocs-ui/contexts/search";
+
+import { useTranslations } from "@fuma-translate/react";
 
 import { Search } from "@rzl-zone/docs-ui/components/icons/lucide";
 
@@ -54,7 +55,7 @@ export function FullSearchTrigger({
   ...props
 }: FullSearchTriggerProps) {
   const { enabled, hotKey, setOpenSearch } = useSearchContext();
-  const { text } = useI18n();
+  const t = useTranslations();
   if (hideIfDisabled && !enabled) return null;
 
   return (
@@ -71,7 +72,7 @@ export function FullSearchTrigger({
       }}
     >
       <Search className="size-4" />
-      {text.search}
+      {t("search")}
       <div className="ms-auto inline-flex gap-0.5">
         {hotKey.map((k, i) => (
           <kbd

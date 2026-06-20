@@ -45,10 +45,12 @@ import { generatePackageBanner } from "../package-banner";
  * - `filesOnly`: Ensures only files are matched.
  * - `forceUnique`: Deduplicates matched results.
  */
-export const DEFAULT_GRI_PATTERN_POLICY = {
+export const DEFAULT_GRI_PATTERN_POLICY: Required<
+  PatternRuntimePolicy<true, true>
+> = {
   filesOnly: true,
   forceUnique: true
-} as const satisfies PatternRuntimePolicy<true, true>;
+};
 
 /** ----------------------------------------------------------------
  * * ***Resolved Pattern Options for **generate reference index** operations.***

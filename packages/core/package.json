@@ -132,7 +132,7 @@
     "@rzl-zone/node-only": "workspace:*",
     "@rzl-zone/utils-js": "workspace:*",
     "sucrase": "^3.35.1",
-    "terser": "^5.46.1"
+    "terser": "^5.48.0"
   },
   "devDependencies": {
     "@rzl-zone/build-tools": "workspace:*",
@@ -140,7 +140,7 @@
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9.39.2",
-    "tsdown": "0.22.0",
+    "tsdown": "0.22.3",
     "typescript": "6.0.3"
   }
 }

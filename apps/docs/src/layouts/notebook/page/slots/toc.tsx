@@ -11,7 +11,8 @@ import {
 } from "react";
 
 import { useTreePath } from "fumadocs-ui/contexts/tree";
-import { I18nLabel, useI18n } from "fumadocs-ui/contexts/i18n";
+
+import { T, useTranslations } from "@fuma-translate/react";
 
 import { scrollToTop } from "@rzl-zone/utils-js/events";
 import { createRequiredContext } from "@rzl-zone/core-react/context";
@@ -100,7 +101,7 @@ export function TOC({
           className="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground"
         >
           <Text className="size-4" />
-          <I18nLabel label="toc" />
+          <T text="toc" />
         </h3>
         <Base.TOCScrollArea type="hover">
           <TOCItems {...list}>
@@ -254,7 +255,7 @@ function PageTOCPopoverTrigger({
   className,
   ...props
 }: ComponentProps<"button">) {
-  const { text } = useI18n();
+  const t = useTranslations();
   const { open } = TocPopoverContext.useSuspense() || {};
   const items = Base.useItems();
   const selectedIdx = items.findIndex((item) => item.active);
@@ -286,7 +287,7 @@ function PageTOCPopoverTrigger({
             showItem && "opacity-0 -translate-y-full pointer-events-none"
           )}
         >
-          {path?.name ?? text.toc}
+          {path?.name ?? t("toc")}
         </span>
         <span
           className={cn(

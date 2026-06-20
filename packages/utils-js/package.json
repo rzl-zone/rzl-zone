@@ -208,8 +208,8 @@
   },
   "dependencies": {
     "@rzl-zone/node-only": "workspace:*",
-    "date-fns": "^4.1.0",
-    "libphonenumber-js": "^1.13.1",
+    "date-fns": "^4.4.0",
+    "libphonenumber-js": "^1.13.7",
     "tailwind-merge-v2": "npm:tailwind-merge@^2",
     "tailwind-merge-v3": "npm:tailwind-merge@^3"
   },
@@ -219,18 +219,18 @@
     "@rzl-zone/eslint": "workspace:*",
     "@rzl-zone/ts-types-plus": "workspace:*",
     "@types/node": "^20.19.11",
-    "@vitest/coverage-v8": "^4.1.6",
+    "@vitest/coverage-v8": "^4.1.9",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "barrelsby": "^2.8.1",
     "eslint": "^10",
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
-    "tailwindcss": "^4.3.0",
-    "tsdown": "0.22.0",
-    "tsx": "^4.21.0",
+    "tailwindcss": "^4.3.1",
+    "tsdown": "0.22.3",
+    "tsx": "^4.22.4",
     "typescript": "6.0.3",
-    "vitest": "^4.1.6"
+    "vitest": "^4.1.9"
   },
   "peerDependencies": {
     "tailwindcss": "^3.0.0 || ^4.0.0"

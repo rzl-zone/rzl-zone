@@ -9,7 +9,8 @@ import {
 } from "react";
 
 import type { TOCItemType } from "fumadocs-core/toc";
-import { I18nLabel, useI18n } from "fumadocs-ui/contexts/i18n";
+
+import { T, useTranslations } from "@fuma-translate/react";
 
 import { useEffectEvent } from "@rzl-zone/core-react/hooks";
 import { createRequiredContext } from "@rzl-zone/core-react/context";
@@ -188,7 +189,7 @@ export function EditOnGitHub(props: ComponentProps<"a">) {
       {props.children ?? (
         <>
           <Edit className="size-3.5" />
-          <I18nLabel label="editOnGithub" />
+          <T text="editOnGithub" />
         </>
       )}
     </a>
@@ -339,7 +340,7 @@ export function PageLastUpdate({
 }: Omit<ComponentProps<"p">, "children"> & {
   date: Date | string | number | undefined;
 }) {
-  const { text } = useI18n();
+  const t = useTranslations();
   const [date, setDate] = useState<string | null>(null);
 
   const formattedDate = useEffectEvent((formatted: string) =>
@@ -366,7 +367,7 @@ export function PageLastUpdate({
         props.className
       )}
     >
-      <span>{text.lastUpdate}</span>
+      <span>{t("lastUpdate")}</span>
       {!date ? (
         <span className="h-4 w-22 rounded-xs animate-pulse bg-fd-accent dark:bg-fd-secondary inline-block" />
       ) : (

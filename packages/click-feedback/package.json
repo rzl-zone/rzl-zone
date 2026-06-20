@@ -75,7 +75,7 @@
     "clean-dist": "del-cli --force dist/* || true"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^29.0.2",
+    "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "@rzl-zone/build-tools": "workspace:*",
@@ -88,7 +88,7 @@
     "eslint": "^9.39.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "rollup": "^4.60.1",
+    "rollup": "^4.62.2",
     "rollup-plugin-delete": "^3.0.2",
     "rollup-plugin-dts": "^6.4.1",
     "rollup-plugin-esbuild": "^6.2.1",
@@ -97,7 +97,7 @@
     "rollup-plugin-preserve-directives": "^0.4.0",
     "rollup-plugin-typescript2": "^0.37.0",
     "tslib": "^2.8.1",
-    "typescript": "6.*.*",
+    "typescript": "6.0.3",
     "typescript-plugin-css-modules": "^5.2.0"
   },
   "peerDependencies": {

@@ -34,12 +34,12 @@
     "@rzl-zone/node-only": "workspace:*",
     "@rzl-zone/utils-js": "workspace:*",
     "@rzl-zone/ts-types-plus": "workspace:*",
-    "@shikijs/rehype": "^4.1.0",
-    "@shikijs/transformers": "^4.1.0",
+    "@shikijs/rehype": "^4.2.0",
+    "@shikijs/transformers": "^4.2.0",
     "@types/hast": "^3.0.4",
     "@types/mdast": "^4.0.4",
     "mdast-util-mdx-jsx": "^3.2.0",
-    "shiki": "^4.1.0",
+    "shiki": "^4.2.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0"
   },
@@ -49,7 +49,7 @@
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9.39.2",
-    "tsdown": "0.22.0",
+    "tsdown": "0.22.3",
     "typescript": "6.0.3"
   }
 }

@@ -461,7 +461,16 @@ function resolveTsdownCompat(version?: string): TsdownCompat {
  * Used as the foundation for all resolved configurations.
  *
  */
-export const BASE_DEFAULT_CONFIG = {
+export const BASE_DEFAULT_CONFIG: Pick<
+  UserConfigDefault,
+  "dts" | "minify" | "clean" | "sourcemap" | "format" | "fixedExtension"
+> & {
+  /** Custom banner string injected into output files.
+   *
+   * Defaults `undefined`.
+   */
+  banner?: _UserConfig["banner"] | false;
+} = {
   dts: true,
   minify: false,
   clean: ["dist/*"],
@@ -473,7 +482,7 @@ export const BASE_DEFAULT_CONFIG = {
   //   onlyBundle: false
   // },
   fixedExtension: false
-} as const satisfies UserConfig;
+} as const;
 
 let _cachedCompat: TsdownCompat | null = null;
 

@@ -113,18 +113,18 @@
     "dev:package-build-tools": "tsdown --watch \"./src/**/*\" --config-loader unrun"
   },
   "dependencies": {
-    "@babel/parser": "^7.29.2",
-    "@babel/traverse": "^7.29.0",
-    "@babel/types": "^7.29.0",
+    "@babel/parser": "^8.0.0",
+    "@babel/traverse": "^8.0.0",
+    "@babel/types": "^8.0.0",
     "@rzl-zone/node-only": "workspace:*",
-    "acorn": "^8.16.0",
-    "commander": "^14.0.3",
+    "acorn": "^8.17.0",
+    "commander": "^15.0.0",
     "dotenv": "^17.4.2",
     "fast-glob": "^3.3.3",
-    "fs-extra": "^11.3.4",
+    "fs-extra": "^11.3.5",
     "picocolors": "^1.1.1",
-    "semver": "^7.7.4",
-    "shell-quote": "^1.8.3"
+    "semver": "^7.8.5",
+    "shell-quote": "^1.8.4"
   },
   "devDependencies": {
     "@types/babel__traverse": "^7.28.0",
@@ -133,16 +133,16 @@
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9.39.2",
-    "rolldown": "^1.0.0-rc.15",
-    "terser": "^5.46.1",
-    "tsdown": "0.22.0",
-    "type-fest": "5.5.0",
+    "rolldown": "^1.1.2",
+    "terser": "^5.48.0",
+    "tsdown": "0.22.3",
+    "type-fest": "5.7.0",
     "typescript": "6.0.3",
-    "unrun": "^0.3.0"
+    "unrun": "^0.3.1"
   },
   "peerDependencies": {
     "rolldown": ">=1",
-    "tsdown": "^0.21.x"
+    "tsdown": "^0.22.x"
   },
   "peerDependenciesMeta": {
     "rolldown": {

@@ -2,12 +2,13 @@
 
 import { type ComponentProps, useMemo } from "react";
 
-import { useI18n } from "fumadocs-ui/contexts/i18n";
 import { useFooterItems } from "fumadocs-ui/utils/use-footer-items";
 
 import Link from "fumadocs-core/link";
 import { usePathname } from "fumadocs-core/framework";
 import type * as PageTree from "fumadocs-core/page-tree";
+
+import { useTranslations } from "@fuma-translate/react";
 
 import {
   ChevronLeft,
@@ -91,7 +92,7 @@ export function Footer({
 }
 
 function FooterItem({ item, index }: { item: Item; index: 0 | 1 }) {
-  const { text } = useI18n();
+  const t = useTranslations();
   const Icon = index === 0 ? ChevronLeft : ChevronRight;
 
   return (
@@ -112,7 +113,7 @@ function FooterItem({ item, index }: { item: Item; index: 0 | 1 }) {
         <p>{item.nameAlias ?? item.name}</p>
       </div>
       <p className="text-fd-muted-foreground truncate">
-        {item.description ?? (index === 0 ? text.previousPage : text.nextPage)}
+        {item.description ?? (index === 0 ? t("previousPage") : t("nextPage"))}
       </p>
     </Link>
   );

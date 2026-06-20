@@ -26,10 +26,12 @@ import type { CleanCoreOptions } from "./clean-build-artifacts-types";
  * - `filesOnly`: Ensures only files are matched.
  * - `forceUnique`: Deduplicates matched results.
  */
-export const DEFAULT_CLEAN_PATTERN_POLICY = {
+export const DEFAULT_CLEAN_PATTERN_POLICY: Required<
+  PatternRuntimePolicy<true, true>
+> = {
   filesOnly: true,
   forceUnique: true
-} as const satisfies PatternRuntimePolicy<boolean, boolean>;
+};
 
 /** ----------------------------------------------------------------
  * * ***Resolved Pattern Options for **clean build artifact** operations.***

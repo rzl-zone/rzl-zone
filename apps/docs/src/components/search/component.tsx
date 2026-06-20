@@ -25,7 +25,6 @@ import { visit } from "unist-util-visit";
 import { type Transformer } from "unified";
 
 import { type SharedProps } from "fumadocs-ui/contexts/search";
-import { I18nLabel, useI18n } from "fumadocs-ui/contexts/i18n";
 import { buttonVariants } from "fumadocs-ui/components/ui/button";
 // import { buttonVariants } from "@rzl-zone/docs-ui/components/cva";
 import { Dialog } from "@base-ui/react/dialog";
@@ -43,6 +42,7 @@ import { createRequiredContext } from "@rzl-zone/core-react/context";
 import type { Awaitable } from "@rzl-zone/ts-types-plus";
 
 import { cn } from "@/lib/cn";
+import { T, useTranslations } from "@fuma-translate/react";
 
 export type SearchItemType =
   | (ReactSortedResult & {
@@ -302,7 +302,7 @@ export function SearchDialogHeader(props: ComponentProps<"div">) {
 }
 
 export function SearchDialogInput(props: ComponentProps<"input">) {
-  const { text } = useI18n();
+  const t = useTranslations();
   const { search, onSearchChange } = useSearch();
 
   return (
@@ -310,7 +310,7 @@ export function SearchDialogInput(props: ComponentProps<"input">) {
       {...props}
       value={search}
       onChange={(e) => onSearchChange(e.target.value)}
-      placeholder={text.search}
+      placeholder={t("search")}
       className="w-0 flex-1 bg-transparent text-lg placeholder:text-fd-muted-foreground focus-visible:outline-none"
     />
   );
@@ -375,7 +375,7 @@ export function SearchDialogContent({
   className,
   ...props
 }: ComponentProps<typeof Dialog.Popup>) {
-  const { text } = useI18n();
+  const t = useTranslations();
 
   return (
     <Dialog.Portal>
@@ -391,7 +391,7 @@ export function SearchDialogContent({
           )
         }
       >
-        <Dialog.Title className="hidden">{text.search}</Dialog.Title>
+        <Dialog.Title className="hidden">{t("search")}</Dialog.Title>
         {children}
       </Dialog.Popup>
     </Dialog.Portal>
@@ -413,7 +413,7 @@ export function SearchDialogList({
   items = null,
   Empty = () => (
     <div className="py-3 text-center text-sm text-fd-muted-foreground">
-      <I18nLabel label="searchNoResult" />
+      <T text="searchNoResult" />
     </div>
   ),
   Item = DefaultItem,

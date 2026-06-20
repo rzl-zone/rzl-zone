@@ -65,13 +65,13 @@
   "dependencies": {
     "@rzl-zone/build-tools": "workspace:*",
     "@rzl-zone/node-only": "workspace:*",
-    "commander": "^14.0.3"
+    "commander": "^15.0.0"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9.39.2",
-    "tsdown": "0.22.0",
+    "tsdown": "0.22.3",
     "typescript": "6.0.3"
   }
 }
