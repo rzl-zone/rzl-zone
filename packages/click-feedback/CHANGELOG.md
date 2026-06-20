@@ -1,5 +1,15 @@
 # @rzl-zone/click-feedback
 
+## 1.0.0
+
+### Major Changes
+
+- f7a7255: CSS is no longer auto-injected, users must now explicitly import the CSS file from `@rzl-zone/click-feedback/styles` into their main application entry point (e.g., `app.tsx`, `app.jsx`) or global stylesheets.
+
+### Patch Changes
+
+- 5994c67: Update all dependencies and devDependencies
+
 ## 1.0.0-beta.1 (2026-06-20)
 
 ### Patch Changes
