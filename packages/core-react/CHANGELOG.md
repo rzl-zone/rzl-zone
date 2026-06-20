@@ -1,5 +1,15 @@
 # @rzl-zone/core-react
 
+## 0.0.13 (2026-06-20)
+
+### Patch Changes
+
+- 5994c67: Update all dependencies and devDependencies
+- Updated dependencies [5994c67]
+- Updated dependencies [f7a7255]
+  - @rzl-zone/utils-js@3.14.1
+  - @rzl-zone/core@0.0.13
+
 ## 0.0.13-beta.1 (2026-06-20)
 
 ### Patch Changes

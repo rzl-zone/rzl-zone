@@ -1,5 +1,11 @@
 # @rzl-zone/ts-types-plus
 
+## 0.1.9 (2026-06-20)
+
+### Patch Changes
+
+- 5994c67: Update all dependencies and devDependencies
+
 ## 0.1.9-beta.0 (2026-06-20)
 
 ### Patch Changes
