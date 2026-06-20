@@ -1,6 +1,6 @@
 # @workspace/nextjs
 
-## 0.0.8-beta.1
+## 0.0.8-beta.1 (2026-06-20)
 
 ### Patch Changes
 
