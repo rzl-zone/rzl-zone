@@ -1,6 +1,6 @@
 # @rzl-zone/click-feedback
 
-## 1.0.0-beta.1
+## 1.0.0-beta.1 (2026-06-20)
 
 ### Patch Changes
 
