@@ -1,6 +1,6 @@
 # @rzl-zone/docs-ui
 
-## 0.0.15
+## 0.0.15 (2026-06-20)
 
 ### Patch Changes
 
