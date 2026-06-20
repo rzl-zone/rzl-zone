@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.14.1-beta.1 (2026-06-20)
+
+### Patch Changes
+
+- 5994c67: Update all dependencies and devDependencies
+
 ## 3.14.1-beta.0 (2026-06-20)
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @rzl-zone/build-tools
 
+## 0.0.14-beta.0 (2026-06-20)
+
+### Patch Changes
+
+- 5994c67: Update all dependencies and devDependencies
+
 ## 0.0.13 (2026-05-24)
 
 ### Patch Changes

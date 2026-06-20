@@ -1,5 +1,16 @@
 # @rzl-zone/next-kit
 
+## 0.10.3-beta.1 (2026-06-20)
+
+### Patch Changes
+
+- 5994c67: Update all dependencies and devDependencies
+- Updated dependencies [5994c67]
+  - @rzl-zone/ts-types-plus@0.1.9-beta.0
+  - @rzl-zone/core-react@0.0.13-beta.1
+  - @rzl-zone/utils-js@3.14.1-beta.1
+  - @rzl-zone/core@0.0.13-beta.1
+
 ## 0.10.3-beta.0 (2026-06-20)
 
 ### Patch Changes
