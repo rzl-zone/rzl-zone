@@ -1,6 +1,6 @@
 # @rzl-zone/eslint
 
-## 0.0.11-beta.0
+## 0.0.11-beta.0 (2026-06-20)
 
 ### Patch Changes
 
