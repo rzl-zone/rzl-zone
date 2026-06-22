@@ -1,6 +1,6 @@
 # @workspace/nextjs
 
-## 0.0.9
+## 0.0.9 (2026-06-22)
 
 ### Patch Changes
 
