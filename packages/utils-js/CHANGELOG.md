@@ -1,10 +1,11 @@
 # Changelog
 
-## 3.15.0-beta.0
+## 3.15.0-beta.0 (2026-06-22)
 
 ### Minor Changes
 
-- 43f1a4e: \* Refactored `getInitialsName` to introduce configuration options (`useLastWord`, `lowercaseSecondLetter`) with improved TypeScript safety.
+- 43f1a4e:
+  - Refactored `getInitialsName` to introduce configuration options (`useLastWord`, `lowercaseSecondLetter`) with improved TypeScript safety.
   - Added a new `getDisplayName` utility for flexible full name formatting featuring `useLastWord` and `capitalizeFirst` options, includes comprehensive test suites for both utilities.
 
 ## 3.14.1 (2026-06-20)
