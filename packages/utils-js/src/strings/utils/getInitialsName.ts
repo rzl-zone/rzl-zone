@@ -1,5 +1,23 @@
 import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 
+/**
+ * Configuration options for the `getInitialsName` utility.
+ */
+export interface GetInitialsOptions {
+  /**
+   * If `true`, extracts the second initial from the last word (for names with 2+ words), defaultValue: `true`.
+   *
+   * @default true
+   */
+  useLastWord?: boolean;
+  /**
+   * If `true`, the second letter will be lowercase (for single-word names), defaultValue: `true`.
+   *
+   * @default true
+   */
+  lowercaseSecondLetter?: boolean;
+}
+
 /** ----------------------------------------------------------
  * * ***Utility: `getInitialsName`.***
  * -----------------------------------------------------------
@@ -7,57 +25,79 @@ import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
  *
  * ---
  * - **Behavior:**
- *     - For names with two or more words, returns the first letter of the first and second words.
- *     - For a single word with 2+ characters, returns the first two letters.
- *     - For a single character, returns that character.
- *     - For `empty`, `null`, `undefined` or `whitespace-only input`, returns an empty string (`""`).
+ *      - For names with two or more words, returns the first letter of the first word,
+ *        and the second letter from the last word (by default), unless `useLastWord` is false.
+ *      - For a single word with 2+ characters, returns the first two letters. The second
+ *        letter will be lowercase (by default), unless `lowercaseSecondLetter` is false.
+ *      - For a single character, returns that character in uppercase.
+ *      - For `empty`, `null`, `undefined` or `whitespace-only input`, returns an empty string (`""`).
  *
  * ---
  * @param {string | null | undefined} name - The name to extract initials from.
+ * @param {GetInitialsOptions} [options] - Configuration options for initial extraction.
  *
  * ---
- * @returns {string} The extracted initials (e.g., `"JD"` for `"John Doe"`).
+ * @returns {string} The extracted initials.
  *
  * ---
  * @example
+ * // Single-word names:
  * getInitialsName("Alice");
+ * // ➔ "Al" (Default: lowercaseSecondLetter is true)
+ * getInitialsName("Alice", { lowercaseSecondLetter: false });
  * // ➔ "AL"
- * getInitialsName("John Doe");
- * // ➔ "JD"
- * getInitialsName(" Bob Marley ");
- * // ➔ "BM"
- * getInitialsName("John Ronald Donal");
+ *
+ * // Two-word names:
+ * getInitialsName("John Ronald");
  * // ➔ "JR"
- * getInitialsName("Lord John Doe Moe");
- * // ➔ "LJ"
+ *
+ * // Three or more words:
+ * getInitialsName("John Ronald Donal");
+ * // ➔ "JD" (Default: useLastWord is true)
+ * getInitialsName("John Ronald Donal", { useLastWord: false });
+ * // ➔ "JR"
+ *
+ * // Edge cases:
  * getInitialsName("X");
  * // ➔ "X"
- * getInitialsName("");
- * // ➔ "" (empty string)
- * getInitialsName("  ");
- * // ➔ "" (empty string)
+ * getInitialsName("   John    Doe   ");
+ * // ➔ "JD"
  * getInitialsName(null);
- * // ➔ "" (null input)
- * getInitialsName(undefined);
- * // ➔ "" (undefined input)
+ * // ➔ ""
  */
-export const getInitialsName = (name: string | null | undefined): string => {
-  if (!isNonEmptyString(name)) return ""; // Handle empty string case
+export const getInitialsName = (
+  name: string | null | undefined,
+  options?: GetInitialsOptions
+): string => {
+  // Assumes isNonEmptyString() is defined elsewhere in your codebase
+  if (!isNonEmptyString(name)) return "";
+
+  const { useLastWord = true, lowercaseSecondLetter = true } = options || {};
 
   // Trim spaces and remove duplicate spaces
   name = name.replace(/\s+/g, " ").trim();
 
   const nameParts = name.split(" ");
 
+  // Handle names with two or more words
   if (nameParts.length > 1) {
-    if (!(nameParts[0] && nameParts[1] && nameParts[1][0])) return "";
+    const firstInitial = nameParts[0]?.[0] ?? "";
+    const secondWordIndex = useLastWord ? nameParts.length - 1 : 1;
+    const secondInitial = nameParts[secondWordIndex]?.[0] ?? "";
 
-    // First letter of first and second words
-    return (nameParts[0][0] + nameParts[1][0]).toUpperCase();
+    return (firstInitial + secondInitial).toUpperCase();
   }
 
-  return name.length > 1
-    ? name.substring(0, 2).toUpperCase()
-    : // First two letters for single-word names
-      (name[0]?.toUpperCase() ?? "");
+  // Handle single-word names with more than one character
+  if (name.length > 1) {
+    const firstLetter = name[0]?.toUpperCase() ?? "";
+    const secondLetter = lowercaseSecondLetter
+      ? (name[1]?.toLowerCase() ?? "")
+      : (name[1]?.toUpperCase() ?? "");
+
+    return firstLetter + secondLetter;
+  }
+
+  // Handle single-character names
+  return name[0]?.toUpperCase() ?? "";
 };
