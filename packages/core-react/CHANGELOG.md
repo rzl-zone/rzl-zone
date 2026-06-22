@@ -1,6 +1,6 @@
 # @rzl-zone/core-react
 
-## 0.0.14-beta.0
+## 0.0.14-beta.0 (2026-06-22)
 
 ### Patch Changes
 
