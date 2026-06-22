@@ -3,7 +3,7 @@ import { isNonEmptyString } from "@/predicates/is/isNonEmptyString";
 /**
  * Configuration options for the `getInitialsName` utility.
  */
-export interface GetInitialsOptions {
+type GetInitialsOptions = {
   /**
    * If `true`, extracts the second initial from the last word (for names with 2+ words), defaultValue: `true`.
    *
@@ -16,7 +16,7 @@ export interface GetInitialsOptions {
    * @default true
    */
   lowercaseSecondLetter?: boolean;
-}
+};
 
 /** ----------------------------------------------------------
  * * ***Utility: `getInitialsName`.***

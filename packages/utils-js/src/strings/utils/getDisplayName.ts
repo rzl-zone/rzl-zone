@@ -4,7 +4,7 @@ import { capitalizeWords } from "../capitalizations";
 /**
  * Configuration options for the `getDisplayName` utility.
  */
-export interface GetDisplayNameOptions {
+type GetDisplayNameOptions = {
   /**
    * If `true`, extracts the second display word from the last word (for names with 3+ words), defaultValue: `true` (e.g., "John Michael Doe" -> "John Doe").
    *
@@ -18,7 +18,7 @@ export interface GetDisplayNameOptions {
    * @default true
    */
   capitalizeFirst?: boolean;
-}
+};
 
 /** ----------------------------------------------------------
  * * ***Utility: `getDisplayName`.***
