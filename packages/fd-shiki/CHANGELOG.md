@@ -1,5 +1,14 @@
 # @workspace/fd-shiki
 
+## 0.0.9-beta.0
+
+### Patch Changes
+
+- Updated dependencies [43f1a4e]
+  - @rzl-zone/utils-js@3.15.0-beta.0
+  - @rzl-zone/core@0.0.14-beta.0
+  - @rzl-zone/core-react@0.0.14-beta.0
+
 ## 0.0.8 (2026-06-20)
 
 ### Patch Changes
