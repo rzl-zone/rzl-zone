@@ -20,5 +20,7 @@
     "@workspace/typescript-config": "0.0.0",
     "@rzl-zone/utils-js": "3.15.0"
   },
-  "changesets": []
+  "changesets": [
+    "old-pigs-dream"
+  ]
 }

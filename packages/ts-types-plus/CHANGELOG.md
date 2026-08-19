@@ -1,5 +1,11 @@
 # @rzl-zone/ts-types-plus
 
+## 0.2.0-beta.0 (2026-08-20)
+
+### Minor Changes
+
+- 371aad2: Fix JSX compilation issue by extending react-library config ("jsx": "react-jsx") and update package documentation.
+
 ## 0.1.9 (2026-06-20)
 
 ### Patch Changes
