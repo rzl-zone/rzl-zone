@@ -93,37 +93,37 @@ pnpm add @rzl-zone/next-kit@latest
 
 ```ts
 // Extras (e.g., getPathname, getSearchParams, etc.)
-import {} from /* … */ "@rzl-zone/next-kit/extra";
-import {} from /* … */ "@rzl-zone/next-kit/extra/action";
-import {} from /* … */ "@rzl-zone/next-kit/extra/context";
-import {} from /* … */ "@rzl-zone/next-kit/extra/pathname";
+import { /* … */ } from "@rzl-zone/next-kit/extra";
+import { /* … */ } from "@rzl-zone/next-kit/extra/action";
+import { /* … */ } from "@rzl-zone/next-kit/extra/context";
+import { /* … */ } from "@rzl-zone/next-kit/extra/pathname";
 
 // Higher-Order Components (HOC)
-import {} from /* … */ "@rzl-zone/next-kit/hoc";
+import { /* … */ } from "@rzl-zone/next-kit/hoc";
 
 // Progress Bar Loader
 // (utility, type or interface for progress bar)
-import {} from /* … */ "@rzl-zone/next-kit/progress-bar";
+import { /* … */ } from "@rzl-zone/next-kit/progress-bar";
 // (for App Directory)
-import {} from /* … */ "@rzl-zone/next-kit/progress-bar/app";
+import { /* … */ } from "@rzl-zone/next-kit/progress-bar/app";
 // (for Pages Directory)
-import {} from /* … */ "@rzl-zone/next-kit/progress-bar/pages";
+import { /* … */ } from "@rzl-zone/next-kit/progress-bar/pages";
 
 // Themes Mode (dark, light, system)
 // (hook, context, utility, type or interface for themes)
-import {} from /* … */ "@rzl-zone/next-kit/themes";
+import { /* … */ } from "@rzl-zone/next-kit/themes";
 // (for App Directory)
-import {} from /* … */ "@rzl-zone/next-kit/themes/app";
+import { /* … */ } from "@rzl-zone/next-kit/themes/app";
 // (for Pages Directory)
-import {} from /* … */ "@rzl-zone/next-kit/themes/pages";
+import { /* … */ } from "@rzl-zone/next-kit/themes/pages";
 
 // General Utilities
-import {} from /* … */ "@rzl-zone/next-kit/utils";
+import { /* … */ } from "@rzl-zone/next-kit/utils";
 // Special Utilities (server-only contexts)
-import {} from /* … */ "@rzl-zone/next-kit/utils/server";
+import { /* … */ } from "@rzl-zone/next-kit/utils/server";
 
 // Extra TypeScript Helpers
-import type {} from /* … */ "@rzl-zone/next-kit/types";
+import type { /* … */ } from "@rzl-zone/next-kit/types";
 ```
 
 To enable the built-in progress bar styling, import the default CSS, this import can be placed in your layout.tsx or global stylesheet entry, for example:

@@ -2,7 +2,6 @@
   "extends": "@workspace/typescript-config/react-library.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "jsx": "react-jsx",
     "outDir": "dist",
     "declaration": true,
     "declarationMap": false,

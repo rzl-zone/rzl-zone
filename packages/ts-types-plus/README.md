@@ -131,7 +131,7 @@ pnpm add @rzl-zone/ts-types-plus@latest
 #### For now, explore the examples or dive into the source — all utilities are documented via **TSDoc** and typed properly.
 
 ```ts
-import type {} from /* … */ "@rzl-zone/ts-types-plus";
+import type { /* … */ } from "@rzl-zone/ts-types-plus";
 ```
 
 #### Place your cursor inside `{ }` then press Ctrl+Space (Windows/Linux) or Cmd+Space (macOS), or use your editor’s autocomplete shortcut, to see all available types with full TSDoc hints.

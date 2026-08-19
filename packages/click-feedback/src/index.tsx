@@ -1,6 +1,10 @@
-import type { CSSProperties } from "react";
-
-import React from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties
+} from "react";
 
 import styles from "./main.module.css";
 
@@ -82,7 +86,7 @@ const interactiveElementSelector = "a, button";
  * ```
  */
 export const ClickFeedback = () => {
-  const [clickFeedbacks, setClickFeedback] = React.useState<
+  const [clickFeedbacks, setClickFeedback] = useState<
     Array<{
       id: number;
       size: number;
@@ -90,8 +94,8 @@ export const ClickFeedback = () => {
       y: number;
     }>
   >([]);
-  const ref = React.useRef<HTMLSpanElement>(null);
-  const handlePointerDown = React.useCallback((event: PointerEvent) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const handlePointerDown = useCallback((event: PointerEvent) => {
     const clickFeedbackElement = ref.current;
 
     if (!clickFeedbackElement) return;
@@ -137,7 +141,7 @@ export const ClickFeedback = () => {
     ]);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.body.addEventListener("pointerdown", handlePointerDown);
 
     return () => {
@@ -145,7 +149,7 @@ export const ClickFeedback = () => {
     };
   }, [handlePointerDown]);
 
-  const discardClickFeedback = React.useCallback((clickFeedbackId: number) => {
+  const discardClickFeedback = useCallback((clickFeedbackId: number) => {
     setClickFeedback((clickFeedbacks) => {
       return clickFeedbacks.filter(
         (clickFeedback) => clickFeedback.id !== clickFeedbackId

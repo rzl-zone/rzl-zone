@@ -231,7 +231,7 @@ type RequiredContextReturn<T> = {
  *
  * ---
  *
- * ℹ️ If you need an “empty” or “initial” state, prefer `null` instead of `undefined`.
+ * ℹ️ If you need an `“empty”` or `“initial”` state, prefer `null` instead of `undefined`.
  *
  * ---
  *
