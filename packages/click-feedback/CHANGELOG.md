@@ -1,6 +1,6 @@
 # @rzl-zone/click-feedback
 
-## 1.1.0
+## 1.1.0 (2026-08-20)
 
 ### Minor Changes
 
