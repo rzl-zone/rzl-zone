@@ -1,5 +1,11 @@
 # @rzl-zone/click-feedback
 
+## 1.1.0
+
+### Minor Changes
+
+- 371aad2: Fix JSX compilation issue by extending react-library config ("jsx": "react-jsx") and update package documentation.
+
 ## 1.1.0-beta.0 (2026-08-20)
 
 ### Minor Changes
