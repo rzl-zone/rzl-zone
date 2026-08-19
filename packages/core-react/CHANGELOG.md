@@ -1,5 +1,15 @@
 # @rzl-zone/core-react
 
+## 0.1.0-beta.0
+
+### Minor Changes
+
+- 371aad2: Fix JSX compilation issue by extending react-library config ("jsx": "react-jsx") and update package documentation.
+
+### Patch Changes
+
+- @rzl-zone/utils-js@3.15.0
+
 ## 0.0.14 (2026-06-22)
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @rzl-zone/next-kit
 
+## 0.11.0-beta.0
+
+### Minor Changes
+
+- 371aad2: Fix JSX compilation issue by extending react-library config ("jsx": "react-jsx") and update package documentation.
+
+### Patch Changes
+
+- Updated dependencies [371aad2]
+  - @rzl-zone/core-react@0.1.0-beta.0
+  - @rzl-zone/ts-types-plus@0.2.0-beta.0
+  - @rzl-zone/utils-js@3.15.0
+
 ## 0.10.4 (2026-06-22)
 
 ### Patch Changes
