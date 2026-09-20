@@ -1,5 +1,11 @@
 # @rzl-zone/build-tools
 
+## 0.0.15
+
+### Patch Changes
+
+- e192129: fix(build-tools): Move **`@types/fs-extra`** from **devDependencies** to **dependencies**
+
 ## 0.0.15-beta.0
 
 ### Patch Changes
