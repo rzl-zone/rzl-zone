@@ -1,13 +1,13 @@
 # @rzl-zone/build-tools-cli
 
-## 0.0.15
+## 0.0.15 (2026-09-21)
 
 ### Patch Changes
 
 - Updated dependencies [e192129]
   - @rzl-zone/build-tools@0.0.15
 
-## 0.0.15-beta.0
+## 0.0.15-beta.0 (2026-09-21)
 
 ### Patch Changes
 
