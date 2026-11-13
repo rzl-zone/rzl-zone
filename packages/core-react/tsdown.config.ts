@@ -16,6 +16,7 @@ export default resolveDefaultConfig(() => {
 
   return {
     entry: ["src/**/*"],
+    minify: true,
     async onSuccess() {
       await stripJsComments(["dist/**"], {
         logLevel: "error"
