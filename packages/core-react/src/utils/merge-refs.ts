@@ -1,4 +1,4 @@
-import type * as React from "react";
+import type { Ref, RefCallback } from "react";
 
 /** -------------------------------------------------------------------
  * * ***Merges multiple React refs into a single ref callback,
@@ -40,8 +40,8 @@ import type * as React from "react";
  * ```
  */
 export function mergeRefs<T>(
-  ...inputRefs: (React.Ref<T> | undefined)[]
-): React.Ref<T> | React.RefCallback<T> {
+  ...inputRefs: (Ref<T> | undefined)[]
+): Ref<T> | RefCallback<T> {
   // 1. Filter out falsy values (null, undefined, false)
   const filteredInputRefs = inputRefs.filter(Boolean);
 
@@ -70,8 +70,8 @@ export function mergeRefs<T>(
  * @deprecated use `mergeRefs` instead.
  */
 export function mergeRefsDeprecated<T>(
-  ...refs: (React.Ref<T> | undefined)[]
-): React.RefCallback<T> {
+  ...refs: (Ref<T> | undefined)[]
+): RefCallback<T> {
   return (value) => {
     refs.forEach((ref) => {
       if (typeof ref === "function") {
