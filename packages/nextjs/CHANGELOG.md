@@ -1,5 +1,12 @@
 # @workspace/nextjs
 
+## 0.0.11
+
+### Patch Changes
+
+- Updated dependencies [ca43389]
+  - @rzl-zone/core-react@0.2.0
+
 ## 0.0.11-beta.0 (2026-11-19)
 
 ### Patch Changes
