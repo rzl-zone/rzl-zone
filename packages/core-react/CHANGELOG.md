@@ -1,10 +1,10 @@
 # @rzl-zone/core-react
 
-## 0.2.0-beta.0
+## 0.2.0-beta.0 (2026-11-19)
 
 ### Minor Changes
 
-- ca43389: fix(core-react): Improve **`mergeRefs`**.
+- ca43389: Fix and Improve **`mergeRefs`**.
 
 ## 0.1.0 (2026-08-20)
 
