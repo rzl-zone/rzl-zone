@@ -1,6 +1,6 @@
 # @rzl-zone/docs-ui
 
-## 0.0.18-beta.0
+## 0.0.18-beta.0 (2026-11-19)
 
 ### Patch Changes
 
