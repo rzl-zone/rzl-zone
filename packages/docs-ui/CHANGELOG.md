@@ -1,5 +1,13 @@
 # @rzl-zone/docs-ui
 
+## 0.0.18-beta.0 (2026-11-19)
+
+### Patch Changes
+
+- Updated dependencies [ca43389]
+  - @rzl-zone/core-react@0.2.0-beta.0
+  - @rzl-zone/next-kit@0.11.1-beta.0
+
 ## 0.0.17 (2026-08-20)
 
 ### Patch Changes
