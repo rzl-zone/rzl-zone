@@ -1,6 +1,6 @@
 {
   "name": "@workspace/nextjs",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "private": true,
   "exports": {
     "./link": "./src/link/index.tsx"

@@ -1,5 +1,12 @@
 # @workspace/fd-shiki
 
+## 0.0.11
+
+### Patch Changes
+
+- Updated dependencies [ca43389]
+  - @rzl-zone/core-react@0.2.0
+
 ## 0.0.10 (2026-08-20)
 
 ### Patch Changes
