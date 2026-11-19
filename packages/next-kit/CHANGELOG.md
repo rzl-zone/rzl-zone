@@ -1,6 +1,6 @@
 # @rzl-zone/next-kit
 
-## 0.11.1
+## 0.11.1 (2026-11-19)
 
 ### Patch Changes
 
