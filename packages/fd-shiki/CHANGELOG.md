@@ -1,6 +1,6 @@
 # @workspace/fd-shiki
 
-## 0.0.11-beta.0
+## 0.0.11-beta.0 (2026-11-19)
 
 ### Patch Changes
 
